@@ -3,30 +3,29 @@
     width:100vW;
     min-height:100vH;
 }
-.start-logo{
-    background-color: aqua;
-    position: absolute; 
-    width: 100vW; 
-    height: 100vH; 
-    @include dFlex();
-    animation-name: startLogo;
-    animation-duration: 3s;
-    >svg{
-        width:50%;
-
-    }
-}
 .logo{
-    position: relative;
-    top:0;
-    left:32px;
+    background-color: rgb(177, 54, 195);
+    animation-name: startLogo;
+    animation-duration: 10s;
+    @include dFlex($jc:flex-start);
     >svg{
         width:40px;
         height:40px;
+        position: relative;
+        animation-name: startLogoSvg;
+        animation-duration: 10s;
+    }
+    >.da-title{
+        width:100px;
+        font-size: 20px;
+        color:white;
     }
 }
-
 @keyframes startLogo {
-    0%   {transform: scale(1); top: 0; left: 0; position: absolute; width: 100vw; height: 100vh; offset: 0 }
-    100% {transform: scale(0.4); top: 0; left: 32px; position: absolute; width: 100vw; height: 10vh; }
-  }
+    0%   {transform: scale(1); top: 0; left: 0;right:0; position: absolute; width: 100vw; height: 100vh;}
+    100% {transform: scale(1); top: 0; left: 0; right:unset; position: absolute; width: 50vw; height: 10vh; }
+}
+@keyframes startLogoSvg {
+    0%   {transform: scale(1); top: 0; left: 0; position: relative; width: 400px; height: auto;}
+    100% {transform: scale(1); top: 0; left: 0; position: relative; width: 40px; height: auto; }
+}
