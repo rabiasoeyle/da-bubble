@@ -1,0 +1,11 @@
+@import '../../styles.scss';
+.header{
+    position: relative;
+    top:0;
+    left:0;
+    right:0;
+    width: 100vW;
+    height: 50px;
+    background-color: purple;
+    @include dFlex();
+}
