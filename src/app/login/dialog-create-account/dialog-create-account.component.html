@@ -1,0 +1,15 @@
+<!-- This component should open, when a new Account should be created -->
+<div>
+    <img src="" alt="arrow" (click)="goBackToLogin()">
+    <h2>Konto erstellen</h2>
+</div>
+
+<p>Mit deinem Namen und deiner E-Mail Adresse hast du dein neues DA-Bubble Konto.</p>
+<input type="text" placeholder="Name und Nachname">
+<input type="email" placeholder="E-Mail">
+<input type="password" placeholder="Passwort">
+<div>
+    <input type="checkbox">
+    <p>Ich stimme der <a routerLink="">Datenschutzerklärung </a>zu</p>
+</div>
+<button onsubmit="checkInfoForNewAccount()">Weiter</button>

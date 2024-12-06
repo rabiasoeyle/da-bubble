@@ -21,8 +21,35 @@
                 </svg>  
                 <div class="da-title">DA Bubble</div>
         </div>
-   
- 
+        @if(startLogin){
+              <div class="new-account-link">
+                <p>Neu bei DABubble?</p>
+                <button (click)="goToCreateAccount()">Account erstellen</button>
+                </div>  
+        }
+        
+        <div class="dialog-area">
+                @if(startLogin){
+                        <app-dialog-login></app-dialog-login>    
+                }
+                @if(forgotPassword){
+                        <app-dialog-send-email-pw></app-dialog-send-email-pw>
+                }
+                @if(createNewAccount){
+                        <app-dialog-create-account (goBackEvent)="handleGoBackEvent()"></app-dialog-create-account>
+                }
+                @if(chooseAvatar){
+                        <app-dialog-choose-avatar></app-dialog-choose-avatar>
+                }
+                @if(changePassword){
+                        <app-dialog-change-password></app-dialog-change-password>
+                }
+                
+        </div>
+        <footer>
+                <a routerLink="imprint">Impressum</a>
 
+                <a routerLink="datasafety">Datenschutz</a>
+        </footer>
 
 </section>

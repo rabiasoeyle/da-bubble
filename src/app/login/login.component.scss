@@ -6,14 +6,14 @@
 .logo{
     background-color: rgb(177, 54, 195);
     animation-name: startLogo;
-    animation-duration: 10s;
+    animation-duration: 4s;
     @include dFlex($jc:flex-start);
     >svg{
         width:40px;
         height:40px;
         position: relative;
         animation-name: startLogoSvg;
-        animation-duration: 10s;
+        animation-duration: 4s;
     }
     >.da-title{
         width:100px;
@@ -25,6 +25,7 @@
     0%   {transform: scale(1); top: 0; left: 0;right:0; position: absolute; width: 100vw; height: 100vh;}
     100% {transform: scale(1); top: 0; left: 0; right:unset; position: absolute; width: 50vw; height: 10vh; }
 }
+
 @keyframes startLogoSvg {
     0%   {transform: scale(1); top: 0; left: 0; position: relative; width: 400px; height: auto;}
     100% {transform: scale(1); top: 0; left: 0; position: relative; width: 40px; height: auto; }
