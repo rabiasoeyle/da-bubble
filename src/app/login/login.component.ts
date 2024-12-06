@@ -10,22 +10,18 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [RouterLink,DialogLoginComponent, DialogCreateAccountComponent, DialogSendEmailPwComponent, DialogChooseAvatarComponent, DialogChangePasswordComponent],
+  imports: [
+    RouterLink,DialogLoginComponent, DialogCreateAccountComponent, DialogSendEmailPwComponent, DialogChooseAvatarComponent, DialogChangePasswordComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent{
   start:boolean=true;
   startLogin:boolean=true;
   createNewAccount:boolean = false;
   forgotPassword:boolean = false;
   chooseAvatar:boolean=false;
   changePassword:boolean=false;
-  ngOnInit(): void {
-    setInterval(()=> {
-      this.start=false;
-    } ,3000);
-  }
 
   goToCreateAccount(){
     this.startLogin=false;

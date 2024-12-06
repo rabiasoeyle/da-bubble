@@ -9,6 +9,7 @@ import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { getFunctions, provideFunctions } from '@angular/fire/functions';
 import { getMessaging, provideMessaging } from '@angular/fire/messaging';
 import { getStorage, provideStorage } from '@angular/fire/storage';
+import { provideHttpClient } from '@angular/common/http';
 
 // Your web app's Firebase configuration
 const firebase = {
@@ -22,6 +23,7 @@ const firebase = {
 
 export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes), 
+    provideHttpClient(),
     provideFirebaseApp(() => initializeApp(firebase)), 
       provideAuth(() => getAuth()), 
       provideFirestore(() => getFirestore()), 
