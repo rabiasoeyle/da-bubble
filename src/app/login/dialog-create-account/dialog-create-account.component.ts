@@ -4,6 +4,10 @@ import { AuthService } from '../../../service/auth.service';
 import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { FirebaseApp } from '@angular/fire/app';
+import { getApps } from 'firebase/app';
+
+console.log(getApps());
 
 @Component({
   selector: 'app-dialog-create-account',
@@ -14,22 +18,26 @@ import { Router } from '@angular/router';
 })
 export class DialogCreateAccountComponent {
   fb = inject(FormBuilder);
-  // http = inject(HttpClient);
+  http = inject(HttpClient);
   router = inject(Router);
   authService = inject(AuthService);
+
   @Output()goBackEvent = new EventEmitter<string>
+
   form = this.fb.nonNullable.group({
     name:['', Validators.required],
     email:['', Validators.required],
     password:['', Validators.required],
     
   })
+  
   onSubmit(){
-    const rawForm = this.form.getRawValue();
-    this.authService.register(rawForm.email, rawForm.name, rawForm.password)
-    .subscribe(()=>{
-      this.router.navigateByUrl('');
-    })
+    // const rawForm = this.form.getRawValue();
+    // this.authService.register(rawForm.email, rawForm.name, rawForm.password)
+    // .subscribe(()=>{
+    //   // this.router.navigateByUrl('');
+    //   console.log('Successfull')
+    // })
   }
   goBackToLogin(){
     this.goBackEvent.emit();

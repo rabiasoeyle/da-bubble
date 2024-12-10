@@ -11,7 +11,8 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   selector: 'app-login',
   standalone: true,
   imports: [
-    RouterLink,DialogLoginComponent, DialogCreateAccountComponent, DialogSendEmailPwComponent, DialogChooseAvatarComponent, DialogChangePasswordComponent],
+    RouterLink, DialogLoginComponent, DialogCreateAccountComponent, 
+    DialogSendEmailPwComponent, DialogChooseAvatarComponent, DialogChangePasswordComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })

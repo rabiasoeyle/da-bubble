@@ -12,7 +12,7 @@ import { Firestore } from '@angular/fire/firestore';
 })
 export class AppComponent {
   title = 'da-bubble';
-  constructor(private firestore: Firestore){
+  constructor(){
 
   }
 }
