@@ -5,6 +5,10 @@
 </div>
 
 <p>Mit deinem Namen und deiner E-Mail Adresse hast du dein neues DA-Bubble Konto.</p>
+@if(errorMessage){
+    
+    <div>{{errorMessage}}</div>
+}
 <form [formGroup] ="form" (ngSubmit)="onSubmit()">
     <input formControlName="name" type="text" placeholder="Name und Nachname">
     <input formControlName="email" type="email" placeholder="E-Mail">

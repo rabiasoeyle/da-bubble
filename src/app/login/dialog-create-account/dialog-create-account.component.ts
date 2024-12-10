@@ -21,6 +21,7 @@ export class DialogCreateAccountComponent {
   http = inject(HttpClient);
   router = inject(Router);
   authService = inject(AuthService);
+  errorMessage : string |null = null;
 
   @Output()goBackEvent = new EventEmitter<string>
 
@@ -34,9 +35,16 @@ export class DialogCreateAccountComponent {
   onSubmit(){
     const rawForm = this.form.getRawValue();
     this.authService.register(rawForm.email, rawForm.name, rawForm.password)
-    .subscribe(()=>{
+    .subscribe({
       // this.router.navigateByUrl('');
-      console.log('Successfully saved new user')
+      next:()=>{
+        console.log('Successfully saved new user')
+      },
+      error:(err)=>{
+        this.errorMessage = err.code
+        console.log('Error')
+      }
+      
     })
   }
   goBackToLogin(){
