@@ -1,4 +1,5 @@
 import { inject, Injectable } from '@angular/core';
+import { FirebaseApp, getApps } from '@angular/fire/app';
 import { Auth, createUserWithEmailAndPassword, updateProfile } from '@angular/fire/auth';
 import { from, Observable } from 'rxjs';
 
@@ -6,9 +7,11 @@ import { from, Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  firebaseAuth = inject(Auth)
-  constructor(private auth: Auth) {
-    // console.log('Auth initialized:', this.firebaseAuth);
+  firebase = inject(FirebaseApp);
+  firebaseAuth = inject(Auth);
+  constructor() {
+    console.log('Firebase Apps:', getApps()); // Prüfen, ob Apps initialisiert wurden
+    console.log('Auth Instance:', this.firebaseAuth);
   }
 
   register(email:string, name:string, password:string):Observable <void>{

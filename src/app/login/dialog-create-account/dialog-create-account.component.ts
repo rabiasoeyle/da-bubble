@@ -32,12 +32,12 @@ export class DialogCreateAccountComponent {
   })
   
   onSubmit(){
-    // const rawForm = this.form.getRawValue();
-    // this.authService.register(rawForm.email, rawForm.name, rawForm.password)
-    // .subscribe(()=>{
-    //   // this.router.navigateByUrl('');
-    //   console.log('Successfull')
-    // })
+    const rawForm = this.form.getRawValue();
+    this.authService.register(rawForm.email, rawForm.name, rawForm.password)
+    .subscribe(()=>{
+      // this.router.navigateByUrl('');
+      console.log('Successfully saved new user')
+    })
   }
   goBackToLogin(){
     this.goBackEvent.emit();
