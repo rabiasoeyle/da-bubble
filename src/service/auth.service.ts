@@ -1,6 +1,8 @@
 import { inject, Injectable } from '@angular/core';
 import { FirebaseApp, getApps } from '@angular/fire/app';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from '@angular/fire/auth';
+import { getDatabase, ref, set } from '@angular/fire/database';
+// import { Firestore } from '@angular/fire/firestore/firebase';
 import { from, Observable } from 'rxjs';
 
 @Injectable({
@@ -31,5 +33,17 @@ export class AuthService {
     const promise = signInWithEmailAndPassword(this.firebaseAuth, email, password)
     .then(()=>{})
     return from(promise);
+  }
+  // Aktuellen Benutzer abrufen
+  async getCurrentUser() {
+    return this.firebaseAuth.currentUser;
+  }
+
+  // Benutzerdaten in der Realtime-Datenbank speichern
+  async saveUserData(userId: string, userData: any) {
+    const db = getDatabase(this.firebase);
+    //here i should look if i can find another solution.
+    const userRef = ref(db, `/users/${userId}`);
+    return set(userRef, userData);
   }
 }
