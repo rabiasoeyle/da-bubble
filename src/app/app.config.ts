@@ -35,15 +35,12 @@ const app = initializeApp(firebase);
 
 console.log(app); 
 
-// export const appConfig: ApplicationConfig = {
-//   providers: [provideRouter(routes), 
-//     provideHttpClient(),
-//       provideFirebaseApp(() => app), 
-//       provideAuth(() => getAuth()), 
-//       provideFirestore(() => getFirestore()),
-//       provideDatabase(() => getDatabase()), 
-//       provideFunctions(() => getFunctions()), 
-//       provideMessaging(() => getMessaging()), 
-//       provideStorage(() => getStorage())
-//     ]
-// };
+export const appConfig: ApplicationConfig = {
+  providers: [
+      provideRouter(routes), 
+      provideHttpClient(),
+      provideFirebaseApp(() => app), 
+      provideAuth(() => getAuth()), 
+      provideDatabase(() => getDatabase()), 
+    ]
+};

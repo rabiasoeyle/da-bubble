@@ -57,9 +57,6 @@ export class DialogCreateAccountComponent {
           try {
             // Hole die aktuell angemeldete Benutzer-ID
             const user = await this.authService.getCurrentUser();
-            // async saveUserData(userId: string, userData: any) 
-            // {\n     
-            // return firebase.database().ref(`/users/${userId}`).set(userData);\n   }
 
             if (user && user.uid) {
               const userId = user.uid;
