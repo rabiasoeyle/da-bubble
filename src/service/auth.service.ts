@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { FirebaseApp, getApps } from '@angular/fire/app';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from '@angular/fire/auth';
 import { Database, getDatabase, ref, set } from '@angular/fire/database';
-import { Firestore } from '@angular/fire/firestore/firebase';
+import { addDoc, collection, doc, DocumentReference, Firestore, getDoc, setDoc } from '@angular/fire/firestore';
 import { from, Observable } from 'rxjs';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
@@ -13,9 +13,9 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 export class AuthService {
   firebase = inject(FirebaseApp);
   firebaseAuth = inject(Auth);
-  // firebaseDatabase = inject(Database);
+  firebaseDatabase = inject(Firestore);
   user = {};
-  // auth = getAuth();
+  userData={};
   constructor() {
     console.log('Firebase Apps:',this.firebase , getApps()); // Prüfen, ob Apps initialisiert wurden
     console.log('Auth Instance:', this.firebaseAuth);
@@ -34,16 +34,20 @@ export class AuthService {
       onAuthStateChanged(this.firebaseAuth, (user) => {
         if (user) {
           // User is signed in, see docs for a list of available properties
-          // https://firebase.google.com/docs/reference/js/auth.user
-          const uid = user.uid;
-          console.log("User-ID:"+uid);
-          // ...
+          const uid:string = user.uid;
+          console.log("User-ID:"+ uid);
+          this.addData(uid, email, name);
         } else {
           // User is signed out
-          // ...
         }
       });
       return from(promise);
+  }
+
+  async addData(uid: string, email:string, name:string) {
+    const userDocRef = doc(this.firebaseDatabase, `users/${uid}`); // Dokument mit UID als Pfad
+    await setDoc(userDocRef, {userName:name,userEmail:email,fotolink:"",freundeliste:"",chatliste:"",gruppenliste:""}); // Beispiel-Daten
+    console.log('Daten erfolgreich hinzugefügt');
   }
 
   login(email:string, password:string):Observable <void>{
@@ -52,30 +56,39 @@ export class AuthService {
     // this.user = this.getCurrentUser(); 
     // console.log("Nutzer:"+this.user);
     
-onAuthStateChanged(this.firebaseAuth, (user) => {
-  if (user) {
-    // User is signed in, see docs for a list of available properties
-    // https://firebase.google.com/docs/reference/js/auth.user
-    const uid = user.uid;
-    console.log("User-ID:"+uid);
-    // ...
-  } else {
-    // User is signed out
-    // ...
-  }
+    onAuthStateChanged(this.firebaseAuth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        const uid = user.uid;
+        console.log("User-ID:"+uid);
+        
+        const userDocRef = doc(this.firebaseDatabase, `users/${uid}`); // Dokument der aktuellen UID abrufen
+        this.getData(userDocRef) // Dokument abrufen
+            // ...
+      } else {
+        // User is signed out
+        this.userData={};
+      }
 });
     return from(promise);
   }
+
+  async getData(userDocRef:DocumentReference){
+    const userDoc = await getDoc(userDocRef);
+    if (userDoc.exists()) {
+      console.log('Benutzerdaten:', userDoc.data());
+      this.userData=userDoc.data();
+      console.log(this.userData);
+      return userDoc.data(); // Daten des Benutzers zurückgeben
+    } else {
+      console.log('Kein Dokument für diesen Benutzer gefunden');
+      return null; // Kein Dokument vorhanden
+    }
+
+  }
+
   // Aktuellen Benutzer abrufen
   async getCurrentUser() {
     return this.firebaseAuth.currentUser;
-  }
-
-  // Benutzerdaten in der Realtime-Datenbank speichern
-  async saveUserData(userId: string, userData: any) {
-    const db = getDatabase(this.firebase);
-    //here i should look if i can find another solution.
-    const userRef = ref(db, `/users/${userId}`);
-    return set(userRef, userData);
   }
 }
