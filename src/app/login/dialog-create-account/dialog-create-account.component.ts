@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
 import { DialogLoginComponent } from '../dialog-login/dialog-login.component';
-import { AuthService } from '../../../service/auth.service';
+import { AuthService } from '../../auth.service';
 import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { FirebaseApp } from '@angular/fire/app';
 import { getApps } from 'firebase/app';
+import { Auth } from '@angular/fire/auth';
 
 console.log(getApps());
 
@@ -32,21 +33,6 @@ export class DialogCreateAccountComponent {
     
   })
   
-  // onSubmit(){
-  //   const rawForm = this.form.getRawValue();
-  //   this.authService.register(rawForm.email, rawForm.name, rawForm.password)
-  //   .subscribe({
-  //     // this.router.navigateByUrl('');
-  //     next:()=>{
-  //       console.log('Successfully saved new user')
-  //     },
-  //     error:(err)=>{
-  //       this.errorMessage = err.code
-  //       console.log('Error')
-  //     }
-      
-  //   })
-  // }
   onSubmit() {
     const rawForm = this.form.getRawValue();
   
@@ -55,30 +41,9 @@ export class DialogCreateAccountComponent {
       .subscribe({
         next: async () => {
           try {
-            // Hole die aktuell angemeldete Benutzer-ID
-            const user = await this.authService.getCurrentUser();
-
-            if (user && user.uid) {
-              const userId = user.uid;
-  
-              // Bereite die Benutzerdaten vor
-              const userData = {
-                name: rawForm.name,
-                email: rawForm.email,
-                // photo: rawForm.photo || '', // Optional: Füge ein Standardbild hinzu
-                groups: [], // Initialisiere Gruppen als leeres Array
-                chats: [], // Initialisiere Chats als leeres Array
-                contacts: [], // Initialisiere Kontakte als leeres Array
-              };
-  
-              // Speichere die Benutzerdaten unter "/users" in Firebase
-              await this.authService.saveUserData(userId, userData);
-  
-              console.log('Successfully saved new user');
-              this.router.navigateByUrl('/'); // Weiterleitung nach erfolgreicher Registrierung
-            } else {
-              console.error('No user ID available after registration');
-            }
+            setTimeout(()=>{this.router.navigateByUrl('main')}, 3000);
+            this.authService.login(rawForm.email, rawForm.password);
+            
           } catch (err) {
             console.error('Error saving user data to Firebase:', err);
             this.errorMessage = 'Error saving user data';

@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { AuthService } from '../../../service/auth.service';
+import { AuthService } from '../../auth.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -26,13 +26,12 @@ export class DialogLoginComponent {
     const rawForm = this.form.getRawValue();
     this.authService.login(rawForm.email, rawForm.password)
     .subscribe({
-      next:()=>{
+      next:async ()=>{
         this.router.navigateByUrl('main');
-        console.log('Successfully load user');
       },
       error:(err)=>{
         this.errorMessage = err.code
-        console.log('Error')
+        console.error('Could not find User');
       }
       
     })
