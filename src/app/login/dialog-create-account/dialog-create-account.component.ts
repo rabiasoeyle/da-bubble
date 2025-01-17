@@ -24,6 +24,7 @@ export class DialogCreateAccountComponent {
   authService = inject(AuthService);
   errorMessage : string |null = null;
 
+  @Output()goBackEvent = new EventEmitter<string>
   @Output() accountCreated = new EventEmitter<void>();
 
   form = this.fb.nonNullable.group({
@@ -54,4 +55,7 @@ export class DialogCreateAccountComponent {
       });
   }
   
+  goBackToLogin(){
+    this.goBackEvent.emit();
+  }
 }

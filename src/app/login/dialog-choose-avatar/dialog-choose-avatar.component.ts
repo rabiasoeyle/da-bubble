@@ -15,13 +15,15 @@ export class DialogChooseAvatarComponent {
     "./assets/img/Noah.png",
     "./assets/img/Sofia.png",
     "./assets/img/Steffen.png",
-  ]
+  ];
+  dummyProfile="./assets/img/Profile.png";
   constructor(){
 
   }
 
   saveNewAvatar(avatarImg:any){
-
+    this.dummyProfile = avatarImg;
+    console.log(this.dummyProfile);
   }
 
   goTo(route:string){

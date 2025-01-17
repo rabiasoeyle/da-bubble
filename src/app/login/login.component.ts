@@ -17,11 +17,11 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent{
-  start:boolean=true;
-  startLogin:boolean=true;
+  start:boolean=false;
+  startLogin:boolean=false;
   createNewAccount:boolean = false;
   forgotPassword:boolean = false;
-  chooseAvatar:boolean=false;
+  chooseAvatar:boolean=true;
   changePassword:boolean=false;
 
   goToCreateAccount(){
