@@ -28,8 +28,8 @@ export class LoginComponent{
     this.startLogin=false;
     this.createNewAccount=true;
   }
-  handleGoBackEvent() {
-    this.startLogin = true;
+  handleAccountCreated() {
     this.createNewAccount = false;
+    this.chooseAvatar = true; // Wechsel zu Avatar-Komponente
   }
 }

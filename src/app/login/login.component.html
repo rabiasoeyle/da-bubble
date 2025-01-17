@@ -36,7 +36,7 @@
                         <app-dialog-send-email-pw></app-dialog-send-email-pw>
                 }
                 @if(createNewAccount){
-                        <app-dialog-create-account (goBackEvent)="handleGoBackEvent()"></app-dialog-create-account>
+                        <app-dialog-create-account (accountCreated)="handleAccountCreated()"></app-dialog-create-account>
                 }
                 @if(chooseAvatar){
                         <app-dialog-choose-avatar></app-dialog-choose-avatar>

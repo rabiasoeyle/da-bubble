@@ -8,5 +8,23 @@ import { Component } from '@angular/core';
   styleUrl: './dialog-choose-avatar.component.scss'
 })
 export class DialogChooseAvatarComponent {
+  profiles = [
+    "./assets/img/Elias.png",
+    "./assets/img/Elise.png",
+    "./assets/img/Frederik.png",
+    "./assets/img/Noah.png",
+    "./assets/img/Sofia.png",
+    "./assets/img/Steffen.png",
+  ]
+  constructor(){
 
+  }
+
+  saveNewAvatar(avatarImg:any){
+
+  }
+
+  goTo(route:string){
+
+  }
 }

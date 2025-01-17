@@ -1,1 +1,10 @@
 <!-- This component should open when a new account is in the creatingmode -->
+<button (click)="goTo('')">Zurück</button>
+<h3>Wähle einen Avatar!</h3>
+<img src="./assets/img/Profile.png" alt="">
+<h4>Nutzername</h4>
+<p>Aus der Liste wählen!</p>
+@for(item of profiles; track item){
+    <img (click)="saveNewAvatar({item})" src="{{item}}" alt="picture">
+}
+<button (click)="goTo('main')">Weiter</button>

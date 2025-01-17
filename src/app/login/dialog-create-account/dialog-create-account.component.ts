@@ -24,7 +24,7 @@ export class DialogCreateAccountComponent {
   authService = inject(AuthService);
   errorMessage : string |null = null;
 
-  @Output()goBackEvent = new EventEmitter<string>
+  @Output() accountCreated = new EventEmitter<void>();
 
   form = this.fb.nonNullable.group({
     name:['', Validators.required],
@@ -35,15 +35,13 @@ export class DialogCreateAccountComponent {
   
   onSubmit() {
     const rawForm = this.form.getRawValue();
-  
     // Registriere den Benutzer und speichere seine Daten in der Firebase-Datenbank
     this.authService.register(rawForm.email, rawForm.name, rawForm.password)
       .subscribe({
         next: async () => {
           try {
-            setTimeout(()=>{this.router.navigateByUrl('main')}, 3000);
             this.authService.login(rawForm.email, rawForm.password);
-            
+            this.accountCreated.emit(); // Signalisiert, dass der Account erstellt wurde
           } catch (err) {
             console.error('Error saving user data to Firebase:', err);
             this.errorMessage = 'Error saving user data';
@@ -56,7 +54,4 @@ export class DialogCreateAccountComponent {
       });
   }
   
-  goBackToLogin(){
-    this.goBackEvent.emit();
-  }
 }
