@@ -7,12 +7,12 @@ import { BehaviorSubject, from, Observable } from 'rxjs';
 import { getAuth, onAuthStateChanged, UserCredential } from "firebase/auth";
 
 export interface UserData {
-  name: string;
-  email: string;
-  freunde:[]|any;
-  gruppe:{}|any;
-  chats:{}|any;
-  fotolink:string;
+    name: string;
+    email: string;
+    freunde:[]|any;
+    gruppe:{}|any;
+    chats:{}|any;
+    fotolink:string;
 }
 
 @Injectable({
@@ -24,7 +24,7 @@ export class AuthService {
   firebaseAuth = inject(Auth);
   firebaseDatabase = inject(Firestore);
   user = {};
-  // userData:any;
+  userData:any;
   private userDataSubject = new BehaviorSubject<UserData | null>(null); // Initial null
   public userData$ = this.userDataSubject.asObservable(); // Observable für Komponenten
   constructor() {
@@ -55,21 +55,28 @@ export class AuthService {
   async addData(uid: string, email:string, name:string) {
     const userDocRef = doc(this.firebaseDatabase, `users/${uid}`); // Dokument mit UID als Pfad
     await setDoc(userDocRef, {
-      userName:name,
-      userEmail:email,
-      fotolink:"",
-      freundeliste:"",
-      chatliste:"",
-      gruppenliste:""}); // Beispiel-Daten
+      name: name,                // Key: name
+      email: email,              // Key: email
+      fotolink: "",              // Key: fotolink
+      freunde: [],               // Key: freunde
+      gruppe: {},                // Key: gruppe
+      chats: {}
+    }); // Beispiel-Daten
   }
-  async login(email: string, password: string): Promise<void> {
-    const userCredential = await signInWithEmailAndPassword(this.firebaseAuth, email, password);
-    const user = userCredential.user;
-    if (user) {
-      const uid = user.uid;
-      const data = await this.getData(uid);
-      this.userDataSubject.next(data); // Aktualisiert die Benutzerdaten
-    }
+
+  login(email: string, password: string): Observable<void> {
+    const loginPromise = signInWithEmailAndPassword(this.firebaseAuth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user;
+      if (user) {
+        const uid = user.uid;
+        return this.getData(uid).then((data) => {
+          this.userDataSubject.next(data);
+        });
+      }// Rückgabe für den Fall, dass user null ist
+      return Promise.resolve(); // Gibt ein leeres Promise zurück
+    });
+    return from(loginPromise); // Promise in Observable umwandeln
   }
 
   logout(): void {
@@ -83,43 +90,9 @@ export class AuthService {
     return userDoc.exists() ? (userDoc.data() as UserData) : null;
   }
 }
-  login(email:string, password:string):Observable <void>{
-    const promise = signInWithEmailAndPassword(this.firebaseAuth, email, password)
-    .then(()=>{})
-    onAuthStateChanged(this.firebaseAuth, async (user) => {
-      if (user) {
-        // User is signed in, see docs for a list of available properties
-        const uid = user.uid;
-        console.log("User-ID:" + uid);
-        // Dokument der aktuellen UID abrufen
-        this.getData(uid).then((data) => {
-          this.userData$ = data;
-          console.log("User-Data:", this.userData$); // Wird korrekt die Benutzerdaten anzeigen
-        }).catch((error) => {
-          console.error("Fehler beim Abrufen der Daten:", error);
-        });
-      } else {
-        // User is signed out
-        this.userData={};
-      }
-});
-    return from(promise);
-  }
-
-  async getData(uid:string){
-    const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
-    const userDoc = await getDoc(userDocRef);
-    if (userDoc.exists()) {
-      console.log('Benutzerdaten:', userDoc.data());
-      return userDoc.data(); // Daten des Benutzers zurückgeben
-    } else {
-      console.error('Kein Dokument für diesen Benutzer gefunden');
-      return null; // Kein Dokument vorhanden
-    }
-  }
 
   // Aktuellen Benutzer abrufen
-  async getCurrentUser() {
-    return this.firebaseAuth.currentUser;
-  }
-}
+  // async getCurrentUser() {
+  //   return this.firebaseAuth.currentUser;
+  // }
+

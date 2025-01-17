@@ -6,7 +6,7 @@ import { DsgvoComponent } from './dsgvo/dsgvo.component';
 
 export const routes: Routes = [
     {path:'', component: LoginComponent},
-    {path:'main', component:MainComponent},
-    {path:'datasafety', component:DsgvoComponent},
-    {path:'imprint', component:ImprintComponent}
+    {path:'main', component: MainComponent},
+    {path:'datasafety', component: DsgvoComponent},
+    {path:'imprint', component: ImprintComponent}
 ];

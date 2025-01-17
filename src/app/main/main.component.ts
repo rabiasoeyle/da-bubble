@@ -1,17 +1,24 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AuthService, UserData } from '../auth.service';
+import { HeaderComponent } from './header/header.component';
+import { SidenavComponent } from './sidenav/sidenav.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [],
+  imports: [HeaderComponent, SidenavComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })
 export class MainComponent implements OnInit {
   userData: UserData | null = null;
-
-  constructor(private authService: AuthService) {}
+  router = inject(Router);
+  constructor(private authService: AuthService) {
+    // if(this.userData == null){
+    //     this.router.navigateByUrl('');
+    //   }
+  }
 
   ngOnInit(): void {
     this.authService.userData$.subscribe((data) => {
