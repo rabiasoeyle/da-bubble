@@ -15,14 +15,15 @@ export class MainComponent implements OnInit {
   userData: UserData | null = null;
   router = inject(Router);
   constructor(private authService: AuthService) {
-    // if(this.userData == null){
-    //     this.router.navigateByUrl('');
-    //   }
+    
   }
 
   ngOnInit(): void {
     this.authService.userData$.subscribe((data) => {
       this.userData = data;
+      if(this.userData == null){
+          this.router.navigateByUrl('');
+      }
       console.log('Aktuelle Benutzerdaten:', this.userData);
     });
   }
