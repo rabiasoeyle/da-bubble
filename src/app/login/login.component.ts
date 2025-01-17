@@ -6,6 +6,7 @@ import { DialogCreateAccountComponent } from './dialog-create-account/dialog-cre
 import { DialogSendEmailPwComponent } from './dialog-send-email-pw/dialog-send-email-pw.component';
 import { DialogChooseAvatarComponent } from './dialog-choose-avatar/dialog-choose-avatar.component';
 import { RouterLink, RouterOutlet } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -17,12 +18,19 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent{
-  start:boolean=false;
-  startLogin:boolean=false;
+  start:boolean=true;
+  startLogin:boolean=true;
   createNewAccount:boolean = false;
   forgotPassword:boolean = false;
-  chooseAvatar:boolean=true;
+  chooseAvatar:boolean=false;
   changePassword:boolean=false;
+  userId: string | null = null;
+
+  constructor(private authService: AuthService) {
+    this.authService.userData$.subscribe((user) => {
+      this.userId = user?.uid || null; // Hol dir die User-ID aus dem AuthService
+    });
+  }
 
   goToCreateAccount(){
     this.startLogin=false;

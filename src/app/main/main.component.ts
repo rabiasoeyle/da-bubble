@@ -15,7 +15,7 @@ export class MainComponent implements OnInit {
   userData: UserData | null = null;
   router = inject(Router);
   constructor(private authService: AuthService) {
-    
+
   }
 
   ngOnInit(): void {
