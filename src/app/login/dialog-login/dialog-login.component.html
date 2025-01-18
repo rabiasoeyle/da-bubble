@@ -18,7 +18,7 @@
 </form>
 
 <!-- If you click on that button you get to a new dialog -->
-<button>Passwort vergessen?</button>
+<button (click)="goToForgotPassword()">Passwort vergessen?</button>
 
 <div>
     <div></div>
@@ -26,10 +26,7 @@
     <div></div>
 </div>
 
-<button>
+<button (click)="loginWithGoogle()">
     <img src="" alt="google-logo">
     <p>Anmelden mit Google</p>
 </button>
-
-<button>Anmelden</button>
-<button>Gäste Login</button>

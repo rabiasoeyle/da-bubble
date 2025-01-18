@@ -36,5 +36,13 @@ export class DialogLoginComponent {
       
     })
   }
+  loginWithGoogle() {
+    this.authService.googleSignin()
+      .then(() => console.log('Anmeldung erfolgreich'))
+      .catch((error) => console.error('Anmeldung fehlgeschlagen:', error));
+  }
+  goToForgotPassword(){
+    
+  }
 
 }
