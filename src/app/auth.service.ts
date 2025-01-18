@@ -52,7 +52,7 @@ export class AuthService {
     return from(promise);
   }
 
-  async addData(uid: string, email:string, name:string) {
+  async addData(uid: string, email:string|any, name:string|any) {
     const userDocRef = doc(this.firebaseDatabase, `users/${uid}`); // Dokument mit UID als Pfad
     await setDoc(userDocRef, {
       uid: uid,
@@ -91,54 +91,32 @@ export class AuthService {
     return userDoc.exists() ? (userDoc.data() as UserData) : null;
   }
 
-  // async updateUserProfile(uid: string, fotolink: string): Promise<void> {
-  //   try {
-  //     const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
-  //     await setDoc(userDocRef, {fotolink }, { merge: true });
-  //   } catch (error) {
-  //     console.error('Fehler beim Aktualisieren des Profilbilds:', error);
-  //   }
-  // }
-  async updateUserProfile(uid: string, data: { userName: string; userEmail: string; fotolink: string }): Promise<void> {
+  async updateUserProfile(uid: string, fotolink: string): Promise<void> {
     try {
       const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
-      await setDoc(userDocRef, data, { merge: true }); // Benutzer-Dokument erstellen oder aktualisieren
-      console.log('Benutzerdaten erfolgreich aktualisiert:', data);
+      await setDoc(userDocRef, {fotolink }, { merge: true });
     } catch (error) {
-      console.error('Fehler beim Aktualisieren des Benutzers:', error);
+      console.error('Fehler beim Aktualisieren des Profilbilds:', error);
     }
   }
+  // async updateUserProfile(uid: string, data: { userName: string; userEmail: string; fotolink: string }): Promise<void> {
+  //   try {
+  //     const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
+  //     await setDoc(userDocRef, data, { merge: true }); // Benutzer-Dokument erstellen oder aktualisieren
+  //     console.log('Benutzerdaten erfolgreich aktualisiert:', data);
+  //   } catch (error) {
+  //     console.error('Fehler beim Aktualisieren des Benutzers:', error);
+  //   }
+  // }
 
   async googleSignin(): Promise<void> {
-    // try {
-    //   const provider = new GoogleAuthProvider();
-    //   const result = await signInWithPopup(this.firebaseAuth, provider);
-    //   const user: User = result.user;
-
-    //   // Falls du weitere Benutzerdaten speichern willst
-    //   const photoURL = user.photoURL || ''; // Foto des Benutzers
-    //   await this.updateUserProfile(user.uid, photoURL);
-
-    //   console.log('Erfolgreich mit Google angemeldet:', user);
-    // } catch (error) {
-    //   console.error('Fehler bei der Google-Anmeldung:', error);
-    // }
-    // async googleSignin(): Promise<void> {
       try {
         const provider = new GoogleAuthProvider(); // Google-Provider initialisieren
         const credential = await signInWithPopup(this.firebaseAuth, provider); // Mit Popup anmelden
         const user = credential.user; // Angemeldeter Benutzer
     
         if (user) {
-          const fotolink = user.photoURL || ''; // Fallback für das Profilbild
-          console.log('Benutzerinformationen:', user);
-    
-          // Benutzerprofil aktualisieren (optional)
-          await this.updateUserProfile(user.uid, {
-            userName: user.displayName || '',
-            userEmail: user.email || '',
-            fotolink: fotolink,
-          });
+          this.addData(user.uid, user.email, user.displayName);
         }
       } catch (error) {
         console.error('Fehler bei der Google-Authentifizierung:', error);
