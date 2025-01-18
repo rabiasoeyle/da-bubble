@@ -117,6 +117,9 @@ export class AuthService {
     
         if (user) {
           this.addData(user.uid, user.email, user.displayName);
+          return this.getData(user.uid).then((data) => {
+            this.userDataSubject.next(data);
+          });
         }
       } catch (error) {
         console.error('Fehler bei der Google-Authentifizierung:', error);
