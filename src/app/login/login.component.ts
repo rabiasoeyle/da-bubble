@@ -18,7 +18,7 @@ import { AuthService } from '../auth.service';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent{
-  start:boolean=true;
+  start:boolean=false;
   startLogin:boolean=true;
   createNewAccount:boolean = false;
   forgotPassword:boolean = false;

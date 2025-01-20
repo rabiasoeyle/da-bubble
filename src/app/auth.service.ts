@@ -4,7 +4,7 @@ import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updat
 import { Database, getDatabase, ref, set } from '@angular/fire/database';
 import { addDoc, collection, doc, DocumentData, DocumentReference, Firestore, getDoc, setDoc, updateDoc } from '@angular/fire/firestore';
 import { BehaviorSubject, from, merge, Observable } from 'rxjs';
-import { getAuth, isSignInWithEmailLink, onAuthStateChanged, sendEmailVerification, sendSignInLinkToEmail, signInWithEmailLink, User, UserCredential } from "firebase/auth";
+import { getAuth, isSignInWithEmailLink, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, sendSignInLinkToEmail, signInWithEmailLink, User, UserCredential } from "firebase/auth";
 import {GoogleAuthProvider, signInWithPopup } from "@angular/fire/auth";
 export interface UserData {
     uid: string;
@@ -49,66 +49,20 @@ export class AuthService {
   private userDataSubject = new BehaviorSubject<UserData | null>(null); // Initial null
   public userData$ = this.userDataSubject.asObservable(); // Observable für Komponenten
   constructor() {
-    if (isSignInWithEmailLink(this.firebaseAuth, window.location.href)) {
-      let email = window.localStorage.getItem('emailForSignIn');
-      if (!email) {
-        email = window.prompt('Please provide your email for confirmation');
-      }
-      // signInWithEmailLink(this.firebaseAuth, email, window.location.href)
-      signInWithEmailLink(this.firebaseAuth,window.location.href)
-        .then((result) => {
-          window.localStorage.removeItem('emailForSignIn');
-        })
-        .catch((error) => {
-        });
-    }
+    // if (isSignInWithEmailLink(this.firebaseAuth, window.location.href)) {
+    //   let email = window.localStorage.getItem('emailForSignIn');
+    //   if (!email) {
+    //     email = window.prompt('Please provide your email for confirmation');
+    //   }
+    //   // signInWithEmailLink(this.firebaseAuth, email, window.location.href)
+    //   signInWithEmailLink(this.firebaseAuth,window.location.href)
+    //     .then((result) => {
+    //       window.localStorage.removeItem('emailForSignIn');
+    //     })
+    //     .catch((error) => {
+    //     });
+    // }
   }
-
-  // register(email:string, name:string, password:string):Observable <void>{
-  //   //Firebase saves observables and not promises, 
-  //   //so we should change them to oberservables
-  //   const promise = createUserWithEmailAndPassword(
-  //     this.firebaseAuth, 
-  //     email, 
-  //     password)
-  //     .then((response) => {
-  //       return updateProfile(response.user, { displayName: name })
-  //         .then(() => {
-  //           // Daten nur einmal hinzufügen
-  //           const uid: string = response.user.uid;
-  //           console.log("User-ID:", uid);
-  //           return this.addData(uid, email, name);
-  //         });
-  //     });
-  
-  //   return from(promise);
-  // }
-
-  // register(email: string, name: string, password: string): Observable<[void, void]> {
-  //   const sendEmail = () => {
-  //     return sendSignInLinkToEmail(this.firebaseAuth, email, this.actionCodeSettings)
-  //       .then(() => {
-  //         console.log('Bestätigungs-E-Mail gesendet an:', email);
-  //       })
-  //       .catch((error) => {
-  //         console.error('Fehler beim Senden der Bestätigungs-E-Mail:', error);
-  //         throw error;
-  //       });
-  //   };
-  
-  //   const createAccount = () => {
-  //     return createUserWithEmailAndPassword(this.firebaseAuth, email, password)
-  //       .then((response) => {
-  //         return updateProfile(response.user, { displayName: name })
-  //           .then(() => {
-  //             const uid: string = response.user.uid;
-  //             return this.addData(uid, email, name);
-  //           });
-  //       });
-  //   };
-  
-  //   return from(Promise.all([sendEmail(), createAccount()]));
-  // }
 
   register(email: string, name: string, password: string): Observable<void> {
    
@@ -185,15 +139,6 @@ export class AuthService {
       console.error('Fehler beim Aktualisieren des Profilbilds:', error);
     }
   }
-  // async updateUserProfile(uid: string, data: { userName: string; userEmail: string; fotolink: string }): Promise<void> {
-  //   try {
-  //     const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
-  //     await setDoc(userDocRef, data, { merge: true }); // Benutzer-Dokument erstellen oder aktualisieren
-  //     console.log('Benutzerdaten erfolgreich aktualisiert:', data);
-  //   } catch (error) {
-  //     console.error('Fehler beim Aktualisieren des Benutzers:', error);
-  //   }
-  // }
 
   async googleSignin(): Promise<void> {
       try {
@@ -211,6 +156,13 @@ export class AuthService {
         console.error('Fehler bei der Google-Authentifizierung:', error);
       }
     }
+
+  forgotPassword(email:string){
+    sendPasswordResetEmail(this.firebaseAuth, email)
+    .then(()=>{
+      alert("Your Password reset link was send")
+    })
+  }
   }
 
   // Aktuellen Benutzer abrufen
