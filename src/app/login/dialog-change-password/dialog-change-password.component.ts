@@ -8,5 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './dialog-change-password.component.scss'
 })
 export class DialogChangePasswordComponent {
-
+  changePassword(){
+    
+  }
 }

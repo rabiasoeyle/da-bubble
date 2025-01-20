@@ -8,5 +8,7 @@ import { Component } from '@angular/core';
   styleUrl: './dialog-send-email-pw.component.scss'
 })
 export class DialogSendEmailPwComponent {
-
+  sendChangePasswordLink(){
+    
+  }
 }

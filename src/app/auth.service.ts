@@ -4,7 +4,7 @@ import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updat
 import { Database, getDatabase, ref, set } from '@angular/fire/database';
 import { addDoc, collection, doc, DocumentData, DocumentReference, Firestore, getDoc, setDoc, updateDoc } from '@angular/fire/firestore';
 import { BehaviorSubject, from, merge, Observable } from 'rxjs';
-import { getAuth, onAuthStateChanged, User, UserCredential } from "firebase/auth";
+import { getAuth, onAuthStateChanged, sendSignInLinkToEmail, User, UserCredential } from "firebase/auth";
 import {GoogleAuthProvider, signInWithPopup } from "@angular/fire/auth";
 export interface UserData {
     uid: string;
@@ -27,6 +27,23 @@ export class AuthService {
   user = {};
   userData:any;
   currentUid: string | null = null;
+  actionCodeSettings = {
+    // URL you want to redirect back to. The domain (www.example.com) for this
+    // URL must be in the authorized domains list in the Firebase Console.
+    url: 'https://www.example.com/finishSignUp?cartId=1234',
+    // This must be true.
+    handleCodeInApp: true,
+    iOS: {
+      bundleId: 'com.example.ios'
+    },
+    android: {
+      packageName: 'com.example.android',
+      installApp: true,
+      minimumVersion: '12'
+    },
+    dynamicLinkDomain: 'example.page.link'
+  };
+
   private userDataSubject = new BehaviorSubject<UserData | null>(null); // Initial null
   public userData$ = this.userDataSubject.asObservable(); // Observable für Komponenten
   constructor() {
@@ -35,6 +52,19 @@ export class AuthService {
   register(email:string, name:string, password:string):Observable <void>{
     //Firebase saves observables and not promises, 
     //so we should change them to oberservables
+    // sendSignInLinkToEmail(this.firebaseAuth, email, this.actionCodeSettings)
+    //   .then(() => {
+    //     // The link was successfully sent. Inform the user.
+    //     // Save the email locally so you don't need to ask the user for it again
+    //     // if they open the link on the same device.
+    //     window.localStorage.setItem('emailForSignIn', email);
+    //     // ...
+    //   })
+    //   .catch((error) => {
+    //     const errorCode = error.code;
+    //     const errorMessage = error.message;
+    //     // ...
+    // });
     const promise = createUserWithEmailAndPassword(
       this.firebaseAuth, 
       email, 
