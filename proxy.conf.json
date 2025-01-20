@@ -1,0 +1,11 @@
+{
+    "/firebase": {
+      "target": "https://identitytoolkit.googleapis.com",
+      "secure": true,
+      "changeOrigin": true,
+      "pathRewrite": {
+        "^/firebase": ""
+      }
+    }
+  }
+  

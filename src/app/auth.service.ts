@@ -4,7 +4,7 @@ import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updat
 import { Database, getDatabase, ref, set } from '@angular/fire/database';
 import { addDoc, collection, doc, DocumentData, DocumentReference, Firestore, getDoc, setDoc, updateDoc } from '@angular/fire/firestore';
 import { BehaviorSubject, from, merge, Observable } from 'rxjs';
-import { getAuth, onAuthStateChanged, sendSignInLinkToEmail, User, UserCredential } from "firebase/auth";
+import { getAuth, isSignInWithEmailLink, onAuthStateChanged, sendEmailVerification, sendSignInLinkToEmail, signInWithEmailLink, User, UserCredential } from "firebase/auth";
 import {GoogleAuthProvider, signInWithPopup } from "@angular/fire/auth";
 export interface UserData {
     uid: string;
@@ -30,56 +30,112 @@ export class AuthService {
   actionCodeSettings = {
     // URL you want to redirect back to. The domain (www.example.com) for this
     // URL must be in the authorized domains list in the Firebase Console.
-    url: 'https://www.example.com/finishSignUp?cartId=1234',
+    // url: 'https://da-bubble-85cd2.firebaseapp.com/finishSignUp',
+    url: 'http://localhost:4200/firebase',
     // This must be true.
     handleCodeInApp: true,
-    iOS: {
-      bundleId: 'com.example.ios'
-    },
-    android: {
-      packageName: 'com.example.android',
-      installApp: true,
-      minimumVersion: '12'
-    },
-    dynamicLinkDomain: 'example.page.link'
+    // iOS: {
+    //   bundleId: 'com.example.ios'
+    // },
+    // android: {
+    //   packageName: 'com.example.android',
+    //   installApp: true,
+    //   minimumVersion: '12'
+    // },
+    // dynamicLinkDomain: 'example.page.link'
   };
+  
 
   private userDataSubject = new BehaviorSubject<UserData | null>(null); // Initial null
   public userData$ = this.userDataSubject.asObservable(); // Observable für Komponenten
   constructor() {
+    if (isSignInWithEmailLink(this.firebaseAuth, window.location.href)) {
+      let email = window.localStorage.getItem('emailForSignIn');
+      if (!email) {
+        email = window.prompt('Please provide your email for confirmation');
+      }
+      // signInWithEmailLink(this.firebaseAuth, email, window.location.href)
+      signInWithEmailLink(this.firebaseAuth,window.location.href)
+        .then((result) => {
+          window.localStorage.removeItem('emailForSignIn');
+        })
+        .catch((error) => {
+        });
+    }
   }
 
-  register(email:string, name:string, password:string):Observable <void>{
-    //Firebase saves observables and not promises, 
-    //so we should change them to oberservables
-    // sendSignInLinkToEmail(this.firebaseAuth, email, this.actionCodeSettings)
-    //   .then(() => {
-    //     // The link was successfully sent. Inform the user.
-    //     // Save the email locally so you don't need to ask the user for it again
-    //     // if they open the link on the same device.
-    //     window.localStorage.setItem('emailForSignIn', email);
-    //     // ...
-    //   })
-    //   .catch((error) => {
-    //     const errorCode = error.code;
-    //     const errorMessage = error.message;
-    //     // ...
-    // });
-    const promise = createUserWithEmailAndPassword(
-      this.firebaseAuth, 
-      email, 
-      password)
-      .then((response) => {
-        return updateProfile(response.user, { displayName: name })
-          .then(() => {
-            // Daten nur einmal hinzufügen
-            const uid: string = response.user.uid;
-            console.log("User-ID:", uid);
-            return this.addData(uid, email, name);
-          });
-      });
+  // register(email:string, name:string, password:string):Observable <void>{
+  //   //Firebase saves observables and not promises, 
+  //   //so we should change them to oberservables
+  //   const promise = createUserWithEmailAndPassword(
+  //     this.firebaseAuth, 
+  //     email, 
+  //     password)
+  //     .then((response) => {
+  //       return updateProfile(response.user, { displayName: name })
+  //         .then(() => {
+  //           // Daten nur einmal hinzufügen
+  //           const uid: string = response.user.uid;
+  //           console.log("User-ID:", uid);
+  //           return this.addData(uid, email, name);
+  //         });
+  //     });
   
-    return from(promise);
+  //   return from(promise);
+  // }
+
+  // register(email: string, name: string, password: string): Observable<[void, void]> {
+  //   const sendEmail = () => {
+  //     return sendSignInLinkToEmail(this.firebaseAuth, email, this.actionCodeSettings)
+  //       .then(() => {
+  //         console.log('Bestätigungs-E-Mail gesendet an:', email);
+  //       })
+  //       .catch((error) => {
+  //         console.error('Fehler beim Senden der Bestätigungs-E-Mail:', error);
+  //         throw error;
+  //       });
+  //   };
+  
+  //   const createAccount = () => {
+  //     return createUserWithEmailAndPassword(this.firebaseAuth, email, password)
+  //       .then((response) => {
+  //         return updateProfile(response.user, { displayName: name })
+  //           .then(() => {
+  //             const uid: string = response.user.uid;
+  //             return this.addData(uid, email, name);
+  //           });
+  //       });
+  //   };
+  
+  //   return from(Promise.all([sendEmail(), createAccount()]));
+  // }
+
+  register(email: string, name: string, password: string): Observable<void> {
+   
+    const createAccount = () => {
+      return createUserWithEmailAndPassword(this.firebaseAuth, email, password)
+      .then(async (response) => {
+        const user = response.user; // Holen des aktuellen Benutzers aus der Antwort
+
+        if (user) {
+          // Verifikations-E-Mail senden
+          await sendEmailVerification(user)
+            .then(() => {
+              alert("E-Mail-Verifikationslink wurde gesendet!");
+            })
+            .catch((error) => {
+              console.error("Fehler beim Senden der Verifikations-E-Mail:", error);
+            });
+
+          const uid: string = user.uid; // UID des Benutzers
+          return this.addData(uid, email, name); // Benutzerdaten speichern
+        } else {
+          throw new Error("Kein Benutzer vorhanden, E-Mail-Verifikation fehlgeschlagen.");
+        }
+      });
+  };
+
+    return from(createAccount());
   }
 
   async addData(uid: string, email:string|any, name:string|any) {
