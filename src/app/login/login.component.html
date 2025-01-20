@@ -30,10 +30,10 @@
         
         <div class="dialog-area">
                 @if(startLogin){
-                        <app-dialog-login></app-dialog-login>    
+                        <app-dialog-login (switchToForgotPassword)="forgotPasswordPage()"></app-dialog-login>    
                 }
                 @if(forgotPassword){
-                        <app-dialog-send-email-pw></app-dialog-send-email-pw>
+                        <app-dialog-send-email-pw (switchBackToLogin)="goBackToLoginAfterPasswordChanged()"></app-dialog-send-email-pw>
                 }
                 @if(createNewAccount){
                         <app-dialog-create-account (accountCreated)="handleAccountCreated()"></app-dialog-create-account>

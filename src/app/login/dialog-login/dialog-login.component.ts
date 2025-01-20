@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { AuthService } from '../../auth.service';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -22,6 +22,8 @@ export class DialogLoginComponent {
     email:['', Validators.required],
     password:['', Validators.required]
   })
+  @Output() switchToForgotPassword = new EventEmitter<void>(); // EventEmitter erstellen
+
   onSubmit(){
     const rawForm = this.form.getRawValue();
     this.authService.login(rawForm.email, rawForm.password)
@@ -47,7 +49,7 @@ export class DialogLoginComponent {
       this.router.navigateByUrl('main');
   }
   goToForgotPassword(){
-
+    this.switchToForgotPassword.emit(); // Ereignis auslösen
   }
 
 }

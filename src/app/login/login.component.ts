@@ -31,6 +31,15 @@ export class LoginComponent{
       this.userId = user?.uid || null; // Hol dir die User-ID aus dem AuthService
     });
   }
+  forgotPasswordPage(){
+    this.startLogin=false;
+    this.forgotPassword= true;
+  }
+
+  goBackToLoginAfterPasswordChanged(){
+    this.startLogin=true;
+    this.forgotPassword= false;
+  }
 
   goToCreateAccount(){
     this.startLogin=false;

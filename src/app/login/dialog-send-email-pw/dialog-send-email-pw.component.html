@@ -1,6 +1,6 @@
 <!-- This dialog should open, when the user selects that they dont remember the password -->
 <div>
-    <button>Zurück</button>
+    <button (click)="goBackToLogin()">Zurück</button>
     <h3>Passwort zurücksetzen</h3>
     <p>Bitte geben Sie Ihre Email-Adresse ein</p>
     <form [formGroup] ="form" (ngSubmit)="onSubmit()">
