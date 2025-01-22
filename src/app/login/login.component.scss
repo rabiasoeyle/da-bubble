@@ -1,24 +1,26 @@
 @import '../../styles.scss';
-.section{
+@import '../../font.scss';
+.start-area{
     width:100vW;
     min-height:100vH;
+    background-color:#ECEEFE ;
 }
 .logo{
-    background-color: rgb(177, 54, 195);
-    animation-name: startLogo;
+    // background-color: rgb(177, 54, 195);
+    // animation-name: startLogo;
     animation-duration: 4s;
     @include dFlex($jc:flex-start);
     >svg{
         width:40px;
         height:40px;
         position: relative;
-        animation-name: startLogoSvg;
+        // animation-name: startLogoSvg;
         animation-duration: 4s;
     }
     >.da-title{
         width:100px;
         font-size: 20px;
-        color:white;
+        color:rgb(6, 6, 6);
     }
 }
 @keyframes startLogo {
@@ -29,4 +31,27 @@
 @keyframes startLogoSvg {
     0%   {transform: scale(1); top: 0; left: 0; position: relative; width: 400px; height: auto;}
     100% {transform: scale(1); top: 0; left: 0; position: relative; width: 40px; height: auto; }
+}
+.dialog-section{
+    position: relative;
+    min-height: 50vH;
+    width:100vW;
+    // @include dFlex($ai:flex-start);
+}
+.dialog-area{
+    width: 40%;
+    height: 100%;
+    position: absolute;
+    top: 0px;
+    left: 30%;
+    border-radius: 30px;
+    background-color: #FFFFFF;
+}
+footer{
+    position: relative;
+    bottom:16px;
+    left: 0;
+    right:0;
+    height:30px;
+
 }

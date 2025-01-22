@@ -1,32 +1,29 @@
-<!-- This component should be the first dialog who is availlable at login -->
+<div class="parent">
 
-<h2>Anmeldung</h2>
-<p>Wir empfehlen dir die E-Mail Adresse zu benutzen, die du bei der Arbeit verwendest</p>
+    <h2>Anmeldung</h2>
+    <h4>Wir empfehlen dir die E-Mail Adresse zu benutzen, die du bei der Arbeit verwendest</h4>
 
-@if(errorMessage){
+    @if(errorMessage){
+        <div>{{errorMessage}}</div>
+    }
+    <form [formGroup] ="form" (ngSubmit)="onSubmit()">
+        <input formControlName="email" type="email" placeholder="E-Mail">
+        <input formControlName="password" type="password" placeholder="Passwort">
     
-    <div>{{errorMessage}}</div>
-}
-<form [formGroup] ="form" (ngSubmit)="onSubmit()">
-    <input formControlName="email" type="email" placeholder="E-Mail">
-    <input formControlName="password" type="password" placeholder="Passwort">
-    <div>
-        <input type="checkbox">
-        <p>Ich stimme der <a routerLink="">Datenschutzerklärung </a>zu</p>
-    </div>
-    <button type="submit">Sign In</button>
-</form>
+        <button class="forgot-password-btn"  (click)="goToForgotPassword()">Passwort vergessen?</button>
 
-<!-- If you click on that button you get to a new dialog -->
-<button (click)="goToForgotPassword()">Passwort vergessen?</button>
+        <div class="or-line">
+            <div class="black-line"></div>
+            ODER
+            <div class="black-line"></div>
+        </div>
 
-<div>
-    <div></div>
-    <p>oder</p>
-    <div></div>
+        <button class="google-btn" (click)="loginWithGoogle()">
+            <img src="assets/img/Google.png" alt="google-logo">
+            Anmelden mit Google
+        </button>
+
+        <button type="submit">Sign In</button>
+    </form>
+
 </div>
-
-<button (click)="loginWithGoogle()">
-    <img src="" alt="google-logo">
-    <p>Anmelden mit Google</p>
-</button>

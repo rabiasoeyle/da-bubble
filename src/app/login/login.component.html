@@ -1,5 +1,6 @@
-<section class="section">
-        <div  class="logo">
+<div class="start-area">
+        <header>
+            <div  class="logo">
                 <svg width="188" height="184" viewBox="0 0 188 184" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_169_96)">
                     <path d="M173.488 0H87.6223C79.8556 0 73.6709 6.08615 73.6709 13.5877V83.5077H173.345C180.968 83.5077 187.152 77.4215 187.152 69.92V13.5877C187.296 6.08615 181.111 0 173.488 0Z" fill="#92C83E"/>
@@ -26,9 +27,10 @@
                 <p>Neu bei DABubble?</p>
                 <button (click)="goToCreateAccount()">Account erstellen</button>
                 </div>  
-        }
-        
-        <div class="dialog-area">
+        }    
+        </header>
+        <section class="dialog-section">
+                <div class="dialog-area">
                 @if(startLogin){
                         <app-dialog-login (switchToForgotPassword)="forgotPasswordPage()"></app-dialog-login>    
                 }
@@ -44,11 +46,11 @@
                 <!-- @if(changePassword){
                         <app-dialog-change-password></app-dialog-change-password>
                 } -->
-        </div>
+                </div>  
+        </section>
         <footer>
                 <a routerLink="imprint">Impressum</a>
-
                 <a routerLink="datasafety">Datenschutz</a>
         </footer>
 
-</section>
+</div>

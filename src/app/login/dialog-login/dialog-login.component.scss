@@ -1,0 +1,63 @@
+@import "../../../font.scss";
+@import '../../../styles.scss';
+
+h2{
+    font-family: 'Nunito';
+    font-size:46px;
+    font-weight: 700;
+}
+h4{
+    font-family: 'Nunito';
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+}
+input{
+    font-family: 'Nunito';
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 21.6px;
+}
+.forgot-password-btn{
+    font-family: 'Figtree';
+    font-size:18px;
+    font-weight:400;
+    color:#2796BF;
+    line-height: 21.6px;
+    border:none;
+    background-color: transparent;
+    cursor: pointer;
+
+}
+.google-btn{
+    font-family: 'Figtree';
+    font-size:18px;
+    font-weight:400;
+    color:#2796BF;
+    line-height: 21.6px;
+    border-radius: 100px;
+    background-color: #ECEEFE;
+    cursor: pointer;
+    width:80%;
+    height:auto;
+    @include dFlex()
+}
+form{
+    @include dFlex($fd:column);
+}
+.parent{
+    @include dFlex($fd:column);
+}
+.black-line{
+    background-color: black;
+    min-width:10vW;
+    height:1px;
+    flex:1;
+}
+.or-line{
+    @include dFlex();
+    font-family: 'Nunito';
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 24.55px;
+}

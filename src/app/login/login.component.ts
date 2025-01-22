@@ -13,7 +13,7 @@ import { AuthService } from '../auth.service';
   standalone: true,
   imports: [
     RouterLink, DialogLoginComponent, DialogCreateAccountComponent, 
-    DialogSendEmailPwComponent, DialogChooseAvatarComponent, DialogChangePasswordComponent],
+    DialogSendEmailPwComponent, DialogChooseAvatarComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })

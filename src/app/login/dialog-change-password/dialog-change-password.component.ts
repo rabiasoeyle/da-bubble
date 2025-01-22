@@ -3,11 +3,12 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../auth.service';
+import { DialogChooseAvatarComponent } from '../dialog-choose-avatar/dialog-choose-avatar.component';
 
 @Component({
   selector: 'app-dialog-change-password',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, DialogChooseAvatarComponent],
   templateUrl: './dialog-change-password.component.html',
   styleUrl: './dialog-change-password.component.scss'
 })
@@ -25,6 +26,6 @@ export class DialogChangePasswordComponent {
     
   }
   onSubmit(){
-    
+
   }
 }
