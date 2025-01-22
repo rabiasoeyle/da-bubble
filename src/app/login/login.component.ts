@@ -23,7 +23,7 @@ export class LoginComponent{
   createNewAccount:boolean = false;
   forgotPassword:boolean = false;
   chooseAvatar:boolean=false;
-  changePassword:boolean=false;
+  // changePassword:boolean=false;
   userId: string | null = null;
 
   constructor(private authService: AuthService) {
