@@ -1,9 +1,15 @@
 @import '../../styles.scss';
 @import '../../font.scss';
 .start-area{
-    width:100vW;
+    width:99vW;
     min-height:100vH;
     background-color:#ECEEFE ;
+    padding:32px;
+}
+header{
+    height:120px;
+    width:100vW;
+    @include dFlex($jc:space-between)
 }
 .logo{
     // background-color: rgb(177, 54, 195);
@@ -18,8 +24,8 @@
         animation-duration: 4s;
     }
     >.da-title{
-        width:100px;
-        font-size: 20px;
+        font-size: 25px;
+        font-family: "Nunito";
         color:rgb(6, 6, 6);
     }
 }
@@ -31,6 +37,22 @@
 @keyframes startLogoSvg {
     0%   {transform: scale(1); top: 0; left: 0; position: relative; width: 400px; height: auto;}
     100% {transform: scale(1); top: 0; left: 0; position: relative; width: 40px; height: auto; }
+}
+.new-account-link{
+    // position: absolute;
+    // right:25px;
+    >p{
+        font-family: "Nunito";
+        font-size: 18px;
+    }
+}
+.create-btn{
+    color:#797EF3;
+    font-family: "Figtree";
+    font-size:18px;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
 }
 .dialog-section{
     position: relative;
@@ -48,10 +70,16 @@
     background-color: #FFFFFF;
 }
 footer{
-    position: relative;
-    bottom:16px;
+    position: absolute;
+    bottom:120px;
     left: 0;
     right:0;
     height:30px;
+    @include dFlex($jc:space-around);
+    >a{
+        font-family: "Figtree";
+        color:#797EF3;
+        text-decoration: none;
+    }
 
 }

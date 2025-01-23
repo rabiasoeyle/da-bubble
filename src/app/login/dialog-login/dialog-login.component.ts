@@ -51,5 +51,8 @@ export class DialogLoginComponent {
   goToForgotPassword(){
     this.switchToForgotPassword.emit(); // Ereignis auslösen
   }
+  visitorLogin(){
+    
+  }
 
 }

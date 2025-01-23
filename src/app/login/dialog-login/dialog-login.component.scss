@@ -34,6 +34,7 @@ input{
     font-size:18px;
     font-weight:400;
     color:#2796BF;
+    border:none;
     line-height: 21.6px;
     border-radius: 100px;
     background-color: #ECEEFE;
@@ -60,4 +61,46 @@ form{
     font-size: 18px;
     font-weight: 400;
     line-height: 24.55px;
+}
+.sign-in-btn{
+    width: 137px;
+    height: 49px;
+    padding: 12px 25px 12px 25px;
+    gap: 10px;
+    border-radius: 25px;
+    color:white;
+    background-color: #444DF2;
+}
+.visit-btn{
+    width: 137px;
+    height: 49px;
+    padding: 12px 25px 12px 25px;
+    gap: 10px;
+    border-radius: 25px;
+    border-color: #444DF2;
+    color:#444DF2;
+    background-color: #FFFFFF;
+}
+.login-btns{
+    @include dFlex();
+}
+.mail-input{
+    padding-left: 25px;
+    background: url(/assets/img/mail.png) no-repeat left;
+    background-size: 20px
+}
+.password-input{
+    padding-left: 25px;
+    background: url(/assets/img/lock.png) no-repeat left;
+    background-size: 20px
+}
+input{
+    // width: 500px;
+    // height: 60px;
+    padding: 18px 32px 18px 32px;
+    gap: 10px;
+    border-radius: 100px;
+    border: 0px 0px 1px 0px;
+    background-color: #ECEEFE;
+    color:grey;
 }
