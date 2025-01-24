@@ -1,11 +1,16 @@
 <!-- This dialog should open, when the user selects that they dont remember the password -->
 <div>
-    <button (click)="goBackToLogin()">Zurück</button>
-    <h3>Passwort zurücksetzen</h3>
-    <p>Bitte geben Sie Ihre Email-Adresse ein</p>
+    <button class="arrow-btn" (click)="goBackToLogin()">
+        <img src="/assets/img/arrow_back.png" alt="arrow">
+    </button>
+    <h2>Passwort zurücksetzen</h2>
+    <h4>Bitte geben Sie Ihre Email-Adresse ein</h4>
     <form [formGroup] ="form" (ngSubmit)="onSubmit()">
-        <input formControlName="email" type="email" placeholder="E-Mail">
-        <p>Wir senden Ihnen eine E-Mail über die Sie Ihr Passwort ändern können</p>
-        <button type="submit">Reset Password</button>
+        <div class="input-area">
+            <img src="/assets/img/mail.png" alt="">
+            <input formControlName="email" type="email" placeholder="E-Mail">
+        </div>
+        <h4 class="grey-font">Wir senden Ihnen eine E-Mail über die Sie Ihr Passwort ändern können</h4>
+        <button class="white-btn" type="submit" disabled>E-Mail senden</button>
     </form>
 </div>

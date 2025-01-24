@@ -19,9 +19,9 @@ import { AuthService } from '../auth.service';
 })
 export class LoginComponent{
   start:boolean=false;
-  startLogin:boolean=true;
+  startLogin:boolean=false;
   createNewAccount:boolean = false;
-  forgotPassword:boolean = false;
+  forgotPassword:boolean = true;
   chooseAvatar:boolean=false;
   // changePassword:boolean=false;
   userId: string | null = null;
@@ -35,12 +35,10 @@ export class LoginComponent{
     this.startLogin=false;
     this.forgotPassword= true;
   }
-
   goBackToLoginAfterPasswordChanged(){
     this.startLogin=true;
     this.forgotPassword= false;
   }
-
   goToCreateAccount(){
     this.startLogin=false;
     this.createNewAccount=true;
@@ -48,5 +46,9 @@ export class LoginComponent{
   handleAccountCreated() {
     this.createNewAccount = false;
     this.chooseAvatar = true; // Wechsel zu Avatar-Komponente
+  }
+  fromCreateBackToLogin(){
+    this.createNewAccount = false;
+    this.startLogin=true;
   }
 }

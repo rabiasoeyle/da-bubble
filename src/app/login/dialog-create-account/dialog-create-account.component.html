@@ -1,22 +1,42 @@
 <!-- This component should open, when a new Account should be created -->
 <div>
-    <img src="" alt="arrow" (click)="goBackToLogin()">
+    <button class="arrow-btn" (click)="goBackToLogin()">
+        <img src="/assets/img/arrow_back.png" alt="arrow">
+    </button>
     <h2>Konto erstellen</h2>
 </div>
 
-<p>Mit deinem Namen und deiner E-Mail Adresse hast du dein neues DA-Bubble Konto.</p>
-@if(errorMessage){
-    
-    <div>{{errorMessage}}</div>
-}
+<h4>Mit deinem Namen und deiner E-Mail Adresse hast du dein neues DA-Bubble Konto.</h4>
+
 <form [formGroup] ="form" (ngSubmit)="onSubmit()">
-    <input formControlName="name" type="text" placeholder="Name und Nachname">
-    <input formControlName="email" type="email" placeholder="E-Mail">
-    <input formControlName="password" type="password" placeholder="Passwort">
-    <div>
-        <input type="checkbox">
-        <p>Ich stimme der <a routerLink="">Datenschutzerklärung </a>zu</p>
+    @if(errorMessage){
+        <label>{{errorMessage}}</label>
+    }
+    <div class="input-area">
+        <img src="/assets/img/person.png" alt="name">
+        <input formControlName="name" type="text" placeholder="Name und Nachname">
     </div>
-    <button type="submit">Weiter</button>
+    @if(errorMessage){
+        <label>{{errorMessage}}</label>
+    }
+    <div class="input-area">
+        <img src="/assets/img/mail.png" alt="">
+        <input formControlName="email" type="email" placeholder="E-Mail">
+    </div>
+    @if(errorMessage){
+        <label>{{errorMessage}}</label>
+    }
+    <div class="input-area">
+        <img src="/assets/img/lock.png" alt="">
+        <input formControlName="password" type="password" placeholder="Passwort">
+    </div>
+    
+    
+    
+    <div class="box-datasafety">
+        <input type="checkbox">
+        <p>Ich stimme der <a routerLink="datasafety">Datenschutzerklärung </a>zu</p>
+    </div>
+    <button class="blue-btn" type="submit">Weiter</button>
 
 </form>

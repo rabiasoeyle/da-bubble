@@ -1,12 +1,19 @@
 <!-- This component should open when a new account is in the creatingmode -->
-<button (click)="goTo('')">Zurück</button>
-<h3>Wähle einen Avatar!</h3>
-<img src="{{dummyProfile}}" alt="">
-<h4>Nutzername</h4>
-<p>Aus der Liste wählen!</p>
-<div class="avatarImages">
+
+<button class="arrow-btn" (click)="goTo('')">
+    <img src="/assets/img/arrow_back.png" alt="arrow">
+</button>
+<h2>Wähle einen Avatar!</h2>
+<div class="dummy-profile">
+    <img  src="{{dummyProfile}}" alt="">
+</div>
+<h3>{{userData ? userData.name : "Nutzername"}}</h3>
+<h4>Aus der Liste wählen!</h4>
+<div class="avatar-images">
 @for(item of profiles; track item){
-    <img class="avatarImage" (click)="saveNewAvatar(item)" src="{{item}}" alt="picture">
+    <img class="avatar-image" (click)="saveNewAvatar(item)" src="{{item}}" alt="picture">
 }
 </div>
-<button (click)="goTo('main')">Weiter</button>
+<div class="btn-right">
+    <button class="blue-btn" (click)="goTo('main')">Weiter</button>
+</div>

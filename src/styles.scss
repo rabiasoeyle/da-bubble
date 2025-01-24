@@ -2,10 +2,91 @@
 @import './font.scss';
 *body{
     margin:0;
+    background-color:#ECEEFE ;
 }
 @mixin dFlex($d:flex, $jc:center, $ai:center, $fd:row){
     display: $d;
     justify-content: $jc;
     align-items: $ai;
     flex-direction: $fd;
+}
+h2{
+    font-family: 'Nunito';
+    font-size:46px;
+    font-weight: 700;
+    color: #444DF2;
+    text-align: center;
+}
+h3{
+    font-family: 'Nunito';
+    font-size:32px;
+    font-weight: 700;
+    color: black;
+    text-align: center;
+}
+h4{
+    font-family: 'Nunito';
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 24px;
+    // text-align: center;
+}
+input{
+    font-family: 'Nunito';
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 21.6px;
+    gap: 10px;
+    border-radius: 100px;
+    border: none;
+    color:grey;
+    background-color:transparent;
+    padding-left: 25px;
+    >:active{
+        border: none;
+    }
+}
+.input-area{//input with img in a div
+    background-color: #ECEEFE;
+    @include dFlex($jc:flex-start);
+    padding:8px 16px;
+    border-radius: 100px;
+    border: 0px 0px 1px 0px;
+    width:80%;
+}
+.error-label{
+    color:red;
+    font-family: "Nunito";
+    font-size: 18px;
+    font-weight: 500;
+}
+form{
+    @include dFlex($fd:column);
+    gap:16px;
+}
+.blue-btn{
+    width: 137px;
+    height: 49px;
+    padding: 12px 25px 12px 25px;
+    gap: 10px;
+    border-radius: 25px;
+    color:white;
+    background-color: #444DF2;
+    cursor: pointer;
+}
+.white-btn{
+    width: 137px;
+    height: 49px;
+    padding: 12px 25px 12px 25px;
+    gap: 10px;
+    border-radius: 25px;
+    border-color: #444DF2;
+    color:#444DF2;
+    background-color: #FFFFFF;
+    cursor: pointer;
+    text-align: center;
+}
+.arrow-btn{
+    background-color: transparent;
+    border: none;
 }

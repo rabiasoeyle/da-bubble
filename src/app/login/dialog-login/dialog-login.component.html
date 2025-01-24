@@ -3,13 +3,23 @@
     <h2>Anmeldung</h2>
     <h4>Wir empfehlen dir die E-Mail Adresse zu benutzen, die du bei der Arbeit verwendest</h4>
 
-    @if(errorMessage){
-        <div>{{errorMessage}}</div>
-    }
-    <form [formGroup] ="form" (ngSubmit)="onSubmit()">
-        <input class="mail-input " formControlName="email" type="email" placeholder="E-Mail">
-        <input class="password-input" formControlName="password" type="password" placeholder="Passwort">
     
+    <form [formGroup] ="form" (ngSubmit)="onSubmit()">
+        @if(errorMessage == "Bitte geben Sie eine E-Mail ein"){
+            <label class="error-label">{{errorMessage}}</label>
+        }
+        <div class="input-area">
+            <img src="/assets/img/mail.png" alt="">
+            <input class="mail-input " formControlName="email" type="email" placeholder="E-Mail">
+        </div>
+        
+        @if(errorMessage == "Bitte geben Sie ein Passwort ein" || "Leider ist das Passwort falsch"){
+            <label class="error-label">{{errorMessage}}</label>
+        }
+        <div class="input-area">
+            <img src="/assets/img/lock.png" alt="">
+            <input class="password-input" formControlName="password" type="password" placeholder="Passwort">
+        </div>
         <button class="forgot-password-btn"  (click)="goToForgotPassword()">Passwort vergessen?</button>
 
         <div class="or-line">
@@ -23,8 +33,8 @@
             Anmelden mit Google
         </button>
         <div class="login-btns">
-            <button class="sign-in-btn" type="submit">Anmelden</button>
-            <button class="visit-btn" type="button" onclick="visitorLogin()">Gäste Login</button>
+            <button class="blue-btn" type="submit">Anmelden</button>
+            <button class="white-btn" type="button" (click)="visitorLogin()">Gäste Login</button>
         </div>
         
     </form>

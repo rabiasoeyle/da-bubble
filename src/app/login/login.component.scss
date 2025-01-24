@@ -1,14 +1,13 @@
 @import '../../styles.scss';
 @import '../../font.scss';
 .start-area{
-    width:99vW;
-    min-height:100vH;
-    background-color:#ECEEFE ;
-    padding:32px;
+    height:100vH;
+    // background-color:#ECEEFE ;
+    padding:0px 32px 0px 32px;
 }
 header{
     height:120px;
-    width:100vW;
+    width:100%;
     @include dFlex($jc:space-between)
 }
 .logo{
@@ -57,23 +56,26 @@ header{
 .dialog-section{
     position: relative;
     min-height: 50vH;
-    width:100vW;
+    width:100%;
     // @include dFlex($ai:flex-start);
 }
 .dialog-area{
     width: 40%;
     height: 100%;
-    position: absolute;
+    position: relative;
     top: 0px;
     left: 30%;
     border-radius: 30px;
     background-color: #FFFFFF;
+    padding:32px 16px;
 }
 footer{
-    position: absolute;
+    position: relative;
     bottom:120px;
+    top:24px;
     left: 0;
     right:0;
+    padding:24px;
     height:30px;
     @include dFlex($jc:space-around);
     >a{

@@ -52,7 +52,28 @@ export class DialogLoginComponent {
     this.switchToForgotPassword.emit(); // Ereignis auslösen
   }
   visitorLogin(){
-    
-  }
+    this.authService.login("rabia1234@gmx.de", "Test1234")
+    .subscribe({
+      next:async ()=>{
+        this.router.navigateByUrl('main');
+      },
+      error:(err)=>{
+        this.errorMessage = err.code
+        if(this.errorMessage =="auth/invalid-email"){
+          this.errorMessage = "Bitte geben Sie eine E-Mail ein"
+        }
+        if(this.errorMessage =="auth/missing-password"){
+          this.errorMessage = "Bitte geben Sie ein Passwort ein"
+        }
+        if(this.errorMessage =="auth/invalid-credential"){
+          this.errorMessage = "Leider ist das Passwort falsch"
+        }else{
+          this.errorMessage="unbekannter Fehler"
+        }
+
+        console.error('Could not find User');
+      }
+  })
+}
 
 }

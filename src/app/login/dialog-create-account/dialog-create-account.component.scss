@@ -1,0 +1,13 @@
+@import "../../../font.scss";
+@import '../../../styles.scss';
+.box-datasafety{
+    @include dFlex($jc:flex-start);
+    font-family: "Nunito";
+    width:84%;
+    >p{
+        >a{
+            color:blue;
+            cursor: pointer;
+        }
+    }
+}
