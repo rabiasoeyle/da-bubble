@@ -42,6 +42,7 @@ input{
     color:grey;
     background-color:transparent;
     padding-left: 25px;
+    flex:1;
     >:active{
         border: none;
     }
@@ -89,4 +90,28 @@ form{
 .arrow-btn{
     background-color: transparent;
     border: none;
+}
+.gray-btn{
+    font-family: "Nunito";
+    font-weight: 700;
+    width: 137px;
+    height: 49px;
+    padding: 6px 25px 6px 25px;
+    gap: 10px;
+    border-radius: 25px;
+    text-align: center;
+    border-color: #444DF2;
+    color:#444DF2;
+    background-color: #ECEEFE;
+    cursor: pointer;
+}
+.gray-btn:hover{
+    background-color: #444DF2;
+    color:white;
+}
+.gray-btn:disabled{
+        background-color: #686868;
+        cursor: not-allowed;
+        border-color: #686868;
+        color: white;
 }

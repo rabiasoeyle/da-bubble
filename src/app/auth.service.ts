@@ -6,6 +6,7 @@ import { addDoc, collection, doc, DocumentData, DocumentReference, Firestore, ge
 import { BehaviorSubject, from, merge, Observable } from 'rxjs';
 import { getAuth, isSignInWithEmailLink, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, sendSignInLinkToEmail, signInWithEmailLink, User, UserCredential } from "firebase/auth";
 import {GoogleAuthProvider, signInWithPopup } from "@angular/fire/auth";
+import { AngularFireAuth } from '@angular/fire/compat/auth';
 export interface UserData {
     uid: string;
     name: string;
@@ -24,6 +25,7 @@ export class AuthService {
   firebase = inject(FirebaseApp);
   firebaseAuth = inject(Auth);
   firebaseDatabase = inject(Firestore);
+  angularFireAuth = inject(AngularFireAuth)
   user = {};
   userData:any;
   currentUid: string | null = null;
@@ -62,6 +64,13 @@ export class AuthService {
     //     .catch((error) => {
     //     });
     // }
+  }
+  sendPasswordResetEmail(email: string): Promise<void> {
+    const actionCodeSettings = {
+      url: 'http://localhost:4200/change-password', // Link zur Passwortänderungsseite
+      handleCodeInApp: true, // Wichtig für die Authentifizierung
+    };
+    return this.angularFireAuth.sendPasswordResetEmail(email, actionCodeSettings);
   }
 
   register(email: string, name: string, password: string): Observable<void> {

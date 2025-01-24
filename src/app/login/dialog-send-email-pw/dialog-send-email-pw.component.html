@@ -10,7 +10,7 @@
             <img src="/assets/img/mail.png" alt="">
             <input formControlName="email" type="email" placeholder="E-Mail">
         </div>
-        <h4 class="grey-font">Wir senden Ihnen eine E-Mail über die Sie Ihr Passwort ändern können</h4>
-        <button class="white-btn" type="submit" disabled>E-Mail senden</button>
+        <h4 class="gray-font">Wir senden Ihnen eine E-Mail über die Sie Ihr Passwort ändern können</h4>
+        <button class="gray-btn" type="submit" [disabled]="!form.valid">E-Mail senden</button>
     </form>
 </div>

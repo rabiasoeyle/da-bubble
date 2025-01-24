@@ -21,6 +21,9 @@ export class DialogSendEmailPwComponent {
       email:['', Validators.required]
     })
     @Output() switchBackToLogin = new EventEmitter<void>(); // EventEmitter erstellen
+    constructor(){
+      
+    }
   onSubmit(){
     const rawForm = this.form.getRawValue();
     this.authService.forgotPassword(rawForm.email);
