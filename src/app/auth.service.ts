@@ -25,7 +25,7 @@ export class AuthService {
   firebase = inject(FirebaseApp);
   firebaseAuth = inject(Auth);
   firebaseDatabase = inject(Firestore);
-  angularFireAuth = inject(AngularFireAuth)
+  // angularFireAuth = inject(AngularFireAuth);
   user = {};
   userData:any;
   currentUid: string | null = null;
@@ -65,14 +65,7 @@ export class AuthService {
     //     });
     // }
   }
-  sendPasswordResetEmail(email: string): Promise<void> {
-    const actionCodeSettings = {
-      url: 'http://localhost:4200/change-password', // Link zur Passwortänderungsseite
-      handleCodeInApp: true, // Wichtig für die Authentifizierung
-    };
-    return this.angularFireAuth.sendPasswordResetEmail(email, actionCodeSettings);
-  }
-
+ 
   register(email: string, name: string, password: string): Observable<void> {
    
     const createAccount = () => {
@@ -166,12 +159,35 @@ export class AuthService {
       }
     }
 
-  forgotPassword(email:string){
-    sendPasswordResetEmail(this.firebaseAuth, email)
-    .then(()=>{
-      alert("Your Password reset link was send")
-    })
-  }
+  // forgotPassword(email:string){
+  //   sendPasswordResetEmail(this.firebaseAuth, email, this.actionCodeSettings)
+  //   .then(()=>{
+  //     alert("Your Password reset link was send")
+  //   })
+  // }
+  
+  // private afAuth = inject(AngularFireAuth); 
+
+  // // Passwort-Zurücksetzungs-E-Mail senden
+  // sendPasswordResetEmail(email: string): Promise<void> {
+  //   const actionCodeSettings = {
+  //     url: 'http://localhost:4200/change-password', // URL zur Passwortänderungsseite
+  //     handleCodeInApp: true, // Erforderlich für Authentifizierung via Link
+  //   };
+
+  //   return this.afAuth.sendPasswordResetEmail(email, actionCodeSettings);
+  // }
+
+  // // Passwort-Zurücksetzungs-Link validieren
+  // verifyPasswordResetCode(oobCode: string): Promise<string> {
+  //   return this.afAuth.verifyPasswordResetCode(oobCode);
+  // }
+
+  // // Passwort ändern
+  // confirmPasswordReset(oobCode: string, newPassword: string): Promise<void> {
+  //   return this.afAuth.confirmPasswordReset(oobCode, newPassword);
+  // }
+
   }
 
   // Aktuellen Benutzer abrufen
