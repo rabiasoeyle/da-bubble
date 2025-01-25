@@ -74,6 +74,14 @@ form{
     color:white;
     background-color: #444DF2;
     cursor: pointer;
+    >:hover{
+        scale:1.1;
+    }
+}
+.blue-btn:hover{
+    transition: 500ms;
+    scale: 1.1;
+    background-color: #0e1269;
 }
 .white-btn{
     width: 137px;
@@ -87,11 +95,20 @@ form{
     cursor: pointer;
     text-align: center;
 }
+.white-btn:hover{
+    transition: 500ms;
+    scale: 1.1;
+    background-color: #ECEEFE;
+}
 .arrow-btn{
     background-color: transparent;
     border: none;
 }
+.arrow-btn:hover{
+    scale:1.1;
+}
 .gray-btn{
+    transition: 500ms;
     font-family: "Nunito";
     font-weight: 700;
     width: 137px;
@@ -106,6 +123,7 @@ form{
     cursor: pointer;
 }
 .gray-btn:hover{
+    transition: 500ms;
     background-color: #444DF2;
     color:white;
 }

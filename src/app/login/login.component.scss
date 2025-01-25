@@ -46,12 +46,17 @@ header{
     }
 }
 .create-btn{
+    transition: 500ms;
     color:#797EF3;
     font-family: "Figtree";
     font-size:18px;
     border: none;
     background-color: transparent;
     cursor: pointer;
+}
+.create-btn:hover{
+    scale:1.1;
+    color:#444DF2;
 }
 .dialog-section{
     position: relative;
@@ -78,10 +83,14 @@ footer{
     padding:24px;
     height:30px;
     @include dFlex($jc:space-around);
-    >a{
-        font-family: "Figtree";
-        color:#797EF3;
-        text-decoration: none;
-    }
-
+}
+.link-ida{
+    font-family: "Figtree";
+    color:#797EF3;
+    text-decoration: none;
+}
+.link-ida:hover{
+    transition: 500ms;
+    color:#444DF2;
+    scale:1.1;
 }
