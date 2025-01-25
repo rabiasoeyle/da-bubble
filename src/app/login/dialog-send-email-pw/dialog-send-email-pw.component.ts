@@ -27,7 +27,7 @@ export class DialogSendEmailPwComponent {
 
   onSubmit(){
     const rawForm = this.form.getRawValue();
-    // this.authService.sendPasswordResetEmail(rawForm.email);
+    this.authService.forgotPassword(rawForm.email);
     //Bei Firebase auth-Vorlagen kann man auch genau entscheiden, welche Email versendet werden soll
     //Dann kann man quasi auch auf den link auf dem eigenen Projekt weiterleiten, wo das passwort zurückgesetzt werden kann
     

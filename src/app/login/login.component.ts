@@ -19,9 +19,9 @@ import { AuthService } from '../auth.service';
 })
 export class LoginComponent{
   start:boolean=false;
-  startLogin:boolean=false;
+  startLogin:boolean=true;
   createNewAccount:boolean = false;
-  forgotPassword:boolean = true;
+  forgotPassword:boolean = false;
   chooseAvatar:boolean=false;
   // changePassword:boolean=false;
   userId: string | null = null;

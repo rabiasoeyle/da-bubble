@@ -10,6 +10,7 @@ export const routes: Routes = [
     {path:'', component: LoginComponent},
     {path:'main', component: MainComponent},
     {path:'changePassword', component: DialogChangePasswordComponent},
+    {path: '__/auth/action', component: DialogChangePasswordComponent },
     {path:'datasafety', component: DsgvoComponent},
     {path:'imprint', component: ImprintComponent}
 ];

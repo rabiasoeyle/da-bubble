@@ -3,6 +3,7 @@
 *body{
     margin:0;
     background-color:#ECEEFE ;
+    max-height: 100vH;
 }
 @mixin dFlex($d:flex, $jc:center, $ai:center, $fd:row){
     display: $d;

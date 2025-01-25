@@ -13,7 +13,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
   templateUrl: './dialog-change-password.component.html',
   styleUrl: './dialog-change-password.component.scss'
 })
-export class DialogChangePasswordComponent{
+export class DialogChangePasswordComponent implements OnInit{
       fb = inject(FormBuilder);
       http = inject(HttpClient);
       router = inject(Router);
@@ -26,14 +26,10 @@ export class DialogChangePasswordComponent{
       oobCode!: string;
       newPassword: string = '';
       isCodeValid: boolean = false;
-      // private route = inject(ActivatedRoute)
-
-
-  
+      private route = inject(ActivatedRoute);
   constructor() {
 
   }
-
   // ngOnInit(): void {
   //   this.authService.userData$.subscribe((data) => {
   //     this.userData = data;
@@ -44,36 +40,35 @@ export class DialogChangePasswordComponent{
   //   });
   // }
   
-  // ngOnInit(): void {
-  //   // Aus der URL den oobCode auslesen
-  //   this.route.queryParams.subscribe((params) => {
-  //     this.oobCode = params['oobCode'];
-  //     if (this.oobCode) {
-  //       // Überprüfen, ob der oobCode gültig ist
-  //       this.authService.verifyPasswordResetCode(this.oobCode).then(
-  //         () => {
-  //           this.isCodeValid = true;
-  //         },
-  //         (error) => {
-  //           this.isCodeValid = false;
-  //           console.error('Ungültiger oder abgelaufener Link:', error);
-  //         }
-  //       );
-  //     }
-  //   });
-  // }
+  ngOnInit(): void {
+    // oobCode aus den URL-Parametern lesen
+    this.route.queryParams.subscribe((params) => {
+      this.oobCode = params['oobCode']; // Query-Parameter auslesen
+      console.log("oobCode:"+this.oobCode)
+      if (this.oobCode) {
+        this.authService.verifyResetCode(this.oobCode).then(
+          () => {
+            this.isCodeValid = true; // Link ist gültig
+          },
+          () => {
+            this.isCodeValid = false; // Link ist ungültig
+          }
+        );
+      }
+    });
+  }
 
   changePassword(): void {
-  //   if (this.newPassword && this.oobCode) {
-  //     this.authService.confirmPasswordReset(this.oobCode, this.newPassword).then(
-  //       () => {
-  //         alert('Passwort erfolgreich geändert!');
-  //       },
-  //       (error) => {
-  //         console.error('Fehler beim Ändern des Passworts:', error);
-  //       }
-  //     );
-  //   }
+    const rawForm = this.form.getRawValue();
+    if (this.oobCode && this.newPassword) {
+      this.authService.resetPassword(this.oobCode, this.newPassword)
+      .then(()=>{
+        alert('Passwort wurde geändert');
+      })
+      .catch((error) => {
+        console.error('Error resetting password:', error);
+      });
+    }
   }
   goBackToLogin(){
     

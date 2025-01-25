@@ -1,5 +1,25 @@
 <div class="header">
-    <p>DA Bubble</p>
-    <button (click)="logout()">logout</button>
-
+    <div class="logo-name">
+        <img class="logo" src="/assets/img/Logo.png" alt="logo">
+        <h3>DA Bubble</h3>
+    </div>
+    
+    <div class="search-fi">
+        <input type="search" placeholder="Devspace durchsuchen">
+        <img src="/assets/img/search.png" alt="search">
+    </div>
+    <div class="user-nim">
+        <h3>{{userData ? userData.name : "xy"}}</h3>
+        <img class="profile" [src]="userData ? userData.fotolink : './assets/img/Profile.png'" alt="profile">
+        <button class="toggle-btn" (click)="toggleMenu()">
+            <img src="/assets/img/key_arrow_down.png" alt="arrow-down">
+        </button>
+    </div>
+    @if(toggleMenuIsOpen){
+        <div class="toggle-mn">
+            <button> Profil </button>
+            <button (click)="logout()">Logout</button>
+        </div>
+    }
+    
 </div>

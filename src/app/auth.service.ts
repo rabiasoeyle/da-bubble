@@ -4,7 +4,7 @@ import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updat
 import { Database, getDatabase, ref, set } from '@angular/fire/database';
 import { addDoc, collection, doc, DocumentData, DocumentReference, Firestore, getDoc, setDoc, updateDoc } from '@angular/fire/firestore';
 import { BehaviorSubject, from, merge, Observable } from 'rxjs';
-import { getAuth, isSignInWithEmailLink, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, sendSignInLinkToEmail, signInWithEmailLink, User, UserCredential } from "firebase/auth";
+import { confirmPasswordReset, getAuth, isSignInWithEmailLink, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, sendSignInLinkToEmail, signInWithEmailLink, User, UserCredential, verifyPasswordResetCode } from "firebase/auth";
 import {GoogleAuthProvider, signInWithPopup } from "@angular/fire/auth";
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 export interface UserData {
@@ -29,41 +29,13 @@ export class AuthService {
   user = {};
   userData:any;
   currentUid: string | null = null;
-  actionCodeSettings = {
-    // URL you want to redirect back to. The domain (www.example.com) for this
-    // URL must be in the authorized domains list in the Firebase Console.
-    // url: 'https://da-bubble-85cd2.firebaseapp.com/finishSignUp',
-    url: 'http://localhost:4200/firebase',
-    // This must be true.
-    handleCodeInApp: true,
-    // iOS: {
-    //   bundleId: 'com.example.ios'
-    // },
-    // android: {
-    //   packageName: 'com.example.android',
-    //   installApp: true,
-    //   minimumVersion: '12'
-    // },
-    // dynamicLinkDomain: 'example.page.link'
-  };
-  
-
   private userDataSubject = new BehaviorSubject<UserData | null>(null); // Initial null
   public userData$ = this.userDataSubject.asObservable(); // Observable für Komponenten
+  
+  
+
+  
   constructor() {
-    // if (isSignInWithEmailLink(this.firebaseAuth, window.location.href)) {
-    //   let email = window.localStorage.getItem('emailForSignIn');
-    //   if (!email) {
-    //     email = window.prompt('Please provide your email for confirmation');
-    //   }
-    //   // signInWithEmailLink(this.firebaseAuth, email, window.location.href)
-    //   signInWithEmailLink(this.firebaseAuth,window.location.href)
-    //     .then((result) => {
-    //       window.localStorage.removeItem('emailForSignIn');
-    //     })
-    //     .catch((error) => {
-    //     });
-    // }
   }
  
   register(email: string, name: string, password: string): Observable<void> {
@@ -159,39 +131,37 @@ export class AuthService {
       }
     }
 
-  // forgotPassword(email:string){
-  //   sendPasswordResetEmail(this.firebaseAuth, email, this.actionCodeSettings)
-  //   .then(()=>{
-  //     alert("Your Password reset link was send")
-  //   })
-  // }
-  
-  // private afAuth = inject(AngularFireAuth); 
-
-  // // Passwort-Zurücksetzungs-E-Mail senden
-  // sendPasswordResetEmail(email: string): Promise<void> {
-  //   const actionCodeSettings = {
-  //     url: 'http://localhost:4200/change-password', // URL zur Passwortänderungsseite
-  //     handleCodeInApp: true, // Erforderlich für Authentifizierung via Link
-  //   };
-
-  //   return this.afAuth.sendPasswordResetEmail(email, actionCodeSettings);
-  // }
-
-  // // Passwort-Zurücksetzungs-Link validieren
-  // verifyPasswordResetCode(oobCode: string): Promise<string> {
-  //   return this.afAuth.verifyPasswordResetCode(oobCode);
-  // }
-
-  // // Passwort ändern
-  // confirmPasswordReset(oobCode: string, newPassword: string): Promise<void> {
-  //   return this.afAuth.confirmPasswordReset(oobCode, newPassword);
-  // }
-
+  forgotPassword(email:string){
+    const actionCodeSettings = {
+      url: 'http://localhost:4200/changePassword',
+      handleCodeInApp: true,
+    };
+    sendPasswordResetEmail(this.firebaseAuth, email, actionCodeSettings)
+    .then(()=>{
+      alert("Your Password reset link was send")
+    })
+  }
+  // Passwort-Zurücksetzungslink validieren
+  verifyResetCode(oobCode: string): Promise<void> {
+    return verifyPasswordResetCode(this.firebaseAuth, oobCode)
+      .then(() => Promise.resolve()) // Link ist gültig
+      .catch((error) => {
+        console.error('Invalid or expired reset link:', error);
+        return Promise.reject(error); // Fehler bei der Validierung
+      });
   }
 
-  // Aktuellen Benutzer abrufen
-  // async getCurrentUser() {
-  //   return this.firebaseAuth.currentUser;
-  // }
+  // Neues Passwort setzen
+  resetPassword(oobCode: string, newPassword: string): Promise<void> {
+    return confirmPasswordReset(this.firebaseAuth, oobCode, newPassword)
+      .then(() => {
+        alert('Password successfully changed');
+      })
+      .catch((error) => {
+        console.error('Error resetting password:', error);
+        return Promise.reject(error); // Fehler bei der Änderung
+      });
+  }
+
+  }
 

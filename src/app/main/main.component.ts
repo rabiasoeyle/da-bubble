@@ -14,10 +14,19 @@ import { Router } from '@angular/router';
 export class MainComponent implements OnInit {
   userData: UserData | null = null;
   router = inject(Router);
+  sidenavIsOpen:boolean = true;
+  sidenavButtonText:string="Workspace-Menü schließen";
   constructor(private authService: AuthService) {
 
   }
-
+  changeSidenavStatus(){
+    this.sidenavIsOpen = !this.sidenavIsOpen;
+    if(this.sidenavIsOpen){
+      this.sidenavButtonText="Workspace-Menü schließen"
+    }else{
+      this.sidenavButtonText="Workspace-Menü öffnen"
+    }
+  }
   ngOnInit(): void {
     this.authService.userData$.subscribe((data) => {
       this.userData = data;

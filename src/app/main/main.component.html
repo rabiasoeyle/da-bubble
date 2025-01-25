@@ -1,6 +1,11 @@
+
 <app-header></app-header>
-<app-sidenav></app-sidenav>
-<p>Username: {{userData ? userData.name : "xy"}}</p>
-<p>UserEmail: {{userData ? userData.email : "xy"}}</p>
-<img [src]="userData ? userData.fotolink : './assets/img/Profile.png'" alt="">
+<section class="main-content">
+    
+    @if(sidenavIsOpen){
+        <app-sidenav></app-sidenav>
+    }
+    <button (click)="changeSidenavStatus()">{{sidenavButtonText}}</button>
+    <div></div>
+</section>
 

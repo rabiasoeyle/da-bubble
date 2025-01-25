@@ -5,7 +5,55 @@
     left:0;
     right:0;
     width: 100vW;
-    height: 50px;
-    background-color: purple;
-    @include dFlex();
+    height: 80px;
+    @include dFlex($jc:space-around);
+}
+.profile{
+    width:70px;
+    height:70px;
+    border-radius: 100%;
+}
+.logo{
+    width:70px;
+    height:70px;
+}
+.logo-name{
+    @include dFlex($jc:flex-start);
+}
+.search-fi{
+    background-color: white;
+    color:gray;
+    border-radius: 42px;
+    height: 60px;
+    @include dFlex($jc:space-around);
+    >input{
+        background-color: transparent;
+        border: none;
+    }
+    >img{
+        width:35px;
+        height:35px;
+    }
+}
+.user-nim{
+    @include dFlex($jc:space-around);
+    gap:16px;
+}
+.toggle-btn{
+    background-color: transparent;
+    border:none;
+}
+.toggle-mn{
+    @include dFlex($fd:column);
+    border-radius: 50%;
+    width:100px;
+    height:100px;
+    background-color: white;
+    position: absolute;
+    top:80px;
+    right:24px;
+    >button{
+        background-color: transparent;
+        border:none;
+    }
 }
