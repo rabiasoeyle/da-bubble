@@ -1,7 +1,7 @@
 <div class="parent">
 
     <h2>Anmeldung</h2>
-    <h4>Wir empfehlen dir die E-Mail Adresse zu benutzen, die du bei der Arbeit verwendest</h4>
+    <h4 class="txt-center">Wir empfehlen dir die E-Mail Adresse zu benutzen, die du bei der Arbeit verwendest</h4>
 
     
     <form [formGroup] ="form" (ngSubmit)="onSubmit()">
@@ -29,7 +29,7 @@
         </div>
 
         <button class="google-btn" (click)="loginWithGoogle()">
-            <img src="assets/img/Google.png" alt="google-logo">
+            <img class="google-logo" src="assets/img/Google.png" alt="google-logo">
             Anmelden mit Google
         </button>
         <div class="login-btns">

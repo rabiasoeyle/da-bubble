@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [HeaderComponent, SidenavComponent],
+  imports: [HeaderComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })
@@ -16,9 +16,14 @@ export class MainComponent implements OnInit {
   router = inject(Router);
   sidenavIsOpen:boolean = true;
   sidenavButtonText:string="Workspace-Menü schließen";
+  profiles:object = {"":""};
+  directMessagesOpen:boolean = false;
+  channelsOpen:boolean = false;
+
   constructor(private authService: AuthService) {
 
   }
+
   changeSidenavStatus(){
     this.sidenavIsOpen = !this.sidenavIsOpen;
     if(this.sidenavIsOpen){
@@ -27,6 +32,7 @@ export class MainComponent implements OnInit {
       this.sidenavButtonText="Workspace-Menü öffnen"
     }
   }
+  
   ngOnInit(): void {
     this.authService.userData$.subscribe((data) => {
       this.userData = data;

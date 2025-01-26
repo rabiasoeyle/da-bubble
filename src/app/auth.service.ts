@@ -7,11 +7,12 @@ import { BehaviorSubject, from, merge, Observable } from 'rxjs';
 import { confirmPasswordReset, getAuth, isSignInWithEmailLink, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, sendSignInLinkToEmail, signInWithEmailLink, User, UserCredential, verifyPasswordResetCode } from "firebase/auth";
 import {GoogleAuthProvider, signInWithPopup } from "@angular/fire/auth";
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+
 export interface UserData {
     uid: string;
     name: string;
     email: string;
-    freunde:[]|any;
+    freunde:{}|any;
     gruppe:{}|any;
     chats:{}|any;
     fotolink:string;
@@ -25,28 +26,21 @@ export class AuthService {
   firebase = inject(FirebaseApp);
   firebaseAuth = inject(Auth);
   firebaseDatabase = inject(Firestore);
-  // angularFireAuth = inject(AngularFireAuth);
   user = {};
   userData:any;
   currentUid: string | null = null;
   private userDataSubject = new BehaviorSubject<UserData | null>(null); // Initial null
   public userData$ = this.userDataSubject.asObservable(); // Observable für Komponenten
-  
-  
 
-  
   constructor() {
   }
- 
+
   register(email: string, name: string, password: string): Observable<void> {
-   
     const createAccount = () => {
       return createUserWithEmailAndPassword(this.firebaseAuth, email, password)
       .then(async (response) => {
         const user = response.user; // Holen des aktuellen Benutzers aus der Antwort
-
         if (user) {
-          // Verifikations-E-Mail senden
           await sendEmailVerification(user)
             .then(() => {
               alert("E-Mail-Verifikationslink wurde gesendet!");
@@ -54,15 +48,12 @@ export class AuthService {
             .catch((error) => {
               console.error("Fehler beim Senden der Verifikations-E-Mail:", error);
             });
-
           const uid: string = user.uid; // UID des Benutzers
           return this.addData(uid, email, name); // Benutzerdaten speichern
         } else {
-          throw new Error("Kein Benutzer vorhanden, E-Mail-Verifikation fehlgeschlagen.");
-        }
+          throw new Error("Kein Benutzer vorhanden, E-Mail-Verifikation fehlgeschlagen.");}
       });
-  };
-
+    };
     return from(createAccount());
   }
 
@@ -70,13 +61,13 @@ export class AuthService {
     const userDocRef = doc(this.firebaseDatabase, `users/${uid}`); // Dokument mit UID als Pfad
     await setDoc(userDocRef, {
       uid: uid,
-      name: name,                // Key: name
-      email: email,              // Key: email
-      fotolink: "",              // Key: fotolink
-      freunde: [],               // Key: freunde
-      gruppe: {},                // Key: gruppe
+      name: name,                
+      email: email,              
+      fotolink: "",             
+      freunde: {},               
+      gruppe: {},               
       chats: {}
-    }); // Beispiel-Daten
+    }); 
   }
 
   login(email: string, password: string): Observable<void> {
@@ -88,7 +79,7 @@ export class AuthService {
         return this.getData(uid).then((data) => {
           this.userDataSubject.next(data);
         });
-      }// Rückgabe für den Fall, dass user null ist
+      }
       return Promise.resolve(); // Gibt ein leeres Promise zurück
     });
     return from(loginPromise); // Promise in Observable umwandeln
@@ -96,7 +87,7 @@ export class AuthService {
 
   logout(): void {
     this.firebaseAuth.signOut();
-    this.userDataSubject.next(null); // Setzt die Benutzerdaten zurück
+    this.userDataSubject.next(null);
   }
 
   private async getData(uid: string): Promise<UserData | null> {
@@ -117,9 +108,8 @@ export class AuthService {
   async googleSignin(): Promise<void> {
       try {
         const provider = new GoogleAuthProvider(); // Google-Provider initialisieren
-        const credential = await signInWithPopup(this.firebaseAuth, provider); // Mit Popup anmelden
-        const user = credential.user; // Angemeldeter Benutzer
-    
+        const credential = await signInWithPopup(this.firebaseAuth, provider);
+        const user = credential.user;
         if (user) {
           this.addData(user.uid, user.email, user.displayName);
           return this.getData(user.uid).then((data) => {
@@ -129,7 +119,7 @@ export class AuthService {
       } catch (error) {
         console.error('Fehler bei der Google-Authentifizierung:', error);
       }
-    }
+  }
 
   forgotPassword(email:string){
     const actionCodeSettings = {
@@ -141,6 +131,7 @@ export class AuthService {
       alert("Your Password reset link was send")
     })
   }
+
   // Passwort-Zurücksetzungslink validieren
   verifyResetCode(oobCode: string): Promise<void> {
     return verifyPasswordResetCode(this.firebaseAuth, oobCode)

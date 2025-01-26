@@ -1,4 +1,47 @@
 @import '../../styles.scss';
+.hole-page{
+    height:100vH;
+}
+.change-sidenav-status-btn{
+    writing-mode:vertical-rl;
+    border-radius: 0 42px 42px 0;
+    box-shadow: 1px 1px 2px 1px #00000033;
+    border-color: transparent;
+    background-color: white;
+    padding:8px;
+    font-family: "Nunito";
+    font-weight: 500;
+}
 .main-content{
-    background-color: aqua;
+    @include dFlex();
+    padding:32px;
+    height: 80vH;
+}
+.chat-area{
+    flex:1;
+}
+.sidenav-area{
+    width:30vW;
+    height:100%;
+    background-color: white;
+    border-radius: 42px;
+}
+.sidenav-dev{
+    @include dFlex();
+}
+.sidenav-under-dev{
+    @include dFlex($fd:column);
+    gap:8px;
+}
+.channel-head{
+    @include dFlex();
+}
+.in-chnnl-hd{
+    @include dFlex();
+}
+.add-channel{
+    @include dFlex();
+}
+.direct-mssg-head{
+    @include dFlex();
 }

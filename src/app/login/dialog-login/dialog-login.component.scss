@@ -52,7 +52,14 @@
     font-weight: 400;
     line-height: 24.55px;
 }
-
 .login-btns{
-    @include dFlex();  
+    @include dFlex();
+    gap:16px;  
+}
+.txt-center{
+    text-align: center;
+}
+.google-logo{
+    width:25px;
+    height:25px;
 }
