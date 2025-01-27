@@ -5,11 +5,12 @@
     background-color:#ECEEFE ;
     max-height: 100vH;
 }
-@mixin dFlex($d:flex, $jc:center, $ai:center, $fd:row){
+@mixin dFlex($d:flex, $jc:center, $ai:center, $fd:row,$g:0px){
     display: $d;
     justify-content: $jc;
     align-items: $ai;
     flex-direction: $fd;
+    gap:$g
 }
 h2{
     font-family: 'Nunito';

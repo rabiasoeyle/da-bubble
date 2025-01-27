@@ -19,6 +19,9 @@
 }
 .chat-area{
     flex:1;
+    background-color: white;
+    height:100%;
+    border-radius: 42px;
 }
 .sidenav-area{
     width:30vW;
@@ -26,22 +29,23 @@
     background-color: white;
     border-radius: 42px;
 }
-.sidenav-dev{
-    @include dFlex();
-}
-.sidenav-under-dev{
-    @include dFlex($fd:column);
-    gap:8px;
-}
-.channel-head{
-    @include dFlex();
-}
-.in-chnnl-hd{
+.sidenav-head{
     @include dFlex();
 }
 .add-channel{
     @include dFlex();
 }
-.direct-mssg-head{
-    @include dFlex();
+.text-pctr{
+    @include dFlex($g:16px);
+}
+.img-and-txt-pctr{
+    @include dFlex($g:16px, $jc:flex-start);
+    padding:0px 24px;
+}
+.sidenav-head{
+    @include dFlex($jc:space-between);
+    padding: 0px 24px;
+}
+.devspace-in-ri{
+    @include dFlex($g:16px);
 }

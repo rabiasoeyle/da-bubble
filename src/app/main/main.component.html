@@ -4,57 +4,56 @@
     
     @if(sidenavIsOpen){
         <div class="sidenav-area">
-            <div class="sidenav-dev">
-                <img src="/assets/img/Workspace_logo.png" alt="devspace">
-                <h3>Devspace</h3>
-                <button>
-                    <img src="/assets/img/edit_square.png" alt="create-new-btn">
-                </button>
+            <!-- devspace -->
+            <div class="sidenav-head">
+                <div class="devspace-in-ri">
+                    <img src="/assets/img/Workspace_logo.png" alt="devspace">
+                    <h3>Devspace</h3>
+                </div>
+                <img src="/assets/img/edit_square.png" alt="create-new-btn">
             </div>
-            <div class="sidenav-under-dev">
-                <div class="channel-head">
-                    <button>
-                        <img src="/assets/img/key_arrow_down.png" alt="">
-                    </button>
-                    
-                    <div class="in-chnnl-hd">
+            <!-- channel -->
+            <div class="sidenav-head">
+                <div class="img-and-txt-pctr">
+                    <img src="/assets/img/key_arrow_down.png" alt="">
+                    <div class="text-pctr">
                         <img src="/assets/img/workspaces.png" alt="">
                         <h4>Channels</h4>
                     </div>
-
-                    <button>
-                        <img src="/assets/img/add.png" alt="">
-                    </button>
                 </div>
-                @if(channelsOpen){
-                    <!-- @for(){
-                        <div class="sidenav-dev">
-                            <img src="/assets/img/tag.png" alt="">
-                            <h4>{{channels? channels : "Entwicklerteam"}}</h4>
-                        </div> 
-                    } -->
+                <img src="/assets/img/add.png" alt="">
+            </div>
+            @if(channelsOpen){
+                @for(item of this.userData?? {"gruppe":"pink"}; track item.gruppe){
+                    <div class="text-pctr">
+                        <img src="/assets/img/tag.png" alt="">
+                        <h4>{{item ? item : "Entwicklerteam"}}</h4>
+                    </div> 
                 }
-                <div class="add-channel">
+            }
+                <div class="text-pctr">
                     <img src="/assets/img/add_circle.png" alt="">
                     <h4>Channel hinzufügen</h4>
                 </div>
-                <div class="direct-mssg-head">
-                    <img src="/assets/img/key_arrow_down.png" alt="">
+                <!-- messages -->
+            <div class="img-and-txt-pctr">
+                <img src="/assets/img/key_arrow_down.png" alt="">
+                <div class="text-pctr">
                     <img src="/assets/img/account_circle.png" alt="">
                     <h4>Direktnachrichten</h4>
                 </div>
             </div>
+        
             @if (directMessagesOpen) {
                 <div class="direct-chats">
                 <!-- @for (item of profiles; track $index) {
-                    <div class="sidenav-dev">
+                    <div class="text-pctr">
                         <img src="" alt="profile">
                         <h4></h4>
                     </div>
                 } -->
                 </div>
-            }
-            
+            }  
         </div>
     }
     <button class="change-sidenav-status-btn" (click)="changeSidenavStatus()">

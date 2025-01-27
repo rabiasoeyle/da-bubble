@@ -64,9 +64,23 @@ export class AuthService {
       name: name,                
       email: email,              
       fotolink: "",             
-      freunde: {},               
-      gruppe: {},               
-      chats: {}
+      freunde: [
+        "2uVdcQYRRJUU84FFJmBeFxxVAII3"//Hamza
+      ],               
+      gruppe: {
+        "channelname":"Entwicklerteam"
+      },               
+      chats: {
+        user:{
+          uid:"2uVdcQYRRJUU84FFJmBeFxxVAII3",
+          chat:{
+            message:{
+              uid:"2uVdcQYRRJUU84FFJmBeFxxVAII3",
+              text:"Hey",
+            }
+          }
+          }
+      }
     }); 
   }
 
