@@ -12,12 +12,12 @@ import { Router } from '@angular/router';
   styleUrl: './main.component.scss'
 })
 export class MainComponent implements OnInit {
-  userData!: UserData | null;
+  userData: UserData | null = null;
   router = inject(Router);
   sidenavIsOpen:boolean = true;
   sidenavButtonText:string="Workspace-Menü schließen";
   profiles:object = {"":""};
-  directMessagesOpen:boolean = false;
+  directMessagesOpen:boolean = true;
   channelsOpen:boolean = true;
 
   constructor(private authService: AuthService) {
@@ -38,8 +38,13 @@ export class MainComponent implements OnInit {
       if(this.userData == null){
           this.router.navigateByUrl('');
       }
-      console.log('Aktuelle Benutzerdaten:', this.userData);
-      this.channelsOpen=true;
+      console.log('Aktuelle Benutzerdaten im main:', this.userData);
     });
+  }
+  changeChannelAreaStatus(){
+    this.channelsOpen = !this.channelsOpen;
+  }
+  changeMessageAreaStatus(){
+    this.directMessagesOpen = !this.directMessagesOpen;
   }
 }

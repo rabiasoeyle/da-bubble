@@ -15,7 +15,7 @@
             <!-- channel -->
             <div class="sidenav-head">
                 <div class="img-and-txt-pctr">
-                    <img src="/assets/img/key_arrow_down.png" alt="">
+                    <img (click)="changeChannelAreaStatus()" src="/assets/img/key_arrow_down.png" alt="">
                     <div class="text-pctr">
                         <img src="/assets/img/workspaces.png" alt="">
                         <h4>Channels</h4>
@@ -24,11 +24,12 @@
                 <img src="/assets/img/add.png" alt="">
             </div>
             @if(channelsOpen){
-                @for(item of this.userData?? {"gruppe":"pink"}; track item.gruppe){
+                @for(item of this.userData ? this.userData.channels : ["lila","pink"]; track item){
                     <div class="text-pctr">
                         <img src="/assets/img/tag.png" alt="">
-                        <h4>{{item ? item : "Entwicklerteam"}}</h4>
-                    </div> 
+                        <h4>{{userData ? item : "Lisabell"}}</h4>
+                       
+                    </div>
                 }
             }
                 <div class="text-pctr">
@@ -37,21 +38,22 @@
                 </div>
                 <!-- messages -->
             <div class="img-and-txt-pctr">
-                <img src="/assets/img/key_arrow_down.png" alt="">
+                <img (click)="changeMessageAreaStatus()" src="/assets/img/key_arrow_down.png" alt="">
                 <div class="text-pctr">
                     <img src="/assets/img/account_circle.png" alt="">
-                    <h4>Direktnachrichten</h4>
+                    <h4>Direktnachrichten</h4> 
+                    
                 </div>
             </div>
         
             @if (directMessagesOpen) {
                 <div class="direct-chats">
-                <!-- @for (item of profiles; track $index) {
+                @for (item of this.userData ? this.userData.chats : ["lila","pink"]; track item) {
                     <div class="text-pctr">
-                        <img src="" alt="profile">
-                        <h4></h4>
+                        <img [src]="userData ? item : '/assets/img/Profile.png'" alt="profile">
+                        <h4>{{userData ? item.uid : "Lisabell"}}</h4>
                     </div>
-                } -->
+                }
                 </div>
             }  
         </div>

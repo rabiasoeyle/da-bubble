@@ -12,9 +12,19 @@ export interface UserData {
     uid: string;
     name: string;
     email: string;
-    freunde:{}|any;
-    gruppe:{}|any;
-    chats:{}|any;
+    friends:[];
+    channels:[];
+    chats:[
+        {
+          uid:string;
+          chat:{
+            message:{
+              uid:string,
+              text:string,
+            }
+          }
+        }
+      ]|any;
     fotolink:string;
 }
 
@@ -64,14 +74,15 @@ export class AuthService {
       name: name,                
       email: email,              
       fotolink: "",             
-      freunde: [
+      friends: [
         "2uVdcQYRRJUU84FFJmBeFxxVAII3"//Hamza
       ],               
-      gruppe: {
-        "channelname":"Entwicklerteam"
-      },               
-      chats: {
-        user:{
+      channels: [
+        "Entwicklerteam",
+        "Lernteam"
+      ],               
+      chats: [
+        {
           uid:"2uVdcQYRRJUU84FFJmBeFxxVAII3",
           chat:{
             message:{
@@ -79,8 +90,8 @@ export class AuthService {
               text:"Hey",
             }
           }
-          }
-      }
+        }
+      ]
     }); 
   }
 
