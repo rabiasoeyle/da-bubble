@@ -21,19 +21,18 @@
                         <h4>Channels</h4>
                     </div>
                 </div>
-                <img src="/assets/img/add.png" alt="">
+                <img (click)="addChannelDialog()" src="/assets/img/add.png" alt="create-button">
             </div>
             @if(channelsOpen){
                 @for(item of this.userData ? this.userData.channels : ["lila","pink"]; track item){
                     <div class="text-pctr">
                         <img src="/assets/img/tag.png" alt="">
                         <h4>{{userData ? item : "Lisabell"}}</h4>
-                       
                     </div>
                 }
             }
-                <div class="text-pctr">
-                    <img src="/assets/img/add_circle.png" alt="">
+                <div (click)="addChannelDialog()" class="text-pctr">
+                    <img  src="/assets/img/add_circle.png" alt="">
                     <h4>Channel hinzufügen</h4>
                 </div>
                 <!-- messages -->
@@ -42,16 +41,15 @@
                 <div class="text-pctr">
                     <img src="/assets/img/account_circle.png" alt="">
                     <h4>Direktnachrichten</h4> 
-                    
                 </div>
             </div>
         
             @if (directMessagesOpen) {
                 <div class="direct-chats">
-                @for (item of this.userData ? this.userData.chats : ["lila","pink"]; track item) {
+                @for (item of this.userData ? this.userData.name : ["lila","pink"]; track item) {
                     <div class="text-pctr">
-                        <img [src]="userData ? item : '/assets/img/Profile.png'" alt="profile">
-                        <h4>{{userData ? item.uid : "Lisabell"}}</h4>
+                        <img [src]="userData ? item : '/assets/img/profile.png'" alt="profile">
+                        <h4>{{userData ? item : "Lisabell"}}</h4>
                     </div>
                 }
                 </div>
@@ -66,6 +64,28 @@
         <div></div>
         <div></div>
     </div>
+    @if(addChannelOpen){
+        <div class="add-chn-dia-parent">
+        <div class="add-channel-dialog">
+            <h3>Channel erstellen</h3>
+            <img src="" alt="x" (click)="addChannelDialog()">
+            <h4>Hier kannst du einen neuen Channel erstellen</h4>
+            <form [formGroup] ="addChannelForm" (ngSubmit)="onAddChannel()">
+            <h3>Channelname</h3>
+            <div>
+                <img src="" alt="#">
+                <input formControlName="channelname" type="text" placeholder="z.B. Kooperationsprojekte"> 
+            </div>
+            <div>
+                <h3>Beschreibung</h3><h5>(optinal)</h5>
+            </div>
+            <input formControlName="description" type="text" placeholder="Dein Text hier">
+            <button type="submit">Absenden</button>
+            </form>
+        </div>
+    </div>
+    }
+    
 </section>
 </div>
 

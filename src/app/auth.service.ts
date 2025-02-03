@@ -2,7 +2,7 @@ import { inject, Injectable, Input } from '@angular/core';
 import { FirebaseApp, getApps } from '@angular/fire/app';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from '@angular/fire/auth';
 import { Database, getDatabase, ref, set } from '@angular/fire/database';
-import { addDoc, collection, doc, DocumentData, DocumentReference, Firestore, getDoc, setDoc, updateDoc } from '@angular/fire/firestore';
+import { addDoc, arrayUnion, collection, doc, DocumentData, DocumentReference, Firestore, getDoc, setDoc, updateDoc } from '@angular/fire/firestore';
 import { BehaviorSubject, from, merge, Observable } from 'rxjs';
 import { confirmPasswordReset, getAuth, isSignInWithEmailLink, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, sendSignInLinkToEmail, signInWithEmailLink, User, UserCredential, verifyPasswordResetCode } from "firebase/auth";
 import {GoogleAuthProvider, signInWithPopup } from "@angular/fire/auth";
@@ -12,20 +12,10 @@ export interface UserData {
     uid: string;
     name: string;
     email: string;
-    friends:[];
-    channels:[];
-    chats:[
-        {
-          uid:string;
-          chat:{
-            message:{
-              uid:string,
-              text:string,
-            }
-          }
-        }
-      ]|any;
+    // friends:[];
     fotolink:string;
+    channels:[];
+    chats:[];
 }
 
 @Injectable({
@@ -73,25 +63,10 @@ export class AuthService {
       uid: uid,
       name: name,                
       email: email,              
-      fotolink: "",             
-      friends: [
-        "2uVdcQYRRJUU84FFJmBeFxxVAII3"//Hamza
-      ],               
-      channels: [
-        "Entwicklerteam",
-        "Lernteam"
-      ],               
-      chats: [
-        {
-          uid:"2uVdcQYRRJUU84FFJmBeFxxVAII3",
-          chat:{
-            message:{
-              uid:"2uVdcQYRRJUU84FFJmBeFxxVAII3",
-              text:"Hey",
-            }
-          }
-        }
-      ]
+      fotolink: "", 
+      channels:[],
+      chats:[],            
+      // friends: ["2uVdcQYRRJUU84FFJmBeFxxVAII3"],               
     }); 
   }
 
@@ -101,6 +76,7 @@ export class AuthService {
       const user = userCredential.user;
       if (user) {
         const uid = user.uid;
+        localStorage.setItem("userId", uid)
         return this.getData(uid).then((data) => {
           this.userDataSubject.next(data);
         });
@@ -111,6 +87,7 @@ export class AuthService {
   }
 
   logout(): void {
+    localStorage.removeItem("userId");
     this.firebaseAuth.signOut();
     this.userDataSubject.next(null);
   }
@@ -179,5 +156,28 @@ export class AuthService {
       });
   }
 
+  async createChannel(channelname:string, description:string){
+    const channelDocRef = doc(this.firebaseDatabase, `channels/${channelname}`);
+    await setDoc(channelDocRef, {
+      description:description,
+      messages:{},
+      createdAt: new Date(),
+    }); 
+    this.addChannelToUser(channelname);
+    }
+
+  async addChannelToUser(channelname:string){
+    const userId = localStorage.getItem("userId");
+    const userDocRef = doc(this.firebaseDatabase, `users/${userId}`);
+    const docSnap = await getDoc(userDocRef);
+    if (!docSnap.exists()) {
+      await setDoc(userDocRef, { channels: [channelname] }); // Erstes Array erstellen
+    } else {
+      await updateDoc(userDocRef, {
+        channels: arrayUnion(channelname) // Neuen Channel zum Array hinzufügen
+      });
+    }
   }
+    
+}
 

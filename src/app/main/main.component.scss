@@ -49,3 +49,18 @@
 .devspace-in-ri{
     @include dFlex($g:16px);
 }
+.add-chn-dia-parent{
+    position: absolute;
+    right:0;
+    left:0;
+    top:0;
+    bottom:0;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+.add-channel-dialog{
+    background-color: white;
+    height:80%;
+    border-radius: 42px;
+    margin:5% 10%;
+    border-color: black;
+}

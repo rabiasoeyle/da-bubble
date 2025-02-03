@@ -3,11 +3,12 @@ import { AuthService, UserData } from '../auth.service';
 import { HeaderComponent } from './header/header.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [HeaderComponent],
+  imports: [HeaderComponent,ReactiveFormsModule],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })
@@ -19,6 +20,13 @@ export class MainComponent implements OnInit {
   profiles:object = {"":""};
   directMessagesOpen:boolean = true;
   channelsOpen:boolean = true;
+  addChannelOpen:boolean = false;
+  fb = inject(FormBuilder);
+  addChannelForm = this.fb.nonNullable.group({
+      channelname:['', Validators.required],
+      description:['', Validators.required],
+      
+    })
 
   constructor(private authService: AuthService) {
   }
@@ -46,5 +54,15 @@ export class MainComponent implements OnInit {
   }
   changeMessageAreaStatus(){
     this.directMessagesOpen = !this.directMessagesOpen;
+  }
+  createChannel(){
+
+  }
+  addChannelDialog(){
+    this.addChannelOpen = !this.addChannelOpen;
+  }
+  onAddChannel(){
+    const rawForm = this.addChannelForm.getRawValue();
+    this.authService.createChannel(rawForm.channelname, rawForm.description);
   }
 }
