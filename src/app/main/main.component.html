@@ -25,7 +25,7 @@
             </div>
             @if(channelsOpen){
                 @for(item of this.userData ? this.userData.channels : ["lila","pink"]; track item){
-                    <div class="text-pctr">
+                    <div (click)="openChannel(item)" class="text-pctr">
                         <img src="/assets/img/tag.png" alt="">
                         <h4>{{userData ? item : "Lisabell"}}</h4>
                     </div>
@@ -61,7 +61,22 @@
         <img src="/assets/img/show_menu.png" alt="show-menu">
     </button>
     <div class="chat-area"> 
-        <div></div>
+        @if(currentChannel!=null){
+            <div>
+                <div><h4>{{currentChannel.name}}</h4></div>
+                <div></div>
+                <div>{{currentChannel.description}}</div>
+                @for(messages of (currentChannel?.messages ?? ["testtalk"]); track messages){
+                    <div>{{messages? messages.username:"565656"}}</div>
+                    <h5>{{messages? messages.message:"Hey"}}</h5>
+                }
+                <form [formGroup] ="sendMessageForm" (ngSubmit)="sendMessage()">
+                    <input formControlName="message" type="text" placeholder="Deine Nachricht hier eingeben">
+                    <button type="submit">Absenden</button>
+                </form>   
+            </div> 
+        }
+        
         <div></div>
     </div>
     @if(addChannelOpen){

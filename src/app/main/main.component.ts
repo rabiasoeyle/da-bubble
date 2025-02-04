@@ -21,11 +21,14 @@ export class MainComponent implements OnInit {
   directMessagesOpen:boolean = true;
   channelsOpen:boolean = true;
   addChannelOpen:boolean = false;
+  currentChannel: any = null;
   fb = inject(FormBuilder);
   addChannelForm = this.fb.nonNullable.group({
       channelname:['', Validators.required],
       description:['', Validators.required],
-      
+    })
+  sendMessageForm = this.fb.nonNullable.group({
+    message:['', Validators.required],
     })
 
   constructor(private authService: AuthService) {
@@ -48,15 +51,52 @@ export class MainComponent implements OnInit {
       }
       console.log('Aktuelle Benutzerdaten im main:', this.userData);
     });
+    //Daten von Nachrichten laden
+    this.authService.currentChannel.subscribe(async (data) => {
+      if (data) {
+        console.log("📡 Channel-Daten empfangen:", data);
+    
+        // 🛑 Falls keine Nachrichten vorhanden sind, leere Liste setzen
+        if (!data.messages || !Array.isArray(data.messages)) {
+          this.currentChannel = { ...data, messages: [] };
+          return;
+        }
+    
+        // 🔥 Für jede Nachricht die Nutzerdaten abrufen
+        const messagesWithUserData = await Promise.all(
+          data.messages.map(async (msg: any) => {
+            if (!msg.uid) {
+              console.warn("⚠️ Nachricht ohne UID:", msg);
+              return { ...msg, username: "Unbekannt", profilePic: "default.png" };
+            }
+    
+            const userInfo = await this.authService.getUserInfo(msg.uid);
+            console.log("📡 Nachricht von UID:", msg.uid, " → User:", userInfo);
+    
+            return {
+              ...msg,
+              username: userInfo?.name || "Unbekannt",
+              profilePic: userInfo?.profilePic || "default.png",
+            };
+          })
+        );
+    
+        console.log("🔄 Nachrichten mit User-Daten:", messagesWithUserData);
+    
+        // 🔄 Channel mit Nutzerinfos aktualisieren
+        this.currentChannel = { ...data, messages: messagesWithUserData };
+      } else {
+        console.log("⚠️ Kein Channel gefunden!");
+        this.currentChannel = null;
+      }
+    });
+
   }
   changeChannelAreaStatus(){
     this.channelsOpen = !this.channelsOpen;
   }
   changeMessageAreaStatus(){
     this.directMessagesOpen = !this.directMessagesOpen;
-  }
-  createChannel(){
-
   }
   addChannelDialog(){
     this.addChannelOpen = !this.addChannelOpen;
@@ -65,4 +105,31 @@ export class MainComponent implements OnInit {
     const rawForm = this.addChannelForm.getRawValue();
     this.authService.createChannel(rawForm.channelname, rawForm.description);
   }
+  openChannel(channelName: string) {
+    console.log("🔍 Öffne Channel: " + channelName);
+    this.authService.getChannelLiveUpdates(channelName); // Startet Live-Update
+  
+    this.authService.currentChannel.subscribe((data) => {
+      if (data) {
+        console.log("✅ Live-Update erhalten:", data);
+        // Daten aus Firestore holen und speichern
+      this.currentChannel = {
+        name: data.name || channelName,   // Falls 'name' nicht existiert, nutze channelName
+        description: data.description || "Keine Beschreibung verfügbar",
+        created: data.createdAt || "Unbekanntes Erstellungsdatum",
+        messages: data.messages || []
+      };
+      console.log("📡 Aktualisierter Channel:", this.currentChannel);
+      } else {
+        console.log("⚠️ Kein Channel gefunden!");
+        this.currentChannel = null;
+      }
+    });
+  }
+  sendMessage(){
+    const rawForm = this.sendMessageForm.getRawValue();
+    this.authService.sendMessage(rawForm.message, this.currentChannel.name);
+  }
+  
+  
 }

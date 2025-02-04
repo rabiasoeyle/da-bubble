@@ -2,7 +2,7 @@ import { inject, Injectable, Input } from '@angular/core';
 import { FirebaseApp, getApps } from '@angular/fire/app';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from '@angular/fire/auth';
 import { Database, getDatabase, ref, set } from '@angular/fire/database';
-import { addDoc, arrayUnion, collection, doc, DocumentData, DocumentReference, Firestore, getDoc, setDoc, updateDoc } from '@angular/fire/firestore';
+import { addDoc, arrayUnion, collection, doc, DocumentData, DocumentReference, Firestore, getDoc, onSnapshot, setDoc, updateDoc } from '@angular/fire/firestore';
 import { BehaviorSubject, from, merge, Observable } from 'rxjs';
 import { confirmPasswordReset, getAuth, isSignInWithEmailLink, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, sendSignInLinkToEmail, signInWithEmailLink, User, UserCredential, verifyPasswordResetCode } from "firebase/auth";
 import {GoogleAuthProvider, signInWithPopup } from "@angular/fire/auth";
@@ -29,8 +29,10 @@ export class AuthService {
   user = {};
   userData:any;
   currentUid: string | null = null;
+  currentChannel = new BehaviorSubject<any>(null);
   private userDataSubject = new BehaviorSubject<UserData | null>(null); // Initial null
   public userData$ = this.userDataSubject.asObservable(); // Observable für Komponenten
+  private userCache = new Map<string, any>();
 
   constructor() {
   }
@@ -160,7 +162,13 @@ export class AuthService {
     const channelDocRef = doc(this.firebaseDatabase, `channels/${channelname}`);
     await setDoc(channelDocRef, {
       description:description,
-      messages:{},
+      messages:[
+        {
+          message:`Du hast den Channel: #${channelname} eröffnet.`,
+          uid:"",
+          time:new Date()
+        }
+      ],
       createdAt: new Date(),
     }); 
     this.addChannelToUser(channelname);
@@ -178,6 +186,50 @@ export class AuthService {
       });
     }
   }
+  
+  getChannelLiveUpdates(channelName: string) {
+    const channelDocRef = doc(this.firebaseDatabase, `channels/${channelName}`);
+
+    return onSnapshot(channelDocRef, (docSnap) => {
+      if (docSnap.exists()) {
+        this.currentChannel.next(docSnap.data()); // Daten direkt setzen
+      } else {
+        this.currentChannel.next(null); // Falls der Channel nicht existiert
+      }
+    }, (error) => {
+      console.error("❌ Firestore Live-Update Fehler:", error);
+    });
+  }
+
+  async sendMessage(message:string, channelname:string){
+    const userId = localStorage.getItem("userId");
+    const time = new Date();
+    const channelRef = doc(this.firebaseDatabase, `channels/${channelname}`);
+    await updateDoc(channelRef, {
+      messages: arrayUnion({
+        uid: userId,
+        message: message,
+        timestamp: new Date().toISOString()
+      })
+    });
+  }
+  
+  // 📡 Nutzerinfos anhand der UID holen
+  async getUserInfo(uid: string) {
+    if (this.userCache.has(uid)) {
+      return this.userCache.get(uid); // 🔥 Falls im Cache, nicht erneut Firestore abfragen
+    }
+
+    const userRef = doc(this.firebaseDatabase, `users/${uid}`);
+    const userSnap = await getDoc(userRef);
     
+    if (userSnap.exists()) {
+      const userData = userSnap.data();
+      this.userCache.set(uid, userData); // 🔥 Daten cachen, um Firestore-Anfragen zu reduzieren
+      return userData;
+    } else {
+      return { name: "Unbekannt", profilePic: "default.png" }; // Falls User nicht existiert
+    }
+  }
 }
 
