@@ -189,7 +189,6 @@ export class AuthService {
   
   getChannelLiveUpdates(channelName: string) {
     const channelDocRef = doc(this.firebaseDatabase, `channels/${channelName}`);
-
     return onSnapshot(channelDocRef, (docSnap) => {
       if (docSnap.exists()) {
         this.currentChannel.next(docSnap.data()); // Daten direkt setzen
@@ -197,7 +196,7 @@ export class AuthService {
         this.currentChannel.next(null); // Falls der Channel nicht existiert
       }
     }, (error) => {
-      console.error("❌ Firestore Live-Update Fehler:", error);
+      console.error("Firestore Live-Update Fehler:", error);
     });
   }
 
@@ -214,21 +213,22 @@ export class AuthService {
     });
   }
   
-  // 📡 Nutzerinfos anhand der UID holen
   async getUserInfo(uid: string) {
-    if (this.userCache.has(uid)) {
-      return this.userCache.get(uid); // 🔥 Falls im Cache, nicht erneut Firestore abfragen
-    }
-
-    const userRef = doc(this.firebaseDatabase, `users/${uid}`);
-    const userSnap = await getDoc(userRef);
-    
-    if (userSnap.exists()) {
-      const userData = userSnap.data();
-      this.userCache.set(uid, userData); // 🔥 Daten cachen, um Firestore-Anfragen zu reduzieren
-      return userData;
-    } else {
-      return { name: "Unbekannt", profilePic: "default.png" }; // Falls User nicht existiert
+    try {
+      // if (this.userCache.has(uid)) {
+      //   return this.userCache.get(uid);
+      // }
+      const userRef = doc(this.firebaseDatabase, `users/${uid}`);
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        const userData = userSnap.data();
+        this.userCache.set(uid, userData);
+        return userData;
+      }else{
+         return { name: "Unbekannt", profilePic: "default.png" };
+      }
+    } catch (error) {
+      return { name: "Fehler", profilePic: "error.png" };
     }
   }
 }

@@ -4,6 +4,28 @@ import { HeaderComponent } from './header/header.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { forkJoin, map, of, switchMap, Timestamp } from 'rxjs';
+import { user } from '@angular/fire/auth';
+
+interface Message {
+  uid: string;
+  message: string;
+  timestamp: string;
+  username?: string;
+  profilePic?: string;
+}
+
+interface Channel {
+  name: string;
+  description: string;
+  messages: any[];
+  createdAt:string;
+  members:[];
+}
+
+interface Member {
+  uid:string,
+}
 
 @Component({
   selector: 'app-main',
@@ -21,7 +43,7 @@ export class MainComponent implements OnInit {
   directMessagesOpen:boolean = true;
   channelsOpen:boolean = true;
   addChannelOpen:boolean = false;
-  currentChannel: any = null;
+  currentChannel: Channel|null = null;
   fb = inject(FormBuilder);
   addChannelForm = this.fb.nonNullable.group({
       channelname:['', Validators.required],
@@ -49,87 +71,63 @@ export class MainComponent implements OnInit {
       if(this.userData == null){
           this.router.navigateByUrl('');
       }
-      console.log('Aktuelle Benutzerdaten im main:', this.userData);
     });
-    //Daten von Nachrichten laden
-    this.authService.currentChannel.subscribe(async (data) => {
-      if (data) {
-        console.log("📡 Channel-Daten empfangen:", data);
-    
-        // 🛑 Falls keine Nachrichten vorhanden sind, leere Liste setzen
-        if (!data.messages || !Array.isArray(data.messages)) {
-          this.currentChannel = { ...data, messages: [] };
-          return;
-        }
-    
-        // 🔥 Für jede Nachricht die Nutzerdaten abrufen
-        const messagesWithUserData = await Promise.all(
-          data.messages.map(async (msg: any) => {
-            if (!msg.uid) {
-              console.warn("⚠️ Nachricht ohne UID:", msg);
-              return { ...msg, username: "Unbekannt", profilePic: "default.png" };
-            }
-    
-            const userInfo = await this.authService.getUserInfo(msg.uid);
-            console.log("📡 Nachricht von UID:", msg.uid, " → User:", userInfo);
-    
-            return {
-              ...msg,
-              username: userInfo?.name || "Unbekannt",
-              profilePic: userInfo?.profilePic || "default.png",
-            };
-          })
-        );
-    
-        console.log("🔄 Nachrichten mit User-Daten:", messagesWithUserData);
-    
-        // 🔄 Channel mit Nutzerinfos aktualisieren
-        this.currentChannel = { ...data, messages: messagesWithUserData };
-      } else {
-        console.log("⚠️ Kein Channel gefunden!");
-        this.currentChannel = null;
-      }
-    });
-
   }
+
   changeChannelAreaStatus(){
     this.channelsOpen = !this.channelsOpen;
   }
+
   changeMessageAreaStatus(){
     this.directMessagesOpen = !this.directMessagesOpen;
   }
+
   addChannelDialog(){
     this.addChannelOpen = !this.addChannelOpen;
   }
+
   onAddChannel(){
     const rawForm = this.addChannelForm.getRawValue();
     this.authService.createChannel(rawForm.channelname, rawForm.description);
   }
+
   openChannel(channelName: string) {
-    console.log("🔍 Öffne Channel: " + channelName);
-    this.authService.getChannelLiveUpdates(channelName); // Startet Live-Update
-  
-    this.authService.currentChannel.subscribe((data) => {
-      if (data) {
-        console.log("✅ Live-Update erhalten:", data);
-        // Daten aus Firestore holen und speichern
-      this.currentChannel = {
-        name: data.name || channelName,   // Falls 'name' nicht existiert, nutze channelName
-        description: data.description || "Keine Beschreibung verfügbar",
-        created: data.createdAt || "Unbekanntes Erstellungsdatum",
-        messages: data.messages || []
-      };
-      console.log("📡 Aktualisierter Channel:", this.currentChannel);
-      } else {
-        console.log("⚠️ Kein Channel gefunden!");
-        this.currentChannel = null;
-      }
-    });
+    this.authService.getChannelLiveUpdates(channelName);
+    this.authService.currentChannel.subscribe(async (data) => {
+    if (!data) {
+      this.currentChannel = null;
+      return;
+    }
+    const messages = data.messages || [];
+    const messagesWithUserData = await Promise.all(
+      messages.map(async (msg: Message) => {
+        const userInfo = await this.authService.getUserInfo(msg.uid);
+        return {
+          uid: msg.uid, 
+          timestamp: msg.timestamp,
+          message:msg.message,
+          username: userInfo? userInfo['name'] : "Unbekannt",
+          profilePic: userInfo? userInfo['fotolink'] : "default.png",
+        };
+      })
+    );
+    this.currentChannel = {
+      name: data.name || channelName,
+      description: data.description || "Keine Beschreibung verfügbar",
+      createdAt: data.createdAt || "Unbekanntes Erstellungsdatum",
+      messages: messagesWithUserData,
+      members:data.members || []
+    };
+  });
   }
+
   sendMessage(){
     const rawForm = this.sendMessageForm.getRawValue();
-    this.authService.sendMessage(rawForm.message, this.currentChannel.name);
+    if(this.currentChannel){
+      this.authService.sendMessage(rawForm.message, this.currentChannel.name);
+    }
   }
   
+  openDetailsAboutChannel(){}
   
 }

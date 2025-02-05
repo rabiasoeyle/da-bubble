@@ -63,20 +63,47 @@
     <div class="chat-area"> 
         @if(currentChannel!=null){
             <div>
-                <div><h4>{{currentChannel.name}}</h4></div>
-                <div></div>
-                <div>{{currentChannel.description}}</div>
-                @for(messages of (currentChannel?.messages ?? ["testtalk"]); track messages){
-                    <div>{{messages? messages.username:"565656"}}</div>
-                    <h5>{{messages? messages.message:"Hey"}}</h5>
-                }
+                <div class="header-of-channel">
+                    <div class="header-of-channel-left">
+                        <h3>{{currentChannel.name}}</h3>
+                        <img (click)="openDetailsAboutChannel()" src="/assets/img/key_arrow_down.png" alt="">
+                    </div>
+                    <div class="header-of-channel-right">
+                        <div>
+                        <!-- @for(item of currentChannel.members; track item){
+                            <img src="{{currentChannel.members.fotolink}}" alt="">
+                        } -->
+                        </div>
+                        <h5>Number</h5>
+                        <img src="" alt="addMembers">
+                    </div>
+                </div>
+                <div class="channel-chat">
+                    <h3>{{currentChannel.name}}</h3>
+                    <h4>{{currentChannel.description}}</h4>
+                    @for(item of currentChannel ? currentChannel.messages : ["Lisa"]; track item){
+                        <div class="msg-pic-and-text">
+                            @if(item.profilePic){
+                                <img  class="msg-sender-pic" src="{{item? item.profilePic: '/assets/img/profile.png'}}" alt="profile">  
+                            }
+                            <div class="msg-text-area">
+                                <div class="msg-name-and-time">
+                                    <h4>{{item? item.username:"565656"}}</h4>
+                                    <h6>{{item? item.timestamp: "Keine Zeit"}}</h6>
+                                </div>
+                                <div class="msg-message">
+                                    <h4>{{item? item.message :"Hey"}}</h4>
+                                </div> 
+                            </div>
+                        </div>
+                    }
+                </div>
                 <form [formGroup] ="sendMessageForm" (ngSubmit)="sendMessage()">
                     <input formControlName="message" type="text" placeholder="Deine Nachricht hier eingeben">
                     <button type="submit">Absenden</button>
                 </form>   
             </div> 
         }
-        
         <div></div>
     </div>
     @if(addChannelOpen){
@@ -99,8 +126,7 @@
             </form>
         </div>
     </div>
-    }
-    
+    }  
 </section>
 </div>
 
