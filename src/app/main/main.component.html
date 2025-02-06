@@ -62,7 +62,7 @@
     </button>
     <div class="chat-area"> 
         @if(currentChannel!=null){
-            <div>
+            <div >
                 <div class="header-of-channel">
                     <div class="header-of-channel-left">
                         <h3>{{currentChannel.name}}</h3>
@@ -75,12 +75,12 @@
                         } -->
                         </div>
                         <h5>Number</h5>
-                        <img src="" alt="addMembers">
+                        <img src="/assets/img/add-members.png" alt="addMembers">
                     </div>
                 </div>
                 <div class="channel-chat">
-                    <h3>{{currentChannel.name}}</h3>
-                    <h4>{{currentChannel.description}}</h4>
+                    <h3 class="margin-5px"> # {{currentChannel.name}}</h3>
+                    <h4 class="margin-5px">{{currentChannel.description}}</h4>
                     @for(item of currentChannel ? currentChannel.messages : ["Lisa"]; track item){
                         <div class="msg-pic-and-text">
                             @if(item.profilePic){
@@ -88,22 +88,25 @@
                             }
                             <div class="msg-text-area">
                                 <div class="msg-name-and-time">
-                                    <h4>{{item? item.username:"565656"}}</h4>
-                                    <h6>{{item? item.timestamp: "Keine Zeit"}}</h6>
+                                    <h4 class="margin-5px">{{item? item.username:"565656"}}</h4>
+                                    <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
                                 </div>
                                 <div class="msg-message">
-                                    <h4>{{item? item.message :"Hey"}}</h4>
+                                    <h4 class="margin-5px">{{item? item.message :"Hey"}}</h4>
                                 </div> 
                             </div>
                         </div>
                     }
                 </div>
-                <form [formGroup] ="sendMessageForm" (ngSubmit)="sendMessage()">
-                    <input formControlName="message" type="text" placeholder="Deine Nachricht hier eingeben">
-                    <button type="submit">Absenden</button>
+                <form class="form" [formGroup] ="sendMessageForm" (ngSubmit)="sendMessage()">
+                    <textarea formControlName="message" type="text" placeholder="Deine Nachricht hier eingeben">
+                    </textarea>
+                    <button type="submit">
+                        <img src="/assets/img/send.png" alt="send">
+                    </button>
                 </form>   
             </div> 
-        }
+        }    
         <div></div>
     </div>
     @if(addChannelOpen){
@@ -125,7 +128,7 @@
             <button type="submit">Absenden</button>
             </form>
         </div>
-    </div>
+        </div>
     }  
 </section>
 </div>

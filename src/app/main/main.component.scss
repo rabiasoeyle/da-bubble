@@ -22,6 +22,7 @@
     background-color: white;
     height:100%;
     border-radius: 42px;
+    padding:20px;
 }
 .sidenav-area{
     width:30vW;
@@ -68,4 +69,52 @@
     width:70px;
     height:70px;
     border-radius: 100%;
+}
+.header-of-channel{
+    @include dFlex($jc:space-between);
+    border-bottom:2px solid #ECEEFE,
+}
+.header-of-channel-left{
+    @include dFlex();
+}
+.header-of-channel-right{
+    @include dFlex();
+}
+.msg-pic-and-text{
+    @include dFlex();
+}
+.msg-name-and-time{
+    @include dFlex();
+}
+.msg-message{
+    border:0px none;
+    border-top-right-radius: 30px;
+    border-bottom-left-radius:30px;
+    border-bottom-right-radius:30px;
+    background-color: #ECEEFE;
+}
+.channel-chat{
+    overflow-y: auto;
+    height: 50vH;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    @include dFlex($ai:flex-start, $fd:column);
+    padding-top:32px;
+    padding-bottom:32px;
+}
+.form{
+    @include dFlex();
+    height:20%;
+    border: 1px solid #ADB0D9;
+    padding:20px;
+    border-radius: 20px;
+    >textarea{
+        width:80%;
+        height:80%;
+        border:none;
+        background-color: white;
+    }
+}
+.margin-5px{
+    margin:5px;
 }
