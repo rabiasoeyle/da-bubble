@@ -80,6 +80,32 @@
 .header-of-channel-right{
     @include dFlex();
 }
+.members-pic{
+    @include dFlex($g:0px);
+}
+.chnnl-memb-pic:nth-of-type(n + 1){
+    width:40px;
+    height:40px;
+    border-radius: 30px;
+    border: 2px solid white;
+    margin: 6px -8px 6px 0px;
+}
+.chnnl-memb-pic:nth-of-type(n + 2){
+    width:40px;
+    height:40px;
+    border-radius: 30px;
+    border: 2px solid white;
+    margin: 6px 0px 6px 0px;
+}
+.chnnl-memb-pic{
+    width:40px;
+    height:40px;
+    border-radius: 30px;
+    border: 2px solid white;
+}
+.mmber-amount{
+    padding:8px;
+}
 .msg-pic-and-text{
     @include dFlex();
 }

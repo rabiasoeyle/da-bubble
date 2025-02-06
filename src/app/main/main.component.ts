@@ -20,11 +20,14 @@ interface Channel {
   description: string;
   messages: any[];
   createdAt:string;
-  members:[];
+  members:any[];
+  membersAmount:number;
 }
 
 interface Member {
   uid:string,
+  username?:string,
+  profilePic?: string,
 }
 
 @Component({
@@ -111,12 +114,24 @@ export class MainComponent implements OnInit {
         };
       })
     );
+    const members = data.members || [];
+    const membersWithUserData = await Promise.all(
+      members.map(async (uid: string) => {
+        const userInfo = await this.authService.getUserInfo(uid);
+        return {
+          uid: uid,
+          username: userInfo ? userInfo['name'] : "Unbekannt",
+          profilePic: userInfo ? userInfo['fotolink'] : "default.png",
+        };
+      })
+    );
     this.currentChannel = {
       name: data.name || channelName,
       description: data.description || "Keine Beschreibung verfügbar",
       createdAt: data.createdAt || "Unbekanntes Erstellungsdatum",
       messages: messagesWithUserData,
-      members:data.members || []
+      members:membersWithUserData,
+      membersAmount:data.members.length,
     };
   });
   }
@@ -129,5 +144,8 @@ export class MainComponent implements OnInit {
   }
   
   openDetailsAboutChannel(){}
+  addMembersToChannel(){
+    
+  }
   
 }

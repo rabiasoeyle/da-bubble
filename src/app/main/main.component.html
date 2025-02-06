@@ -69,13 +69,13 @@
                         <img (click)="openDetailsAboutChannel()" src="/assets/img/key_arrow_down.png" alt="">
                     </div>
                     <div class="header-of-channel-right">
-                        <div>
-                        <!-- @for(item of currentChannel.members; track item){
-                            <img src="{{currentChannel.members.fotolink}}" alt="">
-                        } -->
+                        <div class="members-pic">
+                        @for(item of currentChannel ? currentChannel.members: ["Lisa"]; track item){
+                            <img class="chnnl-memb-pic" src="{{item.profilePic}}" alt="profile">
+                        }
                         </div>
-                        <h5>Number</h5>
-                        <img src="/assets/img/add-members.png" alt="addMembers">
+                        <h5 class="mmber-amount">{{currentChannel.membersAmount}}</h5>
+                        <img (click)="addMembersToChannel()" src="/assets/img/add-members.png" alt="addMembers">
                     </div>
                 </div>
                 <div class="channel-chat">
