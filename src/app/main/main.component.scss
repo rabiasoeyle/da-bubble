@@ -83,8 +83,15 @@
 .msg-pic-and-text{
     @include dFlex();
 }
+.my-msg-pic-and-text{
+    @include dFlex($jc:flex-start, $fd:row-reverse);
+    width:100%;
+}
 .msg-name-and-time{
     @include dFlex();
+}
+.my-msg-name-and-time{
+    @include dFlex($fd:row-reverse)
 }
 .msg-message{
     border:0px none;
@@ -92,13 +99,22 @@
     border-bottom-left-radius:30px;
     border-bottom-right-radius:30px;
     background-color: #ECEEFE;
+    padding:8px;
+}
+.my-msg-message{
+    border:0px none;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius:30px;
+    border-bottom-right-radius:30px;
+    background-color: #797EF3;
+    padding:8px;
 }
 .channel-chat{
     overflow-y: auto;
     height: 50vH;
     scroll-behavior: smooth;
     scrollbar-width: none;
-    @include dFlex($ai:flex-start, $fd:column);
+    @include dFlex($ai:flex-start, $fd:column, $g:8px);
     padding-top:32px;
     padding-bottom:32px;
 }

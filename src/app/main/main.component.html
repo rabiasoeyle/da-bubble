@@ -65,7 +65,7 @@
             <div >
                 <div class="header-of-channel">
                     <div class="header-of-channel-left">
-                        <h3>{{currentChannel.name}}</h3>
+                        <h3># {{currentChannel.name}}</h3>
                         <img (click)="openDetailsAboutChannel()" src="/assets/img/key_arrow_down.png" alt="">
                     </div>
                     <div class="header-of-channel-right">
@@ -82,7 +82,9 @@
                     <h3 class="margin-5px"> # {{currentChannel.name}}</h3>
                     <h4 class="margin-5px">{{currentChannel.description}}</h4>
                     @for(item of currentChannel ? currentChannel.messages : ["Lisa"]; track item){
-                        <div class="msg-pic-and-text">
+                        @if(this.userData){
+                            @if(item.uid != this.userData.uid){
+                                <div class="msg-pic-and-text">
                             @if(item.profilePic){
                                 <img  class="msg-sender-pic" src="{{item? item.profilePic: '/assets/img/profile.png'}}" alt="profile">  
                             }
@@ -96,6 +98,26 @@
                                 </div> 
                             </div>
                         </div>
+                            }
+                            @else {
+                                <div class="my-msg-pic-and-text">
+                                    @if(item.profilePic){
+                                        <img  class="msg-sender-pic" src="{{item? item.profilePic: '/assets/img/profile.png'}}" alt="profile">  
+                                    }
+                                    <div class="my-msg-text-area">
+                                        <div class="my-msg-name-and-time">
+                                            <h4 class="margin-5px">{{item? item.username:"565656"}}</h4>
+                                            <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
+                                        </div>
+                                        <div class="my-msg-message">
+                                            <h4 class="margin-5px">{{item? item.message :"Hey"}}</h4>
+                                        </div> 
+                                    </div>
+                                </div>
+                            }
+                        }
+                        
+                        
                     }
                 </div>
                 <form class="form" [formGroup] ="sendMessageForm" (ngSubmit)="sendMessage()">
