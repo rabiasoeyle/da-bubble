@@ -46,12 +46,12 @@
         
             @if (directMessagesOpen) {
                 <div class="direct-chats">
-                @for (item of this.userData ? this.userData.name : ["lila","pink"]; track item) {
+                <!-- @for (item of this.userData ? this.userData.name : ["lila","pink"]; track item) {
                     <div class="text-pctr">
-                        <img [src]="userData ? item : '/assets/img/profile.png'" alt="profile">
-                        <h4>{{userData ? item : "Lisabell"}}</h4>
+                        <img [src]="item ? item : '/assets/img/profile.png'" alt="profile">
+                        <h4>{{item ? item : "Lisabell"}}</h4>
                     </div>
-                }
+                } -->
                 </div>
             }  
         </div>

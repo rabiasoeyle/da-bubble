@@ -26,13 +26,12 @@ export class AuthService {
   firebase = inject(FirebaseApp);
   firebaseAuth = inject(Auth);
   firebaseDatabase = inject(Firestore);
-  user = {};
-  userData:any;
   currentUid: string | null = null;
   currentChannel = new BehaviorSubject<any>(null);
   private userDataSubject = new BehaviorSubject<UserData | null>(null); // Initial null
   public userData$ = this.userDataSubject.asObservable(); // Observable für Komponenten
   private userCache = new Map<string, any>();
+  private unsubscribeUserUpdates!: () => void;
 
   constructor() {
   }
@@ -172,6 +171,7 @@ export class AuthService {
       createdAt: new Date(),
     }); 
     this.addChannelToUser(channelname);
+    this.getUserLiveUpdates();
     }
 
   async addChannelToUser(channelname:string){
@@ -185,6 +185,7 @@ export class AuthService {
         channels: arrayUnion(channelname) // Neuen Channel zum Array hinzufügen
       });
     }
+
   }
   
   getChannelLiveUpdates(channelName: string) {
@@ -215,9 +216,6 @@ export class AuthService {
   
   async getUserInfo(uid: string) {
     try {
-      // if (this.userCache.has(uid)) {
-      //   return this.userCache.get(uid);
-      // }
       const userRef = doc(this.firebaseDatabase, `users/${uid}`);
       const userSnap = await getDoc(userRef);
       if (userSnap.exists()) {
@@ -231,5 +229,26 @@ export class AuthService {
       return { name: "Fehler", profilePic: "error.png" };
     }
   }
-}
 
+  getUserLiveUpdates() {
+    const userId = localStorage.getItem("userId");
+    const userDocRef = doc(this.firebaseDatabase, `users/${userId}`);
+    return onSnapshot(userDocRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = (docSnap.data() as UserData);
+        this.userDataSubject.next(data); // Daten direkt setzen
+      } else {
+        this.userDataSubject.next(null);
+      }
+    }, (error) => {
+      console.error("Firestore Live-Update Fehler:", error);
+    });
+  }
+
+  // // Wichtig: Unsubscribe, wenn die Komponente zerstört wird
+  // ngOnDestroy() {
+  //   if (this.unsubscribeUserUpdates) {
+  //     this.unsubscribeUserUpdates();
+  //   }
+  // }
+}

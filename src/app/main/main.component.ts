@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { AuthService, UserData } from '../auth.service';
 import { HeaderComponent } from './header/header.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
@@ -37,17 +37,15 @@ interface Member {
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })
-export class MainComponent implements OnInit {
-  userData: UserData | null = null;
+export class MainComponent{
   router = inject(Router);
+  fb = inject(FormBuilder);
+  // booleans
   sidenavIsOpen:boolean = true;
-  sidenavButtonText:string="Workspace-Menü schließen";
-  profiles:object = {"":""};
   directMessagesOpen:boolean = true;
   channelsOpen:boolean = true;
   addChannelOpen:boolean = false;
-  currentChannel: Channel|null = null;
-  fb = inject(FormBuilder);
+  //forms
   addChannelForm = this.fb.nonNullable.group({
       channelname:['', Validators.required],
       description:['', Validators.required],
@@ -55,10 +53,29 @@ export class MainComponent implements OnInit {
   sendMessageForm = this.fb.nonNullable.group({
     message:['', Validators.required],
     })
+  
+  userData: UserData | null = null;
+  sidenavButtonText:string="Workspace-Menü schließen";
+  currentChannel: Channel|null = null;
+  allDaBubbleUser:[]=[];
 
   constructor(private authService: AuthService) {
   }
 
+  ngOnInit(): void {
+    // this.authService.getUserLiveUpdates();
+    this.loadLiveUserData();
+  }
+
+  loadLiveUserData(){
+    this.authService.userData$.subscribe((data) => {
+      this.userData = data;
+      if(this.userData == null){
+        this.router.navigateByUrl('');
+      }
+      console.log("User Daten:", this.userData)
+    });
+  }
   changeSidenavStatus(){
     this.sidenavIsOpen = !this.sidenavIsOpen;
     if(this.sidenavIsOpen){
@@ -68,15 +85,6 @@ export class MainComponent implements OnInit {
     }
   }
   
-  ngOnInit(): void {
-    this.authService.userData$.subscribe((data) => {
-      this.userData = data;
-      if(this.userData == null){
-          this.router.navigateByUrl('');
-      }
-    });
-  }
-
   changeChannelAreaStatus(){
     this.channelsOpen = !this.channelsOpen;
   }
@@ -92,6 +100,7 @@ export class MainComponent implements OnInit {
   onAddChannel(){
     const rawForm = this.addChannelForm.getRawValue();
     this.authService.createChannel(rawForm.channelname, rawForm.description);
+    setTimeout(()=>this.loadLiveUserData(),4000);
   }
 
   openChannel(channelName: string) {
