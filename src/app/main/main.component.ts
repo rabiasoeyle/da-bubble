@@ -45,6 +45,7 @@ export class MainComponent{
   directMessagesOpen:boolean = true;
   channelsOpen:boolean = true;
   addChannelOpen:boolean = false;
+  addMemberToChannel:boolean = true;
   //forms
   addChannelForm = this.fb.nonNullable.group({
       channelname:['', Validators.required],
@@ -53,6 +54,9 @@ export class MainComponent{
   sendMessageForm = this.fb.nonNullable.group({
     message:['', Validators.required],
     })
+  addMemberForm = this.fb.nonNullable.group({
+    email:['', Validators.required],
+  })
   
   userData: UserData | null = null;
   sidenavButtonText:string="Workspace-Menü schließen";
@@ -153,8 +157,13 @@ export class MainComponent{
   }
   
   openDetailsAboutChannel(){}
-  addMembersToChannel(){
-    
+  addMembersToChannelDialog(){
+    this.addMemberToChannel =!this.addMemberToChannel;
+  }
+  addMembersToChannel(chnnlnme:string){
+    const rawForm = this.addMemberForm.getRawValue();
+    this.authService.addMembersToChannel(chnnlnme, rawForm.email);
+
   }
   
 }

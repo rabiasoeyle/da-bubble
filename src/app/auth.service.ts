@@ -245,10 +245,9 @@ export class AuthService {
     });
   }
 
-  // // Wichtig: Unsubscribe, wenn die Komponente zerstört wird
-  // ngOnDestroy() {
-  //   if (this.unsubscribeUserUpdates) {
-  //     this.unsubscribeUserUpdates();
-  //   }
-  // }
+  addMembersToChannel(channelName:string, email:string){
+    // Hier muss erst einmal der user mithilfe der E-Mail gefunden werden
+    const channelDocRef = doc(this.firebaseDatabase, `channels/${channelName}`);
+
+  }
 }

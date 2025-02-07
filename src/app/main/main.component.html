@@ -68,6 +68,19 @@
                         <h3># {{currentChannel.name}}</h3>
                         <img (click)="openDetailsAboutChannel()" src="/assets/img/key_arrow_down.png" alt="">
                     </div>
+                    @if(addMemberToChannel){
+                        <div>
+                            <div>
+                                <h4>Leute hinzufügen</h4>
+                                <img (click)="addMembersToChannelDialog()" src="" alt="x">
+                            </div>
+                            <h5># {{currentChannel.name}}</h5>
+                            <form [formGroup] ="addMemberForm" (ngSubmit)="addMembersToChannel(currentChannel.name)">
+                                <input type="email" placeholder="E-Mail angeben">
+                                <button type="submit"></button>
+                            </form>
+                        </div>
+                    }
                     <div class="header-of-channel-right">
                         <div class="members-pic">
                         @for(item of currentChannel ? currentChannel.members: ["Lisa"]; track item){
@@ -75,7 +88,7 @@
                         }
                         </div>
                         <h5 class="mmber-amount">{{currentChannel.membersAmount}}</h5>
-                        <img (click)="addMembersToChannel()" src="/assets/img/add-members.png" alt="addMembers">
+                        <img (click)="addMembersToChannelDialog()" src="/assets/img/add-members.png" alt="addMembers">
                     </div>
                 </div>
                 <div class="channel-chat">
