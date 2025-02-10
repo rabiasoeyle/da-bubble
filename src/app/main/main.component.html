@@ -62,22 +62,22 @@
     </button>
     <div class="chat-area"> 
         @if(currentChannel!=null){
-            <div >
+            <div>
                 <div class="header-of-channel">
                     <div class="header-of-channel-left">
                         <h3># {{currentChannel.name}}</h3>
                         <img (click)="openDetailsAboutChannel()" src="/assets/img/key_arrow_down.png" alt="">
                     </div>
                     @if(addMemberToChannel){
-                        <div>
-                            <div>
-                                <h4>Leute hinzufügen</h4>
-                                <img (click)="addMembersToChannelDialog()" src="" alt="x">
+                        <div class="add-mmbr-parent">
+                            <div class="add-mmbr-head">
+                                <h3>Leute hinzufügen</h3>
+                                <img (click)="addMembersToChannelDialog()" src="/assets/img/close.png" alt="x">
                             </div>
-                            <h5># {{currentChannel.name}}</h5>
+                            <h5 class="add-mmbr-chnnl-nm"># {{currentChannel.name}}</h5>
                             <form [formGroup] ="addMemberForm" (ngSubmit)="addMembersToChannel(currentChannel.name)">
-                                <input type="email" placeholder="E-Mail angeben">
-                                <button type="submit"></button>
+                                <input formControlName="name" class="input-name" type="text" placeholder="Namen angeben">
+                                <button class="gray-btn" type="submit">Hinzufügen</button>
                             </form>
                         </div>
                     }

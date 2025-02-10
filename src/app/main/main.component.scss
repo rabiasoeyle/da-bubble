@@ -71,6 +71,7 @@
     border-radius: 100%;
 }
 .header-of-channel{
+    position: relative;
     @include dFlex($jc:space-between);
     border-bottom:2px solid #ECEEFE,
 }
@@ -159,4 +160,33 @@
 }
 .margin-5px{
     margin:5px;
+}
+.add-mmbr-parent{
+    position: absolute;
+    width:514px;
+    height:294px;
+    background-color: white;
+    border: 0px white;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius:30px;
+    border-bottom-right-radius:30px;
+    box-shadow: 0px 6px 10px 0px #00000033;
+    top:50px;
+    right:50px;
+    padding:40px;
+}
+.add-mmbr-head{
+    @include dFlex($jc:space-between);
+}
+.add-mmbr-chnnl-nm{
+    color: #797EF3;
+    text-align: start;
+}
+.input-name{
+    border-radius: 30px;
+    border: 1px solid #ADB0D9;
+    width: 434;
+    height: 55;
+    gap: 10px;
+    padding: 15px 20px;
 }

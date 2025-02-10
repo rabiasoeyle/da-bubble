@@ -37,6 +37,7 @@ interface Member {
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })
+
 export class MainComponent{
   router = inject(Router);
   fb = inject(FormBuilder);
@@ -55,7 +56,7 @@ export class MainComponent{
     message:['', Validators.required],
     })
   addMemberForm = this.fb.nonNullable.group({
-    email:['', Validators.required],
+    name:['', Validators.required],
   })
   
   userData: UserData | null = null;
@@ -70,7 +71,6 @@ export class MainComponent{
     // this.authService.getUserLiveUpdates();
     this.loadLiveUserData();
   }
-
   loadLiveUserData(){
     this.authService.userData$.subscribe((data) => {
       this.userData = data;
@@ -88,25 +88,20 @@ export class MainComponent{
       this.sidenavButtonText="Workspace-Menü öffnen"
     }
   }
-  
   changeChannelAreaStatus(){
     this.channelsOpen = !this.channelsOpen;
   }
-
   changeMessageAreaStatus(){
     this.directMessagesOpen = !this.directMessagesOpen;
   }
-
   addChannelDialog(){
     this.addChannelOpen = !this.addChannelOpen;
   }
-
   onAddChannel(){
     const rawForm = this.addChannelForm.getRawValue();
     this.authService.createChannel(rawForm.channelname, rawForm.description);
     setTimeout(()=>this.loadLiveUserData(),4000);
   }
-
   openChannel(channelName: string) {
     this.authService.getChannelLiveUpdates(channelName);
     this.authService.currentChannel.subscribe(async (data) => {
@@ -148,22 +143,20 @@ export class MainComponent{
     };
   });
   }
-
   sendMessage(){
     const rawForm = this.sendMessageForm.getRawValue();
     if(this.currentChannel){
       this.authService.sendMessage(rawForm.message, this.currentChannel.name);
     }
   }
-  
-  openDetailsAboutChannel(){}
+  openDetailsAboutChannel(){
+  }
   addMembersToChannelDialog(){
     this.addMemberToChannel =!this.addMemberToChannel;
   }
   addMembersToChannel(chnnlnme:string){
     const rawForm = this.addMemberForm.getRawValue();
-    this.authService.addMembersToChannel(chnnlnme, rawForm.email);
-
+    this.authService.addMembersToChannel(chnnlnme, rawForm.name);
   }
   
 }

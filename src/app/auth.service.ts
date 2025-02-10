@@ -2,11 +2,12 @@ import { inject, Injectable, Input } from '@angular/core';
 import { FirebaseApp, getApps } from '@angular/fire/app';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from '@angular/fire/auth';
 import { Database, getDatabase, ref, set } from '@angular/fire/database';
-import { addDoc, arrayUnion, collection, doc, DocumentData, DocumentReference, Firestore, getDoc, onSnapshot, setDoc, updateDoc } from '@angular/fire/firestore';
+import { addDoc, arrayUnion, collection, doc, DocumentData, DocumentReference, Firestore, getDoc, getDocs, onSnapshot, setDoc, updateDoc, where } from '@angular/fire/firestore';
 import { BehaviorSubject, from, merge, Observable } from 'rxjs';
 import { confirmPasswordReset, getAuth, isSignInWithEmailLink, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, sendSignInLinkToEmail, signInWithEmailLink, User, UserCredential, verifyPasswordResetCode } from "firebase/auth";
 import {GoogleAuthProvider, signInWithPopup } from "@angular/fire/auth";
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { query } from '@angular/animations';
 
 export interface UserData {
     uid: string;
@@ -175,6 +176,7 @@ export class AuthService {
     }
 
   async addChannelToUser(channelname:string){
+    
     const userId = localStorage.getItem("userId");
     const userDocRef = doc(this.firebaseDatabase, `users/${userId}`);
     const docSnap = await getDoc(userDocRef);
@@ -245,9 +247,30 @@ export class AuthService {
     });
   }
 
-  addMembersToChannel(channelName:string, email:string){
-    // Hier muss erst einmal der user mithilfe der E-Mail gefunden werden
-    const channelDocRef = doc(this.firebaseDatabase, `channels/${channelName}`);
-
+  async addMembersToChannel(channelName:string, userName:string){
+    console.log("userName: "+ userName)
+    try {
+      const usersCollectionRef = collection(this.firebaseDatabase, "users");
+      const userSnapshot = await getDocs(usersCollectionRef);
+      let userId = null;
+      userSnapshot.forEach((doc) => {
+          const userData = doc.data();
+          console.log("Userliste: " + userData['name']);
+          if (userData['name'] == userName) {
+              userId = doc.id;
+          }
+      });
+      if (!userId) {
+          console.log("Kein Benutzer mit diesem Namen gefunden.");
+          return;
+      }
+      const channelDocRef = doc(this.firebaseDatabase, `channels/${channelName}`);
+      await updateDoc(channelDocRef, {
+          members: arrayUnion(userId)
+      });
+      console.log(`Benutzer ${userName} wurde erfolgreich zum Channel ${channelName} hinzugefügt.`);
+  } catch (error) {
+      console.error("Fehler beim Hinzufügen des Benutzers zum Channel:", error);
+  }
   }
 }
