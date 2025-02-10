@@ -176,7 +176,6 @@ export class AuthService {
     }
 
   async addChannelToUser(channelname:string){
-    
     const userId = localStorage.getItem("userId");
     const userDocRef = doc(this.firebaseDatabase, `users/${userId}`);
     const docSnap = await getDoc(userDocRef);
@@ -187,7 +186,17 @@ export class AuthService {
         channels: arrayUnion(channelname) // Neuen Channel zum Array hinzufügen
       });
     }
-
+  }
+  async addChannelToUserTwo(channelname:string, userId:string){
+    const userDocRef = doc(this.firebaseDatabase, `users/${userId}`);
+    const docSnap = await getDoc(userDocRef);
+    if (!docSnap.exists()) {
+      await setDoc(userDocRef, { channels: [channelname] }); // Erstes Array erstellen
+    } else {
+      await updateDoc(userDocRef, {
+        channels: arrayUnion(channelname) // Neuen Channel zum Array hinzufügen
+      });
+    }
   }
   
   getChannelLiveUpdates(channelName: string) {
@@ -248,7 +257,7 @@ export class AuthService {
   }
 
   async addMembersToChannel(channelName:string, userName:string){
-    console.log("userName: "+ userName)
+    console.log("userName: " + userName)
     try {
       const usersCollectionRef = collection(this.firebaseDatabase, "users");
       const userSnapshot = await getDocs(usersCollectionRef);
@@ -258,6 +267,8 @@ export class AuthService {
           console.log("Userliste: " + userData['name']);
           if (userData['name'] == userName) {
               userId = doc.id;
+              console.log("Die User Id"+userId)
+              this.addChannelToUserTwo(channelName, userId)
           }
       });
       if (!userId) {
