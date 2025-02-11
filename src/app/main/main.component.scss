@@ -261,3 +261,56 @@ textarea{
 .blue-font{
     color:#797EF3;
 }
+.open-dtls-chnnl-parent{
+    position: absolute;
+    right:0;
+    left:0;
+    top:0;
+    bottom:0;
+    background-color: rgba(0, 0, 0, 0.4);
+    @include dFlex();
+}
+.open-dtls-chnnl-child{
+    background-color: white;
+    width: 872px;
+    height: 616px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    border-bottom-left-radius: 30px;
+    padding:20px;
+    @include dFlex($fd:column, $g:16px);
+}
+.open-dtls-chnnl-head{
+    @include dFlex($jc:space-between);
+    width:100%;
+}
+.open-dtls-chnnl-name-parent{
+    border: 1px solid #ADB0D9;
+    width: 792px;
+    height: 114px;
+    border-radius: 20px;
+    border-width: 1px;
+    padding: 20px;
+    gap: 20px;
+}
+.open-dtls-chnnl-middle{
+    border: 1px solid #ADB0D9;
+    width: 792px;
+    border-radius: 20px;
+    border-width: 1px;
+    padding: 20px;
+    @include dFlex($ai:flex-start, $g:20px, $fd:column);
+}
+.open-dtls-chnnl-name{
+    @include dFlex($jc:space-between);
+    width:100%;
+}
+.open-dtls-chnnl-delete-btn-parent{
+    @include dFlex($jc:flex-end);
+    width:100%;
+}
+.black-line{
+    width:100%;
+    height:2px;
+    background-color: #ADB0D9;
+}

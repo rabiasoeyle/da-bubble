@@ -50,6 +50,7 @@ export class MainComponent{
   channelsOpen:boolean = true;
   addChannelOpen:boolean = false;
   addMemberToChannel:boolean = false;
+  openDetailsOfChannel:boolean = true;
   //forms
   addChannelForm = this.fb.nonNullable.group({
       channelname:['', Validators.required],
@@ -181,6 +182,7 @@ export class MainComponent{
     }
   }
   openDetailsAboutChannel(){
+    this.openDetailsOfChannel = !this.openDetailsOfChannel;
   }
   addMembersToChannelDialog(){
     this.addMemberToChannel =!this.addMemberToChannel;
@@ -189,5 +191,6 @@ export class MainComponent{
     const rawForm = this.addMemberForm.getRawValue();
     this.authService.addMembersToChannel(chnnlnme, rawForm.name);
   }
+  deleteChannelAtUser(){}
   
 }
