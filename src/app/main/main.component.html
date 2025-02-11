@@ -76,8 +76,10 @@
                             </div>
                             <h5 class="add-mmbr-chnnl-nm"># {{currentChannel.name}}</h5>
                             <form [formGroup] ="addMemberForm" (ngSubmit)="addMembersToChannel(currentChannel.name)">
-                                <input formControlName="name" class="input-name" type="text" placeholder="Namen angeben">
-                                <button class="gray-btn" type="submit">Hinzufügen</button>
+                                <input formControlName="name" class="input-name" type="text" placeholder="Name eingeben">
+                                <div class="add-mmbr-btn-parent">
+                                    <button class="gray-btn" type="submit">Hinzufügen</button>
+                                </div>
                             </form>
                         </div>
                     }
@@ -129,8 +131,6 @@
                                 </div>
                             }
                         }
-                        
-                        
                     }
                 </div>
                 <form class="form" [formGroup] ="sendMessageForm" (ngSubmit)="sendMessage()">
@@ -147,20 +147,25 @@
     @if(addChannelOpen){
         <div class="add-chn-dia-parent">
         <div class="add-channel-dialog">
-            <h3>Channel erstellen</h3>
-            <img src="/assets/img/close.png" alt="x" (click)="addChannelDialog()">
-            <h4>Hier kannst du einen neuen Channel erstellen</h4>
-            <form [formGroup] ="addChannelForm" (ngSubmit)="onAddChannel()">
-            <h3>Channelname</h3>
-            <div>
-                <img src="" alt="#">
-                <input formControlName="channelname" type="text" placeholder="z.B. Kooperationsprojekte"> 
+            <div class="add-chnnl-head">
+                <h3>Channel erstellen</h3>
+                <img src="/assets/img/close.png" alt="x" (click)="addChannelDialog()">
             </div>
-            <div>
-                <h3>Beschreibung</h3><h5>(optinal)</h5>
+            
+            <h4>Channels dienen deinem Team zur Kommunikation. Am besten sollten sie themenbezogen sein #marketing zum Beispiel.</h4>
+            <form class="add-chnnl-form" [formGroup] ="addChannelForm" (ngSubmit)="onAddChannel()">
+            <h3>Channel-Name</h3>
+            <div class="add-chnnl-name">
+                #
+                <input class="add-chnnl-input-name" formControlName="channelname" type="text" placeholder="z.B. Kooperationsprojekte"> 
             </div>
-            <input formControlName="description" type="text" placeholder="Dein Text hier">
-            <button type="submit">Absenden</button>
+            <div class="add-chnnl-description">
+                <h3>Beschreibung</h3><h5>(optional)</h5>
+            </div>
+            <input class="add-chnnl-input-descr" formControlName="description" type="text" placeholder="Dein Text hier">
+            <div class="add-chnnl-btn-parent">
+                <button class="blue-btn" type="submit">Absenden</button>
+            </div>
             </form>
         </div>
         </div>

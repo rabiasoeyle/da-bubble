@@ -44,9 +44,9 @@ export class MainComponent{
   // booleans
   sidenavIsOpen:boolean = true;
   directMessagesOpen:boolean = true;
-  channelsOpen:boolean = true;
+  channelsOpen:boolean = false;
   addChannelOpen:boolean = false;
-  addMemberToChannel:boolean = true;
+  addMemberToChannel:boolean = false;
   //forms
   addChannelForm = this.fb.nonNullable.group({
       channelname:['', Validators.required],
