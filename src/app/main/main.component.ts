@@ -19,7 +19,10 @@ interface Channel {
   name: string;
   description: string;
   messages: any[];
-  createdAt:string;
+  created:{
+    createdFrom:any;
+    createdAt:string;
+  };
   members:any[];
   membersAmount:number;
 }
@@ -44,7 +47,7 @@ export class MainComponent{
   // booleans
   sidenavIsOpen:boolean = true;
   directMessagesOpen:boolean = true;
-  channelsOpen:boolean = false;
+  channelsOpen:boolean = true;
   addChannelOpen:boolean = false;
   addMemberToChannel:boolean = false;
   //forms
@@ -101,6 +104,7 @@ export class MainComponent{
     const rawForm = this.addChannelForm.getRawValue();
     this.authService.createChannel(rawForm.channelname, rawForm.description);
     setTimeout(()=>this.loadLiveUserData(),4000);
+    this.addChannelDialog();
   }
   openChannel(channelName: string) {
     this.authService.getChannelLiveUpdates(channelName);
@@ -113,9 +117,18 @@ export class MainComponent{
     const messagesWithUserData = await Promise.all(
       messages.map(async (msg: Message) => {
         const userInfo = await this.authService.getUserInfo(msg.uid);
+        const time = msg.timestamp
+        const formattedDateMessage = new Date(time).toLocaleString("de-DE", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        });
         return {
           uid: msg.uid, 
-          timestamp: msg.timestamp,
+          timestamp: formattedDateMessage,
           message:msg.message,
           username: userInfo? userInfo['name'] : "Unbekannt",
           profilePic: userInfo? userInfo['fotolink'] : "default.png",
@@ -133,14 +146,32 @@ export class MainComponent{
         };
       })
     );
+    const creatorUID: string = data.created.createdFrom; // Einzelne UID aus Firebase
+    const creator = await this.authService.getUserInfo(creatorUID);
+    const createdAt = data.created.createdAt? (data.created.createdAt.toDate() || new Date(data.created.createdAt)): null; // Timestamp umwandeln
+    const formattedDate = new Date(createdAt).toLocaleString("de-DE", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+
+    console.log(formattedDate); // → "11.02.2025, 12:09"
+    
     this.currentChannel = {
       name: data.name || channelName,
       description: data.description || "Keine Beschreibung verfügbar",
-      createdAt: data.createdAt || "Unbekanntes Erstellungsdatum",
+      created: {
+        createdFrom: creator['name'],
+        createdAt:formattedDate,
+      },
       messages: messagesWithUserData,
       members:membersWithUserData,
       membersAmount:data.members.length,
     };
+    console.log('Aktuelle Channeldaten: ', this.currentChannel);
   });
   }
   sendMessage(){

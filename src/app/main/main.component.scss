@@ -4,16 +4,25 @@
 }
 .change-sidenav-status-btn{
     writing-mode:vertical-rl;
-    border-radius: 0 42px 42px 0;
-    box-shadow: 1px 1px 2px 1px #00000033;
-    border-color: transparent;
     background-color: white;
-    padding:8px;
     font-family: "Nunito";
     font-weight: 500;
+    width: 60px;
+    height: 347px;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+    padding-top: 23px;
+    padding-right: 14px;
+    padding-bottom: 23px;
+    padding-left: 14px;
+    box-shadow: 4px 4px 7px 0px #00000033;
+    border: none;
+    position: absolute;
+    left:0;
+    top:36vH;
 }
 .main-content{
-    @include dFlex();
+    @include dFlex($g:16px);
     padding:32px;
     height: 80vH;
 }
@@ -22,6 +31,8 @@
     background-color: white;
     height:100%;
     border-radius: 42px;
+}
+.chat-area-child{
     padding:20px;
 }
 .sidenav-area{
@@ -187,14 +198,14 @@
 }
 .channel-chat{
     overflow-y: auto;
-    height: 50vH;
+    height: 40vH;
     scroll-behavior: smooth;
     scrollbar-width: none;
     @include dFlex($ai:flex-start, $fd:column, $g:8px);
-    padding-top:32px;
+    padding-top:120px;
     padding-bottom:32px;
 }
-.form{
+.messages-form{
     @include dFlex();
     height:20%;
     border: 1px solid #ADB0D9;
@@ -246,4 +257,7 @@
 }
 textarea{
     resize:none;
+}
+.blue-font{
+    color:#797EF3;
 }

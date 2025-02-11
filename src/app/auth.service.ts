@@ -160,16 +160,16 @@ export class AuthService {
 
   async createChannel(channelname:string, description:string){
     const channelDocRef = doc(this.firebaseDatabase, `channels/${channelname}`);
+    const userId = localStorage.getItem("userId");
     await setDoc(channelDocRef, {
       description:description,
       messages:[
-        {
-          message:`Du hast den Channel: #${channelname} eröffnet.`,
-          uid:"",
-          time:new Date()
-        }
       ],
-      createdAt: new Date(),
+      created:{
+        createdFrom:userId,
+        createdAt:new Date().toISOString(),
+      },
+      members:[userId],
     }); 
     this.addChannelToUser(channelname);
     this.getUserLiveUpdates();
