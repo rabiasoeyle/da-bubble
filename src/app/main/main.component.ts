@@ -50,7 +50,7 @@ export class MainComponent{
   channelsOpen:boolean = true;
   addChannelOpen:boolean = false;
   addMemberToChannel:boolean = false;
-  openDetailsOfChannel:boolean = true;
+  openDetailsOfChannel:boolean = false;
   editChannel:boolean=false;
   channelDeleted:boolean=false;
   //forms
@@ -70,6 +70,9 @@ export class MainComponent{
   changeChannelDescrForm =this.fb.nonNullable.group({
     description:['', Validators.required],
   })
+  editMessageForm= this.fb.nonNullable.group({
+    message:['', Validators.required],
+    })
   
   userData: UserData | null = null;
   sidenavButtonText:string="Workspace-Menü schließen";
@@ -142,6 +145,7 @@ export class MainComponent{
           message:msg.message,
           username: userInfo? userInfo['name'] : "Unbekannt",
           profilePic: userInfo? userInfo['fotolink'] : "default.png",
+          editing:false,
         };
       })
     );
@@ -218,19 +222,39 @@ export class MainComponent{
   }
   changeChannelName(){
     const rawForm = this.changeChannelNameForm.getRawValue();
-    if(this.currentChannel){
+    if(this.currentChannel && rawForm.name !=""){
       this.authService.changeChannelName(this.currentChannel.name, rawForm.name);
       this.authService.changeChannelNameForUsers(this.currentChannel.name, rawForm.name);
     }
-    // setTimeout(()=>this.loadLiveUserData(),4000);
+    setTimeout(()=>{
+      this.openEditChannel(),this.openChannel(rawForm.name), this.openDetailsAboutChannel()
+    },200);
   }
 
   changeChannelDescription(){
     const rawForm = this.changeChannelDescrForm.getRawValue();
-    if(this.currentChannel){
+    if(this.currentChannel && rawForm.description !=""){
     this.authService.changeChannelDescription(this.currentChannel.name, rawForm.description);
     }console.log(rawForm.description);
     this.openEditChannel();
+  }
+  startEditMessage(id:number){
+    if(this.currentChannel){
+      const msg = this.currentChannel.messages[id];
+      msg.editing = true;
+    }
+  }
+  closeEditMessage(id:number){
+    if(this.currentChannel){
+      const msg = this.currentChannel.messages[id];
+      msg.editing = false;
+    }
+  }
+  editMessage(id:number){
+    const rawForm = this.editMessageForm.getRawValue();
+    if(this.currentChannel && rawForm.message !=""){
+      this.authService.editMessage(this.currentChannel.name, rawForm.message, id);
+      }console.log(rawForm.message);
   }
   
 }

@@ -348,4 +348,20 @@ async changeChannelNameForUsers(oldChannelName: string, newChannelName: string) 
   await Promise.all(updatePromises);
   this.getUserLiveUpdates();
 }
+async editMessage(channelName:string, newMessage:string, id:number){
+  const channelDocRef = doc(this.firebaseDatabase, `channels/${channelName}`);
+    const channelSnap = await getDoc(channelDocRef);
+    const channelData = channelSnap.data();
+    if(channelData){
+      const updatedMessages = [...channelData['messages']];
+    updatedMessages[id] = {
+        ...updatedMessages[id], // Bestehende Daten beibehalten
+        message: newMessage
+    };
+    await updateDoc(channelDocRef, {
+        messages: updatedMessages
+    });
+    }
+    
+}
 }
