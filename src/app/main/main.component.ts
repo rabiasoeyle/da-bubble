@@ -220,9 +220,11 @@ export class MainComponent{
     const rawForm = this.changeChannelNameForm.getRawValue();
     if(this.currentChannel){
       this.authService.changeChannelName(this.currentChannel.name, rawForm.name);
+      this.authService.changeChannelNameForUsers(this.currentChannel.name, rawForm.name);
     }
-    
+    // setTimeout(()=>this.loadLiveUserData(),4000);
   }
+
   changeChannelDescription(){
     const rawForm = this.changeChannelDescrForm.getRawValue();
     if(this.currentChannel){

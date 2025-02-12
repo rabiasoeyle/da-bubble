@@ -331,4 +331,21 @@ export class AuthService {
     await deleteDoc(oldChannelDocRef);
 
   }
+async changeChannelNameForUsers(oldChannelName: string, newChannelName: string) {
+  const usersCollectionRef = collection(this.firebaseDatabase, "users");
+  const usersSnapshot = await getDocs(usersCollectionRef);
+  const updatePromises = usersSnapshot.docs.map(async (userDoc) => {
+      const userData = userDoc.data();
+      if (userData['channels'] && userData['channels'].includes(oldChannelName)) {
+          await updateDoc(doc(this.firebaseDatabase, `users/${userDoc.id}`), {
+              channels: arrayRemove(oldChannelName) // Entfernt den alten Namen
+          });
+          await updateDoc(doc(this.firebaseDatabase, `users/${userDoc.id}`), {
+              channels: arrayUnion(newChannelName) // Fügt den neuen Namen hinzu
+          });
+      }
+  });
+  await Promise.all(updatePromises);
+  this.getUserLiveUpdates();
+}
 }
