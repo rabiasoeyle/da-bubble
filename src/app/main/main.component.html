@@ -152,7 +152,7 @@
                 </form>   
             
             </div> 
-            @if(openDetailsOfChannel){
+            @if(openDetailsOfChannel && !editChannel){
               <div class="open-dtls-chnnl-parent">
                 <div class="open-dtls-chnnl-child">
                     <div class="open-dtls-chnnl-head">
@@ -162,32 +162,70 @@
                     <div class="open-dtls-chnnl-name-parent">
                         <div class="open-dtls-chnnl-name">
                             <h3 class="fs-18">Channel Name</h3>
-                            <h4><span class="blue-font">Bearbeiten</span></h4>
+                            <h4 (click)="openEditChannel()"><span class="blue-font">Bearbeiten</span></h4>
                         </div> 
                         <div class="open-dtls-chnnl-name-input">
                                 #
-                                <input class="open-dtls-chnnl-input-name" type="text" placeholder="{{currentChannel.name}}"> 
+                                <span class="open-dtls-chnnl-input-name">{{currentChannel.name}}</span>  
                         </div>
                     </div>
                     <div class="open-dtls-chnnl-middle">
                         <div class="open-dtls-chnnl-name">
                             <h3 class="fs-18">Beschreibung</h3>
-                            <h4><span class="blue-font">Bearbeiten</span></h4>
+                            <h4 (click)="openEditChannel()"><span class="blue-font">Bearbeiten</span></h4>
                         </div> 
-                        <h5>{{currentChannel.description}}</h5>
+                        <h6>{{currentChannel.description}}</h6>
                         <div class="black-line"></div>
                         <h3 class="fs-18">Erstellt von</h3>
                         <h4 class="blue-font" >{{currentChannel.created.createdFrom}}</h4>
                     </div>
                     <div class="open-dtls-chnnl-delete-btn-parent">
-                        <button class="blue-btn" (click)="deleteChannelAtUser()">Channel verlassen</button>
+                        <button class="blue-btn" (click)="deleteChannelAtUser(currentChannel.name)">Channel verlassen</button>
                     </div>
                     
                 </div>
               </div>  
             }
-            
-        }    
+            @if(openDetailsOfChannel && editChannel){
+                <div class="open-dtls-chnnl-parent">
+                  <div class="open-dtls-chnnl-child">
+                      <div class="open-dtls-chnnl-head">
+                          <h3># {{currentChannel.name}}</h3>
+                          <img (click)="openDetailsAboutChannel()" src="/assets/img/close.png" alt="x">
+                      </div>
+                      <div class="open-dtls-chnnl-name-parent">
+                          <div class="open-dtls-chnnl-name">
+                              <h3 class="fs-18">Channel Name</h3>
+                              <h4><span class="blue-font">Speichern</span></h4>
+                          </div> 
+                          <div class="open-dtls-chnnl-name-input">
+                                  #
+                                  <input class="open-dtls-chnnl-input-name" type="text" placeholder="{{currentChannel.name}}"> 
+                          </div>
+                      </div>
+                      <div class="open-dtls-chnnl-middle">
+                          <div class="open-dtls-chnnl-name">
+                              <h3 class="fs-18">Beschreibung</h3>
+                              <h4><span class="blue-font">Speichern</span></h4>
+                          </div> 
+                          <h5>{{currentChannel.description}}</h5>
+                          <div class="black-line"></div>
+                          <h3 class="fs-18">Erstellt von</h3>
+                          <h4 class="blue-font" >{{currentChannel.created.createdFrom}}</h4>
+                      </div>
+                      <div class="open-dtls-chnnl-delete-btn-parent">
+                          <button class="blue-btn" (click)="deleteChannelAtUser(currentChannel.name)">Channel verlassen</button>
+                      </div>
+                      
+                  </div>
+                </div>  
+              }
+              
+        }   
+        @if(channelDeleted && currentChannel == null){
+                <img src="/assets/img/close.png" alt="x">
+                <h3>Sie haben den Channel # {{deletedChannelname}}erfolgreich gelöscht.</h3>
+        } 
         <div></div>
     </div>
     @if(addChannelOpen){

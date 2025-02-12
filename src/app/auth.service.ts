@@ -2,7 +2,7 @@ import { inject, Injectable, Input } from '@angular/core';
 import { FirebaseApp, getApps } from '@angular/fire/app';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from '@angular/fire/auth';
 import { Database, getDatabase, ref, set } from '@angular/fire/database';
-import { addDoc, arrayUnion, collection, doc, DocumentData, DocumentReference, Firestore, getDoc, getDocs, onSnapshot, setDoc, updateDoc, where } from '@angular/fire/firestore';
+import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, DocumentData, DocumentReference, Firestore, getDoc, getDocs, onSnapshot, setDoc, updateDoc, where } from '@angular/fire/firestore';
 import { BehaviorSubject, from, merge, Observable } from 'rxjs';
 import { confirmPasswordReset, getAuth, isSignInWithEmailLink, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, sendSignInLinkToEmail, signInWithEmailLink, User, UserCredential, verifyPasswordResetCode } from "firebase/auth";
 import {GoogleAuthProvider, signInWithPopup } from "@angular/fire/auth";
@@ -167,7 +167,7 @@ export class AuthService {
       ],
       created:{
         createdFrom:userId,
-        createdAt:new Date().toISOString(),
+        createdAt:new Date(),
       },
       members:[userId],
     }); 
@@ -283,5 +283,22 @@ export class AuthService {
   } catch (error) {
       console.error("Fehler beim Hinzufügen des Benutzers zum Channel:", error);
   }
+  }
+  async deleteChannelAtMember(channelName:string){
+    const userId = localStorage.getItem("userId");
+    const channelDocRef = doc(this.firebaseDatabase, `channels/${channelName}`);
+    const channelDocSnap = await getDoc(channelDocRef);
+    if (channelDocSnap.exists()) {
+        await updateDoc(channelDocRef, {
+            members: arrayRemove(userId)
+        });
+    }
+    const userDocRef = doc(this.firebaseDatabase, `users/${userId}` );
+    const userSnapshot = await getDoc(userDocRef);
+    if (userSnapshot.exists()) {
+      await updateDoc(userDocRef, {
+          channels: arrayRemove(channelName)
+      });
+    }
   }
 }

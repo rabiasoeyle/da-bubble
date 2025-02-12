@@ -51,6 +51,8 @@ export class MainComponent{
   addChannelOpen:boolean = false;
   addMemberToChannel:boolean = false;
   openDetailsOfChannel:boolean = true;
+  editChannel:boolean=false;
+  channelDeleted:boolean=false;
   //forms
   addChannelForm = this.fb.nonNullable.group({
       channelname:['', Validators.required],
@@ -67,6 +69,7 @@ export class MainComponent{
   sidenavButtonText:string="Workspace-Menü schließen";
   currentChannel: Channel|null = null;
   allDaBubbleUser:[]=[];
+  deletedChannelname:string="";
 
   constructor(private authService: AuthService) {
   }
@@ -191,6 +194,18 @@ export class MainComponent{
     const rawForm = this.addMemberForm.getRawValue();
     this.authService.addMembersToChannel(chnnlnme, rawForm.name);
   }
-  deleteChannelAtUser(){}
+  deleteChannelAtUser(channelname:string){
+    this.authService.deleteChannelAtMember(channelname);
+    this.openEditChannel();
+    this.openDetailsAboutChannel();
+    if(this.currentChannel){
+      this.deletedChannelname = this.currentChannel.name;
+    }
+    this.channelDeleted = true;
+    this.currentChannel=null;
+  }
+  openEditChannel(){
+    this.editChannel = !this.editChannel;
+  }
   
 }
