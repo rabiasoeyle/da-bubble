@@ -196,13 +196,16 @@ export class MainComponent{
   }
   deleteChannelAtUser(channelname:string){
     this.authService.deleteChannelAtMember(channelname);
-    this.openEditChannel();
+    if(this.editChannel){
+      this.editChannel=false;
+    }
     this.openDetailsAboutChannel();
     if(this.currentChannel){
       this.deletedChannelname = this.currentChannel.name;
     }
     this.channelDeleted = true;
-    this.currentChannel=null;
+    this.currentChannel = null;
+    this.authService.unsubscribeFromChannel();
   }
   openEditChannel(){
     this.editChannel = !this.editChannel;

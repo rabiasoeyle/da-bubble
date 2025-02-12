@@ -198,10 +198,12 @@ export class AuthService {
       });
     }
   }
-  
+  private channelUnsubscribe: (() => void) | null = null;
+
   getChannelLiveUpdates(channelName: string) {
     const channelDocRef = doc(this.firebaseDatabase, `channels/${channelName}`);
-    return onSnapshot(channelDocRef, (docSnap) => {
+    this.unsubscribeFromChannel();
+    return this.channelUnsubscribe = onSnapshot(channelDocRef, (docSnap) => {
       if (docSnap.exists()) {
         this.currentChannel.next(docSnap.data()); // Daten direkt setzen
       } else {
@@ -211,6 +213,14 @@ export class AuthService {
       console.error("Firestore Live-Update Fehler:", error);
     });
   }
+  
+  unsubscribeFromChannel() {
+    if (this.channelUnsubscribe) {
+        this.channelUnsubscribe(); // Live-Update deaktivieren
+        this.channelUnsubscribe = null;
+        this.currentChannel.next(null); // Channel beim User entfernen
+    }
+}
 
   async sendMessage(message:string, channelname:string){
     const userId = localStorage.getItem("userId");
