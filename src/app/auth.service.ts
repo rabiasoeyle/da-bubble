@@ -311,4 +311,24 @@ export class AuthService {
       });
     }
   }
+  async changeChannelDescription(channelName:string, newDescription:string){
+    const channelDocRef = doc(this.firebaseDatabase, `channels/${channelName}`);
+    await updateDoc(channelDocRef, {
+      description: newDescription
+  })
+}
+
+  async changeChannelName(oldChannelName: string, newChannelName: string){
+    const oldChannelDocRef = doc(this.firebaseDatabase, `channels/${oldChannelName}`);
+    const newChannelDocRef = doc(this.firebaseDatabase, `channels/${newChannelName}`);
+    const channelSnap = await getDoc(oldChannelDocRef);
+    if (!channelSnap.exists()) {
+        console.error("Der alte Channel existiert nicht!");
+        return;
+    }
+    const channelData = channelSnap.data();
+    await setDoc(newChannelDocRef, channelData);
+    await deleteDoc(oldChannelDocRef);
+
+  }
 }

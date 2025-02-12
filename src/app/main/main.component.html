@@ -194,21 +194,29 @@
                           <img (click)="openDetailsAboutChannel()" src="/assets/img/close.png" alt="x">
                       </div>
                       <div class="open-dtls-chnnl-name-parent">
+                        <form class="channel-name-form" [formGroup] ="changeChannelNameForm" (ngSubmit)="changeChannelName()">
                           <div class="open-dtls-chnnl-name">
                               <h3 class="fs-18">Channel Name</h3>
-                              <h4><span class="blue-font">Speichern</span></h4>
+                              <button type="submit">
+                                <h4 class="blue-font">Speichern</h4>
+                              </button>
                           </div> 
                           <div class="open-dtls-chnnl-name-input">
                                   #
-                                  <input class="open-dtls-chnnl-input-name" type="text" placeholder="{{currentChannel.name}}"> 
+                                <input formControlName="name" class="open-dtls-chnnl-input-name" type="text" placeholder="{{currentChannel.name}}"> 
                           </div>
+                        </form>
                       </div>
                       <div class="open-dtls-chnnl-middle">
+                        <form class="channel-description-form" [formGroup] ="changeChannelDescrForm" (ngSubmit)="changeChannelDescription()">
                           <div class="open-dtls-chnnl-name">
                               <h3 class="fs-18">Beschreibung</h3>
-                              <h4><span class="blue-font">Speichern</span></h4>
+                              <button type="submit">
+                                <h4 class="blue-font">Speichern</h4>
+                              </button>
                           </div> 
-                          <h5>{{currentChannel.description}}</h5>
+                          <textarea formControlName="description" placeholder="Schreibe hier die Beschreibung"></textarea>
+                        </form>
                           <div class="black-line"></div>
                           <h3 class="fs-18">Erstellt von</h3>
                           <h4 class="blue-font" >{{currentChannel.created.createdFrom}}</h4>

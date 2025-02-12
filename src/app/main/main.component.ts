@@ -64,6 +64,12 @@ export class MainComponent{
   addMemberForm = this.fb.nonNullable.group({
     name:['', Validators.required],
   })
+  changeChannelNameForm = this.fb.nonNullable.group({
+    name:['', Validators.required],
+  })
+  changeChannelDescrForm =this.fb.nonNullable.group({
+    description:['', Validators.required],
+  })
   
   userData: UserData | null = null;
   sidenavButtonText:string="Workspace-Menü schließen";
@@ -209,6 +215,20 @@ export class MainComponent{
   }
   openEditChannel(){
     this.editChannel = !this.editChannel;
+  }
+  changeChannelName(){
+    const rawForm = this.changeChannelNameForm.getRawValue();
+    if(this.currentChannel){
+      this.authService.changeChannelName(this.currentChannel.name, rawForm.name);
+    }
+    
+  }
+  changeChannelDescription(){
+    const rawForm = this.changeChannelDescrForm.getRawValue();
+    if(this.currentChannel){
+    this.authService.changeChannelDescription(this.currentChannel.name, rawForm.description);
+    }console.log(rawForm.description);
+    this.openEditChannel();
   }
   
 }
