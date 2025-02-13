@@ -53,6 +53,8 @@ export class MainComponent{
   openDetailsOfChannel:boolean = false;
   editChannel:boolean=false;
   channelDeleted:boolean=false;
+  membersOfChannelList:boolean=false;
+  memberDetails:boolean= false;
   //forms
   addChannelForm = this.fb.nonNullable.group({
       channelname:['', Validators.required],
@@ -79,6 +81,7 @@ export class MainComponent{
   currentChannel: Channel|null = null;
   allDaBubbleUser:[]=[];
   deletedChannelname:string="";
+  currentProfileDetail:any;
 
   constructor(private authService: AuthService) {
   }
@@ -198,6 +201,7 @@ export class MainComponent{
     this.openDetailsOfChannel = !this.openDetailsOfChannel;
   }
   addMembersToChannelDialog(){
+    this.membersOfChannelList=false;
     this.addMemberToChannel =!this.addMemberToChannel;
   }
   addMembersToChannel(chnnlnme:string){
@@ -255,6 +259,26 @@ export class MainComponent{
     if(this.currentChannel && rawForm.message !=""){
       this.authService.editMessage(this.currentChannel.name, rawForm.message, id);
       }console.log(rawForm.message);
+  }
+  openMembersList(){
+    this.membersOfChannelList = !this.membersOfChannelList;
+  }
+  async openUserDetails(idx:number){
+    this.membersOfChannelList = false;
+    this.addMemberToChannel = false;
+    if(this.memberDetails = true && idx==9999){
+      this.memberDetails = false;
+      return
+    }
+    this.currentProfileDetail = await this.authService.getUserInfo(this.currentChannel?.members[idx].uid);
+    console.log(this.currentProfileDetail);
+    this.memberDetails = !this.memberDetails;
+    
+  }
+  goToPersonalMessages(){
+    if(this.userData){
+      const messagesWMembers = this.authService.createChat(this.userData?.uid, this.currentProfileDetail.uid )
+    }
   }
   
 }

@@ -9,6 +9,7 @@ import {GoogleAuthProvider, signInWithPopup } from "@angular/fire/auth";
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { query } from '@angular/animations';
 
+
 export interface UserData {
     uid: string;
     name: string;
@@ -364,4 +365,21 @@ async editMessage(channelName:string, newMessage:string, id:number){
     }
     
 }
+async createChat(userId:string, memberId:string){
+  const chatsRef = collection(this.firebaseDatabase, "chats");
+  const querySnapshot = await getDocs(chatsRef);
+  for (const docSnap of querySnapshot.docs) {
+    const chatData = docSnap.data();
+    if (chatData['members'] && chatData['members'].includes(userId) && chatData['members'].includes(memberId)) {
+      return docSnap.id;
+    }
+  }
+  const newChatRef = await addDoc(chatsRef, {
+    members: [userId, memberId],
+    createdAt: new Date(),
+    messages:[]
+  });
+  return newChatRef.id;
+}
+
 }

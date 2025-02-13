@@ -83,10 +83,48 @@
                             </form>
                         </div>
                     }
+                    @if(membersOfChannelList){
+                        <div class="mmbr-of-chnnl-parent">
+                            <div class="mmbr-of-chnnl-head">
+                                <h3>Mitglieder</h3>
+                                <img (click)="openMembersList()" src="/assets/img/close.png" alt="x">
+                            </div>
+                            <div class="mmbr-of-chnnl-list-parent">
+                                @for(item of currentChannel ? currentChannel.members: ["Lisa"]; track item; let idx = $index){
+                                    <div (click)="openUserDetails(idx)" class="mmbr-of-chnnl-list">
+                                        <img class="mmbr-of-chnnl-pic" src="{{item.profilePic}}" alt="">
+                                        <!-- <img src="" alt="online"> -->
+                                        <h4>{{item.username}}</h4>
+                                    </div>
+                                }
+                            </div>
+                            <button (click)="addMembersToChannelDialog()" class="mmbr-of-chnnl-pic-button">
+                                <img src="/assets/img/add-members.png" alt="">
+                                <h4>Mitglieder hinzufügen</h4>
+                            </button>
+                        </div>
+
+                    }
+                    @if(memberDetails){
+                        <div class="mmbr-dtls-parent">
+                            <div>
+                                <h3>Profil</h3>
+                                <img (click)="openUserDetails(9999)" src="/assets/img/close.png" alt="">
+                            </div>
+                            <img class="mmbr-details-img" src="{{currentProfileDetail.fotolink}}" alt="">
+                            <h3>{{currentProfileDetail.name}}</h3>
+                            <div>
+                                <img src="/assets/img/mail.png" alt="email">
+                                <h5>E-Mail-Adresse</h5>
+                            </div>
+                            <h4 class="blue-font">{{currentProfileDetail.email}}</h4>
+                            <button class="blue-btn" (click)="goToPersonalMessages()">Nachricht</button>
+                        </div>
+                    }
                     <div class="header-of-channel-right">
                         <div class="members-pic">
                         @for(item of currentChannel ? currentChannel.members: ["Lisa"]; track item){
-                            <img class="chnnl-memb-pic" src="{{item.profilePic}}" alt="profile">
+                            <img (click)="openMembersList()" class="chnnl-memb-pic" src="{{item.profilePic}}" alt="profile">
                         }
                         </div>
                         <h5 class="mmber-amount">{{currentChannel.membersAmount}}</h5>
@@ -190,7 +228,6 @@
                         <img src="/assets/img/send.png" alt="send">
                     </button>
                 </form>   
-            
             </div> 
             @if(openDetailsOfChannel && !editChannel){
               <div class="open-dtls-chnnl-parent">
