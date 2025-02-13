@@ -46,12 +46,14 @@
         
             @if (directMessagesOpen) {
                 <div class="direct-chats">
-                <!-- @for (item of this.userData ? this.userData.name : ["lila","pink"]; track item) {
-                    <div class="text-pctr">
-                        <img [src]="item ? item : '/assets/img/profile.png'" alt="profile">
-                        <h4>{{item ? item : "Lisabell"}}</h4>
-                    </div>
-                } -->
+                    @if(userChats){
+                            @for (item of this.userChats; track item; let idx = $index) {
+                            <div class="text-pctr">
+                                <img  class="mmbr-details-img" [src]="item.chatPartner.fotolink" alt="profile">
+                                <h4>{{item.chatPartner.name}}</h4>
+                            </div>
+                        }
+                    }
                 </div>
             }  
         </div>

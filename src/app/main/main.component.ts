@@ -32,6 +32,17 @@ interface Member {
   username?:string,
   profilePic?: string,
 }
+interface Chat {
+  chatId: string;
+  chatData: any;
+  chatPartner: {
+    uid: string;
+    name:string;
+    email:string;
+    fotolink:string;
+  };
+}
+
 
 @Component({
   selector: 'app-main',
@@ -82,13 +93,26 @@ export class MainComponent{
   allDaBubbleUser:[]=[];
   deletedChannelname:string="";
   currentProfileDetail:any;
+  userChats:Chat[]=[];
+  userChat:{}={};
 
   constructor(private authService: AuthService) {
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
     // this.authService.getUserLiveUpdates();
     this.loadLiveUserData();
+    if(this.userData){
+      // for(let i = 0; i < this.userData.chats.length; i++){
+       const userChat: Chat[] = await this.authService.getUserChats(this.userData?.uid);
+       if (userChat) {
+        this.userChats.push(...userChat);
+        // }
+      }
+      
+      console.log("userChats:   ",this.userChats);
+    }
+    
   }
   loadLiveUserData(){
     this.authService.userData$.subscribe((data) => {

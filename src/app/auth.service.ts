@@ -68,8 +68,7 @@ export class AuthService {
       email: email,              
       fotolink: "", 
       channels:[],
-      chats:[],            
-      // friends: ["2uVdcQYRRJUU84FFJmBeFxxVAII3"],               
+      chats:[],                          
     }); 
   }
 
@@ -379,7 +378,59 @@ async createChat(userId:string, memberId:string){
     createdAt: new Date(),
     messages:[]
   });
+  const userDocRef = doc(this.firebaseDatabase, `users/${userId}`);
+    const docSnap = await getDoc(userDocRef);
+    if (!docSnap.exists()) {
+      await setDoc(userDocRef, { chats:newChatRef.id }); // Erstes Array erstellen
+    } else {
+      await updateDoc(userDocRef, {
+        chats: arrayUnion(newChatRef.id) // Neuen Channel zum Array hinzufügen
+      });
+    }
+    const userDocRefTwo = doc(this.firebaseDatabase, `users/${memberId}`);
+    const docSnapTwo = await getDoc(userDocRef);
+    if (!docSnapTwo.exists()) {
+      await setDoc(userDocRefTwo, { chats:newChatRef.id }); // Erstes Array erstellen
+    } else {
+      await updateDoc(userDocRefTwo, {
+        chats: arrayUnion(newChatRef.id) // Neuen Channel zum Array hinzufügen
+      });
+    }
   return newChatRef.id;
+}
+async getUserChats(userId: string) {
+  const userRef = doc(this.firebaseDatabase, `users/${userId}`);
+  const userSnap = await getDoc(userRef);
+  const userData = userSnap.data();
+  if (!userData || !userData['chats']) return [];
+  const chatIds: string[] = userData['chats'];
+  const chatDetails = [];
+  for (const chatId of chatIds) {
+    const chatRef = doc(this.firebaseDatabase, `chats/${chatId}`);
+    const chatSnap = await getDoc(chatRef);
+    if (chatSnap.exists()) {
+      const chatData = chatSnap.data();
+      const chatMembers: string[] = chatData['members'];
+      const chatPartnerId = chatMembers.find((id) => id !== userId);
+      if (!chatPartnerId) continue;
+      const partnerRef = doc(this.firebaseDatabase, `users/${chatPartnerId}`);
+      const partnerSnap = await getDoc(partnerRef);
+      const partnerData = partnerSnap.exists() ? partnerSnap.data() : {};
+      chatDetails.push({
+        chatId,
+        chatData,
+        chatPartner: { uid: chatPartnerId,
+      name: partnerData['name'],                
+      email: partnerData['email'],              
+      fotolink: partnerData['fotolink'], 
+      channels:partnerData['channels'],
+      chats:partnerData['chats'], 
+           }
+      });
+    }
+  }
+  console.log("ChatDetails: ", chatDetails);
+  return chatDetails;
 }
 
 }
