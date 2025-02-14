@@ -100,21 +100,22 @@ export class MainComponent{
   constructor(private authService: AuthService) {
   }
 
-  async ngOnInit() {
+  ngOnInit() {
     // this.authService.getUserLiveUpdates();
     this.loadLiveUserData();
+    this.loadUserChats();
+  }
+  async loadUserChats(){
+    this.userChats = [];
     if(this.userData){
-      // for(let i = 0; i < this.userData.chats.length; i++){
        const userChat: Chat[] = await this.authService.getUserChats(this.userData?.uid);
        if (userChat) {
         this.userChats.push(...userChat);
-        // }
       }
-      
-      console.log("userChats:   ",this.userChats);
+      console.log(this.userChats)
     }
-    
   }
+
   loadLiveUserData(){
     this.authService.userData$.subscribe((data) => {
       this.userData = data;
@@ -304,15 +305,32 @@ export class MainComponent{
     this.memberDetails = !this.memberDetails;
     
   }
-  goToPersonalMessages(){
+  async goToPersonalMessages(){
     if(this.userData){
-      const messagesWMembers = this.authService.createChat(this.userData?.uid, this.currentProfileDetail.uid )
+      const messagesWMembers = await this.authService.createChat(this.userData?.uid, this.currentProfileDetail.uid )
     }
-    //openChat()
+    await this.loadUserChats().then(() => {
+      setTimeout(() => {
+        for (let i = 0; i < this.userChats.length; i++) {
+          console.log("number:", i);
+          console.log(this.userChats[i].chatPartner.uid, "&", this.currentProfileDetail.uid);
+          if (this.userChats[i].chatPartner.uid == this.currentProfileDetail.uid) {
+            this.openChat(i);
+            console.log("number:", i);
+          }
+        }
+      }, 200);
+    });
+  
+    
+    this.memberDetails = false;
+    
+
   }
-  openChat(idx:number){
-    // this.currentChat = null;
-    this.authService.getChatLiveUpdates(this.userChats[idx].chatId);
+  async openChat(idx:number){
+    this.currentChannel = null;
+    this.currentChat = null;
+    await this.authService.getChatLiveUpdates(this.userChats[idx].chatId);
     this.authService.currentChat.subscribe(async (data) => {
     if (!data) {
       this.currentChat = null;
@@ -364,7 +382,7 @@ export class MainComponent{
         };
     })
     
-    console.log(this.currentChat);
+    console.log("neuer Chat gestartet:",  this.currentChat);
   }
   showChatPartner(members:Member[]){
     for(let i = 0; i < members.length; i++){

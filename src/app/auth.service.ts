@@ -206,6 +206,7 @@ export class AuthService {
   getChannelLiveUpdates(channelName: string) {
     const channelDocRef = doc(this.firebaseDatabase, `channels/${channelName}`);
     this.unsubscribeFromChannel();
+    this.unsubscribeFromChat();
     return this.channelUnsubscribe = onSnapshot(channelDocRef, (docSnap) => {
       if (docSnap.exists()) {
         this.currentChannel.next(docSnap.data()); // Daten direkt setzen
