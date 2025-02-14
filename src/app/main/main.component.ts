@@ -44,6 +44,7 @@ interface Chat {
 }
 
 
+
 @Component({
   selector: 'app-main',
   standalone: true,
@@ -95,7 +96,7 @@ export class MainComponent{
   currentProfileDetail:any;
   userChats:Chat[]=[];
   userChat:{}={};
-
+  currentChat:any|null = null;
   constructor(private authService: AuthService) {
   }
 
@@ -198,9 +199,6 @@ export class MainComponent{
       minute: "2-digit",
       hour12: false,
     });
-
-    console.log(formattedDate); // → "11.02.2025, 12:09"
-    
     this.currentChannel = {
       name: data.name || channelName,
       description: data.description || "Keine Beschreibung verfügbar",
@@ -219,6 +217,13 @@ export class MainComponent{
     const rawForm = this.sendMessageForm.getRawValue();
     if(this.currentChannel){
       this.authService.sendMessage(rawForm.message, this.currentChannel.name);
+    }
+  }
+  sendPrivateMessage(){
+    const rawForm = this.sendMessageForm.getRawValue();
+    if(this.currentChat){
+      this.authService.sendPrivateMessage(rawForm.message, this.currentChat.uid);
+      console.log("test sendprivatemessages", this.currentChat)
     }
   }
   openDetailsAboutChannel(){
@@ -303,6 +308,70 @@ export class MainComponent{
     if(this.userData){
       const messagesWMembers = this.authService.createChat(this.userData?.uid, this.currentProfileDetail.uid )
     }
+    //openChat()
+  }
+  openChat(idx:number){
+    // this.currentChat = null;
+    this.authService.getChatLiveUpdates(this.userChats[idx].chatId);
+    this.authService.currentChat.subscribe(async (data) => {
+    if (!data) {
+      this.currentChat = null;
+      return;
+    }
+    const messages = data.messages || [];
+    const messagesWithUserData = await Promise.all(
+      messages.map(async (msg: Message) => {
+        const userInfo = await this.authService.getUserInfo(msg.uid);
+        const time = msg.timestamp
+        const formattedDateMessage = new Date(time).toLocaleString("de-DE", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        });
+        return {
+          uid: msg.uid, 
+          timestamp: formattedDateMessage,
+          message:msg.message,
+          username: userInfo? userInfo['name'] : "Unbekannt",
+          fotolink: userInfo? userInfo['fotolink'] : "default.png",
+          editing:false,
+        };
+      })
+    );
+    const members = data.members || [];
+    const membersWithUserData = await Promise.all(
+      members.map(async (uid: string) => {
+        const userInfo = await this.authService.getUserInfo(uid);
+        return {
+          uid: uid,
+          username: userInfo ? userInfo['name'] : "Unbekannt",
+          fotolink: userInfo ? userInfo['fotolink'] : "default.png",
+          email:userInfo ? userInfo['email'] : "default.png"
+        };
+        
+      })
+    );
+    const chatpartner = this.showChatPartner(membersWithUserData);
+    this.currentChat={
+          uid:data.uid || this.userChats[idx].chatId,
+          createdAt:data.createdAt,
+          members: membersWithUserData,
+          messages: messagesWithUserData,
+          chatpartner: chatpartner,
+        };
+    })
+    
+    console.log(this.currentChat);
+  }
+  showChatPartner(members:Member[]){
+    for(let i = 0; i < members.length; i++){
+      if(members[i].uid !== this.userData?.uid){
+        return members[i].username;
+      }
+    }return "Unbekannt";
   }
   
 }

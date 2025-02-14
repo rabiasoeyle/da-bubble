@@ -30,10 +30,13 @@ export class AuthService {
   firebaseDatabase = inject(Firestore);
   currentUid: string | null = null;
   currentChannel = new BehaviorSubject<any>(null);
+  currentChat = new BehaviorSubject<any>(null);
   private userDataSubject = new BehaviorSubject<UserData | null>(null); // Initial null
   public userData$ = this.userDataSubject.asObservable(); // Observable für Komponenten
   private userCache = new Map<string, any>();
   private unsubscribeUserUpdates!: () => void;
+  private chatUnsubscribe: (() => void) | null = null;
+  private channelUnsubscribe: (() => void) | null = null;
 
   constructor() {
   }
@@ -198,7 +201,7 @@ export class AuthService {
       });
     }
   }
-  private channelUnsubscribe: (() => void) | null = null;
+  
 
   getChannelLiveUpdates(channelName: string) {
     const channelDocRef = doc(this.firebaseDatabase, `channels/${channelName}`);
@@ -431,6 +434,50 @@ async getUserChats(userId: string) {
   }
   console.log("ChatDetails: ", chatDetails);
   return chatDetails;
+}
+
+getChatLiveUpdates(chatId: string) {
+  console.log(chatId);
+  const chatDocRef = doc(this.firebaseDatabase, `chats/${chatId}`);
+  this.unsubscribeFromChat();
+  this.unsubscribeFromChannel();
+  return this.chatUnsubscribe = onSnapshot(chatDocRef, (docSnap) => {
+    if (docSnap.exists()) {
+      this.currentChat.next(docSnap.data()); // Daten direkt setzen
+    } else {
+      this.currentChat.next(null); // Falls der Channel nicht existiert
+    }
+  }, (error) => {
+    console.error("Firestore Live-Update Fehler:", error);
+  });
+}
+unsubscribeFromChat() {
+if (this.chatUnsubscribe) {
+  this.chatUnsubscribe(); // Live-Update deaktivieren
+  this.chatUnsubscribe = null;
+  this.currentChat.next(null); // Channel beim User entfernen
+}
+}
+async loadChatData(chatId:string){
+  const chatRef = doc(this.firebaseDatabase, `chats/${chatId}`);
+    const chatSnap = await getDoc(chatRef);
+    if (chatSnap.exists()) {
+      const chatData = chatSnap.data();
+      console.log("chatData:  ", chatData);
+  }
+}
+async sendPrivateMessage(message:string, chatId:string){
+  console.log(chatId);
+  const userId = localStorage.getItem("userId");
+  const time = new Date();
+  const channelRef = doc(this.firebaseDatabase, `chats/${chatId}`);
+  await updateDoc(channelRef, {
+    messages: arrayUnion({
+      uid: userId,
+      message: message,
+      timestamp: new Date().toISOString()
+    })
+  });
 }
 
 }

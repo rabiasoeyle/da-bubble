@@ -48,7 +48,7 @@
                 <div class="direct-chats">
                     @if(userChats){
                             @for (item of this.userChats; track item; let idx = $index) {
-                            <div class="text-pctr">
+                            <div (click)="openChat(idx)" class="text-pctr">
                                 <img  class="mmbr-details-img" [src]="item.chatPartner.fotolink" alt="profile">
                                 <h4>{{item.chatPartner.name}}</h4>
                             </div>
@@ -313,6 +313,126 @@
                 <img src="/assets/img/close.png" alt="x">
                 <h3>Sie haben den Channel # {{deletedChannelname}} erfolgreich gelöscht.</h3>
         } 
+        @if(currentChat!=null){
+            <div class="chat-area-child">
+                <div class="header-of-channel">
+                    @for(item of currentChat ? currentChat.members: ["Lisa"]; track item; let idx = $index){
+                        @if(item.uid !== userData?.uid){
+                            <div (click)="openUserDetails(idx)" class="mmbr-of-chnnl-list">
+                                <img class="mmbr-of-chnnl-pic" src="{{item.fotolink}}" alt="">
+                                <h3># {{item.username}}</h3>
+                            </div> 
+                        } 
+                    }
+                    @if(memberDetails){
+                        <div class="mmbr-dtls-parent">
+                            <div>
+                                <h3>Profil</h3>
+                                <img (click)="openUserDetails(9999)" src="/assets/img/close.png" alt="">
+                            </div>
+                            <img class="mmbr-details-img" src="{{currentProfileDetail.fotolink}}" alt="">
+                            <h3>{{currentProfileDetail.name}}</h3>
+                            <div>
+                                <img src="/assets/img/mail.png" alt="email">
+                                <h5>E-Mail-Adresse</h5>
+                            </div>
+                            <h4 class="blue-font">{{currentProfileDetail.email}}</h4>
+                            <button class="blue-btn" (click)="goToPersonalMessages()">Nachricht</button>
+                        </div>
+                    }
+                </div>
+                <div class="channel-chat">
+                    <h3 class="margin-5px"> # {{currentChat.chatpartner}}</h3>
+                        <h4>
+                            Diese Unterhaltung findet nur zwischen <span class="blue-font"># {{currentChat.chatpartner}}</span> und dir statt.
+                        </h4>
+                    @for(item of currentChat ? currentChat.messages : ["Lisa"]; track item; let idx = $index){
+                        @if(this.userData && item.editing ==false){
+                            @if(item.uid != this.userData.uid){
+                                <div class="msg-pic-and-text">
+                            @if(item.profilePic){
+                                <img  class="msg-sender-pic" src="{{item? item.fotolink: '/assets/img/profile.png'}}" alt="profile">  
+                            }
+                            <div class="msg-text-area">
+                                <div class="msg-name-and-time">
+                                    <h4 class="margin-5px">{{item? item.username:"565656"}}</h4>
+                                    <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
+                                </div>
+                                <div (click)="startEditMessage(idx)" class="msg-message">
+                                    <h4 class="margin-5px">{{item? item.message :"Hey"}}</h4>
+                                </div> 
+                            </div>
+                        </div>
+                            }
+                            @else {
+                                <div class="my-msg-pic-and-text">
+                                    @if(item.fotolink){
+                                        <img  class="msg-sender-pic" src="{{item? item.fotolink: '/assets/img/profile.png'}}" alt="profile">  
+                                    }
+                                    <div class="my-msg-text-area">
+                                        <div class="my-msg-name-and-time">
+                                            <h4 class="margin-5px">{{item? item.username:"565656"}}</h4>
+                                            <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
+                                        </div>
+                                        <div (click)="startEditMessage(idx)" class="my-msg-message">
+                                            <h4 class="margin-5px">{{item? item.message :"Hey"}}</h4>
+                                        </div> 
+                                    </div>
+                                </div>
+                            }
+                        }@else if(this.userData && item.editing ==true){
+                            @if(item.uid != this.userData.uid){
+                                <div class="msg-pic-and-text">
+                            @if(item.fotolink){
+                                <img  class="msg-sender-pic" src="{{item? item.fotolink: '/assets/img/profile.png'}}" alt="profile">  
+                            }
+                            <div class="msg-text-area">
+                                <div class="msg-name-and-time">
+                                    <h4 class="margin-5px">{{item? item.username:"565656"}}</h4>
+                                    <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
+                                </div>
+                                <div class="msg-message">
+                                    <form class="edit-message-form" [formGroup] ="editMessageForm" (ngSubmit)="editMessage(idx)">
+                                        <textarea formControlName="message" class="margin-5px" placeholder={{item.message}}></textarea>
+                                        <button type="button" (click)="closeEditMessage(idx)">Abbrechen</button>
+                                        <button type="submit">Speichern</button>
+                                    </form>
+                                </div> 
+                            </div>
+                                </div>
+                            }
+                            @else {
+                                <div class="my-msg-pic-and-text">
+                                    @if(item.fotolink){
+                                        <img  class="msg-sender-pic" src="{{item? item.fotolink: '/assets/img/profile.png'}}" alt="profile">  
+                                    }
+                                    <div class="my-msg-text-area">
+                                        <div class="my-msg-name-and-time">
+                                            <h4 class="margin-5px">{{item? item.username:"565656"}}</h4>
+                                            <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
+                                        </div>
+                                        <div class="my-msg-message">
+                                            <form class="edit-message-form" [formGroup] ="editMessageForm" (ngSubmit)="editMessage(idx)">
+                                                <textarea formControlName="message" class="margin-5px" placeholder={{item.message}}></textarea>
+                                                <button type="button" (click)="closeEditMessage(idx)">Abbrechen</button>
+                                                <button type="submit">Speichern</button>
+                                            </form>
+                                        </div> 
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+                <form class="messages-form" [formGroup] ="sendMessageForm" (ngSubmit)="sendPrivateMessage()">
+                    <textarea formControlName="message" type="text" placeholder="Deine Nachricht hier eingeben">
+                    </textarea>
+                    <button type="submit">
+                        <img src="/assets/img/send.png" alt="send">
+                    </button>
+                </form>   
+            </div> 
+        }
         <div></div>
     </div>
     @if(addChannelOpen){
