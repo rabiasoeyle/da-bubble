@@ -145,7 +145,7 @@ export class MainComponent{
           timestamp: formattedDateMessage,
           message:msg.message,
           username: userInfo? userInfo['name'] : "Unbekannt",
-          profilePic: userInfo? userInfo['fotolink'] : "default.png",
+          fotolink: userInfo? userInfo['fotolink'] : "default.png",
           editing:false,
         };
       })
@@ -159,7 +159,8 @@ export class MainComponent{
         return {
           uid: uid,
           username: userInfo ? userInfo['name'] : "Unbekannt",
-          profilePic: userInfo ? userInfo['fotolink'] : "default.png",
+          fotolink: userInfo ? userInfo['fotolink'] : "default.png",
+          email:userInfo ? userInfo['email'] : "default.png"
         };
       })
     );
@@ -292,42 +293,8 @@ export class MainComponent{
       this.currentChat = null;
       return;
     }
-    const messages = data.messages || [];
-    const messagesWithUserData = await Promise.all(
-      messages.map(async (msg: Message) => {
-        const userInfo = await this.authService.getUserInfo(msg.uid);
-        const time = msg.timestamp
-        const formattedDateMessage = new Date(time).toLocaleString("de-DE", {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-        });
-        return {
-          uid: msg.uid, 
-          timestamp: formattedDateMessage,
-          message:msg.message,
-          username: userInfo? userInfo['name'] : "Unbekannt",
-          fotolink: userInfo? userInfo['fotolink'] : "default.png",
-          editing:false,
-        };
-      })
-    );
-    const members = data.members || [];
-    const membersWithUserData = await Promise.all(
-      members.map(async (uid: string) => {
-        const userInfo = await this.authService.getUserInfo(uid);
-        return {
-          uid: uid,
-          username: userInfo ? userInfo['name'] : "Unbekannt",
-          fotolink: userInfo ? userInfo['fotolink'] : "default.png",
-          email:userInfo ? userInfo['email'] : "default.png"
-        };
-        
-      })
-    );
+    const messagesWithUserData = data.messages ? await this.loadMessages(data.messages): [];
+    const membersWithUserData = data.members ? await this.loadMembers(data.members):[];
     const chatpartner = this.showChatPartner(membersWithUserData);
     this.currentChat={
           uid:data.uid || this.userChats[idx].chatId,
@@ -337,8 +304,6 @@ export class MainComponent{
           chatpartner: chatpartner,
         };
     })
-    
-    console.log("neuer Chat gestartet:",  this.currentChat);
   }
   showChatPartner(members:Member[]){
     for(let i = 0; i < members.length; i++){

@@ -94,7 +94,7 @@
                             <div class="mmbr-of-chnnl-list-parent">
                                 @for(item of currentChannel ? currentChannel.members: ["Lisa"]; track item; let idx = $index){
                                     <div (click)="openUserDetails(idx)" class="mmbr-of-chnnl-list">
-                                        <img class="mmbr-of-chnnl-pic" src="{{item.profilePic}}" alt="">
+                                        <img class="mmbr-of-chnnl-pic" src="{{item.fotolink}}" alt="">
                                         <!-- <img src="" alt="online"> -->
                                         <h4>{{item.username}}</h4>
                                     </div>
@@ -126,7 +126,7 @@
                     <div class="header-of-channel-right">
                         <div class="members-pic">
                         @for(item of currentChannel ? currentChannel.members: ["Lisa"]; track item){
-                            <img (click)="openMembersList()" class="chnnl-memb-pic" src="{{item.profilePic}}" alt="profile">
+                            <img (click)="openMembersList()" class="chnnl-memb-pic" src="{{item.fotolink}}" alt="profile">
                         }
                         </div>
                         <h5 class="mmber-amount">{{currentChannel.membersAmount}}</h5>
@@ -149,8 +149,8 @@
                         @if(this.userData && item.editing ==false){
                             @if(item.uid != this.userData.uid){
                                 <div class="msg-pic-and-text">
-                            @if(item.profilePic){
-                                <img  class="msg-sender-pic" src="{{item? item.profilePic: '/assets/img/profile.png'}}" alt="profile">  
+                            @if(item.fotolink){
+                                <img  class="msg-sender-pic" src="{{item? item.fotolink: '/assets/img/profile.png'}}" alt="profile">  
                             }
                             <div class="msg-text-area">
                                 <div class="msg-name-and-time">
@@ -165,8 +165,8 @@
                             }
                             @else {
                                 <div class="my-msg-pic-and-text">
-                                    @if(item.profilePic){
-                                        <img  class="msg-sender-pic" src="{{item? item.profilePic: '/assets/img/profile.png'}}" alt="profile">  
+                                    @if(item.fotolink){
+                                        <img  class="msg-sender-pic" src="{{item? item.fotolink: '/assets/img/profile.png'}}" alt="profile">  
                                     }
                                     <div class="my-msg-text-area">
                                         <div class="my-msg-name-and-time">
@@ -182,8 +182,8 @@
                         }@else if(this.userData && item.editing ==true){
                             @if(item.uid != this.userData.uid){
                                 <div class="msg-pic-and-text">
-                            @if(item.profilePic){
-                                <img  class="msg-sender-pic" src="{{item? item.profilePic: '/assets/img/profile.png'}}" alt="profile">  
+                            @if(item.fotolink){
+                                <img  class="msg-sender-pic" src="{{item? item.fotolink: '/assets/img/profile.png'}}" alt="profile">  
                             }
                             <div class="msg-text-area">
                                 <div class="msg-name-and-time">
@@ -198,8 +198,8 @@
                             }
                             @else {
                                 <div class="my-msg-pic-and-text">
-                                    @if(item.profilePic){
-                                        <img  class="msg-sender-pic" src="{{item? item.profilePic: '/assets/img/profile.png'}}" alt="profile">  
+                                    @if(item.fotolink){
+                                        <img  class="msg-sender-pic" src="{{item? item.fotolink: '/assets/img/profile.png'}}" alt="profile">  
                                     }
                                     <div class="my-msg-text-area">
                                         <div class="my-msg-name-and-time">
@@ -346,7 +346,7 @@
                         @if(this.userData && item.editing ==false){
                             @if(item.uid != this.userData.uid){
                                 <div class="msg-pic-and-text">
-                            @if(item.profilePic){
+                            @if(item.fotolink){
                                 <img  class="msg-sender-pic" src="{{item? item.fotolink: '/assets/img/profile.png'}}" alt="profile">  
                             }
                             <div class="msg-text-area">
@@ -379,7 +379,7 @@
                         }@else if(this.userData && item.editing ==true){
                             @if(item.uid != this.userData.uid){
                                 <div class="msg-pic-and-text">
-                            @if(item.profilePic){
+                            @if(item.fotolink){
                                 <img  class="msg-sender-pic" src="{{item? item.fotolink: '/assets/img/profile.png'}}" alt="profile">  
                             }
                             <div class="msg-text-area">
