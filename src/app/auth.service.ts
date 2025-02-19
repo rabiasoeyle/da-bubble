@@ -1,26 +1,11 @@
 import { inject, Injectable, Input } from '@angular/core';
-import { FirebaseApp, getApps } from '@angular/fire/app';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from '@angular/fire/auth';
-import { Database, getDatabase, ref, set } from '@angular/fire/database';
-import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, DocumentData, DocumentReference, Firestore, getDoc, getDocs, onSnapshot, setDoc, updateDoc, where } from '@angular/fire/firestore';
-import { BehaviorSubject, from, merge, Observable } from 'rxjs';
-import { confirmPasswordReset, getAuth, isSignInWithEmailLink, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, sendSignInLinkToEmail, signInWithEmailLink, User, UserCredential, verifyPasswordResetCode } from "firebase/auth";
+import { FirebaseApp } from '@angular/fire/app';
+import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from '@angular/fire/auth';
+import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, Firestore, getDoc, getDocs, onSnapshot, setDoc, updateDoc, where } from '@angular/fire/firestore';
+import { BehaviorSubject, from, Observable } from 'rxjs';
+import { confirmPasswordReset, sendEmailVerification, sendPasswordResetEmail, sendSignInLinkToEmail, signInWithEmailLink, verifyPasswordResetCode } from "firebase/auth";
 import {GoogleAuthProvider, signInWithPopup } from "@angular/fire/auth";
-import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { query } from '@angular/animations';
 import { UserData } from '../modules/user';
-
-// export interface UserData {
-//     uid: string;
-//     name: string;
-//     email: string;
-//     // friends:[];
-//     fotolink:string;
-//     channels:[];
-//     chats:[];
-// }
-
-
 
 @Injectable({
   providedIn: 'root'

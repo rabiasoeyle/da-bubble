@@ -10,10 +10,11 @@ import { Channel } from '../../modules/channel';
 import { Member } from '../../modules/member';
 import { Chat } from '../../modules/chat';
 
+
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [HeaderComponent,ReactiveFormsModule],
+  imports: [HeaderComponent,ReactiveFormsModule, SidenavComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })
@@ -64,6 +65,7 @@ export class MainComponent{
   currentChat:any|null = null;
   constructor(private authService: AuthService) {
   }
+  
 
   ngOnInit() {
     this.loadLiveUserData();
@@ -94,12 +96,6 @@ export class MainComponent{
       this.sidenavButtonText="Workspace-Menü öffnen"
     }
   }
-  changeChannelAreaStatus(){
-    this.channelsOpen = !this.channelsOpen;
-  }
-  changeMessageAreaStatus(){
-    this.directMessagesOpen = !this.directMessagesOpen;
-  }
   addChannelDialog(){
     this.addChannelOpen = !this.addChannelOpen;
   }
@@ -109,6 +105,24 @@ export class MainComponent{
     setTimeout(()=>this.loadLiveUserData(),4000);
     this.addChannelDialog();
   }
+  
+  sendMessage(){
+    const rawForm = this.sendMessageForm.getRawValue();
+    if(this.currentChannel){
+      this.authService.sendMessage(rawForm.message, this.currentChannel.name);
+    }
+  }
+  sendPrivateMessage(){
+    const rawForm = this.sendMessageForm.getRawValue();
+    if(this.currentChat){
+      this.authService.sendPrivateMessage(rawForm.message, this.currentChat.uid);
+      console.log("test sendprivatemessages", this.currentChat)
+    }
+  }
+  openDetailsAboutChannel(){
+    this.openDetailsOfChannel = !this.openDetailsOfChannel;
+  }
+
   openChannel(channelName: string) {
     this.authService.getChannelLiveUpdates(channelName);
     this.authService.currentChannel.subscribe(async (data) => {
@@ -177,22 +191,7 @@ export class MainComponent{
     });
     return formattedDate;
   }
-  sendMessage(){
-    const rawForm = this.sendMessageForm.getRawValue();
-    if(this.currentChannel){
-      this.authService.sendMessage(rawForm.message, this.currentChannel.name);
-    }
-  }
-  sendPrivateMessage(){
-    const rawForm = this.sendMessageForm.getRawValue();
-    if(this.currentChat){
-      this.authService.sendPrivateMessage(rawForm.message, this.currentChat.uid);
-      console.log("test sendprivatemessages", this.currentChat)
-    }
-  }
-  openDetailsAboutChannel(){
-    this.openDetailsOfChannel = !this.openDetailsOfChannel;
-  }
+
   addMembersToChannelDialog(){
     this.membersOfChannelList=false;
     this.addMemberToChannel =!this.addMemberToChannel;

@@ -23,7 +23,6 @@ export class HeaderComponent {
       if(this.userData == null){
           this.router.navigateByUrl('');
       }
-      console.log('Aktuelle Benutzerdaten:', this.userData);
     });
   }
   toggleMenu(){
