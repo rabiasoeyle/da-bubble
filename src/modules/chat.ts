@@ -7,4 +7,5 @@ export interface Chat {
       email:string;
       fotolink:string;
     };
+    
   }

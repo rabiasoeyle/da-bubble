@@ -18,6 +18,7 @@ export class AuthService {
   currentUid: string | null = null;
   currentChannel = new BehaviorSubject<any>(null);
   currentChat = new BehaviorSubject<any>(null);
+  public currentChatn = this.currentChat.asObservable();
   private userDataSubject = new BehaviorSubject<UserData | null>(null); // Initial null
   public userData$ = this.userDataSubject.asObservable(); // Observable für Komponenten
   private userCache = new Map<string, any>();
@@ -256,7 +257,6 @@ export class AuthService {
       console.error("Firestore Live-Update Fehler:", error);
     });
   }
-
   async addMembersToChannel(channelName:string, userName:string){
     console.log("userName: " + userName)
     try {
@@ -307,7 +307,7 @@ export class AuthService {
     await updateDoc(channelDocRef, {
       description: newDescription
   })
-}
+  }
 
   async changeChannelName(oldChannelName: string, newChannelName: string){
     const oldChannelDocRef = doc(this.firebaseDatabase, `channels/${oldChannelName}`);
@@ -408,15 +408,17 @@ async getUserChats(userId: string) {
       const partnerSnap = await getDoc(partnerRef);
       const partnerData = partnerSnap.exists() ? partnerSnap.data() : {};
       chatDetails.push({
+        
         chatId,
         chatData,
-        chatPartner: { uid: chatPartnerId,
-      name: partnerData['name'],                
-      email: partnerData['email'],              
-      fotolink: partnerData['fotolink'], 
-      channels:partnerData['channels'],
-      chats:partnerData['chats'], 
-           }
+        chatPartner: { 
+          uid: chatPartnerId,
+          name: partnerData['name'],                
+          email: partnerData['email'],              
+          fotolink: partnerData['fotolink'], 
+          channels:partnerData['channels'],
+          chats:partnerData['chats'], 
+        }
       });
     }
   }
@@ -424,9 +426,9 @@ async getUserChats(userId: string) {
   return chatDetails;
 }
 
-getChatLiveUpdates(chatId: string) {
+async getChatLiveUpdates(chatId: string) {
   console.log(chatId);
-  const chatDocRef = doc(this.firebaseDatabase, `chats/${chatId}`);
+  const chatDocRef = await doc(this.firebaseDatabase, `chats/${chatId}`);
   this.unsubscribeFromChat();
   this.unsubscribeFromChannel();
   return this.chatUnsubscribe = onSnapshot(chatDocRef, (docSnap) => {

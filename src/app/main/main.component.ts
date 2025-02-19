@@ -9,12 +9,13 @@ import { Message } from '../../modules/messages';
 import { Channel } from '../../modules/channel';
 import { Member } from '../../modules/member';
 import { Chat } from '../../modules/chat';
+import { ChatComponent } from './chat/chat.component';
 
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [HeaderComponent,ReactiveFormsModule, SidenavComponent],
+  imports: [HeaderComponent,ReactiveFormsModule, SidenavComponent, ChatComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })
@@ -24,8 +25,8 @@ export class MainComponent{
   fb = inject(FormBuilder);
   // booleans
   sidenavIsOpen:boolean = true;
-  directMessagesOpen:boolean = true;
-  channelsOpen:boolean = true;
+  // directMessagesOpen:boolean = true;
+  // channelsOpen:boolean = true;
   addChannelOpen:boolean = false;
   addMemberToChannel:boolean = false;
   openDetailsOfChannel:boolean = false;
@@ -65,8 +66,6 @@ export class MainComponent{
   currentChat:any|null = null;
   constructor(private authService: AuthService) {
   }
-  
-
   ngOnInit() {
     this.loadLiveUserData();
     this.loadUserChats();
@@ -105,7 +104,6 @@ export class MainComponent{
     setTimeout(()=>this.loadLiveUserData(),4000);
     this.addChannelDialog();
   }
-  
   sendMessage(){
     const rawForm = this.sendMessageForm.getRawValue();
     if(this.currentChannel){
@@ -122,7 +120,6 @@ export class MainComponent{
   openDetailsAboutChannel(){
     this.openDetailsOfChannel = !this.openDetailsOfChannel;
   }
-
   openChannel(channelName: string) {
     this.authService.getChannelLiveUpdates(channelName);
     this.authService.currentChannel.subscribe(async (data) => {
@@ -191,7 +188,6 @@ export class MainComponent{
     });
     return formattedDate;
   }
-
   addMembersToChannelDialog(){
     this.membersOfChannelList=false;
     this.addMemberToChannel =!this.addMemberToChannel;
@@ -303,6 +299,9 @@ export class MainComponent{
           chatpartner: chatpartner,
         };
     })
+    setTimeout(()=>{
+      console.log(this.currentChat)
+    },1000)
   }
   showChatPartner(members:Member[]){
     for(let i = 0; i < members.length; i++){

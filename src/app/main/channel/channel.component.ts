@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Channel } from '../../../modules/channel';
 
 @Component({
   selector: 'app-channel',
@@ -8,5 +9,5 @@ import { Component } from '@angular/core';
   styleUrl: './channel.component.scss'
 })
 export class ChannelComponent {
-
+@Input() currentChannel:Channel[] = [];
 }
