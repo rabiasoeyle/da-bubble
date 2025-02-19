@@ -8,17 +8,19 @@ import { confirmPasswordReset, getAuth, isSignInWithEmailLink, onAuthStateChange
 import {GoogleAuthProvider, signInWithPopup } from "@angular/fire/auth";
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { query } from '@angular/animations';
+import { UserData } from '../modules/user';
+
+// export interface UserData {
+//     uid: string;
+//     name: string;
+//     email: string;
+//     // friends:[];
+//     fotolink:string;
+//     channels:[];
+//     chats:[];
+// }
 
 
-export interface UserData {
-    uid: string;
-    name: string;
-    email: string;
-    // friends:[];
-    fotolink:string;
-    channels:[];
-    chats:[];
-}
 
 @Injectable({
   providedIn: 'root'

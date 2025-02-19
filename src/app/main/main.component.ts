@@ -1,49 +1,14 @@
-import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { AuthService, UserData } from '../auth.service';
+import { Component, inject} from '@angular/core';
+import { AuthService } from '../auth.service';
 import { HeaderComponent } from './header/header.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { forkJoin, map, of, switchMap, Timestamp } from 'rxjs';
-import { user } from '@angular/fire/auth';
-
-interface Message {
-  uid: string;
-  message: string;
-  timestamp: string;
-  username?: string;
-  profilePic?: string;
-}
-
-interface Channel {
-  name: string;
-  description: string;
-  messages: any[];
-  created:{
-    createdFrom:any;
-    createdAt:string;
-  };
-  members:any[];
-  membersAmount:number;
-}
-
-interface Member {
-  uid:string,
-  username?:string,
-  profilePic?: string,
-}
-interface Chat {
-  chatId: string;
-  chatData: any;
-  chatPartner: {
-    uid: string;
-    name:string;
-    email:string;
-    fotolink:string;
-  };
-}
-
-
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UserData } from '../../modules/user';
+import { Message } from '../../modules/messages';
+import { Channel } from '../../modules/channel';
+import { Member } from '../../modules/member';
+import { Chat } from '../../modules/chat';
 
 @Component({
   selector: 'app-main',
@@ -101,7 +66,6 @@ export class MainComponent{
   }
 
   ngOnInit() {
-    // this.authService.getUserLiveUpdates();
     this.loadLiveUserData();
     this.loadUserChats();
   }
@@ -112,17 +76,14 @@ export class MainComponent{
        if (userChat) {
         this.userChats.push(...userChat);
       }
-      console.log(this.userChats)
     }
   }
-
   loadLiveUserData(){
     this.authService.userData$.subscribe((data) => {
       this.userData = data;
       if(this.userData == null){
         this.router.navigateByUrl('');
       }
-      console.log("User Daten:", this.userData)
     });
   }
   changeSidenavStatus(){
@@ -155,51 +116,12 @@ export class MainComponent{
       this.currentChannel = null;
       return;
     }
-    const messages = data.messages || [];
-    const messagesWithUserData = await Promise.all(
-      messages.map(async (msg: Message) => {
-        const userInfo = await this.authService.getUserInfo(msg.uid);
-        const time = msg.timestamp
-        const formattedDateMessage = new Date(time).toLocaleString("de-DE", {
-          day: "2-digit",
-          month: "2-digit",
-          year: "numeric",
-          hour: "2-digit",
-          minute: "2-digit",
-          hour12: false,
-        });
-        return {
-          uid: msg.uid, 
-          timestamp: formattedDateMessage,
-          message:msg.message,
-          username: userInfo? userInfo['name'] : "Unbekannt",
-          profilePic: userInfo? userInfo['fotolink'] : "default.png",
-          editing:false,
-        };
-      })
-    );
-    const members = data.members || [];
-    const membersWithUserData = await Promise.all(
-      members.map(async (uid: string) => {
-        const userInfo = await this.authService.getUserInfo(uid);
-        return {
-          uid: uid,
-          username: userInfo ? userInfo['name'] : "Unbekannt",
-          profilePic: userInfo ? userInfo['fotolink'] : "default.png",
-        };
-      })
-    );
+    const messagesWithUserData = data.messages ? await this.loadMessages(data.messages): [];
+    const membersWithUserData = data.members ? await this.loadMembers(data.members): [];
     const creatorUID: string = data.created.createdFrom; // Einzelne UID aus Firebase
     const creator = await this.authService.getUserInfo(creatorUID);
     const createdAt = data.created.createdAt? (data.created.createdAt.toDate() || new Date(data.created.createdAt)): null; // Timestamp umwandeln
-    const formattedDate = new Date(createdAt).toLocaleString("de-DE", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    });
+    const formattedDate = this.formatDate(createdAt);
     this.currentChannel = {
       name: data.name || channelName,
       description: data.description || "Keine Beschreibung verfügbar",
@@ -210,9 +132,49 @@ export class MainComponent{
       messages: messagesWithUserData,
       members:membersWithUserData,
       membersAmount:data.members.length,
-    };
-    console.log('Aktuelle Channeldaten: ', this.currentChannel);
-  });
+    };});
+  }
+  async loadMessages(messages:Message[]){
+    const messagesWithUserData = await Promise.all(
+      messages.map(async (msg: Message) => {
+        const userInfo = await this.authService.getUserInfo(msg.uid);
+        const time = msg.timestamp
+        const formattedDateMessage = this.formatDate(time);
+        return {
+          uid: msg.uid, 
+          timestamp: formattedDateMessage,
+          message:msg.message,
+          username: userInfo? userInfo['name'] : "Unbekannt",
+          profilePic: userInfo? userInfo['fotolink'] : "default.png",
+          editing:false,
+        };
+      })
+    );
+    return messagesWithUserData;
+  }
+  async loadMembers(members:string[]){
+    const membersWithUserData = await Promise.all(
+      members.map(async (uid: string) => {
+        const userInfo = await this.authService.getUserInfo(uid);
+        return {
+          uid: uid,
+          username: userInfo ? userInfo['name'] : "Unbekannt",
+          profilePic: userInfo ? userInfo['fotolink'] : "default.png",
+        };
+      })
+    );
+    return membersWithUserData;
+  }
+  formatDate(createdAt:any){
+    const formattedDate = new Date(createdAt).toLocaleString("de-DE", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+    return formattedDate;
   }
   sendMessage(){
     const rawForm = this.sendMessageForm.getRawValue();
@@ -264,7 +226,6 @@ export class MainComponent{
       this.openEditChannel(),this.openChannel(rawForm.name), this.openDetailsAboutChannel()
     },200);
   }
-
   changeChannelDescription(){
     const rawForm = this.changeChannelDescrForm.getRawValue();
     if(this.currentChannel && rawForm.description !=""){
@@ -308,8 +269,7 @@ export class MainComponent{
   async goToPersonalMessages(){
     if(this.userData){
       const messagesWMembers = await this.authService.createChat(this.userData?.uid, this.currentProfileDetail.uid )
-    }
-    await this.loadUserChats().then(() => {
+    } await this.loadUserChats().then(() => {
       setTimeout(() => {
         for (let i = 0; i < this.userChats.length; i++) {
           console.log("number:", i);
@@ -321,11 +281,7 @@ export class MainComponent{
         }
       }, 200);
     });
-  
-    
     this.memberDetails = false;
-    
-
   }
   async openChat(idx:number){
     this.currentChannel = null;

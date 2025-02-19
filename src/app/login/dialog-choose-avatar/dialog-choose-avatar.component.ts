@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService, UserData } from '../../auth.service';
+import { AuthService} from '../../auth.service';
+import { UserData } from '../../../modules/user';
 
 @Component({
   selector: 'app-dialog-choose-avatar',
