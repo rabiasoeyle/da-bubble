@@ -11,12 +11,13 @@ import { Member } from '../../modules/member';
 import { Chat } from '../../modules/chat';
 import { ChatComponent } from './chat/chat.component';
 import { ChatService } from '../chat.service';
+import { ChannelComponent } from './channel/channel.component';
 
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [HeaderComponent,ReactiveFormsModule, SidenavComponent, ChatComponent],
+  imports: [HeaderComponent,ReactiveFormsModule, SidenavComponent, ChatComponent, ChannelComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })

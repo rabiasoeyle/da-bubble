@@ -1,4 +1,4 @@
-@if(currentChannel!=null && currentChat == null){
+@if(currentChannel!=null){
     <div class="chat-area-child">
         <div class="header-of-channel">
             <div class="header-of-channel-left">
@@ -114,22 +114,23 @@
                             </div>
                         </div>
                     }
+                    <!-- Edit Messages Area-->
                 }@else if(this.userData && item.editing ==true){
                     @if(item.uid != this.userData.uid){
-                        <div class="msg-pic-and-text">
+                    <div class="msg-pic-and-text">
                     @if(item.fotolink){
                         <img  class="msg-sender-pic" src="{{item? item.fotolink: '/assets/img/profile.png'}}" alt="profile">  
                     }
-                    <div class="msg-text-area">
-                        <div class="msg-name-and-time">
-                            <h4 class="margin-5px">{{item? item.username:"565656"}}</h4>
-                            <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
+                        <div class="msg-text-area">
+                            <div class="msg-name-and-time">
+                                <h4 class="margin-5px">{{item? item.username:"565656"}}</h4>
+                                <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
+                            </div>
+                            <div class="msg-message">
+                                <h4 class="margin-5px">{{item? item.message :"Hey"}}</h4>
+                            </div> 
                         </div>
-                        <div (click)="startEditMessage(idx)" class="msg-message">
-                            <h4 class="margin-5px">{{item? item.message :"Hey"}}</h4>
-                        </div> 
                     </div>
-                </div>
                     }
                     @else {
                         <div class="my-msg-pic-and-text">
