@@ -246,7 +246,7 @@ export class MainComponent{
     const rawForm = this.editMessageForm.getRawValue();
     if(this.currentChannel && rawForm.message !=""){
       this.chatService.editMessage(this.currentChannel.name, rawForm.message, id);
-      }console.log(rawForm.message);
+    }console.log(rawForm.message);
   }
   openMembersList(){
     this.membersOfChannelList = !this.membersOfChannelList;
@@ -272,8 +272,7 @@ export class MainComponent{
           console.log("number:", i);
           console.log(this.userChats[i].chatPartner.uid, "&", this.currentProfileDetail.uid);
           if (this.userChats[i].chatPartner.uid == this.currentProfileDetail.uid) {
-            this.openChat(i);
-            console.log("number:", i);
+            this.openChat(i); console.log("number:", i);
           }
         }
       }, 200);
@@ -285,10 +284,7 @@ export class MainComponent{
     this.currentChat = null;
     await this.chatService.getChatLiveUpdates(this.userChats[idx].chatId);
     this.chatService.currentChat.subscribe(async (data) => {
-    if (!data) {
-      this.currentChat = null;
-      return;
-    }
+    if (!data) {this.currentChat = null ; return;}
     const messagesWithUserData = data.messages ? await this.loadMessages(data.messages): [];
     const membersWithUserData = data.members ? await this.loadMembers(data.members):[];
     const chatpartner = this.showChatPartner(membersWithUserData);
@@ -300,9 +296,7 @@ export class MainComponent{
           chatpartner: chatpartner,
         };
     })
-    setTimeout(()=>{
-      console.log(this.currentChat)
-    },1000)
+    setTimeout(()=>{console.log(this.currentChat)},1000)
   }
   showChatPartner(members:Member[]){
     for(let i = 0; i < members.length; i++){
