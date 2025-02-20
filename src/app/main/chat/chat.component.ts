@@ -27,21 +27,16 @@ export class ChatComponent implements OnInit, OnDestroy{
   @Output() nstartEditMessage = new EventEmitter<number>();
   @Output() ncloseEditMessage = new EventEmitter<number>();
   @Output() neditMessage = new EventEmitter<string>();
-sendMessageForm = this.fb.nonNullable.group({
-    message:['', Validators.required],
-  })
-editMessageForm= this.fb.nonNullable.group({
-    message:['', Validators.required],
-  })
+  sendMessageForm = this.fb.nonNullable.group({
+      message:['', Validators.required],
+    })
+  editMessageForm= this.fb.nonNullable.group({
+      message:['', Validators.required],
+    })
   previousChatData: any = null;
 
   constructor(private chatService:ChatService,private cdr: ChangeDetectorRef, private authService:AuthService) {}
   ngOnInit() {
-    // this.chatSubscription = this.chatService.currentChat$.subscribe((chat) => {
-    //   this.currentChat = chat;
-    //   console.log("Aktualisierter Chat:", this.currentChat);
-    //   this.cdr.detectChanges(); // **Erzwingt das Neuladen der View**
-    // });
     this.loadLiveUserData();
     this.loadUserChats();
   }
@@ -53,16 +48,25 @@ editMessageForm= this.fb.nonNullable.group({
 openUserDetails(idx:number){
 this.newChatPartner.emit(idx)
 }
-startEditMessage(idx:number){
-  this.messageIdx = idx;
-  this.nstartEditMessage.emit(idx);
+startEditMessage(id:number){
+  this.messageIdx= id;
+  if(this.currentChat){
+    const msg = this.currentChat.messages[id];
+    msg.editing = true;
+  }
 }
-closeEditMessage(idx:number){
-  this.ncloseEditMessage.emit(idx);
+closeEditMessage(id:number){
+  if(this.currentChat){
+    const msg = this.currentChat.messages[id];
+    msg.editing = false;
+  }
 }
-editMessage(){
+editMessage(id:number){
   const rawForm = this.editMessageForm.getRawValue();
-  this.neditMessage.emit(rawForm.message);
+  if(this.currentChat && rawForm.message !=""){
+    console.log(this.currentChat, "yeay")
+    this.chatService.editPrivateMessage(this.currentChat.uid, rawForm.message, id);
+  }
 }
 sendPrivateMessage(){
     const rawForm = this.sendMessageForm.getRawValue();
@@ -70,9 +74,7 @@ sendPrivateMessage(){
       this.chatService.sendPrivateMessage(rawForm.message, this.currentChat.uid);
       console.log("test sendprivatemessages", this.currentChat)
     }
-
 }
-
 async loadUserChats(){
   this.userChats = [];
   if(this.userData){

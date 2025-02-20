@@ -83,7 +83,7 @@
                                     <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
                                 </div>
                                 <div class="my-msg-message">
-                                    <form class="edit-message-form" [formGroup] ="editMessageForm" (ngSubmit)="editMessage()">
+                                    <form class="edit-message-form" [formGroup] ="editMessageForm" (ngSubmit)="editMessage(idx)">
                                         <textarea formControlName="message" class="margin-5px" placeholder={{item.message}}></textarea>
                                         <button type="button" (click)="closeEditMessage(idx)">Abbrechen</button>
                                         <button type="submit">Speichern</button>

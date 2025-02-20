@@ -204,6 +204,23 @@ export class ChatService {
       }
       
   }
+  async editPrivateMessage(chatId:string, newMessage:string, id:number){
+    console.log("Blablablub", chatId,newMessage, id )
+    const chatDocRef = doc(this.firebaseDatabase, `chats/${chatId}`);
+      const chatSnap = await getDoc(chatDocRef);
+      const chatData = chatSnap.data();
+      if(chatData){
+        const updatedMessages = [...chatData['messages']];
+        updatedMessages[id] = {
+            ...updatedMessages[id], // Bestehende Daten beibehalten
+            message: newMessage
+        };
+      await updateDoc(chatDocRef, {
+          messages: updatedMessages
+      });
+      }
+      
+  }
   async createChat(userId:string, memberId:string){
     const chatsRef = collection(this.firebaseDatabase, "chats");
     const querySnapshot = await getDocs(chatsRef);
@@ -257,7 +274,6 @@ export class ChatService {
         const partnerSnap = await getDoc(partnerRef);
         const partnerData = partnerSnap.exists() ? partnerSnap.data() : {};
         chatDetails.push({
-          
           chatId,
           chatData,
           chatPartner: { 
@@ -276,7 +292,6 @@ export class ChatService {
   }
   
   async getChatLiveUpdates(chatId: string) {
-    console.log(chatId);
     const chatDocRef = await doc(this.firebaseDatabase, `chats/${chatId}`);
     this.unsubscribeFromChat();
     this.unsubscribeFromChannel();
@@ -306,7 +321,6 @@ export class ChatService {
     }
   }
   async sendPrivateMessage(message:string, chatId:string){
-    console.log(chatId);
     const userId = localStorage.getItem("userId");
     const time = new Date();
     const channelRef = doc(this.firebaseDatabase, `chats/${chatId}`);
