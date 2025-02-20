@@ -14,8 +14,8 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 export class ChatComponent implements OnChanges{
   router = inject(Router);
   fb = inject(FormBuilder);
-@Input() currentChat:any|null = null;
-@Input() userData:UserData ={
+  @Input() currentChat:any|null = null;
+  @Input() userData:UserData ={
     uid: "",
     name: "",
     email: "",

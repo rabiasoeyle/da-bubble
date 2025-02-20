@@ -10,6 +10,7 @@ import { Channel } from '../../modules/channel';
 import { Member } from '../../modules/member';
 import { Chat } from '../../modules/chat';
 import { ChatComponent } from './chat/chat.component';
+import { ChatService } from '../chat.service';
 
 
 @Component({
@@ -64,7 +65,7 @@ export class MainComponent{
   userChats:Chat[]=[];
   userChat:{}={};
   currentChat:any|null = null;
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private chatService:ChatService) {
   }
   ngOnInit() {
     this.loadLiveUserData();
@@ -73,7 +74,7 @@ export class MainComponent{
   async loadUserChats(){
     this.userChats = [];
     if(this.userData){
-       const userChat: Chat[] = await this.authService.getUserChats(this.userData?.uid);
+       const userChat: Chat[] = await this.chatService.getUserChats(this.userData?.uid);
        if (userChat) {
         this.userChats.push(...userChat);
       }
@@ -100,20 +101,20 @@ export class MainComponent{
   }
   onAddChannel(){
     const rawForm = this.addChannelForm.getRawValue();
-    this.authService.createChannel(rawForm.channelname, rawForm.description);
+    this.chatService.createChannel(rawForm.channelname, rawForm.description);
     setTimeout(()=>this.loadLiveUserData(),4000);
     this.addChannelDialog();
   }
   sendMessage(){
     const rawForm = this.sendMessageForm.getRawValue();
     if(this.currentChannel){
-      this.authService.sendMessage(rawForm.message, this.currentChannel.name);
+      this.chatService.sendMessage(rawForm.message, this.currentChannel.name);
     }
   }
   sendPrivateMessage(){
     const rawForm = this.sendMessageForm.getRawValue();
     if(this.currentChat){
-      this.authService.sendPrivateMessage(rawForm.message, this.currentChat.uid);
+      this.chatService.sendPrivateMessage(rawForm.message, this.currentChat.uid);
       console.log("test sendprivatemessages", this.currentChat)
     }
   }
@@ -121,8 +122,8 @@ export class MainComponent{
     this.openDetailsOfChannel = !this.openDetailsOfChannel;
   }
   openChannel(channelName: string) {
-    this.authService.getChannelLiveUpdates(channelName);
-    this.authService.currentChannel.subscribe(async (data) => {
+    this.chatService.getChannelLiveUpdates(channelName);
+    this.chatService.currentChannel.subscribe(async (data) => {
     if (!data) {
       this.currentChannel = null;
       return;
@@ -194,10 +195,10 @@ export class MainComponent{
   }
   addMembersToChannel(chnnlnme:string){
     const rawForm = this.addMemberForm.getRawValue();
-    this.authService.addMembersToChannel(chnnlnme, rawForm.name);
+    this.chatService.addMembersToChannel(chnnlnme, rawForm.name);
   }
   deleteChannelAtUser(channelname:string){
-    this.authService.deleteChannelAtMember(channelname);
+    this.chatService.deleteChannelAtMember(channelname);
     if(this.editChannel){
       this.editChannel=false;
     }
@@ -207,7 +208,7 @@ export class MainComponent{
     }
     this.channelDeleted = true;
     this.currentChannel = null;
-    this.authService.unsubscribeFromChannel();
+    this.chatService.unsubscribeFromChannel();
   }
   openEditChannel(){
     this.editChannel = !this.editChannel;
@@ -215,8 +216,8 @@ export class MainComponent{
   changeChannelName(){
     const rawForm = this.changeChannelNameForm.getRawValue();
     if(this.currentChannel && rawForm.name !=""){
-      this.authService.changeChannelName(this.currentChannel.name, rawForm.name);
-      this.authService.changeChannelNameForUsers(this.currentChannel.name, rawForm.name);
+      this.chatService.changeChannelName(this.currentChannel.name, rawForm.name);
+      this.chatService.changeChannelNameForUsers(this.currentChannel.name, rawForm.name);
     }
     setTimeout(()=>{
       this.openEditChannel(),this.openChannel(rawForm.name), this.openDetailsAboutChannel()
@@ -225,7 +226,7 @@ export class MainComponent{
   changeChannelDescription(){
     const rawForm = this.changeChannelDescrForm.getRawValue();
     if(this.currentChannel && rawForm.description !=""){
-    this.authService.changeChannelDescription(this.currentChannel.name, rawForm.description);
+    this.chatService.changeChannelDescription(this.currentChannel.name, rawForm.description);
     }console.log(rawForm.description);
     this.openEditChannel();
   }
@@ -244,7 +245,7 @@ export class MainComponent{
   editMessage(id:number){
     const rawForm = this.editMessageForm.getRawValue();
     if(this.currentChannel && rawForm.message !=""){
-      this.authService.editMessage(this.currentChannel.name, rawForm.message, id);
+      this.chatService.editMessage(this.currentChannel.name, rawForm.message, id);
       }console.log(rawForm.message);
   }
   openMembersList(){
@@ -264,7 +265,7 @@ export class MainComponent{
   }
   async goToPersonalMessages(){
     if(this.userData){
-      const messagesWMembers = await this.authService.createChat(this.userData?.uid, this.currentProfileDetail.uid )
+      const messagesWMembers = await this.chatService.createChat(this.userData?.uid, this.currentProfileDetail.uid )
     } await this.loadUserChats().then(() => {
       setTimeout(() => {
         for (let i = 0; i < this.userChats.length; i++) {
@@ -282,8 +283,8 @@ export class MainComponent{
   async openChat(idx:number){
     this.currentChannel = null;
     this.currentChat = null;
-    await this.authService.getChatLiveUpdates(this.userChats[idx].chatId);
-    this.authService.currentChat.subscribe(async (data) => {
+    await this.chatService.getChatLiveUpdates(this.userChats[idx].chatId);
+    this.chatService.currentChat.subscribe(async (data) => {
     if (!data) {
       this.currentChat = null;
       return;

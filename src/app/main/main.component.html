@@ -258,7 +258,7 @@
                 <h3>Sie haben den Channel # {{deletedChannelname}} erfolgreich gelöscht.</h3>
         } 
         @if(currentChat!=null){
-             <!-- <div class="chat-area-child">
+             <div class="chat-area-child"> 
                 <div class="header-of-channel">
                     @for(item of currentChat ? currentChat.members: ["Lisa"]; track item; let idx = $index){
                         @if(item.uid !== userData?.uid){
@@ -371,8 +371,8 @@
                         <img src="/assets/img/send.png" alt="send">
                     </button>
                 </form>   
-            </div>  -->
-            <app-chat (newChatPartner)="openChat($event)" (nstartEditMessage)="startEditMessage($event)" (ncloseEditMessage)="closeEditMessage($event)" (neditMessage)="editMessage($event)"></app-chat>
+            </div> 
+            <!-- <app-chat (newChatPartner)="openChat($event)" (nstartEditMessage)="startEditMessage($event)" (ncloseEditMessage)="closeEditMessage($event)" (neditMessage)="editMessage($event)"></app-chat> -->
         }
         <div></div>
     </div>
