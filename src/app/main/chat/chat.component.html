@@ -2,7 +2,8 @@
     <div class="chat-area-child">
         <div class="header-of-channel">
             @for(item of currentChat ? currentChat.members: ["Lisa"]; track item; let idx = $index){
-                @if(item.uid !== userData?.uid){
+                <!-- Header with Chatpartnerdata -->
+                @if(item.uid !== userData.uid){
                     <div (click)="openUserDetails(idx)" class="mmbr-of-chnnl-list">
                         <img class="mmbr-of-chnnl-pic" src="{{item.fotolink}}" alt="">
                         <h3># {{item.username}}</h3>
@@ -17,22 +18,24 @@
                 </h4>
             @for(item of currentChat ? currentChat.messages : ["Lisa"]; track item; let idx = $index){
                 @if(this.userData && item.editing ==false){
+                    <!-- Chatpartnermessages -->
                     @if(item.uid != this.userData.uid){
                         <div class="msg-pic-and-text">
-                    @if(item.fotolink){
-                        <img  class="msg-sender-pic" src="{{item? item.fotolink: '/assets/img/profile.png'}}" alt="profile">  
-                    }
-                    <div class="msg-text-area">
-                        <div class="msg-name-and-time">
-                            <h4 class="margin-5px">{{item? item.username:"565656"}}</h4>
-                            <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
+                        @if(item.fotolink){
+                            <img  class="msg-sender-pic" src="{{item? item.fotolink: '/assets/img/profile.png'}}" alt="profile">  
+                        }
+                            <div class="msg-text-area">
+                                <div class="msg-name-and-time">
+                                    <h4 class="margin-5px">{{item? item.username:"565656"}}</h4>
+                                    <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
+                                </div>
+                                <div class="msg-message">
+                                    <h4 class="margin-5px">{{item? item.message :"Hey"}}</h4>
+                                </div> 
+                            </div>
                         </div>
-                        <div (click)="startEditMessage(idx)" class="msg-message">
-                            <h4 class="margin-5px">{{item? item.message :"Hey"}}</h4>
-                        </div> 
-                    </div>
-                </div>
-                    }
+                        }
+                    <!-- MessagesfromMe -->
                     @else {
                         <div class="my-msg-pic-and-text">
                             @if(item.fotolink){
@@ -49,7 +52,9 @@
                             </div>
                         </div>
                     }
+                <!-- Ab hier bearbeitung -->
                 }@else if(this.userData && item.editing ==true){
+                    <!-- Chatpartnermessages -->
                     @if(item.uid != this.userData.uid){
                         <div class="msg-pic-and-text">
                     @if(item.fotolink){
@@ -60,12 +65,13 @@
                             <h4 class="margin-5px">{{item? item.username:"565656"}}</h4>
                             <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
                         </div>
-                        <div (click)="startEditMessage(idx)" class="msg-message">
+                        <div class="msg-message">
                             <h4 class="margin-5px">{{item? item.message :"Hey"}}</h4>
                         </div> 
                     </div>
-                </div>
+                        </div>
                     }
+                    <!-- MessagesFromMe -->
                     @else {
                         <div class="my-msg-pic-and-text">
                             @if(item.fotolink){
@@ -77,11 +83,11 @@
                                     <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
                                 </div>
                                 <div class="my-msg-message">
-                                    <!-- <form class="edit-message-form" [formGroup] ="editMessageForm" (ngSubmit)="editMessage(idx)">
+                                    <form class="edit-message-form" [formGroup] ="editMessageForm" (ngSubmit)="editMessage()">
                                         <textarea formControlName="message" class="margin-5px" placeholder={{item.message}}></textarea>
                                         <button type="button" (click)="closeEditMessage(idx)">Abbrechen</button>
                                         <button type="submit">Speichern</button>
-                                    </form> -->
+                                    </form>
                                 </div> 
                             </div>
                         </div>
@@ -89,12 +95,12 @@
                 }
             }
         </div>
-        <!-- <form class="messages-form" [formGroup] ="sendMessageForm" (ngSubmit)="sendPrivateMessage()">
+        <form class="messages-form" [formGroup] ="sendMessageForm" (ngSubmit)="sendPrivateMessage()">
             <textarea formControlName="message" type="text" placeholder="Deine Nachricht hier eingeben">
             </textarea>
             <button type="submit">
                 <img src="/assets/img/send.png" alt="send">
             </button>
-        </form>    -->
+        </form>   
     </div> 
 }

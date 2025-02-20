@@ -1,8 +1,12 @@
-import { ChangeDetectorRef, Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges } from '@angular/core';
 import { Chat } from '../../../modules/chat';
 import { UserData } from '../../../modules/user';
 import { Router } from '@angular/router';
-import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ChatService } from '../../chat.service';
+import { Subscription } from 'rxjs';
+import { AuthService } from '../../auth.service';
+import { Member } from '../../../modules/member';
 
 @Component({
   selector: 'app-chat',
@@ -11,43 +15,105 @@ import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss'
 })
-export class ChatComponent implements OnChanges{
+export class ChatComponent implements OnInit, OnDestroy{
   router = inject(Router);
   fb = inject(FormBuilder);
+  messageIdx:number = 0;
+  userChats:Chat[]=[];
   @Input() currentChat:any|null = null;
-  @Input() userData:UserData ={
-    uid: "",
-    name: "",
-    email: "",
-    fotolink:"",
-    channels:[],
-    chats:[],
-  } 
-@Output() newChatPartner = new EventEmitter<number>();
-@Output() nstartEditMessage = new EventEmitter<number>();
-@Output() ncloseEditMessage = new EventEmitter<number>();
-@Output() neditMessage = new EventEmitter<number>();
+  private chatSubscription!: Subscription;
+  @Input() userData:UserData|null = null;
+  @Output() newChatPartner = new EventEmitter<number>();
+  @Output() nstartEditMessage = new EventEmitter<number>();
+  @Output() ncloseEditMessage = new EventEmitter<number>();
+  @Output() neditMessage = new EventEmitter<string>();
+sendMessageForm = this.fb.nonNullable.group({
+    message:['', Validators.required],
+  })
+editMessageForm= this.fb.nonNullable.group({
+    message:['', Validators.required],
+  })
+  previousChatData: any = null;
 
-
-  constructor(private cdr: ChangeDetectorRef) {}
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['currentChat'] && this.currentChat) {
-      console.log("Aktualisierte Chat-Daten:", this.currentChat);
-      this.cdr.detectChanges(); // Erzwingt das UI-Update
+  constructor(private chatService:ChatService,private cdr: ChangeDetectorRef, private authService:AuthService) {}
+  ngOnInit() {
+    // this.chatSubscription = this.chatService.currentChat$.subscribe((chat) => {
+    //   this.currentChat = chat;
+    //   console.log("Aktualisierter Chat:", this.currentChat);
+    //   this.cdr.detectChanges(); // **Erzwingt das Neuladen der View**
+    // });
+    this.loadLiveUserData();
+    this.loadUserChats();
+  }
+  ngOnDestroy() {
+    if (this.chatSubscription) {
+      this.chatSubscription.unsubscribe(); // Memory Leak verhindern
     }
   }
-
 openUserDetails(idx:number){
 this.newChatPartner.emit(idx)
 }
 startEditMessage(idx:number){
-this.nstartEditMessage.emit(idx);
+  this.messageIdx = idx;
+  this.nstartEditMessage.emit(idx);
 }
 closeEditMessage(idx:number){
-this.ncloseEditMessage.emit(idx);
+  this.ncloseEditMessage.emit(idx);
 }
-editMessage(idx:number){
-  this.neditMessage.emit(idx);
+editMessage(){
+  const rawForm = this.editMessageForm.getRawValue();
+  this.neditMessage.emit(rawForm.message);
 }
+sendPrivateMessage(){
+    const rawForm = this.sendMessageForm.getRawValue();
+    if(this.currentChat){
+      this.chatService.sendPrivateMessage(rawForm.message, this.currentChat.uid);
+      console.log("test sendprivatemessages", this.currentChat)
+    }
+
+}
+
+async loadUserChats(){
+  this.userChats = [];
+  if(this.userData){
+     const userChat: Chat[] = await this.chatService.getUserChats(this.userData?.uid);
+     if (userChat) {
+      this.userChats.push(...userChat);
+    }
+  }
+}
+loadLiveUserData(){
+  this.authService.userData$.subscribe((data) => {
+    this.userData = data;
+    if(this.userData == null){
+      this.router.navigateByUrl('');
+    }
+  });
+}
+async openChat(idx:number){
+    this.currentChat = null;
+    await this.chatService.getChatLiveUpdates(this.userChats[idx].chatId);
+    this.chatService.currentChat$.subscribe(async (data) => {
+    if (!data) {this.currentChat = null ; return;}
+    const messagesWithUserData = data.messages ? await this.chatService.loadMessages(data.messages): [];
+    const membersWithUserData = data.members ? await this.chatService.loadMembers(data.members):[];
+    const chatpartner = this.showChatPartner(membersWithUserData);
+    this.currentChat={
+          uid:data.uid || this.userChats[idx].chatId,
+          createdAt:data.createdAt,
+          members: membersWithUserData,
+          messages: messagesWithUserData,
+          chatpartner: chatpartner,
+        };
+    })
+    setTimeout(()=>{console.log(this.currentChat)},1000)
+  }
+  showChatPartner(members:Member[]){
+    for(let i = 0; i < members.length; i++){
+      if(members[i].uid !== this.userData?.uid){
+        return members[i].username;
+      }
+    }return "Unbekannt";
+  }
+
 }

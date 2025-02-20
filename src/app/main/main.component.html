@@ -156,7 +156,7 @@
                                             <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
                                         </div>
                                         <div class="my-msg-message">
-                                            <form class="edit-message-form" [formGroup] ="editMessageForm" (ngSubmit)="editMessage(idx)">
+                                            <form class="edit-message-form" [formGroup] ="editMessageForm" (ngSubmit)="editMessage('hey')">
                                                 <textarea formControlName="message" class="margin-5px" placeholder={{item.message}}></textarea>
                                                 <button type="button" (click)="closeEditMessage(idx)">Abbrechen</button>
                                                 <button type="submit">Speichern</button>
@@ -168,7 +168,7 @@
                         }
                     }
                 </div>
-                <form class="messages-form" [formGroup] ="sendMessageForm" (ngSubmit)="sendMessage()">
+                <form class="messages-form" [formGroup] ="sendMessageForm" (ngSubmit)="sendMessage('Wuhu')">
                     <textarea formControlName="message" type="text" placeholder="Deine Nachricht hier eingeben">
                     </textarea>
                     <button type="submit">
@@ -258,7 +258,7 @@
                 <h3>Sie haben den Channel # {{deletedChannelname}} erfolgreich gelöscht.</h3>
         } 
         @if(currentChat!=null){
-             <div class="chat-area-child"> 
+             <!-- <div class="chat-area-child">
                 <div class="header-of-channel">
                     @for(item of currentChat ? currentChat.members: ["Lisa"]; track item; let idx = $index){
                         @if(item.uid !== userData?.uid){
@@ -371,8 +371,8 @@
                         <img src="/assets/img/send.png" alt="send">
                     </button>
                 </form>   
-            </div> 
-            <!-- <app-chat (newChatPartner)="openChat($event)" (nstartEditMessage)="startEditMessage($event)" (ncloseEditMessage)="closeEditMessage($event)" (neditMessage)="editMessage($event)"></app-chat> -->
+            </div>  -->
+            <app-chat [currentChat]="currentChat" (newChatPartner)="openChat($event)" (nstartEditMessage)="startEditMessage($event)" (ncloseEditMessage)="closeEditMessage($event)" (neditMessage)="editMessage($event)"></app-chat>
         }
         <div></div>
     </div>

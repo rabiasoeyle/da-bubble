@@ -26,8 +26,6 @@ export class MainComponent{
   fb = inject(FormBuilder);
   // booleans
   sidenavIsOpen:boolean = true;
-  // directMessagesOpen:boolean = true;
-  // channelsOpen:boolean = true;
   addChannelOpen:boolean = false;
   addMemberToChannel:boolean = false;
   openDetailsOfChannel:boolean = false;
@@ -65,6 +63,7 @@ export class MainComponent{
   userChats:Chat[]=[];
   userChat:{}={};
   currentChat:any|null = null;
+  messageIdx:number= 0;
   constructor(private authService: AuthService, private chatService:ChatService) {
   }
   ngOnInit() {
@@ -105,17 +104,10 @@ export class MainComponent{
     setTimeout(()=>this.loadLiveUserData(),4000);
     this.addChannelDialog();
   }
-  sendMessage(){
+  sendMessage(message:string){
     const rawForm = this.sendMessageForm.getRawValue();
     if(this.currentChannel){
-      this.chatService.sendMessage(rawForm.message, this.currentChannel.name);
-    }
-  }
-  sendPrivateMessage(){
-    const rawForm = this.sendMessageForm.getRawValue();
-    if(this.currentChat){
-      this.chatService.sendPrivateMessage(rawForm.message, this.currentChat.uid);
-      console.log("test sendprivatemessages", this.currentChat)
+      this.chatService.sendMessage(message, this.currentChannel.name);
     }
   }
   openDetailsAboutChannel(){
@@ -128,12 +120,12 @@ export class MainComponent{
       this.currentChannel = null;
       return;
     }
-    const messagesWithUserData = data.messages ? await this.loadMessages(data.messages): [];
-    const membersWithUserData = data.members ? await this.loadMembers(data.members): [];
+    const messagesWithUserData = data.messages ? await this.chatService.loadMessages(data.messages): [];
+    const membersWithUserData = data.members ? await this.chatService.loadMembers(data.members): [];
     const creatorUID: string = data.created.createdFrom; // Einzelne UID aus Firebase
     const creator = await this.authService.getUserInfo(creatorUID);
     const createdAt = data.created.createdAt? (data.created.createdAt.toDate() || new Date(data.created.createdAt)): null; // Timestamp umwandeln
-    const formattedDate = this.formatDate(createdAt);
+    const formattedDate = this.chatService.formatDate(createdAt);
     this.currentChannel = {
       name: data.name || channelName,
       description: data.description || "Keine Beschreibung verfügbar",
@@ -145,49 +137,6 @@ export class MainComponent{
       members:membersWithUserData,
       membersAmount:data.members.length,
     };});
-  }
-  async loadMessages(messages:Message[]){
-    const messagesWithUserData = await Promise.all(
-      messages.map(async (msg: Message) => {
-        const userInfo = await this.authService.getUserInfo(msg.uid);
-        const time = msg.timestamp
-        const formattedDateMessage = this.formatDate(time);
-        return {
-          uid: msg.uid, 
-          timestamp: formattedDateMessage,
-          message:msg.message,
-          username: userInfo? userInfo['name'] : "Unbekannt",
-          fotolink: userInfo? userInfo['fotolink'] : "default.png",
-          editing:false,
-        };
-      })
-    );
-    return messagesWithUserData;
-  }
-  async loadMembers(members:string[]){
-    const membersWithUserData = await Promise.all(
-      members.map(async (uid: string) => {
-        const userInfo = await this.authService.getUserInfo(uid);
-        return {
-          uid: uid,
-          username: userInfo ? userInfo['name'] : "Unbekannt",
-          fotolink: userInfo ? userInfo['fotolink'] : "default.png",
-          email:userInfo ? userInfo['email'] : "default.png"
-        };
-      })
-    );
-    return membersWithUserData;
-  }
-  formatDate(createdAt:any){
-    const formattedDate = new Date(createdAt).toLocaleString("de-DE", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-      hour12: false,
-    });
-    return formattedDate;
   }
   addMembersToChannelDialog(){
     this.membersOfChannelList=false;
@@ -227,10 +176,11 @@ export class MainComponent{
     const rawForm = this.changeChannelDescrForm.getRawValue();
     if(this.currentChannel && rawForm.description !=""){
     this.chatService.changeChannelDescription(this.currentChannel.name, rawForm.description);
-    }console.log(rawForm.description);
+    }
     this.openEditChannel();
   }
   startEditMessage(id:number){
+    this.messageIdx= id;
     if(this.currentChannel){
       const msg = this.currentChannel.messages[id];
       msg.editing = true;
@@ -242,11 +192,11 @@ export class MainComponent{
       msg.editing = false;
     }
   }
-  editMessage(id:number){
-    const rawForm = this.editMessageForm.getRawValue();
-    if(this.currentChannel && rawForm.message !=""){
-      this.chatService.editMessage(this.currentChannel.name, rawForm.message, id);
-    }console.log(rawForm.message);
+  editMessage(message:string){
+    // const rawForm = this.editMessageForm.getRawValue();
+    if(this.currentChannel && message !=""){
+      this.chatService.editMessage(this.currentChannel.name, message, this.messageIdx);
+    }
   }
   openMembersList(){
     this.membersOfChannelList = !this.membersOfChannelList;
@@ -259,9 +209,7 @@ export class MainComponent{
       return
     }
     this.currentProfileDetail = await this.authService.getUserInfo(this.currentChannel?.members[idx].uid);
-    console.log(this.currentProfileDetail);
     this.memberDetails = !this.memberDetails;
-    
   }
   async goToPersonalMessages(){
     if(this.userData){
@@ -269,10 +217,8 @@ export class MainComponent{
     } await this.loadUserChats().then(() => {
       setTimeout(() => {
         for (let i = 0; i < this.userChats.length; i++) {
-          console.log("number:", i);
-          console.log(this.userChats[i].chatPartner.uid, "&", this.currentProfileDetail.uid);
           if (this.userChats[i].chatPartner.uid == this.currentProfileDetail.uid) {
-            this.openChat(i); console.log("number:", i);
+            this.openChat(i);
           }
         }
       }, 200);
@@ -283,10 +229,10 @@ export class MainComponent{
     this.currentChannel = null;
     this.currentChat = null;
     await this.chatService.getChatLiveUpdates(this.userChats[idx].chatId);
-    this.chatService.currentChat.subscribe(async (data) => {
+    this.chatService.currentChat$.subscribe(async (data) => {
     if (!data) {this.currentChat = null ; return;}
-    const messagesWithUserData = data.messages ? await this.loadMessages(data.messages): [];
-    const membersWithUserData = data.members ? await this.loadMembers(data.members):[];
+    const messagesWithUserData = data.messages ? await this.chatService.loadMessages(data.messages): [];
+    const membersWithUserData = data.members ? await this.chatService.loadMembers(data.members):[];
     const chatpartner = this.showChatPartner(membersWithUserData);
     this.currentChat={
           uid:data.uid || this.userChats[idx].chatId,
@@ -296,7 +242,6 @@ export class MainComponent{
           chatpartner: chatpartner,
         };
     })
-    setTimeout(()=>{console.log(this.currentChat)},1000)
   }
   showChatPartner(members:Member[]){
     for(let i = 0; i < members.length; i++){

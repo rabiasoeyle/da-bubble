@@ -2,6 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, Firestore, getDoc, getDocs, onSnapshot, setDoc, updateDoc } from '@angular/fire/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from './auth.service';
+import { Chat } from '../modules/chat';
+import { Message } from '../modules/messages';
 
 @Injectable({
   providedIn: 'root'
@@ -11,11 +13,61 @@ export class ChatService {
   authService = inject(AuthService);
   currentUid: string | null = null;
   currentChannel = new BehaviorSubject<any>(null);
-  currentChat = new BehaviorSubject<any>(null);
+  // currentChat = new BehaviorSubject<any>(null);
   private chatUnsubscribe: (() => void) | null = null;
   private channelUnsubscribe: (() => void) | null = null;
+  private currentChatSubject = new BehaviorSubject<any | null>(null);
+  currentChat$ = this.currentChatSubject.asObservable();
+
+
 
   constructor() { }
+  async loadMessages(messages:Message[]){
+      const messagesWithUserData = await Promise.all(
+        messages.map(async (msg: Message) => {
+          const userInfo = await this.authService.getUserInfo(msg.uid);
+          const time = msg.timestamp
+          const formattedDateMessage = this.formatDate(time);
+          return {
+            uid: msg.uid, 
+            timestamp: formattedDateMessage,
+            message:msg.message,
+            username: userInfo? userInfo['name'] : "Unbekannt",
+            fotolink: userInfo? userInfo['fotolink'] : "default.png",
+            editing:false,
+          };
+        })
+      );
+      return messagesWithUserData;
+    }
+    async loadMembers(members:string[]){
+      const membersWithUserData = await Promise.all(
+        members.map(async (uid: string) => {
+          const userInfo = await this.authService.getUserInfo(uid);
+          return {
+            uid: uid,
+            username: userInfo ? userInfo['name'] : "Unbekannt",
+            fotolink: userInfo ? userInfo['fotolink'] : "default.png",
+            email:userInfo ? userInfo['email'] : "default.png"
+          };
+        })
+      );
+      return membersWithUserData;
+    }
+    formatDate(createdAt:any){
+      const formattedDate = new Date(createdAt).toLocaleString("de-DE", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      });
+      return formattedDate;
+    }
+  updateChat(chat: Chat) {
+  this.currentChatSubject.next(chat); // Löst Update aus
+}
   async createChannel(channelname:string, description:string){
     const channelDocRef = doc(this.firebaseDatabase, `channels/${channelname}`);
     const userId = localStorage.getItem("userId");
@@ -230,9 +282,9 @@ export class ChatService {
     this.unsubscribeFromChannel();
     return this.chatUnsubscribe = onSnapshot(chatDocRef, (docSnap) => {
       if (docSnap.exists()) {
-        this.currentChat.next(docSnap.data()); // Daten direkt setzen
+        this.currentChatSubject.next(docSnap.data()); // Daten direkt setzen
       } else {
-        this.currentChat.next(null); // Falls der Channel nicht existiert
+        this.currentChatSubject.next(null); // Falls der Channel nicht existiert
       }
     }, (error) => {
       console.error("Firestore Live-Update Fehler:", error);
@@ -242,7 +294,7 @@ export class ChatService {
   if (this.chatUnsubscribe) {
     this.chatUnsubscribe(); // Live-Update deaktivieren
     this.chatUnsubscribe = null;
-    this.currentChat.next(null); // Channel beim User entfernen
+    this.currentChatSubject.next(null); // Channel beim User entfernen
   }
   }
   async loadChatData(chatId:string){
