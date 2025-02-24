@@ -106,15 +106,6 @@ export class MainComponent{
     setTimeout(()=>this.loadLiveUserData(),4000);
     this.addChannelDialog();
   }
-  sendMessage(message:string){
-    const rawForm = this.sendMessageForm.getRawValue();
-    if(this.currentChannel){
-      this.chatService.sendMessage(message, this.currentChannel.name);
-    }
-  }
-  openDetailsAboutChannel(){
-    this.openDetailsOfChannel = !this.openDetailsOfChannel;
-  }
   openChannel(channelName: string) {
     this.currentChannelName = channelName;
     console.log(this.currentChannelName)
@@ -129,79 +120,6 @@ export class MainComponent{
       members:[],
       membersAmount:1,
     }
-  }
-  addMembersToChannelDialog(){
-    this.membersOfChannelList=false;
-    this.addMemberToChannel =!this.addMemberToChannel;
-  }
-  addMembersToChannel(chnnlnme:string){
-    const rawForm = this.addMemberForm.getRawValue();
-    this.chatService.addMembersToChannel(chnnlnme, rawForm.name);
-  }
-  deleteChannelAtUser(channelname:string){
-    this.chatService.deleteChannelAtMember(channelname);
-    if(this.editChannel){
-      this.editChannel=false;
-    }
-    this.openDetailsAboutChannel();
-    if(this.currentChannel){
-      this.deletedChannelname = this.currentChannel.name;
-    }
-    this.channelDeleted = true;
-    this.currentChannel = null;
-    this.chatService.unsubscribeFromChannel();
-  }
-  openEditChannel(){
-    this.editChannel = !this.editChannel;
-  }
-  changeChannelName(){
-    const rawForm = this.changeChannelNameForm.getRawValue();
-    if(this.currentChannel && rawForm.name !=""){
-      this.chatService.changeChannelName(this.currentChannel.name, rawForm.name);
-      this.chatService.changeChannelNameForUsers(this.currentChannel.name, rawForm.name);
-    }
-    setTimeout(()=>{
-      this.openEditChannel(),this.openChannel(rawForm.name), this.openDetailsAboutChannel()
-    },200);
-  }
-  changeChannelDescription(){
-    const rawForm = this.changeChannelDescrForm.getRawValue();
-    if(this.currentChannel && rawForm.description !=""){
-    this.chatService.changeChannelDescription(this.currentChannel.name, rawForm.description);
-    }
-    this.openEditChannel();
-  }
-  // startEditMessage(id:number){
-  //   this.messageIdx= id;
-  //   if(this.currentChannel){
-  //     const msg = this.currentChannel.messages[id];
-  //     msg.editing = true;
-  //   }
-  // }
-  // closeEditMessage(id:number){
-  //   if(this.currentChannel){
-  //     const msg = this.currentChannel.messages[id];
-  //     msg.editing = false;
-  //   }
-  // }
-  // editMessage(message:string){
-  //   // const rawForm = this.editMessageForm.getRawValue();
-  //   if(this.currentChannel && message !=""){
-  //     this.chatService.editMessage(this.currentChannel.name, message, this.messageIdx);
-  //   }
-  // }
-  openMembersList(){
-    this.membersOfChannelList = !this.membersOfChannelList;
-  }
-  async openUserDetails(idx:number){
-    this.membersOfChannelList = false;
-    this.addMemberToChannel = false;
-    if(this.memberDetails = true && idx==9999){
-      this.memberDetails = false;
-      return
-    }
-    this.currentProfileDetail = await this.authService.getUserInfo(this.currentChannel?.members[idx].uid);
-    this.memberDetails = !this.memberDetails;
   }
   async goToPersonalMessages(){
     if(this.userData){

@@ -290,7 +290,6 @@ export class ChatService {
     console.log("ChatDetails: ", chatDetails);
     return chatDetails;
   }
-  
   async getChatLiveUpdates(chatId: string) {
     const chatDocRef = await doc(this.firebaseDatabase, `chats/${chatId}`);
     this.unsubscribeFromChat();
