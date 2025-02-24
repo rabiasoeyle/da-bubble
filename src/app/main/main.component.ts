@@ -63,7 +63,7 @@ export class MainComponent{
   currentProfileDetail:any;
   userChats:Chat[]=[];
   userChat:{}={};
-  currentChat:any|null = null;
+  currentChat:Chat|null = null;
   messageIdx:number= 0;
   currentChannelName:string= "kein Channel";
   constructor(private authService: AuthService, private chatService:ChatService) {
@@ -129,21 +129,30 @@ export class MainComponent{
     const messagesWithUserData = data.messages ? await this.chatService.loadMessages(data.messages): [];
     const membersWithUserData = data.members ? await this.chatService.loadMembers(data.members):[];
     const chatpartner = this.showChatPartner(membersWithUserData);
-    this.currentChat={
-          uid:data.uid || this.userChats[idx].chatId,
-          createdAt:data.createdAt,
-          members: membersWithUserData,
-          messages: messagesWithUserData,
-          chatpartner: chatpartner,
-        };
+    if(chatpartner!=null){
+      this.currentChat={
+            chatId:this.userChats[idx].chatId,
+            chatData:{
+              createdAt:data.createdAt,
+              members: membersWithUserData,
+              messages: messagesWithUserData,
+            },
+            chatPartner:{
+              uid:chatpartner.uid,
+              name:chatpartner.name,
+              email:chatpartner.email,
+              fotolink:chatpartner.fotolink,
+            } 
+          };
+        }
     })
   }
   showChatPartner(members:Member[]){
     for(let i = 0; i < members.length; i++){
       if(members[i].uid !== this.userData?.uid){
-        return members[i].username;
+        return members[i];
       }
-    }return "Unbekannt";
+    }return ;
   }
   
 }

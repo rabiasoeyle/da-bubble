@@ -20,7 +20,7 @@ export class ChatComponent implements OnInit, OnDestroy{
   fb = inject(FormBuilder);
   messageIdx:number = 0;
   userChats:Chat[]=[];
-  @Input() currentChat:any|null = null;
+  @Input() currentChat:Chat|null = null;
   private chatSubscription!: Subscription;
   @Input() userData:UserData|null = null;
   @Output() newChatPartner = new EventEmitter<number>();
@@ -51,26 +51,26 @@ this.newChatPartner.emit(idx)
 startEditMessage(id:number){
   this.messageIdx= id;
   if(this.currentChat){
-    const msg = this.currentChat.messages[id];
+    const msg = this.currentChat.chatData.messages[id];
     msg.editing = true;
   }
 }
 closeEditMessage(id:number){
   if(this.currentChat){
-    const msg = this.currentChat.messages[id];
+    const msg = this.currentChat.chatData.messages[id];
     msg.editing = false;
   }
 }
 editMessage(id:number){
   const rawForm = this.editMessageForm.getRawValue();
   if(this.currentChat && rawForm.message !=""){
-    this.chatService.editPrivateMessage(this.currentChat.uid, rawForm.message, id);
+    this.chatService.editPrivateMessage(this.currentChat.chatId, rawForm.message, id);
   }
 }
 sendPrivateMessage(){
     const rawForm = this.sendMessageForm.getRawValue();
     if(this.currentChat){
-      this.chatService.sendPrivateMessage(rawForm.message, this.currentChat.uid);
+      this.chatService.sendPrivateMessage(rawForm.message, this.currentChat.chatId);
     }
 }
 async loadUserChats(){
@@ -97,22 +97,32 @@ async openChat(idx:number){
     if (!data) {this.currentChat = null ; return;}
     const messagesWithUserData = data.messages ? await this.chatService.loadMessages(data.messages): [];
     const membersWithUserData = data.members ? await this.chatService.loadMembers(data.members):[];
-    const chatpartner = this.showChatPartner(membersWithUserData);
+    const chatpartner = await this.showChatPartner(membersWithUserData);
+    if(chatpartner!=null){
     this.currentChat={
-          uid:data.uid || this.userChats[idx].chatId,
-          createdAt:data.createdAt,
-          members: membersWithUserData,
-          messages: messagesWithUserData,
-          chatpartner: chatpartner,
+          chatId:this.userChats[idx].chatId,
+          chatData:{
+            createdAt:data.createdAt,
+            members: membersWithUserData,
+            messages: messagesWithUserData,
+          },
+          chatPartner:{
+            uid:chatpartner.uid,
+            name:chatpartner.name,
+            email:chatpartner.email,
+            fotolink:chatpartner.fotolink,
+          } 
         };
+      }
     })
   }
-  showChatPartner(members:Member[]){
+  async showChatPartner(members:Member[]){
     for(let i = 0; i < members.length; i++){
       if(members[i].uid !== this.userData?.uid){
-        return members[i].username;
+        console.log(members[i])
+        return members[i];
       }
-    }return "Unbekannt";
+    }return ;
   }
 
 }

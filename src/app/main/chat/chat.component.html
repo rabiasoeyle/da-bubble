@@ -1,22 +1,22 @@
 @if(currentChat!=null && userData!=null){
     <div class="chat-area-child">
         <div class="header-of-channel">
-            @for(item of currentChat ? currentChat.members: ["Lisa"]; track item; let idx = $index){
+            @for(item of currentChat ? currentChat.chatData.members: ["Lisa"]; track item; let idx = $index){
                 <!-- Header with Chatpartnerdata -->
                 @if(item.uid !== userData.uid){
                     <div (click)="openUserDetails(idx)" class="mmbr-of-chnnl-list">
                         <img class="mmbr-of-chnnl-pic" src="{{item.fotolink}}" alt="">
-                        <h3># {{item.username}}</h3>
+                        <h3># {{item.name}}</h3>
                     </div> 
                 } 
             }
         </div>
         <div class="channel-chat">
-            <h3 class="margin-5px"> # {{currentChat.chatpartner}}</h3>
+            <h3 class="margin-5px"> # {{currentChat.chatPartner.name}}</h3>
                 <h4>
-                    Diese Unterhaltung findet nur zwischen <span class="blue-font"># {{currentChat.chatpartner}}</span> und dir statt.
+                    Diese Unterhaltung findet nur zwischen <span class="blue-font"># {{currentChat.chatPartner.name}}</span> und dir statt.
                 </h4>
-            @for(item of currentChat ? currentChat.messages : ["Lisa"]; track item; let idx = $index){
+            @for(item of currentChat ? currentChat.chatData.messages : ["Lisa"]; track item; let idx = $index){
                 @if(this.userData && item.editing ==false){
                     <!-- Chatpartnermessages -->
                     @if(item.uid != this.userData.uid){
@@ -26,7 +26,7 @@
                         }
                             <div class="msg-text-area">
                                 <div class="msg-name-and-time">
-                                    <h4 class="margin-5px">{{item? item.username:"565656"}}</h4>
+                                    <h4 class="margin-5px">{{item? item.name:"565656"}}</h4>
                                     <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
                                 </div>
                                 <div class="msg-message">
@@ -43,7 +43,7 @@
                             }
                             <div class="my-msg-text-area">
                                 <div class="my-msg-name-and-time">
-                                    <h4 class="margin-5px">{{item? item.username:"565656"}}</h4>
+                                    <h4 class="margin-5px">{{item? item.name:"565656"}}</h4>
                                     <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
                                 </div>
                                 <div (click)="startEditMessage(idx)" class="my-msg-message">
@@ -62,7 +62,7 @@
                     }
                     <div class="msg-text-area">
                         <div class="msg-name-and-time">
-                            <h4 class="margin-5px">{{item? item.username:"565656"}}</h4>
+                            <h4 class="margin-5px">{{item? item.name:"565656"}}</h4>
                             <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
                         </div>
                         <div class="msg-message">
@@ -79,7 +79,7 @@
                             }
                             <div class="my-msg-text-area">
                                 <div class="my-msg-name-and-time">
-                                    <h4 class="margin-5px">{{item? item.username:"565656"}}</h4>
+                                    <h4 class="margin-5px">{{item? item.name:"565656"}}</h4>
                                     <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
                                 </div>
                                 <div class="my-msg-message">

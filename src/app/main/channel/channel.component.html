@@ -31,7 +31,7 @@
                             <div (click)="openUserDetails(idx)" class="mmbr-of-chnnl-list">
                                 <img class="mmbr-of-chnnl-pic" src="{{item.fotolink}}" alt="">
                                 <!-- <img src="" alt="online"> -->
-                                <h4>{{item.username}}</h4>
+                                <h4>{{item.name}}</h4>
                             </div>
                         }
                     </div>
@@ -89,7 +89,7 @@
                     }
                     <div class="msg-text-area">
                         <div class="msg-name-and-time">
-                            <h4 class="margin-5px">{{item? item.username:"565656"}}</h4>
+                            <h4 class="margin-5px">{{item? item.name:"565656"}}</h4>
                             <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
                         </div>
                         <div (click)="startEditMessage(idx)" class="msg-message">
@@ -105,7 +105,7 @@
                             }
                             <div class="my-msg-text-area">
                                 <div class="my-msg-name-and-time">
-                                    <h4 class="margin-5px">{{item? item.username:"565656"}}</h4>
+                                    <h4 class="margin-5px">{{item? item.name:"565656"}}</h4>
                                     <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
                                 </div>
                                 <div (click)="startEditMessage(idx)" class="my-msg-message">
@@ -123,7 +123,7 @@
                     }
                         <div class="msg-text-area">
                             <div class="msg-name-and-time">
-                                <h4 class="margin-5px">{{item? item.username:"565656"}}</h4>
+                                <h4 class="margin-5px">{{item? item.name:"565656"}}</h4>
                                 <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
                             </div>
                             <div class="msg-message">
@@ -139,7 +139,7 @@
                             }
                             <div class="my-msg-text-area">
                                 <div class="my-msg-name-and-time">
-                                    <h4 class="margin-5px">{{item? item.username:"565656"}}</h4>
+                                    <h4 class="margin-5px">{{item? item.name:"565656"}}</h4>
                                     <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
                                 </div>
                                 <div class="my-msg-message">
