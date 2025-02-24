@@ -12,7 +12,7 @@
         <img src="/assets/img/show_menu.png" alt="show-menu">
     </button>
     <div class="chat-area"> 
-        @if(currentChannel!=null && currentChat == null){
+        @if(currentChannel!=null){
             <!-- <div class="chat-area-child">
                 <div class="header-of-channel">
                     <div class="header-of-channel-left">
@@ -252,7 +252,7 @@
                   </div>
                 </div>  
             }  -->
-                <app-channel></app-channel>
+            <app-channel [currentChannelName]="currentChannelName"></app-channel>
         }
         <!-- @if(channelDeleted){
                 <img src="/assets/img/close.png" alt="x">

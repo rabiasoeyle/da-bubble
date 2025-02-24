@@ -1,7 +1,9 @@
+import { Message } from "./messages";
+
 export interface Channel {
     name: string;
     description: string;
-    messages: any[];
+    messages: Message[];
     created:{
       createdFrom:any;
       createdAt:string;

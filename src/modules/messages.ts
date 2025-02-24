@@ -3,5 +3,6 @@ export interface Message {
     message: string;
     timestamp: string;
     username?: string;
-    profilePic?: string;
+    fotolink?: string;
+    editing:boolean;
   }

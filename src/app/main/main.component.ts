@@ -65,6 +65,7 @@ export class MainComponent{
   userChat:{}={};
   currentChat:any|null = null;
   messageIdx:number= 0;
+  currentChannelName:string= "kein Channel";
   constructor(private authService: AuthService, private chatService:ChatService) {
   }
   ngOnInit() {
@@ -115,29 +116,22 @@ export class MainComponent{
     this.openDetailsOfChannel = !this.openDetailsOfChannel;
   }
   openChannel(channelName: string) {
-    this.chatService.getChannelLiveUpdates(channelName);
-    this.chatService.currentChannel.subscribe(async (data) => {
-    if (!data) {
-      this.currentChannel = null;
-      return;
-    }
-    const messagesWithUserData = data.messages ? await this.chatService.loadMessages(data.messages): [];
-    const membersWithUserData = data.members ? await this.chatService.loadMembers(data.members): [];
-    const creatorUID: string = data.created.createdFrom; // Einzelne UID aus Firebase
-    const creator = await this.authService.getUserInfo(creatorUID);
-    const createdAt = data.created.createdAt? (data.created.createdAt.toDate() || new Date(data.created.createdAt)): null; // Timestamp umwandeln
-    const formattedDate = this.chatService.formatDate(createdAt);
-    this.currentChannel = {
-      name: data.name || channelName,
-      description: data.description || "Keine Beschreibung verfügbar",
-      created: {
-        createdFrom: creator['name'],
-        createdAt:formattedDate,
+    this.currentChannelName = channelName;
+    console.log(this.currentChannelName)
+    this.currentChannel={
+      name: "string",
+      description: "string",
+      messages: [],
+      created:{
+        createdFrom:"any",
+        createdAt:"string",
       },
-      messages: messagesWithUserData,
-      members:membersWithUserData,
-      membersAmount:data.members.length,
-    };});
+      members:[],
+      membersAmount:1,
+    }
+  }
+  saveCurrentChannelValue(Channel:Channel){
+
   }
   addMembersToChannelDialog(){
     this.membersOfChannelList=false;
@@ -243,6 +237,7 @@ export class MainComponent{
           chatpartner: chatpartner,
         };
     })
+    console.log(this.currentChannel);
   }
   showChatPartner(members:Member[]){
     for(let i = 0; i < members.length; i++){

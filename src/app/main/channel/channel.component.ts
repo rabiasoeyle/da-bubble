@@ -1,8 +1,10 @@
-import { ChangeDetectorRef, Component, inject, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Channel } from '../../../modules/channel';
 import { ChatService } from '../../chat.service';
 import { AuthService } from '../../auth.service';
 import { UserData } from '../../../modules/user';
+import { Message } from '../../../modules/messages';
+import { Member } from '../../../modules/member';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
@@ -12,7 +14,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
   templateUrl: './channel.component.html',
   styleUrl: './channel.component.scss'
 })
-export class ChannelComponent {
+export class ChannelComponent implements OnInit, OnChanges{
   userData: UserData |null = null;
   fb = inject(FormBuilder);
   addChannelForm = this.fb.nonNullable.group({
@@ -34,7 +36,7 @@ changeChannelDescrForm =this.fb.nonNullable.group({
 editMessageForm= this.fb.nonNullable.group({
   message:['', Validators.required],
   })
-  @Input() currentChannel:Channel[]|any = [];
+  @Input()currentChannelName:string = "kein Name";
   openDetailsOfChannel= false;
   editChannel=false;
   addMemberToChannel=false;
@@ -43,16 +45,26 @@ editMessageForm= this.fb.nonNullable.group({
   currentProfileDetail:any;
   channelDeleted:boolean=false;
   deletedChannelname:string="";
+  currentChannel:Channel | null = null;
   constructor(private chatService:ChatService,private cdr: ChangeDetectorRef, private authService:AuthService){
-
+    
   }
-
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['currentChannelName']) {
+      this.openChannel(this.currentChannelName);
+    }
+  }
+  ngOnInit() {
+    this.loadLiveUserData();
+    this.openChannel(this.currentChannelName);
+    console.log("on Init: ")
+  }
 loadLiveUserData(){
   this.authService.userData$.subscribe((data) => {
     this.userData = data;
   });
 }
-openChannel(channelName: string) {
+async openChannel(channelName: string) {
   this.chatService.getChannelLiveUpdates(channelName);
   this.chatService.currentChannel.subscribe(async (data) => {
   if (!data) {
@@ -75,18 +87,22 @@ openChannel(channelName: string) {
     messages: messagesWithUserData,
     members:membersWithUserData,
     membersAmount:data.members.length,
-  };});
-  console.log(this.currentChannel)
+  }});
+  
+  setTimeout(()=>{
+    console.log("Aktueller Channel:", this.currentChannel);
+    console.log("Geladene Nachrichten:", this.currentChannel?.messages)},2000);
+
 }
 
 startEditMessage(id:number){
-  if(this.currentChannel){
+  if(this.currentChannel != null){
     const msg = this.currentChannel.messages[id];
     msg.editing = true;
   }
 }
 closeEditMessage(id:number){
-  if(this.currentChannel){
+  if(this.currentChannel!=null){
     const msg = this.currentChannel.messages[id];
     msg.editing = false;
   }
@@ -103,7 +119,9 @@ addMembersToChannel(name:string){}
 openMembersList(){}
 openUserDetails(idx:number){}
 goToPersonalMessages(){}
-sendMessage(){}
+sendMessage(){
+  
+}
 openEditChannel(){}
 deleteChannelAtUser(name:string){
 
