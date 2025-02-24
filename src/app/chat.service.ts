@@ -246,7 +246,7 @@ export class ChatService {
         }
       return newChatRef.id;
     }
-    async getUserChats(userId: string) {
+    async getUserChats(userId: string):Promise<Chat[]>{
       const userRef = doc(this.firebaseDatabase, `users/${userId}`);
       const userSnap = await getDoc(userRef);
       const userData = userSnap.data();
@@ -265,15 +265,13 @@ export class ChatService {
           const partnerSnap = await getDoc(partnerRef);
           const partnerData = partnerSnap.exists() ? partnerSnap.data() : {};
           chatDetails.push({
-            chatId,
-            chatData,
+            chatId:chatId,
+            chatData:chatData,
             chatPartner: { 
               uid: chatPartnerId,
               name: partnerData['name'],                
               email: partnerData['email'],              
               fotolink: partnerData['fotolink'], 
-              channels:partnerData['channels'],
-              chats:partnerData['chats'], 
             }
           });
         }

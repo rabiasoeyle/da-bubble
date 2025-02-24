@@ -16,7 +16,7 @@
             <app-channel [currentChannelName]="currentChannelName" (openChat)="openChat($event)"></app-channel>
         }
         @if(currentChat!=null){
-            <app-chat [currentChat]="currentChat"></app-chat>
+            <app-chat [currentChatId]="currentChatId" [userChats]="userChats"></app-chat>
         }
         <div></div>
     </div>

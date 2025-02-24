@@ -15,18 +15,19 @@ import { Member } from '../../../modules/member';
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss'
 })
-export class ChatComponent implements OnInit, OnDestroy{
+export class ChatComponent implements OnInit, OnDestroy, OnChanges{
   router = inject(Router);
   fb = inject(FormBuilder);
   messageIdx:number = 0;
-  userChats:Chat[]=[];
+  @Input() userChats:Chat[]=[];
   @Input() currentChat:Chat|null = null;
+  @Input() currentChatId:number = 0;
   private chatSubscription!: Subscription;
   @Input() userData:UserData|null = null;
   @Output() newChatPartner = new EventEmitter<number>();
-  @Output() nstartEditMessage = new EventEmitter<number>();
-  @Output() ncloseEditMessage = new EventEmitter<number>();
-  @Output() neditMessage = new EventEmitter<string>();
+  // @Output() nstartEditMessage = new EventEmitter<number>();
+  // @Output() ncloseEditMessage = new EventEmitter<number>();
+  // @Output() neditMessage = new EventEmitter<string>();
   sendMessageForm = this.fb.nonNullable.group({
       message:['', Validators.required],
     })
@@ -34,87 +35,82 @@ export class ChatComponent implements OnInit, OnDestroy{
       message:['', Validators.required],
     })
   previousChatData: any = null;
-
   constructor(private chatService:ChatService,private cdr: ChangeDetectorRef, private authService:AuthService) {}
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['currentChatId']) {
+      this.openChat(this.currentChatId);
+    }
+  }
   ngOnInit() {
     this.loadLiveUserData();
-    this.loadUserChats();
+    this.openChat(this.currentChatId);
   }
   ngOnDestroy() {
     if (this.chatSubscription) {
       this.chatSubscription.unsubscribe(); // Memory Leak verhindern
     }
   }
-openUserDetails(idx:number){
-this.newChatPartner.emit(idx)
-}
-startEditMessage(id:number){
-  this.messageIdx= id;
-  if(this.currentChat){
-    const msg = this.currentChat.chatData.messages[id];
-    msg.editing = true;
+  openUserDetails(idx:number){
+  this.newChatPartner.emit(idx)
   }
-}
-closeEditMessage(id:number){
-  if(this.currentChat){
-    const msg = this.currentChat.chatData.messages[id];
-    msg.editing = false;
-  }
-}
-editMessage(id:number){
-  const rawForm = this.editMessageForm.getRawValue();
-  if(this.currentChat && rawForm.message !=""){
-    this.chatService.editPrivateMessage(this.currentChat.chatId, rawForm.message, id);
-  }
-}
-sendPrivateMessage(){
-    const rawForm = this.sendMessageForm.getRawValue();
+  startEditMessage(id:number){
+    this.messageIdx= id;
     if(this.currentChat){
-      this.chatService.sendPrivateMessage(rawForm.message, this.currentChat.chatId);
-    }
-}
-async loadUserChats(){
-  this.userChats = [];
-  if(this.userData){
-     const userChat: Chat[] = await this.chatService.getUserChats(this.userData?.uid);
-     if (userChat) {
-      this.userChats.push(...userChat);
+      const msg = this.currentChat.chatData.messages[id];
+      msg.editing = true;
     }
   }
-}
-loadLiveUserData(){
-  this.authService.userData$.subscribe((data) => {
-    this.userData = data;
-    if(this.userData == null){
-      this.router.navigateByUrl('');
+  closeEditMessage(id:number){
+    if(this.currentChat){
+      const msg = this.currentChat.chatData.messages[id];
+      msg.editing = false;
     }
-  });
-}
-async openChat(idx:number){
-    this.currentChat = null;
-    await this.chatService.getChatLiveUpdates(this.userChats[idx].chatId);
-    this.chatService.currentChat$.subscribe(async (data) => {
-    if (!data) {this.currentChat = null ; return;}
-    const messagesWithUserData = data.messages ? await this.chatService.loadMessages(data.messages): [];
-    const membersWithUserData = data.members ? await this.chatService.loadMembers(data.members):[];
-    const chatpartner = await this.showChatPartner(membersWithUserData);
-    if(chatpartner!=null){
-    this.currentChat={
-          chatId:this.userChats[idx].chatId,
-          chatData:{
-            createdAt:data.createdAt,
-            members: membersWithUserData,
-            messages: messagesWithUserData,
-          },
-          chatPartner:{
-            uid:chatpartner.uid,
-            name:chatpartner.name,
-            email:chatpartner.email,
-            fotolink:chatpartner.fotolink,
-          } 
-        };
+  }
+  editMessage(id:number){
+    const rawForm = this.editMessageForm.getRawValue();
+    if(this.currentChat && rawForm.message !=""){
+      this.chatService.editPrivateMessage(this.currentChat.chatId, rawForm.message, id);
+    }
+  }
+  sendPrivateMessage(){
+      const rawForm = this.sendMessageForm.getRawValue();
+      if(this.currentChat){
+        this.chatService.sendPrivateMessage(rawForm.message, this.currentChat.chatId);
       }
-    })
+  }
+  loadLiveUserData(){
+    this.authService.userData$.subscribe((data) => {
+      this.userData = data;
+      if(this.userData == null){
+        this.router.navigateByUrl('');
+      }
+    });
+  }
+  async openChat(idx:number){
+      this.currentChat = null;
+      await this.chatService.getChatLiveUpdates(this.userChats[idx].chatId);
+      this.chatService.currentChat$.subscribe(async (data) => {
+      if (!data) {this.currentChat = null ; return;}
+      const messagesWithUserData = data.messages ? await this.chatService.loadMessages(data.messages): [];
+      const membersWithUserData = data.members ? await this.chatService.loadMembers(data.members):[];
+      const chatpartner = await this.showChatPartner(membersWithUserData);
+      if(chatpartner!=null){
+      this.currentChat={
+            chatId:this.userChats[idx].chatId,
+            chatData:{
+              createdAt:data.createdAt,
+              members: membersWithUserData,
+              messages: messagesWithUserData,
+            },
+            chatPartner:{
+              uid:chatpartner.uid,
+              name:chatpartner.name,
+              email:chatpartner.email,
+              fotolink:chatpartner.fotolink,
+            } 
+          };
+        }
+      })
   }
   async showChatPartner(members:Member[]){
     for(let i = 0; i < members.length; i++){

@@ -28,33 +28,12 @@ export class MainComponent{
   // booleans
   sidenavIsOpen:boolean = true;
   addChannelOpen:boolean = false;
-  addMemberToChannel:boolean = false;
-  openDetailsOfChannel:boolean = false;
-  editChannel:boolean=false;
-  channelDeleted:boolean=false;
-  membersOfChannelList:boolean=false;
   memberDetails:boolean= false;
   //forms
   addChannelForm = this.fb.nonNullable.group({
       channelname:['', Validators.required],
       description:['', Validators.required],
-    })
-  sendMessageForm = this.fb.nonNullable.group({
-    message:['', Validators.required],
-    })
-  addMemberForm = this.fb.nonNullable.group({
-    name:['', Validators.required],
   })
-  changeChannelNameForm = this.fb.nonNullable.group({
-    name:['', Validators.required],
-  })
-  changeChannelDescrForm =this.fb.nonNullable.group({
-    description:['', Validators.required],
-  })
-  editMessageForm= this.fb.nonNullable.group({
-    message:['', Validators.required],
-    })
-  
   userData: UserData | null = null;
   sidenavButtonText:string="Workspace-Menü schließen";
   currentChannel: Channel|null = null;
@@ -66,6 +45,7 @@ export class MainComponent{
   currentChat:Chat|null = null;
   messageIdx:number= 0;
   currentChannelName:string= "kein Channel";
+  currentChatId:number=0;
   constructor(private authService: AuthService, private chatService:ChatService) {
   }
   ngOnInit() {
@@ -75,7 +55,7 @@ export class MainComponent{
   async loadUserChats(){
     this.userChats = [];
     if(this.userData){
-       const userChat: Chat[] = await this.chatService.getUserChats(this.userData?.uid);
+       const userChat = await this.chatService.getUserChats(this.userData?.uid);
        if (userChat) {
         this.userChats.push(...userChat);
       }
@@ -112,47 +92,20 @@ export class MainComponent{
       name: "string",
       description: "string",
       messages: [],
-      created:{
-        createdFrom:"any",
-        createdAt:"string",
-      },
+      created:{createdFrom:"any",createdAt:"string",},
       members:[],
       membersAmount:1,
     }
   }
-  async openChat(idx:number){
+  openChat(idx:number){
     this.currentChannel = null;
     this.currentChat = null;
-    await this.chatService.getChatLiveUpdates(this.userChats[idx].chatId);
-    this.chatService.currentChat$.subscribe(async (data) => {
-    if (!data) {this.currentChat = null ; return;}
-    const messagesWithUserData = data.messages ? await this.chatService.loadMessages(data.messages): [];
-    const membersWithUserData = data.members ? await this.chatService.loadMembers(data.members):[];
-    const chatpartner = this.showChatPartner(membersWithUserData);
-    if(chatpartner!=null){
-      this.currentChat={
+    this.currentChatId = idx;
+    this.currentChat={
             chatId:this.userChats[idx].chatId,
-            chatData:{
-              createdAt:data.createdAt,
-              members: membersWithUserData,
-              messages: messagesWithUserData,
-            },
-            chatPartner:{
-              uid:chatpartner.uid,
-              name:chatpartner.name,
-              email:chatpartner.email,
-              fotolink:chatpartner.fotolink,
-            } 
-          };
-        }
-    })
-  }
-  showChatPartner(members:Member[]){
-    for(let i = 0; i < members.length; i++){
-      if(members[i].uid !== this.userData?.uid){
-        return members[i];
-      }
-    }return ;
+            chatData:{createdAt:"data.createdAt",members: [],messages: [],},
+            chatPartner:{uid:"uid",name:"name",email:"email",fotolink:"fotolink",} 
+    };
   }
   
 }
