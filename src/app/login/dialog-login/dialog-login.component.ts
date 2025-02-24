@@ -41,8 +41,6 @@ export class DialogLoginComponent {
   loginWithGoogle() {
     this.authService.googleSignin()
     .then(() => {
-      console.log('Anmeldung erfolgreich');
-      // Nach erfolgreicher Anmeldung weiterleiten
       this.router.navigateByUrl('main');
     })
       .catch((error) => console.error('Anmeldung fehlgeschlagen:', error));

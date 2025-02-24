@@ -73,7 +73,6 @@ export class AuthService {
     this.firebaseAuth.signOut();
     this.userDataSubject.next(null);
   }
-  
   async googleSignin(): Promise<void> {
       try {
         const provider = new GoogleAuthProvider(); // Google-Provider initialisieren

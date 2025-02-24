@@ -108,7 +108,6 @@ export class MainComponent{
   }
   openChannel(channelName: string) {
     this.currentChannelName = channelName;
-    console.log(this.currentChannelName)
     this.currentChannel={
       name: "string",
       description: "string",
@@ -120,20 +119,6 @@ export class MainComponent{
       members:[],
       membersAmount:1,
     }
-  }
-  async goToPersonalMessages(){
-    if(this.userData){
-      const messagesWMembers = await this.chatService.createChat(this.userData?.uid, this.currentProfileDetail.uid )
-    } await this.loadUserChats().then(() => {
-      setTimeout(() => {
-        for (let i = 0; i < this.userChats.length; i++) {
-          if (this.userChats[i].chatPartner.uid == this.currentProfileDetail.uid) {
-            this.openChat(i);
-          }
-        }
-      }, 200);
-    });
-    this.memberDetails = false;
   }
   async openChat(idx:number){
     this.currentChannel = null;
@@ -152,7 +137,6 @@ export class MainComponent{
           chatpartner: chatpartner,
         };
     })
-    console.log(this.currentChannel);
   }
   showChatPartner(members:Member[]){
     for(let i = 0; i < members.length; i++){

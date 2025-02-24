@@ -31,7 +31,6 @@ export class DialogChooseAvatarComponent {
       if(this.userData == null){
           this.router.navigateByUrl('');
       }
-      console.log('Aktuelle Benutzerdaten:', this.userData);
     });
   }
   saveNewAvatar(avatarImg:any){

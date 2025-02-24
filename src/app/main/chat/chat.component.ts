@@ -64,7 +64,6 @@ closeEditMessage(id:number){
 editMessage(id:number){
   const rawForm = this.editMessageForm.getRawValue();
   if(this.currentChat && rawForm.message !=""){
-    console.log(this.currentChat, "yeay")
     this.chatService.editPrivateMessage(this.currentChat.uid, rawForm.message, id);
   }
 }
@@ -72,7 +71,6 @@ sendPrivateMessage(){
     const rawForm = this.sendMessageForm.getRawValue();
     if(this.currentChat){
       this.chatService.sendPrivateMessage(rawForm.message, this.currentChat.uid);
-      console.log("test sendprivatemessages", this.currentChat)
     }
 }
 async loadUserChats(){
@@ -108,7 +106,6 @@ async openChat(idx:number){
           chatpartner: chatpartner,
         };
     })
-    setTimeout(()=>{console.log(this.currentChat)},1000)
   }
   showChatPartner(members:Member[]){
     for(let i = 0; i < members.length; i++){

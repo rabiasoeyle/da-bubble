@@ -31,16 +31,7 @@ export class DialogChangePasswordComponent implements OnInit{
   constructor() {
 
   }
-  // ngOnInit(): void {
-  //   this.authService.userData$.subscribe((data) => {
-  //     this.userData = data;
-  //     if(this.userData == null){
-  //         this.router.navigateByUrl('');
-  //     }
-  //     console.log('Aktuelle Benutzerdaten:', this.userData);
-  //   });
-  // }
-  
+
   ngOnInit(): void {
     // oobCode aus den URL-Parametern lesen
     this.route.queryParams.subscribe((params) => {
@@ -74,7 +65,4 @@ export class DialogChangePasswordComponent implements OnInit{
   goBackToLogin(){
     
   }
-  // onSubmit(){
-
-  // }
 }

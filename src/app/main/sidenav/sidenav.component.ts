@@ -32,7 +32,6 @@ export class SidenavComponent {
     }
   changeChannelAreaStatus(){
     this.channelsOpen = !this.channelsOpen;
-    console.log(this.userData)
   }
   changeMessageAreaStatus(){
     this.directMessagesOpen = !this.directMessagesOpen;

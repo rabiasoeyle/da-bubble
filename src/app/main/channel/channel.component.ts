@@ -50,7 +50,6 @@ editMessageForm= this.fb.nonNullable.group({
   userChats:Chat[]=[];
   @Output() openChat = new EventEmitter<number>();
   constructor(private chatService:ChatService,private cdr: ChangeDetectorRef, private authService:AuthService){
-    
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['currentChannelName']) {
@@ -60,7 +59,6 @@ editMessageForm= this.fb.nonNullable.group({
   ngOnInit() {
     this.loadLiveUserData();
     this.openChannel(this.currentChannelName);
-    console.log("on Init: ")
   }
 loadLiveUserData(){
   this.authService.userData$.subscribe((data) => {
@@ -91,11 +89,6 @@ async openChannel(channelName: string) {
     members:membersWithUserData,
     membersAmount:data.members.length,
   }});
-  
-  setTimeout(()=>{
-    console.log("Aktueller Channel:", this.currentChannel);
-    console.log("Geladene Nachrichten:", this.currentChannel?.messages)},2000);
-
 }
 
 startEditMessage(id:number){
@@ -150,13 +143,11 @@ async goToPersonalMessages(){
   if(this.userData){
     const messagesWMembers = await this.chatService.createChat(this.userData?.uid, this.currentProfileDetail.uid )
   } await this.loadUserChats().then(() => {
-    // setTimeout(() => {
       for (let i = 0; i < this.userChats.length; i++) {
         if (this.userChats[i].chatPartner.uid == this.currentProfileDetail.uid) {
           this.openChat.emit(i);
         }
       }
-    // }, 200);
   });
   this.memberDetails = false;
 }
@@ -202,5 +193,4 @@ changeChannelDescription(){
     }
     this.openEditChannel();
 }
-
 }

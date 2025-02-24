@@ -8,8 +8,6 @@ import { FirebaseApp } from '@angular/fire/app';
 import { getApps } from 'firebase/app';
 import { Auth } from '@angular/fire/auth';
 
-console.log(getApps());
-
 @Component({
   selector: 'app-dialog-create-account',
   standalone: true,
@@ -50,7 +48,6 @@ export class DialogCreateAccountComponent {
         },
         error: (err) => {
           this.errorMessage = err.code;
-          console.log('Error during registration:', err);
         },
       });
   }

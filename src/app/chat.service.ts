@@ -108,29 +108,24 @@ export class ChatService {
     }
   }
   async addMembersToChannel(channelName:string, userName:string){
-      console.log("userName: " + userName)
       try {
         const usersCollectionRef = collection(this.firebaseDatabase, "users");
         const userSnapshot = await getDocs(usersCollectionRef);
         let userId = null;
         userSnapshot.forEach((doc) => {
             const userData = doc.data();
-            console.log("Userliste: " + userData['name']);
             if (userData['name'] == userName) {
                 userId = doc.id;
-                console.log("Die User Id"+userId)
                 this.addChannelToUserTwo(channelName, userId)
             }
         });
         if (!userId) {
-            console.log("Kein Benutzer mit diesem Namen gefunden.");
             return;
         }
         const channelDocRef = doc(this.firebaseDatabase, `channels/${channelName}`);
         await updateDoc(channelDocRef, {
             members: arrayUnion(userId)
         });
-        console.log(`Benutzer ${userName} wurde erfolgreich zum Channel ${channelName} hinzugefügt.`);
     } catch (error) {
         console.error("Fehler beim Hinzufügen des Benutzers zum Channel:", error);
     }
@@ -205,7 +200,6 @@ export class ChatService {
       
   }
   async editPrivateMessage(chatId:string, newMessage:string, id:number){
-    console.log("Blablablub", chatId,newMessage, id )
     const chatDocRef = doc(this.firebaseDatabase, `chats/${chatId}`);
       const chatSnap = await getDoc(chatDocRef);
       const chatData = chatSnap.data();
@@ -287,7 +281,6 @@ export class ChatService {
         });
       }
     }
-    console.log("ChatDetails: ", chatDetails);
     return chatDetails;
   }
   async getChatLiveUpdates(chatId: string) {
@@ -316,7 +309,6 @@ export class ChatService {
       const chatSnap = await getDoc(chatRef);
       if (chatSnap.exists()) {
         const chatData = chatSnap.data();
-        console.log("chatData:  ", chatData);
     }
   }
   async sendPrivateMessage(message:string, chatId:string){
