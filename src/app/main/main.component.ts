@@ -130,9 +130,6 @@ export class MainComponent{
       membersAmount:1,
     }
   }
-  saveCurrentChannelValue(Channel:Channel){
-
-  }
   addMembersToChannelDialog(){
     this.membersOfChannelList=false;
     this.addMemberToChannel =!this.addMemberToChannel;
@@ -174,25 +171,25 @@ export class MainComponent{
     }
     this.openEditChannel();
   }
-  startEditMessage(id:number){
-    this.messageIdx= id;
-    if(this.currentChannel){
-      const msg = this.currentChannel.messages[id];
-      msg.editing = true;
-    }
-  }
-  closeEditMessage(id:number){
-    if(this.currentChannel){
-      const msg = this.currentChannel.messages[id];
-      msg.editing = false;
-    }
-  }
-  editMessage(message:string){
-    // const rawForm = this.editMessageForm.getRawValue();
-    if(this.currentChannel && message !=""){
-      this.chatService.editMessage(this.currentChannel.name, message, this.messageIdx);
-    }
-  }
+  // startEditMessage(id:number){
+  //   this.messageIdx= id;
+  //   if(this.currentChannel){
+  //     const msg = this.currentChannel.messages[id];
+  //     msg.editing = true;
+  //   }
+  // }
+  // closeEditMessage(id:number){
+  //   if(this.currentChannel){
+  //     const msg = this.currentChannel.messages[id];
+  //     msg.editing = false;
+  //   }
+  // }
+  // editMessage(message:string){
+  //   // const rawForm = this.editMessageForm.getRawValue();
+  //   if(this.currentChannel && message !=""){
+  //     this.chatService.editMessage(this.currentChannel.name, message, this.messageIdx);
+  //   }
+  // }
   openMembersList(){
     this.membersOfChannelList = !this.membersOfChannelList;
   }

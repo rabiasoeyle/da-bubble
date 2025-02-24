@@ -120,7 +120,10 @@ openMembersList(){}
 openUserDetails(idx:number){}
 goToPersonalMessages(){}
 sendMessage(){
-  
+  const rawForm = this.sendMessageForm.getRawValue();
+    if(this.currentChannel){
+      this.chatService.sendMessage(rawForm.message, this.currentChannel.name);
+    }
 }
 openEditChannel(){}
 deleteChannelAtUser(name:string){
