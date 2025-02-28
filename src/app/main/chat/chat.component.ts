@@ -25,9 +25,6 @@ export class ChatComponent implements OnInit, OnDestroy, OnChanges{
   private chatSubscription!: Subscription;
   @Input() userData:UserData|null = null;
   @Output() newChatPartner = new EventEmitter<number>();
-  // @Output() nstartEditMessage = new EventEmitter<number>();
-  // @Output() ncloseEditMessage = new EventEmitter<number>();
-  // @Output() neditMessage = new EventEmitter<string>();
   sendMessageForm = this.fb.nonNullable.group({
       message:['', Validators.required],
     })

@@ -25,7 +25,6 @@ export class DialogChangePasswordComponent implements OnInit{
       })
       userData: UserData | null = null;
       oobCode!: string;
-      newPassword: string = '';
       isCodeValid: boolean = false;
       private route = inject(ActivatedRoute);
   constructor() {
@@ -36,7 +35,7 @@ export class DialogChangePasswordComponent implements OnInit{
     // oobCode aus den URL-Parametern lesen
     this.route.queryParams.subscribe((params) => {
       this.oobCode = params['oobCode']; // Query-Parameter auslesen
-      console.log("oobCode:"+this.oobCode)
+      console.log("oobCode:" + this.oobCode)
       if (this.oobCode) {
         this.authService.verifyResetCode(this.oobCode).then(
           () => {
@@ -52,14 +51,19 @@ export class DialogChangePasswordComponent implements OnInit{
 
   changePassword(): void {
     const rawForm = this.form.getRawValue();
-    if (this.oobCode && this.newPassword) {
-      this.authService.resetPassword(this.oobCode, this.newPassword)
-      .then(()=>{
-        alert('Passwort wurde geändert');
-      })
-      .catch((error) => {
-        console.error('Error resetting password:', error);
-      });
+    if (this.oobCode) {
+      if(rawForm.password != rawForm.passwordCheck){
+        alert('Passwörter stimmen nicht überein')
+      }else{
+        this.authService.resetPassword(this.oobCode, rawForm.passwordCheck)
+        .then(()=>{
+          alert('Passwort wurde geändert');
+        })
+        .catch((error) => {
+          console.error('Error resetting password:', error);
+        });
+      }
+      
     }
   }
   goBackToLogin(){

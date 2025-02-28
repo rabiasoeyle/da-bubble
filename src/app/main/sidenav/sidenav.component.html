@@ -7,8 +7,10 @@
         </div>
         <img src="/assets/img/edit_square.png" alt="create-new-btn">
     </div>
-    <!-- channel -->
-    <div class="sidenav-head">
+    
+    <div class="all-under-header">
+        <!-- channel -->
+        <div class="sidenav-head">
         <div class="img-and-txt-pctr">
             <img (click)="changeChannelAreaStatus()" src="/assets/img/key_arrow_down.png" alt="">
             <div class="text-pctr">
@@ -18,24 +20,27 @@
         </div>
         <img (click)="addChannelDialog()" src="/assets/img/add.png" alt="create-button">
     </div>
+    <div class="channels-list">
     @if(channelsOpen){
+        
         @for(item of this.userData ? this.userData.channels : ["lila","pink"]; track item){
             <div (click)="openChannel(item)" class="text-pctr">
                 <img src="/assets/img/tag.png" alt="">
                 <h4>{{userData ? item : "Lisabell"}}</h4>
             </div>
         }
+        
     }
     <div (click)="addChannelDialog()" class="text-pctr">
-        <img  src="/assets/img/add_circle.png" alt="">
+        <img src="/assets/img/add_circle.png" alt="+">
         <h4>Channel hinzufügen</h4>
     </div>
-
+    </div>
     <!-- messages -->
     <div class="img-and-txt-pctr">
         <img (click)="changeMessageAreaStatus()" src="/assets/img/key_arrow_down.png" alt="">
         <div class="text-pctr">
-            <img src="/assets/img/account_circle.png" alt="">
+            <img src="/assets/img/account_circle.png" alt="account">
             <h4>Direktnachrichten</h4> 
         </div>
     </div>
@@ -44,10 +49,13 @@
             @if(userChats){
                     @for (item of this.userChats; track item; let idx = $index) {
                     <div (click)="openChat(idx)" class="text-pctr">
-                        <img  class="mmbr-details-img" [src]="item.chatPartner.fotolink" alt="profile">
+                        <img  class="mmbr-of-chnnl-pic" [src]="item.chatPartner.fotolink" alt="profile">
                         <h4>{{item.chatPartner.name}}</h4>
                     </div>
                 }
             }
         </div>
-    }  
+    } 
+    </div>
+    
+     

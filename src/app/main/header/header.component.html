@@ -5,9 +5,20 @@
     </div>
     
     <div class="search-fi">
-        <input type="search" placeholder="Devspace durchsuchen">
+        <input [formControl]="input" type="search" placeholder="Devspace durchsuchen">
         <img src="/assets/img/search.png" alt="search">
     </div>
+    @if(showSuggestions){
+    <ul class="absolute left-0 w-full bg-white border rounded-md shadow-md">
+        @for(item of suggestions; track item){
+            <li  class="p-2 hover:bg-gray-200 cursor-pointer" (click)="selectUser(item)">
+                {{ item }}
+            </li> 
+        }
+        
+    </ul>
+    }
+    
     <div class="user-nim">
         <h3>{{userData ? userData.name : "xy"}}</h3>
         <img class="profile" [src]="userData ? userData.fotolink : '/assets/img/Profile.png'" alt="profile">

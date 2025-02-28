@@ -7,22 +7,40 @@
     border-radius: 42px;
 }
 .sidenav-head{
-    @include dFlex();
+    @include dFlex($jc:space-between);
+    padding:16px;
 }
 .add-channel{
     @include dFlex();
 }
 .text-pctr{
-    @include dFlex($g:16px);
+    @include dFlex($g:16px, $jc:start);
+    width: 60%;
 }
 .img-and-txt-pctr{
     @include dFlex($g:16px, $jc:flex-start);
-    padding:0px 24px;
-}
-.sidenav-head{
-    @include dFlex($jc:space-between);
-    padding: 0px 24px;
+    padding:16px;
 }
 .devspace-in-ri{
     @include dFlex($g:16px);
+}
+.mmbr-of-chnnl-pic{
+    width:40px;
+    height:40px;
+    border-radius: 30px;
+    border: 2px solid white;
+}
+.direct-chats{
+    @include dFlex($fd:column, $g:16px);
+    padding:16px;
+}
+.channels-list{
+    @include dFlex($fd:column, $g:16px);
+    padding:16px;
+}
+.all-under-header{
+    width:100%;
+    height:80%;
+    overflow-y: scroll;
+    scrollbar-width: none;
 }
