@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit } from '@angular/core';
 import { AuthService} from '../../auth.service';
 import { Router } from '@angular/router';
 import { UserData } from '../../../modules/user';
@@ -6,6 +6,7 @@ import { UserService } from '../../user.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, filter, switchMap, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
+import { Chat } from '../../../modules/chat';
 
 @Component({
   selector: 'app-header',
@@ -19,10 +20,10 @@ export class HeaderComponent implements OnInit{
   userData: UserData | null = null;
   toggleMenuIsOpen:boolean = false;
   suggestions: string[] = [];
-  showSuggestions = false;
+  // showSuggestions = false;
   input = new FormControl('');
   searchResults: string[] = []; 
-
+  @Input() userChats:Chat[] = [];
   constructor(private authService: AuthService, private userService: UserService) {
     this.setupSearchListener();
   }
@@ -34,9 +35,29 @@ export class HeaderComponent implements OnInit{
         distinctUntilChanged() // Verhindert doppelte Suchanfragen für dieselbe Eingabe
       )
       .subscribe(value => {
-        // console.log(value);
-        this.searchResults = this.userService.searchUsers(value || ''); // Suche ausführen
-        console.log("searchResults:", this.searchResults)
+        if (!value || value.length < 2) {
+          this.searchResults = [];
+          return;
+        }
+        const firstChar = value.charAt(0); // Erstes Zeichen ermitteln
+        if (firstChar === "@") {
+          this.searchResults = this.userService.searchUsers(value.substring(1)); // Suche nach Usernamen
+          // this.searchType = "chat";
+        } else if (firstChar === "#") {
+          if(this.userData){
+            this.searchResults = (this.userData.channels || [])
+          .filter((channel: string) => 
+            channel.toLowerCase().includes(value.substring(1).toLowerCase()));
+          console.log("result:", this.searchResults)
+          // this.searchType="channel"
+          }
+          // Suche nach Channels
+        } else if (/[a-zA-Z]/.test(firstChar)) {
+          this.searchResults = this.userService.searchUsersWithMail(value); // Suche nach E-Mail
+          // this.searchType="chat";
+        } else {
+          this.searchResults = []; // Keine passenden Ergebnisse
+        }
       });
   }
   selectChat(user: string) {

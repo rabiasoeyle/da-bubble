@@ -41,16 +41,22 @@ export class UserService {
   }
 
   searchUsers(searchTerm: string): string[] {
-    console.log("searchTerm",searchTerm);
+    console.log("suche Username",searchTerm);
     if (!searchTerm.trim()) return []; // Falls leer, nichts zurückgeben
-    console.log("searchTerm2.",searchTerm);
+    console.log("Suche Username2.",searchTerm);
     searchTerm = searchTerm.toLowerCase(); // Kleinbuchstaben für bessere Treffer
     return this.allUsers
       .map(user => user.name) // Nur Namen nehmen
       .filter(name => name.toLowerCase().includes(searchTerm)); // Filtern nach Suchbegriff
   }
-  searchPrivatChats(){
-    
+  searchUsersWithMail(searchTerm: string){
+    console.log("Suche Email",searchTerm);
+    if (!searchTerm.trim()) return []; // Falls leer, nichts zurückgeben
+    console.log("Suche Email2.",searchTerm);
+    searchTerm = searchTerm.toLowerCase(); // Kleinbuchstaben für bessere Treffer
+    return this.allUsers
+      .map(user => user.email) // Nur Namen nehmen
+      .filter(email => email.toLowerCase().includes(searchTerm));
   }
 
 }

@@ -3,9 +3,18 @@
             <h3>Neue Nachricht</h3>
             <div class="input-area">
                 <h4>An</h4>
-                <input class="search-input" type="text" placeholder="#Channel, @Name oder die E-Mail Adresse">
+                <input [formControl]="input" class="search-input" type="text" placeholder="#Channel, @Name oder die E-Mail Adresse">
             </div>
+            
+            
         </div>
+        @if(searchResults.length>0){
+        <div class="search-results">
+            @for(item of searchResults; track item){
+                <h4 (click)="openChatOrChannel(item)">{{item}}</h4>
+            }
+        </div> 
+        }
         <div class="channel-chat">
         </div>
         <form class="messages-form" [formGroup] ="sendMessageForm" (ngSubmit)="sendMessage()">

@@ -5,6 +5,7 @@ import { AuthService } from './auth.service';
 import { Chat } from '../modules/chat';
 import { Message } from '../modules/messages';
 import { Member } from '../modules/member';
+import { Channel } from '../modules/channel';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +19,11 @@ export class ChatService {
   private channelUnsubscribe: (() => void) | null = null;
   private currentChatSubject = new BehaviorSubject<any | null>(null);
   currentChat$ = this.currentChatSubject.asObservable();
-  constructor() { }
+  allChats:any=[];
+  allChannels:Channel[]=[];
+  constructor() { 
+
+  }   
     async loadMessages(messages:Message[]){
       const messagesWithUserData = await Promise.all(
         messages.map(async (msg: Message) => {

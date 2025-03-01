@@ -1,10 +1,10 @@
 <div class="hole-page">
-    <app-header></app-header>
+    <app-header [userChats]="userChats"></app-header>
 <section class="main-content">
     
     @if(sidenavIsOpen && userData !=null && userChats !=null){
         <div class="sidenav-area">
-            <app-sidenav [userData]="userData" [userChats]="userChats" (newChat)="openChat($event)" (newChannel)="openChannel($event)" (openAddChannel)="addChannelDialog()"></app-sidenav>
+            <app-sidenav [userData]="userData" [userChats]="userChats" (newChat)="openChat($event)" (newChannel)="openChannel($event)" (openAddChannel)="addChannelDialog()" (startNewChatClicked)="startNewChat()"></app-sidenav>
         </div>
     }
     <button class="change-sidenav-status-btn" (click)="changeSidenavStatus()">
@@ -19,7 +19,7 @@
             <app-chat [currentChatId]="currentChatId" [userChats]="userChats"></app-chat>
         }
         @if(currentChannel==null && currentChat==null){
-            <app-start-new-chat></app-start-new-chat>
+            <app-start-new-chat [userData]="userData"></app-start-new-chat>
         }
     </div>
     @if(addChannelOpen){

@@ -28,6 +28,7 @@ export class SidenavComponent {
   @Output() newChat = new EventEmitter<number>();
   @Output() newChannel = new EventEmitter<string>();
   @Output() openAddChannel = new EventEmitter<string>();
+  @Output() startNewChatClicked = new EventEmitter<string>();
   constructor(private authService: AuthService) {
     }
   changeChannelAreaStatus(){
@@ -44,6 +45,9 @@ export class SidenavComponent {
   }
   addChannelDialog(){
     this.openAddChannel.emit();
+  }
+  startNewChat(){
+    this.startNewChatClicked.emit();
   }
 
 }

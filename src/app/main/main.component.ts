@@ -47,6 +47,7 @@ export class MainComponent{
   messageIdx:number= 0;
   currentChannelName:string= "kein Channel";
   currentChatId:number=0;
+  allUser:UserData[]=[];
   constructor(private authService: AuthService, private chatService:ChatService) {
   }
   ngOnInit() {
@@ -108,8 +109,18 @@ export class MainComponent{
             chatPartner:{uid:"uid",name:"name",email:"email",fotolink:"fotolink",} 
     };
   }
-  loadAllUsers(){
-
+  startNewChat(){
+    this.currentChannel = null;
+    this.currentChat = null;
+  }
+  
+  async showChatPartner(members:Member[]){
+    for(let i = 0; i < members.length; i++){
+      if(members[i].uid !== this.userData?.uid){
+        console.log(members[i])
+        return members[i];
+      }
+    }return ;
   }
   
 }
