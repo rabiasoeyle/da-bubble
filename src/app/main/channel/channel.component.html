@@ -69,7 +69,7 @@
             </div>
         </div>
         <div class="channel-chat">
-            <h3 class="margin-5px"> # {{currentChannel.name}}</h3>
+            <h3 class="chat-channel-name"> # {{currentChannel.name}}</h3>
             @if(currentChannel.created.createdFrom == userData?.name){
                 <h4>Du hast diesen Channel am {{currentChannel.created.createdAt}} erstellt.
                     Das ist der Anfang des Channels <span class="blue-font"># {{currentChannel.name}}</span>.

@@ -1,6 +1,13 @@
 @import '../../../styles.scss';
 @import '../main.component.scss';
-
+.chat-channel-name{
+@include dFlex($jc:flex-start);
+}
+.chat-area-child{
+    height:98%;
+    position: relative;
+    margin:2%;
+}
 .msg-sender-pic{
     width:70px;
     height:70px;
@@ -44,7 +51,7 @@
     padding:8px;
 }
 .msg-pic-and-text{
-    @include dFlex();
+    @include dFlex($jc:flex-start);
 }
 .my-msg-pic-and-text{
     @include dFlex($jc:flex-start, $fd:row-reverse);
@@ -73,20 +80,33 @@
     padding:8px;
 }
 .channel-chat{
-    overflow-y: auto;
-    height: 40vH;
+    // overflow-y: auto;
+    // height: 40vH;
+    // scroll-behavior: smooth;
+    // scrollbar-width: none;
+    // @include dFlex($ai:flex-start, $fd:column, $g:8px);
+    // padding-top:120px;
+    // padding-bottom:32px;
+    overflow-y: scroll;
     scroll-behavior: smooth;
     scrollbar-width: none;
-    @include dFlex($ai:flex-start, $fd:column, $g:8px);
-    padding-top:120px;
-    padding-bottom:32px;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 8px;
+    height: 70%;
 }
 .messages-form{
     @include dFlex();
-    height:20%;
+    height: 80px;
     border: 1px solid #ADB0D9;
-    padding:20px;
+    margin: 20px;
     border-radius: 20px;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 8px;
     >textarea{
         width:80%;
         height:80%;

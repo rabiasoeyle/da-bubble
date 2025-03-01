@@ -1,0 +1,42 @@
+@import "../../../styles.scss";
+.header-of-channel{
+    position: relative;
+    @include dFlex($jc:space-between, $fd:column, $ai:flex-start, $g:16px);
+    border-bottom:2px solid #ECEEFE;
+    padding:16px;
+    margin-left:8px;
+}
+.messages-form{
+    @include dFlex();
+    height: 80px;
+    border: 1px solid #ADB0D9;
+    margin: 20px;
+    border-radius: 20px;
+    background-color: white;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 8px;
+    >textarea{
+        width:80%;
+        height:80%;
+        border:none;
+        background-color: white;
+    }
+}
+.channel-chat{
+    flex:1;
+    @include dFlex($ai:flex-start, $fd:column, $g:8px);
+    height:50%;
+}
+.input-area{
+    border-radius:25px;
+    border:1px solid black;
+    width: 80%;
+    background-color: white;
+}
+.chat-area-child{
+    height:100%;
+    width:100%;
+    position: relative;
+}

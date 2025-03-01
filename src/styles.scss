@@ -157,3 +157,9 @@ form{
         border-color: #686868;
         color: white;
 }
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}

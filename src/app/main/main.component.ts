@@ -12,12 +12,13 @@ import { Chat } from '../../modules/chat';
 import { ChatComponent } from './chat/chat.component';
 import { ChatService } from '../chat.service';
 import { ChannelComponent } from './channel/channel.component';
+import { StartNewChatComponent } from "./start-new-chat/start-new-chat.component";
 
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [HeaderComponent,ReactiveFormsModule, SidenavComponent, ChatComponent, ChannelComponent],
+  imports: [StartNewChatComponent,HeaderComponent, ReactiveFormsModule, SidenavComponent, ChatComponent, ChannelComponent, StartNewChatComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })
@@ -37,7 +38,7 @@ export class MainComponent{
   userData: UserData | null = null;
   sidenavButtonText:string="Workspace-Menü schließen";
   currentChannel: Channel|null = null;
-  allDaBubbleUser:[]=[];
+  allDaBubbleUser:UserData[]=[];
   deletedChannelname:string="";
   currentProfileDetail:any;
   userChats:Chat[]=[];
@@ -106,6 +107,9 @@ export class MainComponent{
             chatData:{createdAt:"data.createdAt",members: [],messages: [],},
             chatPartner:{uid:"uid",name:"name",email:"email",fotolink:"fotolink",} 
     };
+  }
+  loadAllUsers(){
+
   }
   
 }

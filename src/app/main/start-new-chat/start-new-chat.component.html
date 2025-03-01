@@ -1,0 +1,18 @@
+    <div class="chat-area-child">
+        <div class="header-of-channel">
+            <h3>Neue Nachricht</h3>
+            <div class="input-area">
+                <h4>An</h4>
+                <input class="search-input" type="text" placeholder="#Channel, @Name oder die E-Mail Adresse">
+            </div>
+        </div>
+        <div class="channel-chat">
+        </div>
+        <form class="messages-form" [formGroup] ="sendMessageForm" (ngSubmit)="sendMessage()">
+            <textarea formControlName="message" type="text" placeholder="Deine Nachricht hier eingeben">
+            </textarea>
+            <button type="submit">
+                <img src="/assets/img/send.png" alt="send">
+            </button>
+        </form>   
+    </div> 

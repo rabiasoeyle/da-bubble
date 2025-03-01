@@ -18,7 +18,9 @@
         @if(currentChat!=null){
             <app-chat [currentChatId]="currentChatId" [userChats]="userChats"></app-chat>
         }
-        <div></div>
+        @if(currentChannel==null && currentChat==null){
+            <app-start-new-chat></app-start-new-chat>
+        }
     </div>
     @if(addChannelOpen){
         <div class="add-chn-dia-parent">

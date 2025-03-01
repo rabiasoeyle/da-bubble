@@ -1,10 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { AuthService} from '../../auth.service';
 import { Router } from '@angular/router';
 import { UserData } from '../../../modules/user';
 import { UserService } from '../../user.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime, filter, switchMap, tap } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, switchMap, tap } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
 
 @Component({
@@ -14,24 +14,34 @@ import { Observable, of } from 'rxjs';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit{
   router = inject(Router);
-  // userService = inject(UserService);
   userData: UserData | null = null;
   toggleMenuIsOpen:boolean = false;
   suggestions: string[] = [];
   showSuggestions = false;
   input = new FormControl('');
+  searchResults: string[] = []; 
 
   constructor(private authService: AuthService, private userService: UserService) {
-    
+    this.setupSearchListener();
   }
-  async searchUsers(value: string) {
-    if (!value.trim()) return [];
-    return this.userService.searchUsers(value.toLowerCase());
+
+  private setupSearchListener() {
+    this.input.valueChanges
+      .pipe(
+        debounceTime(300), // Warte 300ms nach jeder Eingabe (vermeidet zu viele Suchanfragen)
+        distinctUntilChanged() // Verhindert doppelte Suchanfragen für dieselbe Eingabe
+      )
+      .subscribe(value => {
+        // console.log(value);
+        this.searchResults = this.userService.searchUsers(value || ''); // Suche ausführen
+        console.log("searchResults:", this.searchResults)
+      });
   }
-  selectUser(user: string) {
-    this.input.setValue(user);
+  selectChat(user: string) {
+    this.input.setValue(user); // Wähle einen Benutzer aus
+    this.searchResults = []; // Leere die Vorschläge
   }
 
   ngOnInit(): void {

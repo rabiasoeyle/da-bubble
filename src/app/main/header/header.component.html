@@ -3,21 +3,21 @@
         <img class="logo" src="/assets/img/Logo.png" alt="logo">
         <h3>DA Bubble</h3>
     </div>
-    
-    <div class="search-fi">
-        <input [formControl]="input" type="search" placeholder="Devspace durchsuchen">
-        <img src="/assets/img/search.png" alt="search">
-    </div>
-    @if(showSuggestions){
-    <ul class="absolute left-0 w-full bg-white border rounded-md shadow-md">
-        @for(item of suggestions; track item){
-            <li  class="p-2 hover:bg-gray-200 cursor-pointer" (click)="selectUser(item)">
-                {{ item }}
-            </li> 
+    <div class="search-parent">
+        <div class="search-fi">
+            <input [formControl]="input" type="search" placeholder="Devspace durchsuchen">
+            <img src="/assets/img/search.png" alt="search">
+        </div>
+        @if(searchResults.length>0){
+        <div class="search-options">
+            @for(item of searchResults; track item){
+                <h6  class="option" (click)="selectChat(item)">
+                    {{ item }}
+                </h6> 
+            }
+        </div>
         }
-        
-    </ul>
-    }
+    </div>
     
     <div class="user-nim">
         <h3>{{userData ? userData.name : "xy"}}</h3>

@@ -69,3 +69,14 @@
         }
     }
 }
+.search-parent{
+    position: relative;
+}
+.search-options{
+    position: absolute;
+    top:65%;
+    padding:16px;
+    border-radius: 30px;
+    background-color: white;
+    border:none;
+}

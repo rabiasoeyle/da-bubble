@@ -10,12 +10,15 @@
     @include dFlex($jc:space-between);
     padding:16px;
 }
+.channel-head{
+    @include dFlex($jc:space-between);
+}
 .add-channel{
     @include dFlex();
 }
 .text-pctr{
     @include dFlex($g:16px, $jc:start);
-    width: 60%;
+    width: 80%;
 }
 .img-and-txt-pctr{
     @include dFlex($g:16px, $jc:flex-start);
