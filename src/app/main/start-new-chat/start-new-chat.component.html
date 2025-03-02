@@ -8,12 +8,19 @@
             
             
         </div>
-        @if(searchResults.length>0){
+        @if(searchResultsValue.length>0){
         <div class="search-results">
-            @for(item of searchResults; track item){
-                <h4 (click)="openChatOrChannel(item)">{{item}}</h4>
+            @for(item of searchResultsValue; track item){
+                <h4 (click)="openChatOrChannel(item.uid)">{{item.email}}</h4>
             }
         </div> 
+        }
+        @if(searchResults.length>0 && searchResultsValue.length<=0){
+            <div class="search-results">
+                @for(item of searchResults; track item){
+                    <h4 >{{item}}</h4>
+                }
+            </div> 
         }
         <div class="channel-chat">
         </div>

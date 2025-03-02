@@ -19,7 +19,7 @@
             <app-chat [currentChatId]="currentChatId" [userChats]="userChats"></app-chat>
         }
         @if(currentChannel==null && currentChat==null){
-            <app-start-new-chat [userData]="userData"></app-start-new-chat>
+            <app-start-new-chat [userData]="userData" (openChat)="openChat($event)"></app-start-new-chat>
         }
     </div>
     @if(addChannelOpen){

@@ -1,8 +1,10 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { UserService } from '../../user.service';
 import { UserData } from '../../../modules/user';
+import { ChatService } from '../../chat.service';
+import { Chat } from '../../../modules/chat';
 
 @Component({
   selector: 'app-start-new-chat',
@@ -13,11 +15,12 @@ import { UserData } from '../../../modules/user';
 })
 export class StartNewChatComponent {
   fb = inject(FormBuilder);
-sendMessageForm = this.fb.nonNullable.group({
-      message:['', Validators.required],
+  sendMessageForm = this.fb.nonNullable.group({
+        message:['', Validators.required],
     })
     input = new FormControl('');
-    searchResults: string[] = []; 
+    searchResultsValue: any; 
+    searchResults:string[]=[];
     searchType:string = "";
     @Input() userData:UserData|null ={
         uid: "",
@@ -27,9 +30,35 @@ sendMessageForm = this.fb.nonNullable.group({
         channels:[],
         chats:[],
       } 
-    constructor(private userService: UserService){
+    userChats:any=[]  
+    @Output() openChat = new EventEmitter<number>();
+    @Output() openChannel = new EventEmitter<number>();
+
+    constructor(private userService: UserService, private chatService: ChatService){
       this.setupSearchListener();
+      // this.loadUserChats();
     }
+    async goToPersonalMessages(uid:string){
+        if(this.userData){
+          console.log("uid: ",uid)
+          const messagesWMembers = await this.chatService.createChat(this.userData?.uid, uid )
+        } await this.loadUserChats().then(() => {
+            for (let i = 0; i < this.userChats.length; i++) {
+              if (this.userChats[i].chatPartner.uid == uid) {
+                this.openChat.emit(i);
+              }
+            }
+        });
+      }
+      async loadUserChats(){
+        this.userChats=[];
+        if(this.userData){
+          const userChat: Chat[] = await this.chatService.getUserChats(this.userData?.uid);
+          if (userChat) {
+            this.userChats.push(...userChat);
+          }
+        }
+      }
     private setupSearchListener() {
       this.input.valueChanges
       .pipe(
@@ -38,13 +67,16 @@ sendMessageForm = this.fb.nonNullable.group({
       )
       .subscribe(value => {
         if (!value || value.length < 2) {
-          this.searchResults = [];
+          this.searchResultsValue = [];
+          this.searchResults=[];
           return;
         }
         const firstChar = value.charAt(0); // Erstes Zeichen ermitteln
+        //suche über name
         if (firstChar === "@") {
           this.searchResults = this.userService.searchUsers(value.substring(1)); // Suche nach Usernamen
           this.searchType = "chat";
+          // Suche nach Channels
         } else if (firstChar === "#") {
           if(this.userData){
             this.searchResults = (this.userData.channels || [])
@@ -53,12 +85,18 @@ sendMessageForm = this.fb.nonNullable.group({
           console.log("result:", this.searchResults)
           this.searchType="channel"
           }
-          // Suche nach Channels
+          //suche mit Mail
         } else if (/[a-zA-Z]/.test(firstChar)) {
-          this.searchResults = this.userService.searchUsersWithMail(value); // Suche nach E-Mail
-          this.searchType="chat";
+          this.searchResultsValue = this.userService.searchUsersWithMail(value); 
+          this.searchResults=[];
+          for(let i=0; i<this.searchResultsValue.length; i++){
+            this.searchResults.push(this.searchResultsValue[i].email);
+            this.searchType="chat";
+          }
+          
         } else {
-          this.searchResults = []; // Keine passenden Ergebnisse
+          this.searchResultsValue = []; 
+          this.searchResults=[] 
         }
       });
     }
@@ -66,6 +104,7 @@ sendMessageForm = this.fb.nonNullable.group({
     openChatOrChannel(item:string){
       if(this.searchType=="chat"){
         console.log("chat")
+        this.goToPersonalMessages(item);
         // finde heraus, ob bereits ein chat mit diesem namen oder der email besteht und sonst erstelle eine neue
       }else if(this.searchType=="channel"){
         console.log("channel")

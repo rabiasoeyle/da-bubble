@@ -55,8 +55,8 @@ export class UserService {
     console.log("Suche Email2.",searchTerm);
     searchTerm = searchTerm.toLowerCase(); // Kleinbuchstaben für bessere Treffer
     return this.allUsers
-      .map(user => user.email) // Nur Namen nehmen
-      .filter(email => email.toLowerCase().includes(searchTerm));
+    .filter(user => user.email.toLowerCase().includes(searchTerm)) // Filtere passende Nutzer
+    .map(user => ({ email: user.email, uid: user.uid })); 
   }
 
 }

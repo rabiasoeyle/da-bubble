@@ -22,7 +22,7 @@ export class HeaderComponent implements OnInit{
   suggestions: string[] = [];
   // showSuggestions = false;
   input = new FormControl('');
-  searchResults: string[] = []; 
+  searchResults: any = []; 
   @Input() userChats:Chat[] = [];
   constructor(private authService: AuthService, private userService: UserService) {
     this.setupSearchListener();
