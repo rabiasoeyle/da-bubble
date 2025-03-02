@@ -30,9 +30,11 @@ export class ChatService {
           const userInfo = await this.authService.getUserInfo(msg.uid);
           const time = msg.timestamp
           const formattedDateMessage = this.formatDate(time);
+          const timestampNumber = typeof msg.timestamp === "string"? parseInt(msg.timestamp) : msg.timestamp;
           return {
             uid: msg.uid, 
             timestamp: formattedDateMessage,
+            date:msg.timestamp,
             message:msg.message,
             name: userInfo? userInfo['name'] : "Unbekannt",
             fotolink: userInfo? userInfo['fotolink'] : "default.png",

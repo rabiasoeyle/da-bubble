@@ -17,6 +17,10 @@
                     Diese Unterhaltung findet nur zwischen <span class="blue-font"># {{currentChat.chatPartner.name}}</span> und dir statt.
                 </h4>
             @for(item of currentChat ? currentChat.chatData.messages : ["Lisa"]; track item; let idx = $index){
+                @if(idx == 0 || !isSameDay(item.date, currentChat.chatData.messages[idx-1].date)){
+                    <div class="black-line"></div>
+                    <h5 class="date-label">{{ formatDate(item.date) }}</h5>
+                }
                 @if(this.userData && item.editing ==false){
                     <!-- Chatpartnermessages -->
                     @if(item.uid != this.userData.uid){

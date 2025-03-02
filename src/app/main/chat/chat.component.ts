@@ -33,6 +33,23 @@ export class ChatComponent implements OnInit, OnDestroy, OnChanges{
     })
   previousChatData: any = null;
   constructor(private chatService:ChatService, private authService:AuthService) {}
+  isSameDay(timestamp1: number, timestamp2: number): boolean {
+    const date1 = new Date(timestamp1);
+    const date2 = new Date(timestamp2);
+    
+    return date1.getFullYear() === date2.getFullYear() &&
+           date1.getMonth() === date2.getMonth() &&
+           date1.getDate() === date2.getDate();
+}
+
+formatDate(timestamp: number): string {
+    return new Date(timestamp).toLocaleDateString("de-DE", {
+        weekday: "long",
+        day: "2-digit",
+        month: "long",
+        year: "numeric",
+    });
+}
   ngOnChanges(changes: SimpleChanges) {
     if (changes['currentChatId']) {
       this.openChat(this.currentChatId);

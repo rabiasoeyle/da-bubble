@@ -81,6 +81,10 @@
                 </h4>
             }
             @for(item of currentChannel.messages; track item; let idx = $index){
+                @if(idx == 0 || !isSameDay(item.date, currentChannel.messages[idx-1].date)){
+                    <div class="black-line"></div>
+                    <h5 class="date-label">{{ formatDate(item.date) }}</h5>
+                }
                  @if(this.userData && item.editing == false){
                     @if(item.uid != this.userData.uid){
                         <div class="msg-pic-and-text">

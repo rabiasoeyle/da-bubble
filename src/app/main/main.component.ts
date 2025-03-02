@@ -46,7 +46,7 @@ export class MainComponent{
   currentChat:Chat|null = null;
   messageIdx:number= 0;
   currentChannelName:string= "kein Channel";
-  currentChatId:number=0;
+  currentChatId:number=999;
   allUser:UserData[]=[];
   constructor(private authService: AuthService, private chatService:ChatService) {
   }
@@ -89,6 +89,7 @@ export class MainComponent{
     this.addChannelDialog();
   }
   openChannel(channelName: string) {
+    this.currentChatId=999;
     this.currentChannelName = channelName;
     this.currentChannel={
       name: "string",
