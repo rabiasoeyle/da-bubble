@@ -108,19 +108,20 @@ export class MainComponent{
             chatData:{createdAt:"data.createdAt",members: [],messages: [],},
             chatPartner:{uid:"uid",name:"name",email:"email",fotolink:"fotolink",} 
     };
+    this.loadUserChats();
   }
   startNewChat(){
     this.currentChannel = null;
     this.currentChat = null;
   }
   
-  async showChatPartner(members:Member[]){
-    for(let i = 0; i < members.length; i++){
-      if(members[i].uid !== this.userData?.uid){
-        console.log(members[i])
-        return members[i];
-      }
-    }return ;
-  }
+  // async showChatPartner(members:Member[]){
+  //   for(let i = 0; i < members.length; i++){
+  //     if(members[i].uid !== this.userData?.uid){
+  //       console.log(members[i])
+  //       return members[i];
+  //     }
+  //   }return ;
+  // }
   
 }

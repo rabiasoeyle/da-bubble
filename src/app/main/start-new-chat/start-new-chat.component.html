@@ -8,20 +8,28 @@
             
             
         </div>
-        @if(searchResultsValue.length>0){
+        @if(searchResultsValue.length>0 && search=="email"){
         <div class="search-results">
             @for(item of searchResultsValue; track item){
                 <h4 (click)="openChatOrChannel(item.uid)">{{item.email}}</h4>
             }
         </div> 
         }
-        @if(searchResults.length>0 && searchResultsValue.length<=0){
+        @if(searchResultsValue.length>0 && search=="name"){
             <div class="search-results">
-                @for(item of searchResults; track item){
-                    <h4 >{{item}}</h4>
+                @for(item of searchResultsValue; track item){
+                    <h4 (click)="openChatOrChannel(item.uid)">{{item.name}}</h4>
                 }
             </div> 
         }
+        @if(searchResults.length>0 && search=="channel"){
+            <div class="search-results">
+                @for(item of searchResults; track item){
+                    <h4 (click)="openChatOrChannel(item)">{{item}}</h4>
+                }
+            </div> 
+        }
+        
         <div class="channel-chat">
         </div>
         <form class="messages-form" [formGroup] ="sendMessageForm" (ngSubmit)="sendMessage()">

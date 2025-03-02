@@ -40,19 +40,15 @@ export class UserService {
     }
   }
 
-  searchUsers(searchTerm: string): string[] {
-    console.log("suche Username",searchTerm);
-    if (!searchTerm.trim()) return []; // Falls leer, nichts zurückgeben
-    console.log("Suche Username2.",searchTerm);
-    searchTerm = searchTerm.toLowerCase(); // Kleinbuchstaben für bessere Treffer
+  searchUsers(searchTerm: string){
+    if (!searchTerm.trim()) return [];
+    searchTerm = searchTerm.toLowerCase(); 
     return this.allUsers
-      .map(user => user.name) // Nur Namen nehmen
-      .filter(name => name.toLowerCase().includes(searchTerm)); // Filtern nach Suchbegriff
+      .filter(user => user.name.toLowerCase().includes(searchTerm)) 
+      .map(user => ({ name: user.name, uid: user.uid })); 
   }
   searchUsersWithMail(searchTerm: string){
-    console.log("Suche Email",searchTerm);
     if (!searchTerm.trim()) return []; // Falls leer, nichts zurückgeben
-    console.log("Suche Email2.",searchTerm);
     searchTerm = searchTerm.toLowerCase(); // Kleinbuchstaben für bessere Treffer
     return this.allUsers
     .filter(user => user.email.toLowerCase().includes(searchTerm)) // Filtere passende Nutzer

@@ -34,31 +34,31 @@ export class HeaderComponent implements OnInit{
         debounceTime(300), // Warte 300ms nach jeder Eingabe (vermeidet zu viele Suchanfragen)
         distinctUntilChanged() // Verhindert doppelte Suchanfragen für dieselbe Eingabe
       )
-      .subscribe(value => {
-        if (!value || value.length < 2) {
-          this.searchResults = [];
-          return;
-        }
-        const firstChar = value.charAt(0); // Erstes Zeichen ermitteln
-        if (firstChar === "@") {
-          this.searchResults = this.userService.searchUsers(value.substring(1)); // Suche nach Usernamen
-          // this.searchType = "chat";
-        } else if (firstChar === "#") {
-          if(this.userData){
-            this.searchResults = (this.userData.channels || [])
-          .filter((channel: string) => 
-            channel.toLowerCase().includes(value.substring(1).toLowerCase()));
-          console.log("result:", this.searchResults)
-          // this.searchType="channel"
-          }
-          // Suche nach Channels
-        } else if (/[a-zA-Z]/.test(firstChar)) {
-          this.searchResults = this.userService.searchUsersWithMail(value); // Suche nach E-Mail
-          // this.searchType="chat";
-        } else {
-          this.searchResults = []; // Keine passenden Ergebnisse
-        }
-      });
+      // .subscribe(value => {
+      //   if (!value || value.length < 2) {
+      //     this.searchResults = [];
+      //     return;
+      //   }
+      //   const firstChar = value.charAt(0); // Erstes Zeichen ermitteln
+      //   if (firstChar === "@") {
+      //     this.searchResults = this.userService.searchUsers(value.substring(1)); // Suche nach Usernamen
+      //     // this.searchType = "chat";
+      //   } else if (firstChar === "#") {
+      //     if(this.userData){
+      //       this.searchResults = (this.userData.channels || [])
+      //     .filter((channel: string) => 
+      //       channel.toLowerCase().includes(value.substring(1).toLowerCase()));
+      //     console.log("result:", this.searchResults)
+      //     // this.searchType="channel"
+      //     }
+      //     // Suche nach Channels
+      //   } else if (/[a-zA-Z]/.test(firstChar)) {
+      //     this.searchResults = this.userService.searchUsersWithMail(value); // Suche nach E-Mail
+      //     // this.searchType="chat";
+      //   } else {
+      //     this.searchResults = []; // Keine passenden Ergebnisse
+      //   }
+      // });
   }
   selectChat(user: string) {
     this.input.setValue(user); // Wähle einen Benutzer aus

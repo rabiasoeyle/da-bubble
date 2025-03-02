@@ -19,9 +19,8 @@ export class StartNewChatComponent {
         message:['', Validators.required],
     })
     input = new FormControl('');
-    searchResultsValue: any; 
+    searchResultsValue: any[]=[]; 
     searchResults:string[]=[];
-    searchType:string = "";
     @Input() userData:UserData|null ={
         uid: "",
         name: "",
@@ -31,8 +30,9 @@ export class StartNewChatComponent {
         chats:[],
       } 
     userChats:any=[]  
+    search:string="";
     @Output() openChat = new EventEmitter<number>();
-    @Output() openChannel = new EventEmitter<number>();
+    @Output() oChannel = new EventEmitter<string>();
 
     constructor(private userService: UserService, private chatService: ChatService){
       this.setupSearchListener();
@@ -74,16 +74,20 @@ export class StartNewChatComponent {
         const firstChar = value.charAt(0); // Erstes Zeichen ermitteln
         //suche über name
         if (firstChar === "@") {
-          this.searchResults = this.userService.searchUsers(value.substring(1)); // Suche nach Usernamen
-          this.searchType = "chat";
+          this.searchResultsValue = this.userService.searchUsers(value.substring(1)); // Suche nach Usernamen
+          for(let i=0; i<this.searchResultsValue.length; i++){
+            this.searchResults.push(this.searchResultsValue[i].name);
+            this.search="name"
+          }
           // Suche nach Channels
         } else if (firstChar === "#") {
+          this.search="channel"
           if(this.userData){
             this.searchResults = (this.userData.channels || [])
-          .filter((channel: string) => 
+            .filter((channel: string) => 
             channel.toLowerCase().includes(value.substring(1).toLowerCase()));
-          console.log("result:", this.searchResults)
-          this.searchType="channel"
+          // console.log("result:", this.searchResults)
+            
           }
           //suche mit Mail
         } else if (/[a-zA-Z]/.test(firstChar)) {
@@ -91,9 +95,8 @@ export class StartNewChatComponent {
           this.searchResults=[];
           for(let i=0; i<this.searchResultsValue.length; i++){
             this.searchResults.push(this.searchResultsValue[i].email);
-            this.searchType="chat";
+            this.search="email"
           }
-          
         } else {
           this.searchResultsValue = []; 
           this.searchResults=[] 
@@ -102,16 +105,11 @@ export class StartNewChatComponent {
     }
 
     openChatOrChannel(item:string){
-      if(this.searchType=="chat"){
-        console.log("chat")
+      if(this.search=="name" || this.search=="email"){
         this.goToPersonalMessages(item);
-        // finde heraus, ob bereits ein chat mit diesem namen oder der email besteht und sonst erstelle eine neue
-      }else if(this.searchType=="channel"){
-        console.log("channel")
-        // finde heraus an welchen idx der channelname bei this.userData.Channels ist
+      }else{
+        this.oChannel.emit(item);
       }
     }
-    sendMessage(){
-
-    }
+    sendMessage(){}
 }
