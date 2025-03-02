@@ -39,17 +39,16 @@ export class StartNewChatComponent {
       // this.loadUserChats();
     }
     async goToPersonalMessages(uid:string){
-        if(this.userData){
+        if(this.userData && this.userChats<=0){
           console.log("uid: ",uid)
           const messagesWMembers = await this.chatService.createChat(this.userData?.uid, uid )
-        } await this.loadUserChats().then(() => {
+        } await this.loadUserChats();
             for (let i = 0; i < this.userChats.length; i++) {
               if (this.userChats[i].chatPartner.uid == uid) {
                 this.openChat.emit(i);
               }
             }
-        });
-      }
+      };
       async loadUserChats(){
         this.userChats=[];
         if(this.userData){

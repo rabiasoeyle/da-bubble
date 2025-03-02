@@ -99,16 +99,20 @@ export class MainComponent{
       membersAmount:1,
     }
   }
-  openChat(idx:number){
+  async openChat(idx:number){
+    if(!this.userChats[idx]){
+      await this.loadUserChats();
+    }
     this.currentChannel = null;
     this.currentChat = null;
     this.currentChatId = idx;
+    console.log(this.userChats[this.currentChatId].chatPartner.name)
     this.currentChat={
             chatId:this.userChats[idx].chatId,
             chatData:{createdAt:"data.createdAt",members: [],messages: [],},
             chatPartner:{uid:"uid",name:"name",email:"email",fotolink:"fotolink",} 
     };
-    this.loadUserChats();
+    console.log("currentChat:",this.currentChat);
   }
   startNewChat(){
     this.currentChannel = null;

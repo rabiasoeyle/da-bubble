@@ -21,7 +21,7 @@ export class ChatComponent implements OnInit, OnDestroy, OnChanges{
   messageIdx:number = 0;
   @Input() userChats:Chat[]=[];
   @Input() currentChat:Chat|null = null;
-  @Input() currentChatId:number = 0;
+  @Input() currentChatId:number = 999;
   private chatSubscription!: Subscription;
   @Input() userData:UserData|null = null;
   @Output() newChatPartner = new EventEmitter<number>();
@@ -32,10 +32,11 @@ export class ChatComponent implements OnInit, OnDestroy, OnChanges{
       message:['', Validators.required],
     })
   previousChatData: any = null;
-  constructor(private chatService:ChatService,private cdr: ChangeDetectorRef, private authService:AuthService) {}
+  constructor(private chatService:ChatService, private authService:AuthService) {}
   ngOnChanges(changes: SimpleChanges) {
     if (changes['currentChatId']) {
       this.openChat(this.currentChatId);
+      console.log("chat-c",this.currentChatId)
     }
   }
   ngOnInit() {
