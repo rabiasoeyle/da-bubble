@@ -1,5 +1,5 @@
 <div class="hole-page">
-    <app-header [userChats]="userChats"></app-header>
+    <app-header (openChat)="openChat($event)" (oChannel)="openChannel($event)" [userChats]="userChats"></app-header>
 <section class="main-content">
     
     @if(sidenavIsOpen && userData !=null && userChats !=null){
