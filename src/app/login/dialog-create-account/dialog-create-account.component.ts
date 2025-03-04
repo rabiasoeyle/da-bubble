@@ -44,7 +44,7 @@ export class DialogCreateAccountComponent {
         next: async () => {
           try {
             this.authService.login(this.registerData.email, this.registerData.password);
-            this.accountCreated.emit(); // Signalisiert, dass der Account erstellt wurde
+            this.accountCreated.emit();
           } catch (err) {
             console.error('Error saving user data to Firebase:', err);
             this.errorMessage = 'Error saving user data';

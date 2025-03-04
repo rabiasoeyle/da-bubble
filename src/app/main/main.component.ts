@@ -1,4 +1,4 @@
-import { Component, inject} from '@angular/core';
+import { Component, inject, OnInit} from '@angular/core';
 import { AuthService } from '../auth.service';
 import { HeaderComponent } from './header/header.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
@@ -23,7 +23,7 @@ import { StartNewChatComponent } from "./start-new-chat/start-new-chat.component
   styleUrl: './main.component.scss'
 })
 
-export class MainComponent{
+export class MainComponent implements OnInit{
   router = inject(Router);
   fb = inject(FormBuilder);
   // booleans

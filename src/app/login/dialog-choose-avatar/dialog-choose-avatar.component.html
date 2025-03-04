@@ -15,5 +15,5 @@
 }
 </div>
 <div class="btn-right">
-    <button class="blue-btn" (click)="goTo('main')">Weiter</button>
+    <button [disabled]="!chosedAvatar" class="blue-btn" (click)="saveNewInfos('main')">Weiter</button>
 </div>

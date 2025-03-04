@@ -1,14 +1,13 @@
 import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { AuthService } from '../../auth.service';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators,NgForm } from '@angular/forms';
+import { FormBuilder, FormsModule,NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { user } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-dialog-login',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './dialog-login.component.html',
   styleUrl: './dialog-login.component.scss'
 })
@@ -18,10 +17,6 @@ export class DialogLoginComponent {
   router = inject(Router);
   authService = inject(AuthService);
   errorMessage : string |null = null;
-  form = this.fb.nonNullable.group({
-    email:['', Validators.required],
-    password:['', Validators.required]
-  });
   @Output() switchToForgotPassword = new EventEmitter<void>(); // EventEmitter erstellen
   loginData = {
     email:"",
@@ -30,7 +25,6 @@ export class DialogLoginComponent {
   
 
   onSubmit(ngForm: NgForm) {
-    // const rawForm = this.form.getRawValue();
     this.authService.login(this.loginData.email, this.loginData.password)
       .subscribe({
         next: async () => {
@@ -38,7 +32,6 @@ export class DialogLoginComponent {
         },
         error: (err) => {
           this.errorMessage = err.code;
-          
           if (this.errorMessage === "auth/invalid-email") {
             this.errorMessage = "Bitte geben Sie eine gültige E-Mail ein";
           } else if (this.errorMessage === "auth/missing-password") {
@@ -52,7 +45,6 @@ export class DialogLoginComponent {
           {
             this.errorMessage = "Unbekannter Fehler";
           }
-  
           console.error('Login error:', err);
         }
       });

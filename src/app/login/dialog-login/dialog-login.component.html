@@ -46,7 +46,7 @@
                    type="password" 
                    placeholder="Passwort" 
                    required
-                   pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$">
+                   pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
         </div>
         @if(errorMessage === 'Leider ist das Passwort oder die E-Mail falsch'){
             <label class="error-label" >

@@ -5,12 +5,26 @@
     </button>
     <h2>Passwort zurücksetzen</h2>
     <h4>Bitte geben Sie Ihre Email-Adresse ein</h4>
-    <form [formGroup] ="form" (ngSubmit)="onSubmit()">
+    <form #emailData="ngForm" (ngSubmit)="onSubmit(emailData)">
+        @if(email.touched && email.invalid){
+            <label class="error-label">
+                @if(!errorMessage){
+                    Bitte füge eine gültige E-Mail ein.
+                }
+                {{ errorMessage }}
+            </label>
+         }
         <div class="input-area">
             <img src="/assets/img/mail.png" alt="">
-            <input formControlName="email" type="email" placeholder="E-Mail">
+            <input 
+            #email="ngModel" 
+            [(ngModel)]="emailData.email" 
+            pattern="^[a-zA-Z0-9][a-zA-Z0-9._%+\-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" 
+            required 
+            name="email" 
+            type="email" placeholder="E-Mail">
         </div>
         <h4 class="gray-font">Wir senden Ihnen eine E-Mail über die Sie Ihr Passwort ändern können</h4>
-        <button class="gray-btn" type="submit" [disabled]="!form.valid">E-Mail senden</button>
+        <button class="gray-btn" type="submit" [disabled]="!emailData.valid">E-Mail senden</button>
     </form>
 </div>

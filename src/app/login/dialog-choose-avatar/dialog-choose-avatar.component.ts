@@ -21,30 +21,30 @@ export class DialogChooseAvatarComponent {
     "./assets/img/Steffen.png",
   ];
   dummyProfile="./assets/img/Profile.png";
+  chosedAvatar:boolean = false;
   userData: UserData | null = null;
   constructor(private authService: AuthService){
 
   }
   ngOnInit(): void {
     this.authService.userData$.subscribe((data) => {
-      this.userData = data;
-      if(this.userData == null){
-          this.router.navigateByUrl('');
-      }
+    this.userData = data;
     });
   }
   saveNewAvatar(avatarImg:any){
     this.dummyProfile = avatarImg;
+    this.chosedAvatar = true;
+  }
+  async saveNewInfos(route:string){
     if (this.userData) {
-      this.authService.updateUserProfile(this.userData.uid, avatarImg)
-      .then(() => {});
+      await this.authService.updateUserProfile(this.userData.uid, this.dummyProfile)
+      .then(() => {
+        this.goTo(route);});
     } else {
       console.error('User-ID fehlt, konnte Avatar nicht speichern.');
     }
-
   }
-
   goTo(route:string){
-    this.router.navigateByUrl(route);
+   this.router.navigateByUrl(route);
   }
 }

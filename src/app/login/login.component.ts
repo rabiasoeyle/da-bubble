@@ -28,7 +28,7 @@ export class LoginComponent{
 
   constructor(private authService: AuthService) {
     this.authService.userData$.subscribe((user) => {
-      this.userId = user?.uid || null; // Hol dir die User-ID aus dem AuthService
+      this.userId = user?.uid || null;
     });
   }
   forgotPasswordPage(){
@@ -45,10 +45,14 @@ export class LoginComponent{
   }
   handleAccountCreated() {
     this.createNewAccount = false;
-    this.chooseAvatar = true; // Wechsel zu Avatar-Komponente
+    this.chooseAvatar = true;
   }
   fromCreateBackToLogin(){
     this.createNewAccount = false;
     this.startLogin=true;
+  }
+  fromChooseAvatar(){
+    this.startLogin = true;
+    this.chooseAvatar = false;
   }
 }

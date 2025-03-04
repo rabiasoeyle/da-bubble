@@ -6,11 +6,15 @@
     <h2>Konto erstellen</h2>
 </div>
 
-<h4>Mit deinem Namen und deiner E-Mail Adresse hast du dein neues DA-Bubble Konto.</h4>
+<h4 class="txt-center">Mit deinem Namen und deiner E-Mail Adresse hast du dein neues DA-Bubble Konto.</h4>
 
 <form #registerForm="ngForm" (ngSubmit)="onSubmit()">
-    @if(errorMessage){
-        <label>{{errorMessage}}</label>
+    @if((name.touched && name.invalid)|| errorMessage){
+        <label class="error-label">
+            @if(!errorMessage){
+                Bitte füge einen Vor- und Nachnamen mit Großbuchstabem am Anfang ein.
+            }
+            {{errorMessage}}</label>
     }
     <div class="input-area">
         <img src="/assets/img/person.png" alt="name">
@@ -20,8 +24,12 @@
         required
         pattern="^[A-ZÄÖÜ][a-zäöüß]+(?: [A-ZÄÖÜ][a-zäöüß]+)+$">
     </div>
-    @if(errorMessage){
-        <label>{{errorMessage}}</label>
+    @if((email.touched && email.invalid)|| errorMessage){
+        <label class="error-label">
+        @if(!errorMessage){
+            Bitte füge eine gültige E-Mail wie z.B beispiel&#64;mail.com ein.
+        }
+            {{errorMessage}}</label>
     }
     <div class="input-area">
         <img src="/assets/img/mail.png" alt="">
@@ -31,8 +39,17 @@
         pattern="^[a-zA-Z0-9][a-zA-Z0-9._%+\-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
         required>
     </div>
-    @if(errorMessage){
-        <label>{{errorMessage}}</label>
+    @if((password.touched && password.invalid) || errorMessage){
+        <label class="error-label">
+        @if(!errorMessage){
+            Bitte füge ein gültiges Passwort mit 
+            -mind. einem Großbuchstaben
+            ,einem Kleinbuchstaben
+            ,einer Zahl
+            und 8 Zeichen
+        }
+        {{errorMessage}}
+        </label>
     }
     <div class="input-area">
         <img src="/assets/img/lock.png" alt="">
@@ -43,13 +60,9 @@
         
         required>
     </div>
-    
-    
-    
     <div class="box-datasafety">
         <input name="checkbox" #checkbox = "ngModel" [(ngModel)]="registerData.pPolicyAccepted" type="checkbox" required>
         <p>Ich stimme der <a routerLink="datasafety">Datenschutzerklärung </a>zu</p>
     </div>
     <button [disabled]="registerForm.invalid" class="blue-btn" type="submit">Weiter</button>
-
 </form>
