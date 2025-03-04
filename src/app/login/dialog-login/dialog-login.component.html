@@ -4,39 +4,74 @@
     <h4 class="txt-center">Wir empfehlen dir die E-Mail Adresse zu benutzen, die du bei der Arbeit verwendest</h4>
 
     
-    <form [formGroup] ="form" (ngSubmit)="onSubmit()">
-        @if(errorMessage == "Bitte geben Sie eine E-Mail ein"){
-            <label class="error-label">{{errorMessage}}</label>
-        }
-        <div class="input-area">
-            <img src="/assets/img/mail.png" alt="">
-            <input class="mail-input " formControlName="email" type="email" placeholder="E-Mail">
-        </div>
+    <form (ngSubmit)="onSubmit(loginForm)" #loginForm="ngForm">
+    
+        <!-- Fehler für die E-Mail -->
+         @if((errorMessage === 'Bitte geben Sie eine gültige E-Mail ein' || (email.touched && email.invalid))){
+            <label class="error-label">
+                @if(!errorMessage){
+                    Bitte füge eine gültige E-Mail ein.
+                }
+                {{ errorMessage }}
+            </label>
+         }
         
-        @if(errorMessage == "Bitte geben Sie ein Passwort ein" || "Leider ist das Passwort falsch"){
-            <label class="error-label">{{errorMessage}}</label>
-        }
         <div class="input-area">
-            <img src="/assets/img/lock.png" alt="">
-            <input class="password-input" formControlName="password" type="password" placeholder="Passwort">
+            <img src="/assets/img/mail.png" alt="mail">
+            <input #email="ngModel" 
+                   [(ngModel)]="loginData.email" 
+                   name="email"
+                   class="mail-input" 
+                   type="email" 
+                   placeholder="E-Mail" 
+                   required
+                   pattern="[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}">
         </div>
-        <button class="forgot-password-btn"  (click)="goToForgotPassword()">Passwort vergessen?</button>
-
+    
+        <!-- Fehler für das Passwort -->
+         @if((password.touched && password.invalid) || errorMessage === 'Bitte geben Sie ein Passwort ein' || errorMessage === 'Leider ist das Passwort falsch'){
+            <label class="error-label" >
+                @if(!errorMessage){
+                    Bitte fülle das Password Feld aus
+                }
+                {{ errorMessage }}
+            </label>
+         }
+        <div class="input-area">
+            <img src="/assets/img/lock.png" alt="lock">
+            <input #password="ngModel" 
+                   [(ngModel)]="loginData.password" 
+                   name="password"
+                   class="password-input" 
+                   type="password" 
+                   placeholder="Passwort" 
+                   required
+                   pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$">
+        </div>
+        @if(errorMessage === 'Leider ist das Passwort oder die E-Mail falsch'){
+            <label class="error-label" >
+                {{ errorMessage }}
+            </label>
+         }
+    
+        <button class="forgot-password-btn" (click)="goToForgotPassword()">Passwort vergessen?</button>
+    
         <div class="or-line">
             <div class="black-line"></div>
             ODER
             <div class="black-line"></div>
         </div>
-
+    
         <button class="google-btn" (click)="loginWithGoogle()">
             <img class="google-logo" src="assets/img/Google.png" alt="google-logo">
             Anmelden mit Google
         </button>
+    
         <div class="login-btns">
-            <button class="blue-btn" type="submit">Anmelden</button>
+            <button class="blue-btn" type="submit" [disabled]="loginForm.invalid">Anmelden</button>
             <button class="white-btn" type="button" (click)="visitorLogin()">Gäste Login</button>
         </div>
-        
+    
     </form>
      
 

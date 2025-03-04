@@ -98,14 +98,17 @@ form{
     color:white;
     background-color: #444DF2;
     cursor: pointer;
-    >:hover{
+    &:hover{
         scale:1.1;
+        background-color: #0e1269;
+        transition: 500ms;
     }
-}
-.blue-btn:hover{
-    transition: 500ms;
-    scale: 1.1;
-    background-color: #0e1269;
+    &:disabled{
+        border-color: rgba(227, 213, 213, 0.321);
+        color:rgba(227, 213, 213, 0.321);
+        scale:1.0;
+        background-color: #444DF2;
+    }
 }
 .white-btn{
     width: 137px;
@@ -118,18 +121,19 @@ form{
     background-color: #FFFFFF;
     cursor: pointer;
     text-align: center;
+    &:hover{
+        transition: 500ms;
+        scale: 1.1;
+        background-color: #ECEEFE;
+    }
 }
-.white-btn:hover{
-    transition: 500ms;
-    scale: 1.1;
-    background-color: #ECEEFE;
-}
+
 .arrow-btn{
     background-color: transparent;
     border: none;
-}
-.arrow-btn:hover{
-    scale:1.1;
+    &:hover{
+       scale:1.1; 
+    }
 }
 .gray-btn{
     transition: 500ms;
@@ -145,17 +149,17 @@ form{
     color:#444DF2;
     background-color: #ECEEFE;
     cursor: pointer;
-}
-.gray-btn:hover{
-    transition: 500ms;
-    background-color: #444DF2;
-    color:white;
-}
-.gray-btn:disabled{
+    &:hover{
+        transition: 500ms;
+        background-color: #444DF2;
+        color:white;
+    }
+    &:disabled{
         background-color: #686868;
         cursor: not-allowed;
         border-color: #686868;
         color: white;
+    }
 }
 input:focus,
 select:focus,

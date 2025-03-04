@@ -1,6 +1,6 @@
 import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { AuthService } from '../../auth.service';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators,NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { user } from '@angular/fire/auth';
@@ -8,7 +8,7 @@ import { user } from '@angular/fire/auth';
 @Component({
   selector: 'app-dialog-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, FormsModule],
   templateUrl: './dialog-login.component.html',
   styleUrl: './dialog-login.component.scss'
 })
@@ -21,22 +21,41 @@ export class DialogLoginComponent {
   form = this.fb.nonNullable.group({
     email:['', Validators.required],
     password:['', Validators.required]
-  })
+  });
   @Output() switchToForgotPassword = new EventEmitter<void>(); // EventEmitter erstellen
+  loginData = {
+    email:"",
+    password:"",
+  };
+  
 
-  onSubmit(){
-    const rawForm = this.form.getRawValue();
-    this.authService.login(rawForm.email, rawForm.password)
-    .subscribe({
-      next:async ()=>{
-        this.router.navigateByUrl('main');
-      },
-      error:(err)=>{
-        this.errorMessage = err.code
-        console.error('Could not find User');
-      }
-      
-    })
+  onSubmit(ngForm: NgForm) {
+    // const rawForm = this.form.getRawValue();
+    this.authService.login(this.loginData.email, this.loginData.password)
+      .subscribe({
+        next: async () => {
+          this.router.navigateByUrl('main');
+        },
+        error: (err) => {
+          this.errorMessage = err.code;
+          
+          if (this.errorMessage === "auth/invalid-email") {
+            this.errorMessage = "Bitte geben Sie eine gültige E-Mail ein";
+          } else if (this.errorMessage === "auth/missing-password") {
+            this.errorMessage = "Bitte geben Sie ein Passwort ein";
+          } else if (this.errorMessage === "auth/invalid-password") {
+            this.errorMessage = "Leider ist das Passwort falsch";
+          }else 
+          if (this.errorMessage === "auth/invalid-credential") {
+            this.errorMessage = "Leider ist das Passwort oder die E-Mail falsch";
+          } else 
+          {
+            this.errorMessage = "Unbekannter Fehler";
+          }
+  
+          console.error('Login error:', err);
+        }
+      });
   }
   loginWithGoogle() {
     this.authService.googleSignin()
@@ -68,7 +87,6 @@ export class DialogLoginComponent {
         }else{
           this.errorMessage="unbekannter Fehler"
         }
-
         console.error('Could not find User');
       }
   })
