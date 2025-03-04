@@ -8,35 +8,48 @@
 
 <h4>Mit deinem Namen und deiner E-Mail Adresse hast du dein neues DA-Bubble Konto.</h4>
 
-<form [formGroup] ="form" (ngSubmit)="onSubmit()">
+<form #registerForm="ngForm" (ngSubmit)="onSubmit()">
     @if(errorMessage){
         <label>{{errorMessage}}</label>
     }
     <div class="input-area">
         <img src="/assets/img/person.png" alt="name">
-        <input formControlName="name" type="text" placeholder="Name und Nachname">
+        <input #name="ngModel" 
+        [(ngModel)]="registerData.name" 
+        name="name" type="text" placeholder="Name und Nachname"
+        required
+        pattern="^[A-ZÄÖÜ][a-zäöüß]+(?: [A-ZÄÖÜ][a-zäöüß]+)+$">
     </div>
     @if(errorMessage){
         <label>{{errorMessage}}</label>
     }
     <div class="input-area">
         <img src="/assets/img/mail.png" alt="">
-        <input formControlName="email" type="email" placeholder="E-Mail">
+        <input #email="ngModel" 
+        [(ngModel)]="registerData.email" 
+        name="email" type="email" placeholder="E-Mail"
+        pattern="^[a-zA-Z0-9][a-zA-Z0-9._%+\-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+        required>
     </div>
     @if(errorMessage){
         <label>{{errorMessage}}</label>
     }
     <div class="input-area">
         <img src="/assets/img/lock.png" alt="">
-        <input formControlName="password" type="password" placeholder="Passwort">
+        <input #password="ngModel" 
+        [(ngModel)]="registerData.password" 
+        name="password" type="password" placeholder="Passwort"
+        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+        
+        required>
     </div>
     
     
     
     <div class="box-datasafety">
-        <input type="checkbox">
+        <input name="checkbox" #checkbox = "ngModel" [(ngModel)]="registerData.pPolicyAccepted" type="checkbox" required>
         <p>Ich stimme der <a routerLink="datasafety">Datenschutzerklärung </a>zu</p>
     </div>
-    <button class="blue-btn" type="submit">Weiter</button>
+    <button [disabled]="registerForm.invalid" class="blue-btn" type="submit">Weiter</button>
 
 </form>

@@ -11,7 +11,7 @@ import { Auth } from '@angular/fire/auth';
 @Component({
   selector: 'app-dialog-create-account',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, FormsModule],
   templateUrl: './dialog-create-account.component.html',
   styleUrl: './dialog-create-account.component.scss'
 })
@@ -31,15 +31,19 @@ export class DialogCreateAccountComponent {
     password:['', Validators.required],
     
   })
+  registerData={
+    name:"",
+    email:"",
+    password:"",
+    pPolicyAccepted: false,
+  }
   
   onSubmit() {
-    const rawForm = this.form.getRawValue();
-    // Registriere den Benutzer und speichere seine Daten in der Firebase-Datenbank
-    this.authService.register(rawForm.email, rawForm.name, rawForm.password)
+    this.authService.register(this.registerData.email, this.registerData.name, this.registerData.password)
       .subscribe({
         next: async () => {
           try {
-            this.authService.login(rawForm.email, rawForm.password);
+            this.authService.login(this.registerData.email, this.registerData.password);
             this.accountCreated.emit(); // Signalisiert, dass der Account erstellt wurde
           } catch (err) {
             console.error('Error saving user data to Firebase:', err);
