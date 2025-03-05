@@ -11,11 +11,12 @@ import { AddMembersToChannelComponent } from './add-members-to-channel/add-membe
 import { UserService } from '../../user.service';
 import { MemberlistComponent } from './memberlist/memberlist.component';
 import { MemberDetailsComponent } from './member-details/member-details.component';
+import { MessagesComponent } from './messages/messages.component';
 
 @Component({
   selector: 'app-channel',
   standalone: true,
-  imports: [ReactiveFormsModule,FormsModule, AddMembersToChannelComponent, MemberlistComponent, MemberDetailsComponent],
+  imports: [MessagesComponent,ReactiveFormsModule,FormsModule, AddMembersToChannelComponent, MemberlistComponent, MemberDetailsComponent],
   templateUrl: './channel.component.html',
   styleUrl: './channel.component.scss'
 })
@@ -52,22 +53,22 @@ editMessageForm= this.fb.nonNullable.group({
   @Output() openChat = new EventEmitter<number>();
   constructor(private chatService:ChatService, private authService:AuthService, private userService:UserService){
   }
-isSameDay(timestamp1: number, timestamp2: number): boolean {
-    const date1 = new Date(timestamp1);
-    const date2 = new Date(timestamp2);
+// isSameDay(timestamp1: number, timestamp2: number): boolean {
+//     const date1 = new Date(timestamp1);
+//     const date2 = new Date(timestamp2);
     
-    return date1.getFullYear() === date2.getFullYear() &&
-           date1.getMonth() === date2.getMonth() &&
-           date1.getDate() === date2.getDate();
-}
-formatDate(timestamp: number): string {
-    return new Date(timestamp).toLocaleDateString("de-DE", {
-        weekday: "long",
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-    });
-}
+//     return date1.getFullYear() === date2.getFullYear() &&
+//            date1.getMonth() === date2.getMonth() &&
+//            date1.getDate() === date2.getDate();
+// }
+// formatDate(timestamp: number): string {
+//     return new Date(timestamp).toLocaleDateString("de-DE", {
+//         weekday: "long",
+//         day: "2-digit",
+//         month: "long",
+//         year: "numeric",
+//     });
+// }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['currentChannelName']) {
       this.openChannel(this.currentChannelName);
@@ -108,24 +109,24 @@ formatDate(timestamp: number): string {
     }});
     return this.currentChannel;
   }
-  startEditMessage(id:number){
-    if(this.currentChannel != null){
-      const msg = this.currentChannel.messages[id];
-      msg.editing = true;
-    }
-  }
-  closeEditMessage(id:number){
-    if(this.currentChannel!=null){
-      const msg = this.currentChannel.messages[id];
-      msg.editing = false;
-    }
-  }
-  editMessage(id:number){
-    const rawForm = this.editMessageForm.getRawValue();
-    if(this.currentChannel && rawForm.message !=""){
-      this.chatService.editMessage(this.currentChannel.name, rawForm.message, id);
-    }
-  }
+  // startEditMessage(id:number){
+  //   if(this.currentChannel != null){
+  //     const msg = this.currentChannel.messages[id];
+  //     msg.editing = true;
+  //   }
+  // }
+  // closeEditMessage(id:number){
+  //   if(this.currentChannel!=null){
+  //     const msg = this.currentChannel.messages[id];
+  //     msg.editing = false;
+  //   }
+  // }
+  // editMessage(id:number){
+  //   const rawForm = this.editMessageForm.getRawValue();
+  //   if(this.currentChannel && rawForm.message !=""){
+  //     this.chatService.editMessage(this.currentChannel.name, rawForm.message, id);
+  //   }
+  // }
   sendMessage(){
     const rawForm = this.sendMessageForm.getRawValue();
       if(this.currentChannel){
