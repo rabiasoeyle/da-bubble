@@ -13,12 +13,13 @@ import { ChatComponent } from './chat/chat.component';
 import { ChatService } from '../chat.service';
 import { ChannelComponent } from './channel/channel.component';
 import { StartNewChatComponent } from "./start-new-chat/start-new-chat.component";
+import { AddChannelDialogComponent } from './add-channel-dialog/add-channel-dialog.component';
 
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [StartNewChatComponent,HeaderComponent, ReactiveFormsModule, SidenavComponent, ChatComponent, ChannelComponent, StartNewChatComponent],
+  imports: [AddChannelDialogComponent,StartNewChatComponent,HeaderComponent, ReactiveFormsModule, SidenavComponent, ChatComponent, ChannelComponent, StartNewChatComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })
@@ -31,10 +32,10 @@ export class MainComponent implements OnInit{
   addChannelOpen:boolean = false;
   memberDetails:boolean= false;
   //forms
-  addChannelForm = this.fb.nonNullable.group({
-      channelname:['', Validators.required],
-      description:['', Validators.required],
-  })
+  // addChannelForm = this.fb.nonNullable.group({
+  //     channelname:['', Validators.required],
+  //     description:['', Validators.required],
+  // })
   userData: UserData | null = null;
   sidenavButtonText:string="Workspace-Menü schließen";
   currentChannel: Channel|null = null;
@@ -82,10 +83,7 @@ export class MainComponent implements OnInit{
   addChannelDialog(){
     this.addChannelOpen = !this.addChannelOpen;
   }
-  onAddChannel(){
-    const rawForm = this.addChannelForm.getRawValue();
-    this.chatService.createChannel(rawForm.channelname, rawForm.description);
-    setTimeout(()=>this.loadLiveUserData(),4000);
+  onAddChannel(data:{}){
     this.addChannelDialog();
   }
   openChannel(channelName: string) {
@@ -119,14 +117,4 @@ export class MainComponent implements OnInit{
     this.currentChannel = null;
     this.currentChat = null;
   }
-  
-  // async showChatPartner(members:Member[]){
-  //   for(let i = 0; i < members.length; i++){
-  //     if(members[i].uid !== this.userData?.uid){
-  //       console.log(members[i])
-  //       return members[i];
-  //     }
-  //   }return ;
-  // }
-  
 }

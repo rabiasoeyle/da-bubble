@@ -1,0 +1,35 @@
+<div class="add-channel-dialog">
+    <div class="add-chnnl-head">
+        <h3>Channel erstellen</h3>
+        <img src="/assets/img/close.png" alt="x" (click)="addChannelDialog()">
+    </div>
+    
+    <h4>Channels dienen deinem Team zur Kommunikation. Am besten sollten sie themenbezogen sein #marketing zum Beispiel.</h4>
+    <form class="add-chnnl-form"  #createChannelForm="ngForm" (ngSubmit)="onAddChannel()">
+    <h3 class="fs-18">Channel-Name</h3>
+    <div class="add-chnnl-name">
+        #
+        <input
+            #name="ngModel" 
+            [(ngModel)]="createChannelData.name"
+            class="add-chnnl-input-name" 
+            name="name" 
+            type="text" 
+            placeholder="z.B. Kooperationsprojekte"
+            required> 
+    </div>
+    <div class="add-chnnl-description">
+        <h3 class="fs-18">Beschreibung</h3><h5>(optional)</h5>
+    </div>
+    <input 
+        #description="ngModel" 
+        [(ngModel)]="createChannelData.description"
+        class="add-chnnl-input-descr" 
+        name="description" type="text" 
+        placeholder="Dein Text hier"
+        required>
+    <div class="add-chnnl-btn-parent">
+        <button [disabled]="createChannelForm.invalid" class="blue-btn" type="submit">Absenden</button>
+    </div>
+    </form>
+</div>

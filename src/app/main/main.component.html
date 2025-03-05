@@ -24,28 +24,7 @@
     </div>
     @if(addChannelOpen){
         <div class="add-chn-dia-parent">
-        <div class="add-channel-dialog">
-            <div class="add-chnnl-head">
-                <h3>Channel erstellen</h3>
-                <img src="/assets/img/close.png" alt="x" (click)="addChannelDialog()">
-            </div>
-            
-            <h4>Channels dienen deinem Team zur Kommunikation. Am besten sollten sie themenbezogen sein #marketing zum Beispiel.</h4>
-            <form class="add-chnnl-form" [formGroup] ="addChannelForm" (ngSubmit)="onAddChannel()">
-            <h3 class="fs-18">Channel-Name</h3>
-            <div class="add-chnnl-name">
-                #
-                <input class="add-chnnl-input-name" formControlName="channelname" type="text" placeholder="z.B. Kooperationsprojekte"> 
-            </div>
-            <div class="add-chnnl-description">
-                <h3 class="fs-18">Beschreibung</h3><h5>(optional)</h5>
-            </div>
-            <input class="add-chnnl-input-descr" formControlName="description" type="text" placeholder="Dein Text hier">
-            <div class="add-chnnl-btn-parent">
-                <button class="blue-btn" type="submit">Absenden</button>
-            </div>
-            </form>
-        </div>
+        <app-add-channel-dialog (closeChannel)="addChannelDialog()" ></app-add-channel-dialog>
         </div>
     }  
 </section>
