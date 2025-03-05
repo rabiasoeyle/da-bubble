@@ -5,13 +5,17 @@ import { AuthService } from '../../auth.service';
 import { UserData } from '../../../modules/user';
 import { Message } from '../../../modules/messages';
 import { Member } from '../../../modules/member';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Chat } from '../../../modules/chat';
+import { AddMembersToChannelComponent } from './add-members-to-channel/add-members-to-channel.component';
+import { UserService } from '../../user.service';
+import { MemberlistComponent } from './memberlist/memberlist.component';
+import { MemberDetailsComponent } from './member-details/member-details.component';
 
 @Component({
   selector: 'app-channel',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule,FormsModule, AddMembersToChannelComponent, MemberlistComponent, MemberDetailsComponent],
   templateUrl: './channel.component.html',
   styleUrl: './channel.component.scss'
 })
@@ -25,9 +29,6 @@ export class ChannelComponent implements OnInit, OnChanges{
 sendMessageForm = this.fb.nonNullable.group({
   message:['', Validators.required],
   })
-addMemberForm = this.fb.nonNullable.group({
-  name:['', Validators.required],
-})
 changeChannelNameForm = this.fb.nonNullable.group({
   name:['', Validators.required],
 })
@@ -49,9 +50,9 @@ editMessageForm= this.fb.nonNullable.group({
   currentChannel:Channel | null = null;
   userChats:Chat[]=[];
   @Output() openChat = new EventEmitter<number>();
-  constructor(private chatService:ChatService,private cdr: ChangeDetectorRef, private authService:AuthService){
+  constructor(private chatService:ChatService, private authService:AuthService, private userService:UserService){
   }
-  isSameDay(timestamp1: number, timestamp2: number): boolean {
+isSameDay(timestamp1: number, timestamp2: number): boolean {
     const date1 = new Date(timestamp1);
     const date2 = new Date(timestamp2);
     
@@ -59,7 +60,6 @@ editMessageForm= this.fb.nonNullable.group({
            date1.getMonth() === date2.getMonth() &&
            date1.getDate() === date2.getDate();
 }
-
 formatDate(timestamp: number): string {
     return new Date(timestamp).toLocaleDateString("de-DE", {
         weekday: "long",
@@ -106,6 +106,7 @@ formatDate(timestamp: number): string {
       members:membersWithUserData,
       membersAmount:data.members.length,
     }});
+    return this.currentChannel;
   }
   startEditMessage(id:number){
     if(this.currentChannel != null){
@@ -138,14 +139,14 @@ formatDate(timestamp: number): string {
     this.membersOfChannelList=false;
       this.addMemberToChannel =!this.addMemberToChannel;
   }
-  addMembersToChannel(channelname:string){
-    const rawForm = this.addMemberForm.getRawValue();
-      this.chatService.addMembersToChannel(channelname, rawForm.name);
-  }
+  // addMembersToChannel(channelname:string){
+  //   this.chatService.addMembersToChannel(channelname, this.addMemberData.name);
+  // }
   openMembersList(){
     this.membersOfChannelList = !this.membersOfChannelList;
   }
   async openUserDetails(idx:number){
+    console.log("userDetails:", idx);
     this.membersOfChannelList = false;
       this.addMemberToChannel = false;
       if(this.memberDetails = true && idx==9999){

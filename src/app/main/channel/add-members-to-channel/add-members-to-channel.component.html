@@ -1,0 +1,32 @@
+<div class="add-mmbr-parent">
+    <div class="add-mmbr-head">
+        <h3>Leute hinzufügen</h3>
+        <img (click)="closeDialog()" src="/assets/img/close.png" alt="x">
+    </div>
+    <h5 class="add-mmbr-chnnl-nm"># {{currentChannel?.name}}</h5>
+    <form #addMemberForm="ngForm" (ngSubmit)="addMembersToChannel()">
+        <input 
+        #name="ngModel" 
+        [(ngModel)]="addMemberData.name" 
+        name="name"
+        (ngModelChange)="setupSearchListener($event)" 
+        class="input-name"
+        type="text"
+        placeholder="Name eingeben"
+        required>
+        @if(searchResultsValue.length>0){
+            <div class="search-results">
+                @for(item of searchResultsValue; track item){
+                    @if(search=="email"){
+                        <h4 (click)="saveName(item.email)">{{item.email}}</h4>
+                    }@else if (search=="name") {
+                        <h4 (click)="saveName(item.name)">{{item.name}}</h4>
+                    }
+                }
+            </div> 
+            }
+        <div class="add-mmbr-btn-parent">
+            <button type="submit" [disabled]="addMemberForm.invalid" class="gray-btn" >Hinzufügen</button>
+        </div>
+    </form>
+</div>

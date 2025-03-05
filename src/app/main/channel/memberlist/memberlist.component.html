@@ -1,0 +1,19 @@
+<div class="mmbr-of-chnnl-parent">
+    <div class="mmbr-of-chnnl-head">
+        <h3>Mitglieder</h3>
+        <img (click)="closeMembersList()" src="/assets/img/close.png" alt="x">
+    </div>
+    <div class="mmbr-of-chnnl-list-parent">
+        @for(item of currentChannel ? currentChannel.members: ["Lisa"]; track item; let idx = $index){
+            <div (click)="openUserDetails(idx)" class="mmbr-of-chnnl-list">
+                <img class="mmbr-of-chnnl-pic" src="{{item.fotolink}}" alt="">
+                <!-- <img src="" alt="online"> -->
+                <h4>{{item.name}}</h4>
+            </div>
+        }
+    </div>
+    <button (click)="addMembersToChannelDialog()" class="mmbr-of-chnnl-pic-button">
+        <img src="/assets/img/add-members.png" alt="">
+        <h4>Mitglieder hinzufügen</h4>
+    </button>
+</div>

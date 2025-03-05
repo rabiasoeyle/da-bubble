@@ -6,57 +6,13 @@
                 <img (click)="openDetailsAboutChannel()" src="/assets/img/key_arrow_down.png" alt="">
             </div>
             @if(addMemberToChannel){
-                <div class="add-mmbr-parent">
-                    <div class="add-mmbr-head">
-                        <h3>Leute hinzufügen</h3>
-                        <img (click)="addMembersToChannelDialog()" src="/assets/img/close.png" alt="x">
-                    </div>
-                    <h5 class="add-mmbr-chnnl-nm"># {{currentChannel.name}}</h5>
-                    <form [formGroup] ="addMemberForm" (ngSubmit)="addMembersToChannel(currentChannel.name)">
-                        <input formControlName="name" class="input-name" type="text" placeholder="Name eingeben">
-                        <div class="add-mmbr-btn-parent">
-                            <button class="gray-btn" type="submit">Hinzufügen</button>
-                        </div>
-                    </form>
-                </div>
+                <app-add-members-to-channel [currentChannel]="currentChannel" (closeDialogEvent)="addMembersToChannelDialog()"></app-add-members-to-channel>
             }
             @if(membersOfChannelList){
-                <div class="mmbr-of-chnnl-parent">
-                    <div class="mmbr-of-chnnl-head">
-                        <h3>Mitglieder</h3>
-                        <img (click)="openMembersList()" src="/assets/img/close.png" alt="x">
-                    </div>
-                    <div class="mmbr-of-chnnl-list-parent">
-                        @for(item of currentChannel ? currentChannel.members: ["Lisa"]; track item; let idx = $index){
-                            <div (click)="openUserDetails(idx)" class="mmbr-of-chnnl-list">
-                                <img class="mmbr-of-chnnl-pic" src="{{item.fotolink}}" alt="">
-                                <!-- <img src="" alt="online"> -->
-                                <h4>{{item.name}}</h4>
-                            </div>
-                        }
-                    </div>
-                    <button (click)="addMembersToChannelDialog()" class="mmbr-of-chnnl-pic-button">
-                        <img src="/assets/img/add-members.png" alt="">
-                        <h4>Mitglieder hinzufügen</h4>
-                    </button>
-                </div>
-
+                <app-memberlist [currentChannel]="currentChannel" (closeDialogEvent)="openMembersList()" (openDetailsEvent)="openUserDetails($event)" (openAddMemberEvent)="addMembersToChannelDialog()"></app-memberlist>
             }
             @if(memberDetails){
-                <div class="mmbr-dtls-parent">
-                    <div>
-                        <h3>Profil</h3>
-                        <img (click)="openUserDetails(9999)" src="/assets/img/close.png" alt="">
-                    </div>
-                    <img class="mmbr-details-img" src="{{currentProfileDetail.fotolink}}" alt="">
-                    <h3>{{currentProfileDetail.name}}</h3>
-                    <div>
-                        <img src="/assets/img/mail.png" alt="email">
-                        <h5>E-Mail-Adresse</h5>
-                    </div>
-                    <h4 class="blue-font">{{currentProfileDetail.email}}</h4>
-                    <button class="blue-btn" (click)="goToPersonalMessages()">Nachricht</button>
-                </div>
+                <app-member-details (goToPersonalMessagesEvent)="goToPersonalMessages()" (closeUserDetailsEvent)="openUserDetails($event)"  [currentProfileDetail]="currentProfileDetail"></app-member-details>
             }
             <div class="header-of-channel-right">
                 <div class="members-pic">
@@ -200,8 +156,8 @@
               
           </div>
         </div>  
-      }
-      @if(openDetailsOfChannel && editChannel){
+    }
+    @if(openDetailsOfChannel && editChannel){
           <div class="open-dtls-chnnl-parent">
             <div class="open-dtls-chnnl-child">
                 <div class="open-dtls-chnnl-head">
@@ -242,11 +198,10 @@
                 
             </div>
           </div>  
-      }
-        
-  }   
-  @if(channelDeleted){
+    }
+}   
+@if(channelDeleted){
           <img src="/assets/img/close.png" alt="x">
           <h3>Sie haben den Channel # {{deletedChannelname}} erfolgreich gelöscht.</h3>
-    }
+}
 

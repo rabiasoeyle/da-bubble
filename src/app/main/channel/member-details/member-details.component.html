@@ -1,0 +1,14 @@
+<div class="mmbr-dtls-parent">
+    <div>
+        <h3>Profil</h3>
+        <img (click)="closeUserDetails(9999)" src="/assets/img/close.png" alt="">
+    </div>
+    <img class="mmbr-details-img" src="{{currentProfileDetail.fotolink}}" alt="">
+    <h3>{{currentProfileDetail.name}}</h3>
+    <div>
+        <img src="/assets/img/mail.png" alt="email">
+        <h5>E-Mail-Adresse</h5>
+    </div>
+    <h4 class="blue-font">{{currentProfileDetail.email}}</h4>
+    <button class="blue-btn" (click)="goToPersonalMessages()">Nachricht</button>
+</div>

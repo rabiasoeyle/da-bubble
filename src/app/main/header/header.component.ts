@@ -21,24 +21,21 @@ export class HeaderComponent implements OnInit{
   userData: UserData | null = null;
   toggleMenuIsOpen:boolean = false;
   suggestions: string[] = [];
-  // showSuggestions = false;
   input = new FormControl('');
   searchResultsValue: any[]=[]; 
   searchResults:string[]=[];
   search:string="";
-  // userChats:any=[] 
   @Input() userChats:Chat[] = [];
   @Output() openChat = new EventEmitter<number>();
   @Output() oChannel = new EventEmitter<string>();
   constructor(private authService: AuthService, private userService: UserService,private chatService: ChatService) {
     this.setupSearchListener();
   }
-
-  private setupSearchListener() {
+  setupSearchListener() {
     this.input.valueChanges
       .pipe(
-        debounceTime(300), // Warte 300ms nach jeder Eingabe (vermeidet zu viele Suchanfragen)
-        distinctUntilChanged() // Verhindert doppelte Suchanfragen für dieselbe Eingabe
+        debounceTime(300),
+        distinctUntilChanged()
       )
       .subscribe(value => {
         if (!value || value.length < 2) {
@@ -46,25 +43,20 @@ export class HeaderComponent implements OnInit{
           this.searchResults=[];
           return;
         }
-        const firstChar = value.charAt(0); // Erstes Zeichen ermitteln
-        //suche über name
+        const firstChar = value.charAt(0);
         if (firstChar === "@") {
-          this.searchResultsValue = this.userService.searchUsers(value.substring(1)); // Suche nach Usernamen
+          this.searchResultsValue = this.userService.searchUsers(value.substring(1));
           for(let i=0; i<this.searchResultsValue.length; i++){
             this.searchResults.push(this.searchResultsValue[i].name);
             this.search="name"
           }
-          // Suche nach Channels
         } else if (firstChar === "#") {
           this.search="channel"
           if(this.userData){
             this.searchResults = (this.userData.channels || [])
             .filter((channel: string) => 
             channel.toLowerCase().includes(value.substring(1).toLowerCase()));
-          // console.log("result:", this.searchResults)
-            
           }
-          //suche mit Mail
         } else if (/[a-zA-Z]/.test(firstChar)) {
           this.searchResultsValue = this.userService.searchUsersWithMail(value); 
           this.searchResults=[];
@@ -79,8 +71,8 @@ export class HeaderComponent implements OnInit{
       });
   }
   selectChat(user: string) {
-    this.input.setValue(user); // Wähle einen Benutzer aus
-    this.searchResults = []; // Leere die Vorschläge
+    this.input.setValue(user);
+    this.searchResults = [];
   }
   async goToPersonalMessages(uid:string){
     if(this.userData && this.userChats.length<=0){
@@ -119,10 +111,8 @@ export class HeaderComponent implements OnInit{
   }
   toggleMenu(){
     this.toggleMenuIsOpen = !this.toggleMenuIsOpen;
-
   }
   logout(){
     this.authService.logout();
-    // this.router.navigateByUrl('');
   }
 }

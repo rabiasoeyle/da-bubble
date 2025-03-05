@@ -14,9 +14,9 @@ import { Chat } from '../../../modules/chat';
   styleUrl: './start-new-chat.component.scss'
 })
 export class StartNewChatComponent {
-  fb = inject(FormBuilder);
-  sendMessageForm = this.fb.nonNullable.group({
-        message:['', Validators.required],
+    fb = inject(FormBuilder);
+    sendMessageForm = this.fb.nonNullable.group({
+          message:['', Validators.required],
     })
     input = new FormControl('');
     searchResultsValue: any[]=[]; 
@@ -33,10 +33,8 @@ export class StartNewChatComponent {
     search:string="";
     @Output() openChat = new EventEmitter<number>();
     @Output() oChannel = new EventEmitter<string>();
-
     constructor(private userService: UserService, private chatService: ChatService){
       this.setupSearchListener();
-      // this.loadUserChats();
     }
     async goToPersonalMessages(uid:string){
         if(this.userData && this.userChats<=0){
@@ -48,8 +46,8 @@ export class StartNewChatComponent {
                 this.openChat.emit(i);
               }
             }
-      };
-      async loadUserChats(){
+    };
+    async loadUserChats(){
         this.userChats=[];
         if(this.userData){
           const userChat: Chat[] = await this.chatService.getUserChats(this.userData?.uid);
@@ -57,8 +55,8 @@ export class StartNewChatComponent {
             this.userChats.push(...userChat);
           }
         }
-      }
-    private setupSearchListener() {
+    }
+    setupSearchListener() {
       this.input.valueChanges
       .pipe(
         debounceTime(300),
@@ -70,25 +68,20 @@ export class StartNewChatComponent {
           this.searchResults=[];
           return;
         }
-        const firstChar = value.charAt(0); // Erstes Zeichen ermitteln
-        //suche über name
+        const firstChar = value.charAt(0);
         if (firstChar === "@") {
-          this.searchResultsValue = this.userService.searchUsers(value.substring(1)); // Suche nach Usernamen
+          this.searchResultsValue = this.userService.searchUsers(value.substring(1)); 
           for(let i=0; i<this.searchResultsValue.length; i++){
             this.searchResults.push(this.searchResultsValue[i].name);
             this.search="name"
           }
-          // Suche nach Channels
         } else if (firstChar === "#") {
           this.search="channel"
           if(this.userData){
             this.searchResults = (this.userData.channels || [])
             .filter((channel: string) => 
-            channel.toLowerCase().includes(value.substring(1).toLowerCase()));
-          // console.log("result:", this.searchResults)
-            
+            channel.toLowerCase().includes(value.substring(1).toLowerCase()));  
           }
-          //suche mit Mail
         } else if (/[a-zA-Z]/.test(firstChar)) {
           this.searchResultsValue = this.userService.searchUsersWithMail(value); 
           this.searchResults=[];
@@ -102,7 +95,6 @@ export class StartNewChatComponent {
         }
       });
     }
-
     openChatOrChannel(item:string){
       if(this.search=="name" || this.search=="email"){
         this.goToPersonalMessages(item);
