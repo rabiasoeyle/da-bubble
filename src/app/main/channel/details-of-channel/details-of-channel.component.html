@@ -1,1 +1,76 @@
-<p>details-of-channel works!</p>
+@if(currentChannel&&!editChannel){
+    <div class="open-dtls-chnnl-parent">
+      <div class="open-dtls-chnnl-child">
+          <div class="open-dtls-chnnl-head">
+              <h3># {{currentChannel.name}}</h3>
+              <img (click)="closeDetailsAboutChannel()" src="/assets/img/close.png" alt="x">
+          </div>
+          <div class="open-dtls-chnnl-name-parent">
+              <div class="open-dtls-chnnl-name">
+                  <h3 class="fs-18">Channel Name</h3>
+                  <h4 (click)="openEditChannel()"><span class="blue-font">Bearbeiten</span></h4>
+              </div> 
+              <div class="open-dtls-chnnl-name-input">
+                      #
+                      <span class="open-dtls-chnnl-input-name">{{currentChannel.name}}</span>  
+              </div>
+          </div>
+          <div class="open-dtls-chnnl-middle">
+              <div class="open-dtls-chnnl-name">
+                  <h3 class="fs-18">Beschreibung</h3>
+                  <h4 (click)="openEditChannel()"><span class="blue-font">Bearbeiten</span></h4>
+              </div> 
+              <h6>{{currentChannel.description}}</h6>
+              <div class="black-line"></div>
+              <h3 class="fs-18">Erstellt von</h3>
+              <h4 class="blue-font" >{{currentChannel.created.createdFrom}}</h4>
+          </div>
+          <div class="open-dtls-chnnl-delete-btn-parent">
+              <button class="blue-btn" (click)="deleteChannelAtUser(currentChannel.name)">Channel verlassen</button>
+          </div>
+          
+      </div>
+    </div>  
+}
+@if(currentChannel && editChannel){
+      <div class="open-dtls-chnnl-parent">
+        <div class="open-dtls-chnnl-child">
+            <div class="open-dtls-chnnl-head">
+                <h3># {{currentChannel.name}}</h3>
+                <img (click)="closeDetailsAboutChannel()" src="/assets/img/close.png" alt="x">
+            </div>
+            <div class="open-dtls-chnnl-name-parent">
+              <form class="channel-name-form" #changeChannelNameForm="ngForm" (ngSubmit)="changeChannelName()">
+                <div class="open-dtls-chnnl-name">
+                    <h3 class="fs-18">Channel Name</h3>
+                    <button class="blue-btn" type="submit" [disabled]="changeChannelNameForm.invalid">
+                      <h4 class="blue-font">Speichern</h4>
+                    </button>
+                </div> 
+                <div class="open-dtls-chnnl-name-input">
+                        #
+                      <input #name="ngModel" [(ngModel)]="channelData.name" name="name" class="open-dtls-chnnl-input-name" type="text" placeholder="{{currentChannel.name}}"> 
+                </div>
+              </form>
+            </div>
+            <div class="open-dtls-chnnl-middle">
+              <form class="channel-description-form" #changeChannelDescriptionForm="ngForm" (ngSubmit)="changeChannelDescription()">
+                <div class="open-dtls-chnnl-name">
+                    <h3 class="fs-18">Beschreibung</h3>
+                    <button class="blue-btn" [disabled]="changeChannelDescriptionForm.invalid" type="submit">
+                      <h4 class="blue-font">Speichern</h4>
+                    </button>
+                </div> 
+                <textarea [(ngModel)]="channelData.description" #description="ngModel" name="description" placeholder="Schreibe hier die Beschreibung"></textarea>
+              </form>
+                <div class="black-line"></div>
+                <h3 class="fs-18">Erstellt von</h3>
+                <h4 class="blue-font" >{{currentChannel.created.createdFrom}}</h4>
+            </div>
+            <div class="open-dtls-chnnl-delete-btn-parent">
+                <button class="blue-btn" (click)="deleteChannelAtUser(currentChannel.name)">Channel verlassen</button>
+            </div>
+            
+        </div>
+      </div>  
+}

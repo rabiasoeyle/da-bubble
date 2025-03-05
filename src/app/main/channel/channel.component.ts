@@ -12,11 +12,12 @@ import { UserService } from '../../user.service';
 import { MemberlistComponent } from './memberlist/memberlist.component';
 import { MemberDetailsComponent } from './member-details/member-details.component';
 import { MessagesComponent } from './messages/messages.component';
+import { DetailsOfChannelComponent } from './details-of-channel/details-of-channel.component';
 
 @Component({
   selector: 'app-channel',
   standalone: true,
-  imports: [MessagesComponent,ReactiveFormsModule,FormsModule, AddMembersToChannelComponent, MemberlistComponent, MemberDetailsComponent],
+  imports: [DetailsOfChannelComponent,MessagesComponent,ReactiveFormsModule,FormsModule, AddMembersToChannelComponent, MemberlistComponent, MemberDetailsComponent],
   templateUrl: './channel.component.html',
   styleUrl: './channel.component.scss'
 })
