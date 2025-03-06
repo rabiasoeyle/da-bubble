@@ -25,6 +25,8 @@ export class HeaderComponent implements OnInit{
   searchResultsValue: any[]=[]; 
   searchResults:string[]=[];
   search:string="";
+  profileDetails:boolean=false;
+  editUserData:boolean=false;
   @Input() userChats:Chat[] = [];
   @Output() openChat = new EventEmitter<number>();
   @Output() oChannel = new EventEmitter<string>();
@@ -115,4 +117,17 @@ export class HeaderComponent implements OnInit{
   logout(){
     this.authService.logout();
   }
+  detailsOfProfile(){
+    this.profileDetails = !this.profileDetails;
+  }
+  openMyProfile(){
+    this.toggleMenu();
+    this.detailsOfProfile();
+  }
+  editProfile(){
+    this.editUserData =!this.editUserData;
+    this.detailsOfProfile();
+  }
+  saveNewProfile(){}
+  changeFotolink(){}
 }
