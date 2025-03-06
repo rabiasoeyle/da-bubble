@@ -35,24 +35,57 @@ export class AuthService {
               console.error("Fehler beim Senden der Verifikations-E-Mail:", error);
             });
           const uid: string = user.uid; // UID des Benutzers
-          return this.addData(uid, email, name); // Benutzerdaten speichern
+          return this.addData(uid, email, name, "./assets/img/profile.png"); // Benutzerdaten speichern
         } else {
           throw new Error("Kein Benutzer vorhanden, E-Mail-Verifikation fehlgeschlagen.");}
       });
     };
     return from(createAccount());
   }
-  async addData(uid: string, email:string|any, name:string|any) {
-    const userDocRef = doc(this.firebaseDatabase, `users/${uid}`); // Dokument mit UID als Pfad
-    await setDoc(userDocRef, {
-      uid: uid,
-      name: name,                
-      email: email,              
-      fotolink: "./assets/img/profile.png", 
-      channels:[],
-      chats:[],                          
-    }); 
+  private async addData(uid: string, email: string | null, name: string | null, photoURL: string): Promise<void> {
+    const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
+    const userDoc = await getDoc(userDocRef);
+
+    if (!userDoc.exists()) {
+      await setDoc(userDocRef, { 
+        uid: uid,
+        name: name,                
+        email: email,              
+        fotolink: photoURL, 
+        channels:[],
+        chats:[], }, { merge: true });
+    }
   }
+  // Funktion zum Anzeigen des Dialogs und Rückgabe eines Promises
+showCustomDialog(): Promise<boolean> {
+  return new Promise((resolve) => {
+    const dialog = document.getElementById('customDialog') as HTMLDivElement;
+    dialog.hidden = false;
+
+    // Funktion für Button-Klick
+    (window as any).confirmGoogleLogin = (result: boolean) => {
+      dialog.hidden = true;
+      resolve(result);
+    };
+  });
+}
+
+  // private async getData(uid: string): Promise<UserData | null> {
+  //   const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
+  //   const userDoc = await getDoc(userDocRef);
+  //   return userDoc.exists() ? (userDoc.data() as UserData) : null;
+  // }
+  // async addData(uid: string, email:string|any, name:string|any) {
+  //   const userDocRef = doc(this.firebaseDatabase, `users/${uid}`); // Dokument mit UID als Pfad
+  //   await setDoc(userDocRef, {
+  //     uid: uid,
+  //     name: name,                
+  //     email: email,              
+  //     fotolink: "./assets/img/profile.png", 
+  //     channels:[],
+  //     chats:[],                          
+  //   }); 
+  // }
   login(email: string, password: string): Observable<void> {
     const loginPromise = signInWithEmailAndPassword(this.firebaseAuth, email, password)
     .then((userCredential) => {
@@ -74,21 +107,26 @@ export class AuthService {
     this.userDataSubject.next(null);
   }
   async googleSignin(): Promise<void> {
-      try {
-        const provider = new GoogleAuthProvider(); // Google-Provider initialisieren
-        const credential = await signInWithPopup(this.firebaseAuth, provider);
-        const user = credential.user;
-        if (user) {
-          this.addData(user.uid, user.email, user.displayName);
-          // this.updateUserProfile(user.uid, "./assets/img/profile.png");
-          return this.getData(user.uid).then((data) => {
-            this.userDataSubject.next(data);
-          });
-        }
-      } catch (error) {
-        console.error('Fehler bei der Google-Authentifizierung:', error);
+    try {
+      const confirmation = window.confirm('Mit welchem Google-Konto möchten Sie sich anmelden?');
+      if (!confirmation) return; // Falls der Nutzer "Abbrechen" klickt, beende die Funktion
+  
+      const provider = new GoogleAuthProvider();
+      const credential = await signInWithPopup(this.firebaseAuth, provider);
+      const user = credential.user;
+  
+      if (user) {
+        const defaultPhoto = user.photoURL ? user.photoURL : 'assets/img/profile.png';
+        await this.addData(user.uid, user.email, user.displayName, defaultPhoto);
+        return this.getData(user.uid).then((data) => {
+          this.userDataSubject.next(data);
+        });
       }
+    } catch (error) {
+      console.error('Fehler bei der Google-Authentifizierung:', error);
+    }
   }
+  
   forgotPassword(email:string){
     const actionCodeSettings = {
       url: 'http://localhost:4200/changePassword',
@@ -165,8 +203,6 @@ export class AuthService {
     try {
       const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
       await setDoc(userDocRef, { name }, { merge: true });
-  
-      // Lokales Update der Daten, um UI sofort zu aktualisieren
       const currentData = this.userDataSubject.value;
       if (currentData) {
         this.userDataSubject.next({ ...currentData, name });
