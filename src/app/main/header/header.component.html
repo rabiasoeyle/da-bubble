@@ -44,38 +44,7 @@
             <button (click)="logout()">Logout</button>
         </div>
     }
-    @if(profileDetails && userData){
-            <div class="mmbr-dtls-parent">
-                <div>
-                    <h3>Profil</h3>
-                    <img (click)="detailsOfProfile()" src="/assets/img/close.png" alt="">
-                </div>
-                <img class="mmbr-details-img" src="{{userData.fotolink}}" alt="">
-                <h3>{{userData.name}}</h3>
-                <div>
-                    <img src="/assets/img/mail.png" alt="email">
-                    <h5>E-Mail-Adresse</h5>
-                </div>
-                <h4 class="blue-font">{{userData.email}}</h4>
-                <button class="blue-btn" (click)="editProfile()">Bearbeiten</button>
-            </div> 
-       
+    @if(profileDetails||editUserData ){
+        <app-member-details (changedUserDataEvent)="updateUserData()" (editDataEvent)="editProfile()" (closeDetailsEvent)="detailsOfProfile()" [userData]="userData" [editUserData]="editUserData" [profileDetails]="profileDetails"></app-member-details>
     }
-    @if(editUserData && userData ){
-        <div class="mmbr-dtls-parent">
-            <div>
-                <h3>Profil</h3>
-                <img (click)="editProfile()" src="/assets/img/close.png" alt="">
-            </div>
-            <img class="mmbr-details-img" src="{{userData.fotolink}}" alt="" (click)="changeFotolink()">
-            <input type="text" required placeholder='{{userData.name}}'>
-            <div>
-                <img src="/assets/img/mail.png" alt="email">
-                <h5>E-Mail-Adresse</h5>
-            </div>
-            <input type="email" required placeholder='{{userData.email}}'>
-            <button class="blue-btn" (click)="saveNewProfile()">Bearbeiten</button>
-        </div> 
-   
-}
 </div>

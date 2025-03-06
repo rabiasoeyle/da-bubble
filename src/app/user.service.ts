@@ -29,7 +29,7 @@ export class UserService {
           uid: doc.id, // Firestore-Dokumenten-ID als UID speichern
           name: user['name'] || '',
           email: user['email'] || '',
-          fotolink: user['fotolink'] || '',
+          fotolink: user['fotolink'] || './assets/img/profile.png',
           channels: user['channels'] || [],
           chats: user['chats'] || []
         });

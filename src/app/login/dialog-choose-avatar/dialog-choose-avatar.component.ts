@@ -20,7 +20,7 @@ export class DialogChooseAvatarComponent {
     "./assets/img/Sofia.png",
     "./assets/img/Steffen.png",
   ];
-  dummyProfile="./assets/img/Profile.png";
+  dummyProfile="./assets/img/profile.png";
   chosedAvatar:boolean = false;
   userData: UserData | null = null;
   constructor(private authService: AuthService){

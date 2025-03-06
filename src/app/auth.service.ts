@@ -1,7 +1,7 @@
-import { inject, Injectable, Input } from '@angular/core';
+import { inject, Injectable} from '@angular/core';
 import { FirebaseApp } from '@angular/fire/app';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from '@angular/fire/auth';
-import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, Firestore, getDoc, getDocs, onSnapshot, setDoc, updateDoc, where } from '@angular/fire/firestore';
+import { doc, Firestore, getDoc, onSnapshot, setDoc} from '@angular/fire/firestore';
 import { BehaviorSubject, from, Observable } from 'rxjs';
 import { confirmPasswordReset, sendEmailVerification, sendPasswordResetEmail, sendSignInLinkToEmail, signInWithEmailLink, verifyPasswordResetCode } from "firebase/auth";
 import {GoogleAuthProvider, signInWithPopup } from "@angular/fire/auth";
@@ -48,7 +48,7 @@ export class AuthService {
       uid: uid,
       name: name,                
       email: email,              
-      fotolink: "", 
+      fotolink: "./assets/img/profile.png", 
       channels:[],
       chats:[],                          
     }); 
@@ -80,6 +80,7 @@ export class AuthService {
         const user = credential.user;
         if (user) {
           this.addData(user.uid, user.email, user.displayName);
+          // this.updateUserProfile(user.uid, "./assets/img/profile.png");
           return this.getData(user.uid).then((data) => {
             this.userDataSubject.next(data);
           });
@@ -158,6 +159,20 @@ export class AuthService {
       await setDoc(userDocRef, {fotolink }, { merge: true });
     } catch (error) {
       console.error('Fehler beim Aktualisieren des Profilbilds:', error);
+    }
+  }
+  async updateUserName(uid: string, name: string): Promise<void> {
+    try {
+      const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
+      await setDoc(userDocRef, { name }, { merge: true });
+  
+      // Lokales Update der Daten, um UI sofort zu aktualisieren
+      const currentData = this.userDataSubject.value;
+      if (currentData) {
+        this.userDataSubject.next({ ...currentData, name });
+      }
+    } catch (error) {
+      console.error('Fehler beim Aktualisieren des Namens:', error);
     }
   }
 

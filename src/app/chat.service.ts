@@ -37,7 +37,7 @@ export class ChatService {
             date:msg.timestamp,
             message:msg.message,
             name: userInfo? userInfo['name'] : "Unbekannt",
-            fotolink: userInfo? userInfo['fotolink'] : "default.png",
+            fotolink: userInfo? userInfo['fotolink'] : "./assets/img/profile.png",
             editing:false,
           };
         })
@@ -51,7 +51,7 @@ export class ChatService {
           return {
             uid: uid,
             name: userInfo ? userInfo['name'] : "Unbekannt",
-            fotolink: userInfo ? userInfo['fotolink'] : "default.png",
+            fotolink: userInfo ? userInfo['fotolink'] : "./assets/img/profile.png",
             email:userInfo ? userInfo['email'] : "default.png"
           };
         })

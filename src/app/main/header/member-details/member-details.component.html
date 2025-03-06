@@ -1,0 +1,59 @@
+@if(profileDetails && userData){
+    <div class="mmbr-dtls-parent">
+        <div>
+            <h3>Profil</h3>
+            <img (click)="closeUserDetails()" src="/assets/img/close.png" alt="">
+        </div>
+        <img (click)="startChangeFotolink()" class="mmbr-details-img" src="{{userData.fotolink}}" alt="">
+        <div>
+            <h3>{{userData.name}}</h3>
+            <h4 class="blue-font" (click)="toggleEditProfile()">Bearbeiten</h4>
+        </div>
+        <div>
+            <img src="/assets/img/mail.png" alt="email">
+            <h5>E-Mail-Adresse</h5>
+        </div>
+        <h4 class="blue-font">{{userData.email}}</h4>
+        
+    </div> 
+
+}
+@if(editUserData && userData ){
+<form #userNameForm="ngForm" class="mmbr-dtls-parent">
+    <div>
+        <h3>Profil</h3>
+        <img (click)="toggleEditProfile()" src="/assets/img/close.png" alt="">
+    </div>
+    <img class="mmbr-details-img" src="{{userData.fotolink}}" alt="" (click)="startChangeFotolink()">
+    <input #name="ngModel" 
+    [(ngModel)]="changeData.name" 
+    name="name" 
+    class="input-name"
+    type="text"
+    required
+    placeholder='neuer Name und Nachname'
+    pattern="^[A-ZÄÖÜ][a-zäöüß]+(?: [A-ZÄÖÜ][a-zäöüß]+)+$">
+    <button class="white-btn" (click)="toggleEditProfile()">Abbrechen</button>
+    <button [disabled]="userNameForm.invalid" class="blue-btn" (click)="saveNewName()">Speichern</button>
+</form> 
+}
+@if(chooseFotolink &&userData){
+    <div class="mmbr-dtls-parent">
+    <h3>Wähle einen Avatar!</h3>
+    <img (click)="startChangeFotolink()" src="/assets/img/close.png" alt="">
+<div class="dummy-profile">
+    <img src="{{newFotolink!==''?newFotolink:userData.fotolink}}" alt="">
+</div>
+<h3>{{userData ? userData.name : "Nutzername"}}</h3>
+<h4>Aus der Liste wählen!</h4>
+<div class="avatar-images">
+@for(item of profiles; track item){
+    <img class="avatar-image" (click)="saveNewLink(item)" src="{{item}}" alt="picture">
+}
+</div>
+<div>
+    <button [disabled]="newFotolink=='' " class="blue-btn" (click)="changeFotolink()">Weiter</button>
+</div>
+
+</div>
+}

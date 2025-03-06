@@ -8,11 +8,12 @@ import { debounceTime, distinctUntilChanged, filter, switchMap, tap } from 'rxjs
 import { Observable, of } from 'rxjs';
 import { Chat } from '../../../modules/chat';
 import { ChatService } from '../../chat.service';
+import { MemberDetailsComponent } from './member-details/member-details.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, MemberDetailsComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -104,6 +105,10 @@ export class HeaderComponent implements OnInit{
     }
   }
   ngOnInit(): void {
+    this.authService.getUserLiveUpdates();
+   this.updateUserData();
+  }
+  updateUserData(){
     this.authService.userData$.subscribe((data) => {
       this.userData = data;
       if(this.userData == null){
@@ -128,6 +133,4 @@ export class HeaderComponent implements OnInit{
     this.editUserData =!this.editUserData;
     this.detailsOfProfile();
   }
-  saveNewProfile(){}
-  changeFotolink(){}
 }
