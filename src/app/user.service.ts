@@ -52,7 +52,7 @@ export class UserService {
     searchTerm = searchTerm.toLowerCase(); // Kleinbuchstaben für bessere Treffer
     return this.allUsers
     .filter(user => user.email.toLowerCase().includes(searchTerm)) // Filtere passende Nutzer
-    .map(user => ({ email: user.email, uid: user.uid })); 
+    .map(user => ({ name: user.name, email: user.email, uid: user.uid })); 
   }
 
 }

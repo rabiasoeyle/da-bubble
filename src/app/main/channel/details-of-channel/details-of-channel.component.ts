@@ -49,7 +49,6 @@ export class DetailsOfChannelComponent {
     setTimeout(()=>{
             this.openEditChannel(),
             this.openChannelEvent.emit(this.channelData.name) 
-            // this.closeDetailsEvent.emit()
       },200);
   }
   changeChannelDescription(){

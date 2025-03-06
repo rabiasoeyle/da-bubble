@@ -19,13 +19,25 @@ export class AddMembersToChannelComponent {
   selectedUser="";
   addMemberData = {name:""};
   results:any;
+  userNameOrEmail:string="";
   @Output() closeDialogEvent = new EventEmitter<void>();
   
 constructor(private chatService:ChatService, private userService:UserService){}
 addMembersToChannel(){
-  this.saveName(this.addMemberData.name);
-  if(this.currentChannel){
-    this.chatService.addMembersToChannel(this.currentChannel.name, this.addMemberData.name);
+  this.userNameOrEmail = this.addMemberData.name.trim();
+  if (!this.userNameOrEmail) return; 
+  if (this.userNameOrEmail.startsWith("@")) {
+    this.userNameOrEmail = this.userNameOrEmail.substring(1);
+  }if (this.search == "email") {
+    const foundUser = this.searchResultsValue.find(user => user.email == this.userNameOrEmail);
+    if (foundUser) {
+      console.log("neue usermail:", foundUser);
+      this.userNameOrEmail = foundUser.name; 
+    } else {return}
+  }
+  this.saveName(this.userNameOrEmail);
+  if(this.currentChannel ){
+    this.chatService.addMembersToChannel(this.currentChannel.name, this.userNameOrEmail);
   }
   this.closeDialog();
 }
@@ -54,12 +66,11 @@ setupSearchListener(value: string) {
     this.searchResultsValue = [];
     this.searchResults = [];
     this.addMemberData.name="";
-    console.log("noone:", this.searchResults);
+    console.log("no-one:", this.searchResults);
   }
 }
 saveName(item: string) {
   this.selectedUser = item;
   this.addMemberData.name = item; 
-  console.log(this.selectedUser);
 }
 }
