@@ -4,7 +4,7 @@
     <h4 class="txt-center">Wir empfehlen dir die E-Mail Adresse zu benutzen, die du bei der Arbeit verwendest</h4>
 
     
-    <form (ngSubmit)="onSubmit(loginForm)" #loginForm="ngForm">
+    <form (ngSubmit)="onLogin()" #loginForm="ngForm">
     
         <!-- Fehler für die E-Mail -->
          @if((errorMessage === 'Bitte geben Sie eine gültige E-Mail ein' || (email.touched && email.invalid))){
@@ -17,7 +17,7 @@
          }
         
         <div class="input-area">
-            <img src="/assets/img/mail.png" alt="mail">
+            <img src="./assets/img/mail.png" alt="mail">
             <input #email="ngModel" 
                    [(ngModel)]="loginData.email" 
                    name="email"
@@ -38,7 +38,7 @@
             </label>
          }
         <div class="input-area">
-            <img src="/assets/img/lock.png" alt="lock">
+            <img src="./assets/img/lock.png" alt="lock">
             <input #password="ngModel" 
                    [(ngModel)]="loginData.password" 
                    name="password"
@@ -62,8 +62,8 @@
             <div class="black-line"></div>
         </div>
     
-        <button class="google-btn" (click)="loginWithGoogle()">
-            <img class="google-logo" src="assets/img/Google.png" alt="google-logo">
+        <button type="button" class="google-btn" (click)="loginWithGoogle()">
+            <img class="google-logo" src="./assets/img/Google.png" alt="google-logo">
             Anmelden mit Google
         </button>
     

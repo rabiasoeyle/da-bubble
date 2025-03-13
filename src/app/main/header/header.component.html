@@ -1,12 +1,12 @@
 <div class="header">
     <div class="logo-name">
-        <img class="logo" src="/assets/img/Logo.png" alt="logo">
+        <img class="logo" src="./assets/img/Logo.png" alt="logo">
         <h3>DA Bubble</h3>
     </div>
     <div class="search-parent">
         <div class="search-fi">
             <input [formControl]="input" type="search" placeholder="Devspace durchsuchen">
-            <img src="/assets/img/search.png" alt="search">
+            <img src="./assets/img/search.png" alt="search">
         </div>
         @if(searchResultsValue.length>0 && search=="email"){
             <div class="search-results">
@@ -33,9 +33,9 @@
     
     <div class="user-nim">
         <h3>{{userData ? userData.name : "xy"}}</h3>
-        <img class="profile" [src]="userData ? userData.fotolink : '/assets/img/Profile.png'" alt="profile">
+        <img class="profile" [src]="userData ? userData.fotolink : './assets/img/profile.png'" alt="profile">
         <button class="toggle-btn" (click)="toggleMenu()">
-            <img src="/assets/img/key_arrow_down.png" alt="arrow-down">
+            <img src="./assets/img/key_arrow_down.png" alt="arrow-down">
         </button>
     </div>
     @if(toggleMenuIsOpen){

@@ -3,7 +3,7 @@
         <div class="header-of-channel">
             <div class="header-of-channel-left">
                 <h3># {{currentChannel.name}}</h3>
-                <img (click)="openDetailsAboutChannel()" src="/assets/img/key_arrow_down.png" alt="">
+                <img (click)="openDetailsAboutChannel()" src="./assets/img/key_arrow_down.png" alt="">
             </div>
             @if(addMemberToChannel){
                 <app-add-members-to-channel [currentChannel]="currentChannel" (closeDialogEvent)="addMembersToChannelDialog()"></app-add-members-to-channel>
@@ -21,7 +21,7 @@
                 }
                 </div>
                 <h5 class="mmber-amount">{{currentChannel.membersAmount}}</h5>
-                <img (click)="addMembersToChannelDialog()" src="/assets/img/add-members.png" alt="addMembers">
+                <img (click)="addMembersToChannelDialog()" src="./assets/img/add-members.png" alt="addMembers">
             </div>
         </div>
         <app-messages [currentChannel]="currentChannel" [userData]="userData"></app-messages>
@@ -29,7 +29,7 @@
             <textarea formControlName="message" type="text" placeholder="Deine Nachricht hier eingeben">
             </textarea>
             <button type="submit">
-                <img src="/assets/img/send.png" alt="send">
+                <img src="./assets/img/send.png" alt="send">
             </button>
         </form>   
     </div> 
@@ -38,7 +38,7 @@
     }
 }   
 @if(channelDeleted){
-          <img src="/assets/img/close.png" alt="x">
+          <img src="./assets/img/close.png" alt="x">
           <h3>Sie haben den Channel # {{deletedChannelname}} erfolgreich gelöscht.</h3>
 }
 

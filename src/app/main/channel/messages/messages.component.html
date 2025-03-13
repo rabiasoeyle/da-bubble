@@ -36,7 +36,7 @@
             @else {
                 <div class="my-msg-pic-and-text">
                     @if(item.fotolink){
-                        <img  class="msg-sender-pic" src="{{item? item.fotolink: '/assets/img/profile.png'}}" alt="profile">  
+                        <img  class="msg-sender-pic" src="{{item? item.fotolink: './assets/img/profile.png'}}" alt="profile">  
                     }
                     <div class="my-msg-text-area">
                         <div class="my-msg-name-and-time">
@@ -54,7 +54,7 @@
             @if(item.uid != this.userData.uid){
             <div class="msg-pic-and-text">
             @if(item.fotolink){
-                <img  class="msg-sender-pic" src="{{item? item.fotolink: '/assets/img/profile.png'}}" alt="profile">  
+                <img  class="msg-sender-pic" src="{{item? item.fotolink: './assets/img/profile.png'}}" alt="profile">  
             }
                 <div class="msg-text-area">
                     <div class="msg-name-and-time">
@@ -70,7 +70,7 @@
             @else {
                 <div class="my-msg-pic-and-text">
                     @if(item.fotolink){
-                        <img  class="msg-sender-pic" src="{{item? item.fotolink: '/assets/img/profile.png'}}" alt="profile">  
+                        <img  class="msg-sender-pic" src="{{item? item.fotolink: './assets/img/profile.png'}}" alt="profile">  
                     }
                     <div class="my-msg-text-area">
                         <div class="my-msg-name-and-time">

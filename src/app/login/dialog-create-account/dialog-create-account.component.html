@@ -1,7 +1,7 @@
 <!-- This component should open, when a new Account should be created -->
 <div>
     <button class="arrow-btn" (click)="goBackToLogin()">
-        <img src="/assets/img/arrow_back.png" alt="arrow">
+        <img src="./assets/img/arrow_back.png" alt="arrow">
     </button>
     <h2>Konto erstellen</h2>
 </div>
@@ -17,7 +17,7 @@
             {{errorMessage}}</label>
     }
     <div class="input-area">
-        <img src="/assets/img/person.png" alt="name">
+        <img src="./assets/img/person.png" alt="name">
         <input #name="ngModel" 
         [(ngModel)]="registerData.name" 
         name="name" type="text" placeholder="Name und Nachname"
@@ -32,7 +32,7 @@
             {{errorMessage}}</label>
     }
     <div class="input-area">
-        <img src="/assets/img/mail.png" alt="">
+        <img src="./assets/img/mail.png" alt="">
         <input #email="ngModel" 
         [(ngModel)]="registerData.email" 
         name="email" type="email" placeholder="E-Mail"
@@ -52,7 +52,7 @@
         </label>
     }
     <div class="input-area">
-        <img src="/assets/img/lock.png" alt="">
+        <img src="./assets/img/lock.png" alt="">
         <input #password="ngModel" 
         [(ngModel)]="registerData.password" 
         name="password" type="password" placeholder="Passwort"

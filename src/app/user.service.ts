@@ -1,9 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { FirebaseApp } from '@angular/fire/app';
 import { Auth } from '@angular/fire/auth';
-import { Database, ref, query, orderByChild, startAt, endAt, get } from '@angular/fire/database';
-import { collection, collectionData, CollectionReference, DocumentData, Firestore, getDocs, where } from '@angular/fire/firestore';
-import { map, Observable, tap } from 'rxjs';
+import { collection, Firestore, getDocs} from '@angular/fire/firestore';
 import { UserData } from '../modules/user';
 
 @Injectable({
@@ -12,8 +10,8 @@ import { UserData } from '../modules/user';
 export class UserService {
   firebase = inject(FirebaseApp);
   firebaseAuth = inject(Auth);
-  // firebaseDatabase = inject(Firestore);
-  private db: Firestore = inject(Firestore);
+  firebaseDatabase = inject(Firestore);
+  // private db: Firestore = inject(Firestore);
   allUsers:UserData[]=[];
 
   constructor() {
@@ -21,7 +19,7 @@ export class UserService {
   }
   private async loadAllUsers() {
     try {
-      const usersCollection = collection(this.db, 'users'); // Referenz zur Collection
+      const usersCollection = collection(this.firebaseDatabase, 'users'); // Referenz zur Collection
       const userSnapshot = await getDocs(usersCollection); // Daten aus Firestore abrufen
       userSnapshot.forEach((doc) => {
         const user = doc.data();
@@ -34,12 +32,11 @@ export class UserService {
           chats: user['chats'] || []
         });
       });
-      console.log("✅ [DEBUG] Alle User geladen:", this.allUsers);
+      // console.log("✅ [DEBUG] Alle User geladen:", this.allUsers);
     } catch (error) {
-      console.error("❌ Fehler beim Laden der User:", error);
+      // console.error("❌ Fehler beim Laden der User:", error);
     }
   }
-
   searchUsers(searchTerm: string){
     if (!searchTerm.trim()) return [];
     searchTerm = searchTerm.toLowerCase(); 

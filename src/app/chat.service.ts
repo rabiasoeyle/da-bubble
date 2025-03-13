@@ -21,9 +21,9 @@ export class ChatService {
   currentChat$ = this.currentChatSubject.asObservable();
   allChats:any=[];
   allChannels:Channel[]=[];
-  constructor() { 
+    constructor() { 
 
-  }   
+    }   
     async loadMessages(messages:Message[]){
       const messagesWithUserData = await Promise.all(
         messages.map(async (msg: Message) => {

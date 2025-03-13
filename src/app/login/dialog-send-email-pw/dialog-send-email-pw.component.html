@@ -1,7 +1,7 @@
 <!-- This dialog should open, when the user selects that they dont remember the password -->
 <div>
     <button class="arrow-btn" (click)="goBackToLogin()">
-        <img src="/assets/img/arrow_back.png" alt="arrow">
+        <img src="./assets/img/arrow_back.png" alt="arrow">
     </button>
     <h2>Passwort zurücksetzen</h2>
     <h4>Bitte geben Sie Ihre Email-Adresse ein</h4>
@@ -15,7 +15,7 @@
             </label>
          }
         <div class="input-area">
-            <img src="/assets/img/mail.png" alt="">
+            <img src="./assets/img/mail.png" alt="">
             <input 
             #email="ngModel"
             [(ngModel)]="emailData.email"   

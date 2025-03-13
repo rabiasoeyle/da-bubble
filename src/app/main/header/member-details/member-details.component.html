@@ -2,7 +2,7 @@
     <div class="mmbr-dtls-parent">
         <div>
             <h3>Profil</h3>
-            <img (click)="closeUserDetails()" src="/assets/img/close.png" alt="">
+            <img (click)="closeUserDetails()" src="./assets/img/close.png" alt="">
         </div>
         <img (click)="startChangeFotolink()" class="mmbr-details-img" src="{{userData.fotolink}}" alt="">
         <div>
@@ -10,7 +10,7 @@
             <h4 class="blue-font" (click)="toggleEditProfile()">Bearbeiten</h4>
         </div>
         <div>
-            <img src="/assets/img/mail.png" alt="email">
+            <img src="./assets/img/mail.png" alt="email">
             <h5>E-Mail-Adresse</h5>
         </div>
         <h4 class="blue-font">{{userData.email}}</h4>
@@ -22,7 +22,7 @@
 <form #userNameForm="ngForm" class="mmbr-dtls-parent">
     <div>
         <h3>Profil</h3>
-        <img (click)="toggleEditProfile()" src="/assets/img/close.png" alt="">
+        <img (click)="toggleEditProfile()" src="./assets/img/close.png" alt="">
     </div>
     <img class="mmbr-details-img" src="{{userData.fotolink}}" alt="" (click)="startChangeFotolink()">
     <input #name="ngModel" 
@@ -40,7 +40,7 @@
 @if(chooseFotolink &&userData){
     <div class="mmbr-dtls-parent">
     <h3>Wähle einen Avatar!</h3>
-    <img (click)="startChangeFotolink()" src="/assets/img/close.png" alt="">
+    <img (click)="startChangeFotolink()" src="./assets/img/close.png" alt="">
 <div class="dummy-profile">
     <img src="{{newFotolink!==''?newFotolink:userData.fotolink}}" alt="">
 </div>

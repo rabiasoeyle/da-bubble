@@ -1,8 +1,9 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { AuthService } from '../../auth.service';
 import { FormBuilder, FormsModule,NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { onAuthStateChanged } from 'firebase/auth';
 
 @Component({
   selector: 'app-dialog-login',
@@ -11,7 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './dialog-login.component.html',
   styleUrl: './dialog-login.component.scss'
 })
-export class DialogLoginComponent {
+export class DialogLoginComponent implements OnInit{
   fb = inject(FormBuilder);
   http = inject(HttpClient);
   router = inject(Router);
@@ -23,8 +24,12 @@ export class DialogLoginComponent {
     password:"",
   };
   
-
-  onSubmit(ngForm: NgForm) {
+  constructor(){
+  }
+  ngOnInit(): void {
+    // this.authService.handleRedirectResult();
+  }
+  onLogin() {
     this.authService.login(this.loginData.email, this.loginData.password)
       .subscribe({
         next: async () => {
@@ -50,12 +55,13 @@ export class DialogLoginComponent {
       });
   }
   loginWithGoogle() {
+    // this.authService.handleRedirectResult();
     this.authService.googleSignin()
     .then(() => {
       this.router.navigateByUrl('main');
     })
       .catch((error) => console.error('Anmeldung fehlgeschlagen:', error));
-      this.router.navigateByUrl('main');
+      this.router.navigateByUrl('');
   }
   goToForgotPassword(){
     this.switchToForgotPassword.emit(); // Ereignis auslösen
