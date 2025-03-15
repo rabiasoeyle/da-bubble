@@ -2,13 +2,16 @@
 @import '../../font.scss';
 .start-area{
     height:100vH;
-    // background-color:#ECEEFE ;
-    padding:0px 32px 0px 32px;
+    padding:0px 40px 0px 32px;
 }
 header{
-    height:120px;
+    height:15vH;
     width:100%;
-    @include dFlex($jc:space-between)
+    z-index:2;
+    @include dFlex($jc:space-between);
+    @media (max-width:800px) {
+        justify-content:center;
+    }
 }
 .logo{
     // background-color: rgb(177, 54, 195);
@@ -27,6 +30,7 @@ header{
         font-family: "Nunito";
         color:rgb(6, 6, 6);
     }
+    
 }
 @keyframes startLogo {
     0%   {transform: scale(1); top: 0; left: 0;right:0; position: absolute; width: 100vw; height: 100vh;}
@@ -38,12 +42,19 @@ header{
     100% {transform: scale(1); top: 0; left: 0; position: relative; width: 40px; height: auto; }
 }
 .new-account-link{
-    // position: absolute;
-    // right:25px;
     >p{
         font-family: "Nunito";
         font-size: 18px;
+        margin:2px;
     }
+    @media (max-width: 800px) {
+
+        position: absolute;
+        bottom:15vH;
+        width:90vW;
+        @include dFlex($fd:column);
+    }
+
 }
 .create-btn{
     transition: 500ms;
@@ -53,16 +64,35 @@ header{
     border: none;
     background-color: transparent;
     cursor: pointer;
-}
-.create-btn:hover{
-    scale:1.1;
-    color:#444DF2;
+    &:hover{
+        scale:1.1;
+        color:#444DF2;
+    }
+    @media (max-width: 800px) {
+        font-size: 14px;
+        width: auto;
+        height:auto;
+        padding: 6px;
+        border:solid 1px;
+        border-radius: 25px;
+        border-color: #444DF2;
+        color:#444DF2;
+        cursor: pointer;
+        text-align: center;
+        &:hover{
+            transition: 500ms;
+            scale: 1.1;
+        }
+    }
 }
 .dialog-section{
     position: relative;
-    min-height: 50vH;
+    min-height: 70vH;
     width:100%;
-    // @include dFlex($ai:flex-start);
+    @include dFlex($jc:flex-start);
+    @media (max-width: 800px) {
+        @include dFlex();
+      }
 }
 .dialog-area{
     width: 40%;
@@ -73,11 +103,16 @@ header{
     border-radius: 30px;
     background-color: #FFFFFF;
     padding:32px 16px;
+    @media (max-width: 800px) {
+        width:100%;
+        left:0px;
+    }
 }
 footer{
-    position: relative;
-    bottom:120px;
-    top:24px;
+    height:10vH;
+    position: absolute;
+    bottom:5vH;
+    // top:;
     left: 0;
     right:0;
     padding:24px;

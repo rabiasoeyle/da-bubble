@@ -12,6 +12,17 @@
     flex-direction: $fd;
     gap:$g
 }
+h1{
+    font-family: 'Nunito';
+    font-size:50px;
+    font-weight: 700;
+    color: black;
+    text-align: center;
+    margin:0px;
+    @media(max-width:800px){
+        font-size: 30px;
+    }
+}
 h2{
     font-family: 'Nunito';
     font-size:46px;
@@ -19,6 +30,9 @@ h2{
     color: #444DF2;
     text-align: center;
     margin:0px;
+    @media(max-width:800px){
+        font-size: 26px;
+    }
 }
 h3{
     font-family: 'Nunito';
@@ -27,6 +41,9 @@ h3{
     color: black;
     text-align: center;
     margin:0px;
+    @media(max-width:800px){
+        font-size: 20px;
+    }
 }
 h4{
     font-family: 'Nunito';
@@ -35,7 +52,10 @@ h4{
     line-height: 24px;
     // text-align: center;
     margin:0px;
-    padding-bottom:8px
+    padding-bottom:8px;
+    @media(max-width:800px){
+        font-size: 18px;
+    }
 }
 h5{
     font-family: 'Nunito';
@@ -44,6 +64,9 @@ h5{
     color: black;
     text-align: center;
     margin:0px;
+    @media(max-width:800px){
+        font-size: 18px;
+    }
 }
 h6{
     font-family: 'Nunito';
@@ -52,6 +75,9 @@ h6{
     color: #686868;
     text-align: center;
     margin:0px;
+    @media(max-width:800px){
+        font-size: 12px;
+    }
 }
 .fs-18{
     font-size:18px !important;
@@ -61,24 +87,29 @@ input{
     font-size: 18px;
     font-weight: 500;
     line-height: 21.6px;
-    gap: 10px;
+    width:90%;
     border-radius: 100px;
     border: none;
     color:grey;
     background-color:transparent;
-    padding-left: 25px;
     flex:1;
     >:active{
         border: none;
     }
+    @media(max-width:800px){
+        font-size: 14px;
+    }
 }
 .input-area{//input with img in a div
     background-color: #ECEEFE;
-    @include dFlex($jc:flex-start);
+    @include dFlex($jc:flex-start, $g:5px);
     padding:8px 16px;
     border-radius: 100px;
     border: 0px 0px 1px 0px;
     width:80%;
+    @media(max-width:800px){
+        padding:6px;
+    }
 }
 .error-label{
     color:red;
@@ -90,6 +121,7 @@ input{
 form{
     @include dFlex($fd:column);
     gap:16px;
+    width:100%;
 }
 .blue-btn{
     width: 137px;
@@ -111,12 +143,16 @@ form{
         scale:1.0;
         background-color: #444DF2;
     }
+    @media(max-width:800px){
+        height:auto;
+        padding:6px;
+        width:100px;
+    }
 }
 .white-btn{
     width: 137px;
     height: 49px;
     padding: 12px 25px 12px 25px;
-    gap: 10px;
     border-radius: 25px;
     border-color: #444DF2;
     color:#444DF2;
@@ -127,6 +163,11 @@ form{
         transition: 500ms;
         scale: 1.1;
         background-color: #ECEEFE;
+    }
+    @media(max-width:800px){
+        height:auto;
+        padding:6px;
+        width:100px;
     }
 }
 
@@ -161,6 +202,11 @@ form{
         cursor: not-allowed;
         border-color: #686868;
         color: white;
+    }
+    @media(max-width:800px){
+        height:auto;
+        padding:6px;
+        width:100px;
     }
 }
 input:focus,

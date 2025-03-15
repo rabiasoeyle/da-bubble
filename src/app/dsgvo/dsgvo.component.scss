@@ -1,0 +1,36 @@
+@import '../../styles.scss';
+.body-parent{
+    @include dFlex($fd:column);
+    padding:8vW;
+}
+.logo{
+    @include dFlex($jc:flex-start);
+    >svg{
+        width:40px;
+        height:40px;
+        position: relative;
+    }
+    >.da-title{
+        font-size: 25px;
+        font-family: "Nunito";
+        color:rgb(6, 6, 6);
+    }  
+}
+header{
+    height:15vH;
+    width:100%;
+    z-index:2;
+    @include dFlex();
+}
+footer{
+    height:10vH;
+    position: relative;
+    top:5vH;
+    left: 0;
+    right:0;
+    padding:24px;
+    height:30px;
+    width:90vW;
+    z-index:2;
+    @include dFlex($jc:space-around);
+}

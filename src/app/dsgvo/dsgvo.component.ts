@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dsgvo',
@@ -8,5 +9,5 @@ import { Component } from '@angular/core';
   styleUrl: './dsgvo.component.scss'
 })
 export class DsgvoComponent {
-
+router = inject(Router);
 }

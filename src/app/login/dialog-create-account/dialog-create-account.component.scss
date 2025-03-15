@@ -3,11 +3,14 @@
 .box-datasafety{
     @include dFlex($jc:flex-start);
     font-family: "Nunito";
-    width:84%;
+    width:314px;
     >p{
         >a{
             color:blue;
             cursor: pointer;
         }
+    }
+    @media(max-width:500px){
+        width:200px;
     }
 }

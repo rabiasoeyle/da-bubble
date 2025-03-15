@@ -16,7 +16,7 @@ import { Router } from '@angular/router';
 })
 
 export class AuthService {
-  provider = new GoogleAuthProvider();
+  // provider = new GoogleAuthProvider();
   
   firebase = inject(FirebaseApp);
   firebaseAuth = inject(Auth);
@@ -92,8 +92,8 @@ export class AuthService {
   
   async googleSigninRedirect(): Promise<void> {
     try {
-        // const provider = new GoogleAuthProvider();
-        await signInWithRedirect(this.firebaseAuth, this.provider);
+        const provider = new GoogleAuthProvider();
+        await signInWithRedirect(this.firebaseAuth, provider);
     } catch (error: any) {
         console.error('Fehler bei der Google-Redirect-Authentifizierung:', error);
     }
@@ -126,11 +126,14 @@ async handleRedirectResult(): Promise<void> {
 }
   async googleSignin(): Promise<void> {
     try {
-        this.provider.setCustomParameters({ prompt: 'select_account' });
-        const result: UserCredential = await signInWithPopup(this.firebaseAuth, this.provider);
+      console.log("Google-Login Try")
+      const provider = new GoogleAuthProvider();
+        provider.setCustomParameters({ prompt: 'select_account' });
+        const result: UserCredential = await signInWithPopup(this.firebaseAuth, provider);
         const user = result.user;
         console.log("Userdaten",result);
         if (user && user.email) {
+          console.log("Google-Login User gefunden")
             const userDocRef = doc(this.firebaseDatabase, 'users', user.uid);
             const userDoc = await getDoc(userDocRef);
             if (!userDoc.exists()) {
@@ -143,13 +146,28 @@ async handleRedirectResult(): Promise<void> {
             console.error('Benutzer-E-Mail nicht gefunden.');
         }
     } catch (error: any) {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        const email = error?.customData?.email;
-        const credential = GoogleAuthProvider.credentialFromError(error);
         console.error('Fehler bei der Google-Authentifizierung:', error);
     }
 }
+
+// async googleSignin(): Promise<void> {
+//   try {
+//     console.log("Google-Login Try")
+//     const provider = new GoogleAuthProvider(); // Google-Provider initialisieren
+//     const credential = await signInWithPopup(this.firebaseAuth, provider); // Mit Popup anmelden
+//     const user = credential.user; // Angemeldeter Benutzer
+//     if (user) {
+//       console.log("Google-Login User gefunden")
+//       this.addData(user.uid, user.email, user.displayName);
+//       return this.getData(user.uid).then((data) => {
+//         this.userDataSubject.next(data);
+//       });
+//     }
+//   } catch (error) {
+//     console.error('Fehler bei der Google-Authentifizierung:', error);
+//   }
+// }
+
   forgotPassword(email:string){
     const actionCodeSettings = {
       url: 'http://localhost:4200/changePassword',
