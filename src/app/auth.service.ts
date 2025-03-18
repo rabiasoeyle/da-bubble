@@ -112,20 +112,39 @@ console.log("🔐 Auth-Instanz:", getAuth());
         console.log("🚀 googleSignin() wurde aufgerufen!");
         const provider = new GoogleAuthProvider();
         const auth = getAuth();
-        provider.setCustomParameters({ prompt: "select_account" });
-
-        console.log("🔄 Starte Redirect...");
-        await auth.signOut();
-localStorage.clear();
-sessionStorage.clear();
-console.log("🔄 Alle Auth-Sitzungen wurden geleert!");
-await setPersistence(auth, browserLocalPersistence);
-console.log("✅ Firebase-Auth wird persistent gespeichert!");
-        await signInWithRedirect(auth, provider);
-        console.log("✅ Redirect wurde gestartet!"); // Dieser Log wird vermutlich nicht erscheinen!
+        // provider.setCustomParameters({ prompt: "select_account" });
+        // const auth = getAuth();
+signInWithPopup(auth,provider)
+  .then((result) => {
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const token = credential?.accessToken;
+    const user = result.user;
+    const googleParam = {
+      id: user.uid,
+      cover: user.photoURL,
+      nickname: user.displayName,
+      token: token,
+    }
+    this.loginNext(user)
+    
+    console.log(googleParam)
+  })
     } catch (error) {
         console.error("❌ Fehler beim Google Login:", error);
     }
+}
+async loginNext(user:any){
+      if (user && user.email) {
+          console.log("Google-Login User gefunden");
+          const userDocRef = doc(this.firebaseDatabase, "users", user.uid);
+          const userDoc = await getDoc(userDocRef);
+          if (!userDoc.exists()) {
+              await this.addData(user.uid, user.email, user.displayName);
+          }
+          localStorage.setItem("userId", user.uid);
+          console.log("User-ID gespeichert:", localStorage.getItem("userId"));
+          const data = await this.getData(user.uid);
+      }
 }
 // async handleGoogleRedirect(): Promise<void> {
 //   console.log("handleGoogleRedirect wurde aufgerufen!");
@@ -143,7 +162,7 @@ console.log("✅ Firebase-Auth wird persistent gespeichert!");
 //       if (!result) return; // Falls kein Login erfolgt ist
 //       const user = result.user;
 //       localStorage.setItem("userId", result.user.uid);
-// console.log("User-ID gespeichert:", localStorage.getItem("userId"));
+//       console.log("User-ID gespeichert:", localStorage.getItem("userId"));
 //       if (user && user.email) {
 //           console.log("Google-Login User gefunden");
 
@@ -164,33 +183,33 @@ console.log("✅ Firebase-Auth wird persistent gespeichert!");
 //       console.error("Fehler bei der Verarbeitung des Redirects:", error);
 //   }
 // }
-async handleGoogleRedirect(): Promise<void> {
-  console.log("🚀 handleGoogleRedirect wurde aufgerufen!");
+// async handleGoogleRedirect(): Promise<void> {
+//   console.log("🚀 handleGoogleRedirect wurde aufgerufen!");
 
-  try {
-      const auth = getAuth();
-      console.log("🔍 Warte auf Redirect-Result...");
+//   try {
+//       const auth = getAuth();
+//       console.log("🔍 Warte auf Redirect-Result...");
 
-      const result = await getRedirectResult(auth);
-      console.log("📢 Redirect-Result erhalten:", result);
+//       const result = await getRedirectResult(auth);
+//       console.log("📢 Redirect-Result erhalten:", result);
 
-      if (!result) {
-          console.warn("⚠️ Kein Redirect-Result! Wurde `signInWithRedirect()` vorher aufgerufen?");
-          return;
-      }
+//       if (!result) {
+//           console.warn("⚠️ Kein Redirect-Result! Wurde `signInWithRedirect()` vorher aufgerufen?");
+//           return;
+//       }
 
-      const user = result.user;
-      console.log("👤 Eingeloggter User:", user);
+//       const user = result.user;
+//       console.log("👤 Eingeloggter User:", user);
 
-      if (user) {
-          localStorage.setItem("userId", user.uid);
-      } else {
-          console.warn("⚠️ Kein User-Objekt gefunden!");
-      }
-  } catch (error) {
-      console.error("❌ Fehler bei der Verarbeitung des Redirects:", error);
-  }
-}
+//       if (user) {
+//           localStorage.setItem("userId", user.uid);
+//       } else {
+//           console.warn("⚠️ Kein User-Objekt gefunden!");
+//       }
+//   } catch (error) {
+//       console.error("❌ Fehler bei der Verarbeitung des Redirects:", error);
+//   }
+// }
 
 
 // async googleSignin(): Promise<void> {

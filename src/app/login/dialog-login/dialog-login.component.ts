@@ -28,7 +28,7 @@ export class DialogLoginComponent implements OnInit{
   }
   ngOnInit(){
     console.log("ngOninit wurde ausgeführt")
-    this.authService.handleGoogleRedirect();
+    // this.authService.handleGoogleRedirect();
   }
   onLogin() {
     console.log("Login gestartet:")
@@ -61,7 +61,7 @@ export class DialogLoginComponent implements OnInit{
     this.authService.googleSignin()
     .then(() => {
       console.log("login daten gefunden")
-      this.authService.handleGoogleRedirect();
+      // this.authService.handleGoogleRedirect();
       this.router.navigateByUrl('main');
     })
       .catch((error) => console.error('Anmeldung fehlgeschlagen:', error));
