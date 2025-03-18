@@ -1,13 +1,15 @@
-import { inject, Injectable} from '@angular/core';
+import { inject, Injectable, OnInit} from '@angular/core';
 import { FirebaseApp } from '@angular/fire/app';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from '@angular/fire/auth';
 import { doc, Firestore, getDoc, onSnapshot, setDoc} from '@angular/fire/firestore';
 import { BehaviorSubject, from, Observable, of, switchMap } from 'rxjs';
-import { signInWithPopup, signInWithRedirect, getRedirectResult, GoogleAuthProvider,confirmPasswordReset, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, User, verifyPasswordResetCode, UserCredential } from "firebase/auth";
+import { signInWithPopup, signInWithRedirect, getRedirectResult, GoogleAuthProvider,confirmPasswordReset, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, User, verifyPasswordResetCode, UserCredential, browserLocalPersistence, setPersistence } from "firebase/auth";
   // import { GoogleAuthProvider, signInWithPopup,signInWithRedirect, getRedirectResult } from "@angular/fire/auth";
 import { UserData } from '../modules/user';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
+import { getAuth } from "firebase/auth";
+import { getApps, initializeApp } from "firebase/app";
 
 // import { , User } from "firebase/auth";
 
@@ -15,9 +17,18 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 
-export class AuthService {
-  // provider = new GoogleAuthProvider();
-  
+export class AuthService{
+  appConfig={
+    "projectId":"da-bubble-85cd2",
+            "appId":"1:1053306260929:web:934cf2ec44748823ffb340",
+            "storageBucket":"da-bubble-85cd2.firebasestorage.app",
+            "apiKey":"AIzaSyA71jwQ3pIqlVwMAWybxUTctoVCr3PvQmw",
+            "authDomain":"da-bubble-85cd2.firebaseapp.com",
+            "messagingSenderId":"1053306260929"
+  };
+  app = initializeApp(this.appConfig);
+  auth = getAuth();
+  // signInWithRedirect(this.auth, this.provider);
   firebase = inject(FirebaseApp);
   firebaseAuth = inject(Auth);
   firebaseDatabase = inject(Firestore);
@@ -36,6 +47,13 @@ export class AuthService {
           });
       }
   });
+  if (!getApps().length) {
+    initializeApp(this.appConfig);
+}
+console.log("🔥 Firebase wurde initialisiert!");
+console.log("📢 Firebase Apps:", getApps());
+console.log("🔐 Auth-Instanz:", getAuth());
+  
   }
   register(email: string, name: string, password: string): Observable<void> {
     const createAccount = () => {
@@ -89,66 +107,91 @@ export class AuthService {
     this.firebaseAuth.signOut();
     this.userDataSubject.next(null);
   }
-  
-  async googleSigninRedirect(): Promise<void> {
-    try {
-        const provider = new GoogleAuthProvider();
-        await signInWithRedirect(this.firebaseAuth, provider);
-    } catch (error: any) {
-        console.error('Fehler bei der Google-Redirect-Authentifizierung:', error);
-    }
-}
-async handleRedirectResult(): Promise<void> {
-  try {
-      const result: UserCredential | null = await getRedirectResult(this.firebaseAuth);
-      if (result) {
-          const user = result.user;
-          if (user && user.email) {
-              const userDocRef = doc(this.firebaseDatabase, 'users', user.uid);
-              const userDoc = await getDoc(userDocRef);
-              if (!userDoc.exists()) {
-                  await this.addData(user.uid, user.email, user.displayName);
-              }
-              localStorage.setItem("userId", user.uid);
-              const data = await this.getData(user.uid);
-              this.userDataSubject.next(data);
-          } else {
-              console.error('Benutzer-E-Mail nicht gefunden.');
-          }
-      }
-  } catch (error: any) {
-      const errorCode = error.code;
-      const errorMessage = error.message;
-      const email = error?.customData?.email;
-      const credential = GoogleAuthProvider.credentialFromError(error);
-      console.error('Fehler bei der Google-Redirect-Ergebnisverarbeitung:', error);
-  }
-}
   async googleSignin(): Promise<void> {
     try {
-      console.log("Google-Login Try")
-      const provider = new GoogleAuthProvider();
-        provider.setCustomParameters({ prompt: 'select_account' });
-        const result: UserCredential = await signInWithPopup(this.firebaseAuth, provider);
-        const user = result.user;
-        console.log("Userdaten",result);
-        if (user && user.email) {
-          console.log("Google-Login User gefunden")
-            const userDocRef = doc(this.firebaseDatabase, 'users', user.uid);
-            const userDoc = await getDoc(userDocRef);
-            if (!userDoc.exists()) {
-                await this.addData(user.uid, user.email, user.displayName);
-            }
-            localStorage.setItem("userId", user.uid);
-            const data = await this.getData(user.uid);
-            this.userDataSubject.next(data);
-        } else {
-            console.error('Benutzer-E-Mail nicht gefunden.');
-        }
-    } catch (error: any) {
-        console.error('Fehler bei der Google-Authentifizierung:', error);
+        console.log("🚀 googleSignin() wurde aufgerufen!");
+        const provider = new GoogleAuthProvider();
+        const auth = getAuth();
+        provider.setCustomParameters({ prompt: "select_account" });
+
+        console.log("🔄 Starte Redirect...");
+        await auth.signOut();
+localStorage.clear();
+sessionStorage.clear();
+console.log("🔄 Alle Auth-Sitzungen wurden geleert!");
+await setPersistence(auth, browserLocalPersistence);
+console.log("✅ Firebase-Auth wird persistent gespeichert!");
+        await signInWithRedirect(auth, provider);
+        console.log("✅ Redirect wurde gestartet!"); // Dieser Log wird vermutlich nicht erscheinen!
+    } catch (error) {
+        console.error("❌ Fehler beim Google Login:", error);
     }
 }
+// async handleGoogleRedirect(): Promise<void> {
+//   console.log("handleGoogleRedirect wurde aufgerufen!");
+//   try {
+//       const auth = getAuth();
+//       // Warten, falls Firebase noch nicht bereit ist
+//       await new Promise((resolve) => setTimeout(resolve, 1000));
+//       const result = await getRedirectResult(auth);
+//       console.log("getRedirectResult abgeschlossen:", result);
+//       if (result?.user) {
+//         console.log("Google-Login User gefunden:", result.user);
+//     } else {
+//         console.warn("Kein User gefunden nach Redirect!");
+//     }
+//       if (!result) return; // Falls kein Login erfolgt ist
+//       const user = result.user;
+//       localStorage.setItem("userId", result.user.uid);
+// console.log("User-ID gespeichert:", localStorage.getItem("userId"));
+//       if (user && user.email) {
+//           console.log("Google-Login User gefunden");
+
+//           const userDocRef = doc(this.firebaseDatabase, "users", user.uid);
+//           const userDoc = await getDoc(userDocRef);
+
+//           if (!userDoc.exists()) {
+//               await this.addData(user.uid, user.email, user.displayName);
+//           }
+
+//           localStorage.setItem("userId", user.uid);
+//           const data = await this.getData(user.uid);
+//           this.userDataSubject.next(data);
+//       } else {
+//           console.error("Benutzer-E-Mail nicht gefunden.");
+//       }
+//   } catch (error) {
+//       console.error("Fehler bei der Verarbeitung des Redirects:", error);
+//   }
+// }
+async handleGoogleRedirect(): Promise<void> {
+  console.log("🚀 handleGoogleRedirect wurde aufgerufen!");
+
+  try {
+      const auth = getAuth();
+      console.log("🔍 Warte auf Redirect-Result...");
+
+      const result = await getRedirectResult(auth);
+      console.log("📢 Redirect-Result erhalten:", result);
+
+      if (!result) {
+          console.warn("⚠️ Kein Redirect-Result! Wurde `signInWithRedirect()` vorher aufgerufen?");
+          return;
+      }
+
+      const user = result.user;
+      console.log("👤 Eingeloggter User:", user);
+
+      if (user) {
+          localStorage.setItem("userId", user.uid);
+      } else {
+          console.warn("⚠️ Kein User-Objekt gefunden!");
+      }
+  } catch (error) {
+      console.error("❌ Fehler bei der Verarbeitung des Redirects:", error);
+  }
+}
+
 
 // async googleSignin(): Promise<void> {
 //   try {

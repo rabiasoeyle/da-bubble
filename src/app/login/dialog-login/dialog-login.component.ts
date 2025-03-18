@@ -12,7 +12,7 @@ import { onAuthStateChanged } from 'firebase/auth';
   templateUrl: './dialog-login.component.html',
   styleUrl: './dialog-login.component.scss'
 })
-export class DialogLoginComponent{
+export class DialogLoginComponent implements OnInit{
   fb = inject(FormBuilder);
   http = inject(HttpClient);
   router = inject(Router);
@@ -25,6 +25,10 @@ export class DialogLoginComponent{
   };
   
   constructor(){
+  }
+  ngOnInit(){
+    console.log("ngOninit wurde ausgeführt")
+    this.authService.handleGoogleRedirect();
   }
   onLogin() {
     console.log("Login gestartet:")
@@ -56,6 +60,8 @@ export class DialogLoginComponent{
     console.log("Google-Login gestartet")
     this.authService.googleSignin()
     .then(() => {
+      console.log("login daten gefunden")
+      this.authService.handleGoogleRedirect();
       this.router.navigateByUrl('main');
     })
       .catch((error) => console.error('Anmeldung fehlgeschlagen:', error));
