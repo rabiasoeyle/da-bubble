@@ -1,7 +1,7 @@
 <div class="header">
     <div class="logo-name">
         <img class="logo" src="./assets/img/Logo.png" alt="logo">
-        <h3>DA Bubble</h3>
+        <h3 >DA Bubble</h3>
     </div>
     <div class="search-parent">
         <div class="search-fi">
@@ -32,7 +32,7 @@
     </div>
     
     <div class="user-nim">
-        <h3>{{userData ? userData.name : "xy"}}</h3>
+        <h3 class="vanish-text">{{userData ? userData.name : "xy"}}</h3>
         <img class="profile" [src]="userData ? userData.fotolink : './assets/img/profile.png'" alt="profile">
         <button class="toggle-btn" (click)="toggleMenu()">
             <img src="./assets/img/key_arrow_down.png" alt="arrow-down">
@@ -47,4 +47,31 @@
     @if(profileDetails||editUserData ){
         <app-member-details (changedUserDataEvent)="updateUserData()" (editDataEvent)="editProfile()" (closeDetailsEvent)="detailsOfProfile()" [userData]="userData" [editUserData]="editUserData" [profileDetails]="profileDetails"></app-member-details>
     }
+</div>
+<div class="search-parent-mobile">
+    <div class="search-fi-mobile">
+        <input [formControl]="input" type="search" placeholder="Devspace durchsuchen">
+        <img src="./assets/img/search.png" alt="search">
+    </div>
+    @if(searchResultsValue.length>0 && search=="email"){
+        <div class="search-results">
+            @for(item of searchResultsValue; track item){
+                <h4 (click)="openChatOrChannel(item.uid)">{{item.email}}</h4>
+            }
+        </div> 
+        }
+        @if(searchResultsValue.length>0 && search=="name"){
+            <div class="search-results">
+                @for(item of searchResultsValue; track item){
+                    <h4 (click)="openChatOrChannel(item.uid)">{{item.name}}</h4>
+                }
+            </div> 
+        }
+        @if(searchResults.length>0 && search=="channel"){
+            <div class="search-results">
+                @for(item of searchResults; track item){
+                    <h4 (click)="openChatOrChannel(item)">{{item}}</h4>
+                }
+            </div> 
+        }
 </div>

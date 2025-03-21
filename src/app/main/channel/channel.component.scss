@@ -97,10 +97,9 @@
     height: 70%;
 }
 .messages-form{
-    @include dFlex();
+    @include dFlex($jc:space-around);
     height: 80px;
     border: 1px solid #ADB0D9;
-    margin: 20px;
     border-radius: 20px;
     background-color: white;
     position: absolute;

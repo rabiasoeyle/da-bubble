@@ -5,6 +5,10 @@
     height:100%;
     background-color: white;
     border-radius: 42px;
+    @media(max-width:800px){
+        width:100%;
+        padding:8px;
+    }
 }
 .sidenav-head{
     @include dFlex($jc:space-between);
@@ -46,4 +50,12 @@
     height:80%;
     overflow-y: scroll;
     scrollbar-width: none;
+}
+.dev-img{
+    width:60px;
+    height:60px;
+    @media(max-width:800px){
+        width:40px;
+        height:40px; 
+    }
 }
