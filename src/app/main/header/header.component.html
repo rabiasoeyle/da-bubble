@@ -1,7 +1,14 @@
 <div class="header">
-    <div class="logo-name">
+    <div class="logo-name" [ngClass]="{'hidden': isChatActive()}">
         <img class="logo" src="./assets/img/Logo.png" alt="logo">
         <h3 >DA Bubble</h3>
+    </div>
+    <div class="logo-name-res" [ngClass]="{'hidden': !isChatActive()}">
+        <button class="toggle-btn" (click)="goBackToSidenav()">
+            <img src="./assets/img/key_arrow_down.png" alt="arrow-down">
+        </button>
+        <img class="logo" src="./assets/img/Workspace_logo.png" alt="logo">
+        <h3 >Devspace</h3>
     </div>
     <div class="search-parent">
         <div class="search-fi">
@@ -48,7 +55,7 @@
         <app-member-details (changedUserDataEvent)="updateUserData()" (editDataEvent)="editProfile()" (closeDetailsEvent)="detailsOfProfile()" [userData]="userData" [editUserData]="editUserData" [profileDetails]="profileDetails"></app-member-details>
     }
 </div>
-<div class="search-parent-mobile">
+<div class="search-parent-mobile" [ngClass]="{'hidden': isChatActive()}">
     <div class="search-fi-mobile">
         <input [formControl]="input" type="search" placeholder="Devspace durchsuchen">
         <img src="./assets/img/search.png" alt="search">

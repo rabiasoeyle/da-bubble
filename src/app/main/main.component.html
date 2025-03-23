@@ -1,9 +1,9 @@
 <div class="hole-page">
-    <app-header (openChat)="openChat($event)" (oChannel)="openChannel($event)" [userChats]="userChats"></app-header>
+    <app-header (openChat)="openChat($event)" (goBackToDevspace)="startNewChat()" (oChannel)="openChannel($event)" [currentChannel]="currentChannel" [currentChat]="currentChat" [userChats]="userChats"></app-header>
 <section class="main-content">
     
     @if(sidenavIsOpen && userData !=null && userChats !=null){
-        <div class="sidenav-area">
+        <div class="sidenav-area" [ngClass]="{'hidden': isChatActive()}"> 
             <app-sidenav [userData]="userData" [userChats]="userChats" (newChat)="openChat($event)" (newChannel)="openChannel($event)" (openAddChannel)="addChannelDialog()" (startNewChatClicked)="startNewChat()"></app-sidenav>
         </div>
     }
@@ -11,7 +11,7 @@
         {{sidenavButtonText}}
         <img src="./assets/img/show_menu.png" alt="show-menu">
     </button>
-    <div class="chat-area"> 
+    <div class="chat-area" id="chat-area"[ngClass]="{'hidden': !isChatActive()}"> 
         @if(currentChannel!=null){
             <app-channel [currentChannelName]="currentChannelName" (openChat)="openChat($event)"></app-channel>
         }
@@ -27,6 +27,7 @@
         <app-add-channel-dialog (closeChannel)="addChannelDialog()" ></app-add-channel-dialog>
         </div>
     }  
+
 </section>
 </div>
 

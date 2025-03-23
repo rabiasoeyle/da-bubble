@@ -14,12 +14,13 @@ import { ChatService } from '../chat.service';
 import { ChannelComponent } from './channel/channel.component';
 import { StartNewChatComponent } from "./start-new-chat/start-new-chat.component";
 import { AddChannelDialogComponent } from './add-channel-dialog/add-channel-dialog.component';
+import { NgClass, NgStyle } from '@angular/common';
 
 
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [AddChannelDialogComponent,StartNewChatComponent,HeaderComponent, ReactiveFormsModule, SidenavComponent, ChatComponent, ChannelComponent, StartNewChatComponent],
+  imports: [NgClass,AddChannelDialogComponent,StartNewChatComponent,HeaderComponent, ReactiveFormsModule, SidenavComponent, ChatComponent, ChannelComponent, StartNewChatComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })
@@ -31,11 +32,7 @@ export class MainComponent implements OnInit{
   sidenavIsOpen:boolean = true;
   addChannelOpen:boolean = false;
   memberDetails:boolean= false;
-  //forms
-  // addChannelForm = this.fb.nonNullable.group({
-  //     channelname:['', Validators.required],
-  //     description:['', Validators.required],
-  // })
+
   userData: UserData | null = null;
   sidenavButtonText:string="Workspace-Menü schließen";
   currentChannel: Channel|null = null;
@@ -54,6 +51,9 @@ export class MainComponent implements OnInit{
   ngOnInit() {
     this.loadLiveUserData();
     this.loadUserChats();
+  }
+  isChatActive(): boolean {
+    return this.currentChannel !== null || this.currentChat !== null;
   }
   async loadUserChats(){
     this.userChats = [];

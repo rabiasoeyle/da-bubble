@@ -9,11 +9,13 @@ import { Observable, of } from 'rxjs';
 import { Chat } from '../../../modules/chat';
 import { ChatService } from '../../chat.service';
 import { MemberDetailsComponent } from './member-details/member-details.component';
+import { Channel } from '../../../modules/channel';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [ReactiveFormsModule, MemberDetailsComponent],
+  imports: [NgClass,ReactiveFormsModule, MemberDetailsComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -31,8 +33,14 @@ export class HeaderComponent implements OnInit{
   @Input() userChats:Chat[] = [];
   @Output() openChat = new EventEmitter<number>();
   @Output() oChannel = new EventEmitter<string>();
+  @Output() goBackToDevspace = new EventEmitter<void>();
+  @Input()currentChat:Chat|null= null;
+  @Input()currentChannel:Channel|null =null;
   constructor(private authService: AuthService, private userService: UserService,private chatService: ChatService) {
     this.setupSearchListener();
+  }
+  isChatActive(): boolean {
+    return this.currentChannel !== null || this.currentChat !== null;
   }
   setupSearchListener() {
     this.input.valueChanges
@@ -132,5 +140,10 @@ export class HeaderComponent implements OnInit{
   editProfile(){
     this.editUserData =!this.editUserData;
     this.detailsOfProfile();
+  }
+  goBackToSidenav(){
+    this.currentChannel=null;
+    this.currentChat = null;
+    this.goBackToDevspace.emit();
   }
 }

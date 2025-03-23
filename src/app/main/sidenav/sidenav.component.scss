@@ -13,9 +13,13 @@
 .sidenav-head{
     @include dFlex($jc:space-between);
     padding:16px;
+    @media(max-width:800px){
+        display: none;
+    }
 }
 .channel-head{
     @include dFlex($jc:space-between);
+    padding-right:16px;
 }
 .add-channel{
     @include dFlex();
@@ -57,5 +61,17 @@
     @media(max-width:800px){
         width:40px;
         height:40px; 
+    }
+}
+.startChat-responsive{
+    display:none;
+    @media(max-width:800px){
+        border-radius: 100%;
+        position: absolute;
+        right:16px;
+        bottom:16px;
+        background-color: #444DF2;
+        padding:8px;
+        @include dFlex();
     }
 }

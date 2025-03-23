@@ -29,6 +29,13 @@
 .logo-name{
     @include dFlex($jc:flex-start);
 }
+.logo-name-res{
+    display:none;
+    @media (max-width:800px){
+         @include dFlex($jc:flex-start);
+    }
+   
+}
 .search-fi{
     background-color: white;
     color:gray;
@@ -126,5 +133,10 @@
     }
     @media(max-width:800px){
        @include dFlex($jc:space-around); 
+    }
+}
+@media (max-width: 800px) {
+    .hidden {
+      display: none;
     }
 }
