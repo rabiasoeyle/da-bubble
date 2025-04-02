@@ -7,6 +7,7 @@
     right:0;
     width: 100vW;
     height: 10vH;
+    padding-top: 16px;
     @include dFlex($jc:space-around);
     @media(max-width:800px){
         justify-content: space-between;
@@ -94,6 +95,14 @@
         :hover{
             background-color: antiquewhite;
         }
+    }
+}
+.toggle-btn-left{
+    background-color: transparent;
+    border:none;
+    
+    @media(max-width:800px){
+        
     }
 }
 .search-parent{

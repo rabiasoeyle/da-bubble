@@ -109,7 +109,11 @@
     align-items: flex-start;
     flex-direction: column;
     gap: 8px;
-    height: 70%;
+    height:80%;
+    @media(max-width:800px){
+       height: 86%; 
+    }
+    
 }
 .messages-form{
     @include dFlex($jc:space-around);

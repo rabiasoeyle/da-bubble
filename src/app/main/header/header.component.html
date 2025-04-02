@@ -4,11 +4,11 @@
         <h3 >DA Bubble</h3>
     </div>
     <div class="logo-name-res" [ngClass]="{'hidden': !isChatActive()}">
-        <button class="toggle-btn" (click)="goBackToSidenav()">
-            <img src="./assets/img/key_arrow_down.png" alt="arrow-down">
+        <button class="toggle-btn-left" (click)="goBackToSidenav()">
+            <img src="./assets/img/keyboard_arrow_left.png" alt="arrow-down">
         </button>
-        <img class="logo" src="./assets/img/Workspace_logo.png" alt="logo">
-        <h3>Devspace</h3>
+        <img (click)="goBackToSidenav()" class="logo" src="./assets/img/Workspace_logo.png" alt="logo">
+        <h3 (click)="goBackToSidenav()">Devspace</h3>
     </div>
     <div class="search-parent">
         <div class="search-fi">

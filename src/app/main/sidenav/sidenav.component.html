@@ -19,44 +19,44 @@
             </div>
         </div>
         <img (click)="addChannelDialog()" src="./assets/img/add.png" alt="create-button">
-    </div>
-    <div class="channels-list">
-    @if(channelsOpen){
-        
-        @for(item of this.userData ? this.userData.channels : ["lila","pink"]; track item){
-            <div (click)="openChannel(item)" class="text-pctr">
-                <img src="./assets/img/tag.png" alt="">
-                <h4>{{userData ? item : "Lisabell"}}</h4>
-            </div>
-        }
-        
-    }
-    <div (click)="addChannelDialog()" class="text-pctr">
-        <img src="./assets/img/add_circle.png" alt="+">
-        <h4>Channel hinzufügen</h4>
-    </div>
-    </div>
-    <!-- messages -->
-    <div class="img-and-txt-pctr">
-        <img (click)="changeMessageAreaStatus()" src="./assets/img/key_arrow_down.png" alt="">
-        <div class="text-pctr">
-            <img src="./assets/img/account_circle.png" alt="account">
-            <h4>Direktnachrichten</h4> 
         </div>
-    </div>
-    @if (directMessagesOpen) {
-        <div class="direct-chats">
-            @if(userChats){
-                    @for (item of this.userChats; track item; let idx = $index) {
-                    <div (click)="openChat(idx)" class="text-pctr">
-                        <img  class="mmbr-of-chnnl-pic" [src]="item.chatPartner.fotolink" alt="profile">
-                        <h4>{{item.chatPartner.name}}</h4>
-                    </div>
-                }
+        <div class="channels-list">
+        @if(channelsOpen){
+            
+            @for(item of this.userData ? this.userData.channels : ["lila","pink"]; track item){
+                <div (click)="openChannel(item)" class="text-pctr">
+                    <img src="./assets/img/tag.png" alt="">
+                    <h4>{{userData ? item : "Lisabell"}}</h4>
+                </div>
             }
+            
+        }
+        <div (click)="addChannelDialog()" class="text-pctr">
+            <img src="./assets/img/add_circle.png" alt="+">
+            <h4>Channel hinzufügen</h4>
         </div>
-    } 
+        </div>
+        <!-- messages -->
+        <div class="img-and-txt-pctr">
+            <img (click)="changeMessageAreaStatus()" src="./assets/img/key_arrow_down.png" alt="">
+            <div class="text-pctr">
+                <img src="./assets/img/account_circle.png" alt="account">
+                <h4>Direktnachrichten</h4> 
+            </div>
+        </div>
+        @if (directMessagesOpen) {
+            <div class="direct-chats">
+                @if(userChats){
+                        @for (item of this.userChats; track item; let idx = $index) {
+                        <div (click)="openChat(idx)" class="text-pctr">
+                            <img  class="mmbr-of-chnnl-pic" [src]="item.chatPartner.fotolink" alt="profile">
+                            <h4>{{item.chatPartner.name}}</h4>
+                        </div>
+                    }
+                }
+            </div>
+        } 
     </div>
-    <img class="startChat-responsive" (click)="startNewChat()" src="./assets/img/edit_square_white.png" alt="create-new-btn">
+    <img class="start-chat-responsive" (click)="startNewChat()" src="./assets/img/edit_square_white.png" alt="create-new-btn">
     
      
