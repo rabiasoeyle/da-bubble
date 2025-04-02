@@ -2,15 +2,22 @@
 @import '../../font.scss';
 .start-area{
     height:100vH;
-    padding:0px 40px 0px 32px;
+    padding:0px 32px 0px 32px;
+    position: relative;
+    @media(max-width:800px){
+        padding:0px 28px 0px 28px;
+        @include dFlex($fd:column, $jc:flex-start);
+    }
 }
-header{
+header{ 
     height:15vH;
     width:100%;
     z-index:2;
     @include dFlex($jc:space-between);
     @media (max-width:800px) {
         justify-content:center;
+        position: relative;
+        bottom: 1vH;
     }
 }
 .logo{
@@ -48,13 +55,26 @@ header{
         margin:2px;
     }
     @media (max-width: 800px) {
-
-        position: absolute;
-        bottom:15vH;
-        width:90vW;
-        @include dFlex($fd:column);
+        // position: absolute;
+        // bottom:15vH;
+        // width:90vW;
+        // @include dFlex($fd:column);
+        display: none;
     }
 
+}
+.new-account-link-res{
+    display:none;
+    >p{
+        font-family: "Nunito";
+        font-size: 14px;
+        margin:2px;
+    }
+    @media (max-width: 800px) {
+        position: relative;
+        top:2vH;
+        @include dFlex($fd:column);
+    }
 }
 .create-btn{
     transition: 500ms;
@@ -87,25 +107,26 @@ header{
 }
 .dialog-section{
     position: relative;
-    min-height: 70vH;
+    min-height: 50vH;
     width:100%;
-    @include dFlex($jc:flex-start);
+    @include dFlex();
     @media (max-width: 800px) {
         @include dFlex();
       }
 }
 .dialog-area{
-    width: 40%;
+    width: 50%;
     height: 100%;
-    position: relative;
-    top: 0px;
-    left: 30%;
+    // position: relative;
+    // top: 0px;
+    // left: 30%;
     border-radius: 30px;
     background-color: #FFFFFF;
     padding:32px 16px;
     @media (max-width: 800px) {
-        width:100%;
+        width:90%;
         left:0px;
+        height:fit-content;
     }
 }
 footer{
@@ -118,6 +139,11 @@ footer{
     padding:24px;
     height:30px;
     @include dFlex($jc:space-around);
+    @media (max-width: 800px) {
+       bottom:2vH;
+       padding:12px 0px;
+       height:0px;
+    }
 }
 .link-ida{
     font-family: "Figtree";

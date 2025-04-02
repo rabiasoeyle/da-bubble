@@ -8,7 +8,7 @@
             <img src="./assets/img/key_arrow_down.png" alt="arrow-down">
         </button>
         <img class="logo" src="./assets/img/Workspace_logo.png" alt="logo">
-        <h3 >Devspace</h3>
+        <h3>Devspace</h3>
     </div>
     <div class="search-parent">
         <div class="search-fi">
@@ -40,7 +40,7 @@
     
     <div class="user-nim">
         <h3 class="vanish-text">{{userData ? userData.name : "xy"}}</h3>
-        <img class="profile" [src]="userData ? userData.fotolink : './assets/img/profile.png'" alt="profile">
+        <img (click)="toggleMenu()" class="profile" [src]="userData ? userData.fotolink : './assets/img/profile.png'" alt="profile">
         <button class="toggle-btn" (click)="toggleMenu()">
             <img src="./assets/img/key_arrow_down.png" alt="arrow-down">
         </button>

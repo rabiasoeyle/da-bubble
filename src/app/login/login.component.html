@@ -24,7 +24,7 @@
                 </div>
         @if(startLogin){
                 <div class="new-account-link">
-                        <p>Neu bei DABubble?</p>
+                        <p>Neu bei DA Bubble?</p>
                         <button class="create-btn" (click)="goToCreateAccount()">Konto erstellen</button>
                 </div>  
         }    
@@ -43,11 +43,15 @@
                 @if(chooseAvatar){
                         <app-dialog-choose-avatar></app-dialog-choose-avatar>
                 }
-                <!-- @if(changePassword){
-                        <app-dialog-change-password></app-dialog-change-password>
-                } -->
                 </div>  
         </section>
+        @if(startLogin){
+        <div class="new-account-link-res">
+                <p>Neu bei DA Bubble?</p>
+                <button class="create-btn" (click)="goToCreateAccount()">Konto erstellen</button>
+        </div>      
+        }
+        
         <footer>
                 <a class="link-ida" routerLink="imprint">Impressum</a>
                 <a class="link-ida" routerLink="datasafety">Datenschutz</a>

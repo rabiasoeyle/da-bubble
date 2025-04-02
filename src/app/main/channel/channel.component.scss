@@ -4,7 +4,7 @@
 @include dFlex($jc:flex-start);
 }
 .chat-area-child{
-    height:98%;
+    height:96%;
     position: relative;
     margin:2%;
 }
@@ -12,6 +12,10 @@
     width:70px;
     height:70px;
     border-radius: 100%;
+    @media(max-width:800px){
+        width:30px;
+        height:30px;
+    }
 }
 .header-of-channel{
     position: relative;
@@ -24,6 +28,14 @@
 .header-of-channel-right{
     @include dFlex();
 }
+.add-member-btn{
+    width:40px;
+    height:40px;
+    @media(max-width:800px){
+        width:24px;
+        height:24px;
+    }
+}
 .members-pic{
     @include dFlex($g:0px);
 }
@@ -33,13 +45,10 @@
     border-radius: 30px;
     border: 2px solid white;
     margin: 6px -8px 6px 0px;
-}
-.chnnl-memb-pic:nth-of-type(n + 2){
-    width:40px;
-    height:40px;
-    border-radius: 30px;
-    border: 2px solid white;
-    margin: 6px 0px 6px 0px;
+    @media(max-width:800px){
+        width:24px;
+        height:24px;
+    }
 }
 .chnnl-memb-pic{
     width:40px;
@@ -70,6 +79,9 @@
     border-bottom-right-radius:30px;
     background-color: #ECEEFE;
     padding:8px;
+    @media(max-width:800px){
+        padding:0px;
+    }
 }
 .my-msg-message{
     border:0px none;
@@ -78,6 +90,9 @@
     border-bottom-right-radius:30px;
     background-color: #797EF3;
     padding:8px;
+    @media(max-width:800px){
+        padding:0px;
+    }
 }
 .channel-chat{
     // overflow-y: auto;
@@ -111,6 +126,9 @@
         height:80%;
         border:none;
         background-color: white;
+    }
+    @media(max-width:800px){
+        bottom:3px;
     }
 }
 .margin-5px{

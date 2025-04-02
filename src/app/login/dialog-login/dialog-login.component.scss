@@ -11,6 +11,9 @@
     border:none;
     background-color: transparent;
     cursor: pointer;
+    @media (max-width: 800px) {
+        font-size: 12px;
+    }
 }
 .forgot-password-btn:hover{
     color:#444DF2;
@@ -28,7 +31,10 @@
     cursor: pointer;
     width:80%;
     height:auto;
-    @include dFlex()
+    @include dFlex();
+    @media (max-width: 800px) {
+        font-size: 14px;
+    }
 }
 .google-btn:hover{
     scale:1.1;
@@ -58,4 +64,9 @@
 .google-logo{
     width:25px;
     height:25px;
+    @media (max-width: 800px) {
+        width: 18px;
+        height:18px;
+    }
+    
 }

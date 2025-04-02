@@ -21,7 +21,7 @@
                 }
                 </div>
                 <h5 class="mmber-amount">{{currentChannel.membersAmount}}</h5>
-                <img (click)="addMembersToChannelDialog()" src="./assets/img/add-members.png" alt="addMembers">
+                <img class="add-member-btn" (click)="addMembersToChannelDialog()" src="./assets/img/add-members.png" alt="addMembers">
             </div>
         </div>
         <app-messages [currentChannel]="currentChannel" [userData]="userData"></app-messages>

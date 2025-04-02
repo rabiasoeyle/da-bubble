@@ -55,6 +55,10 @@ h4{
     padding-bottom:8px;
     @media(max-width:800px){
         font-size: 18px;
+        padding-bottom: 0px;
+    }
+    @media(max-width:500px){
+        font-size: 14px;
     }
 }
 h5{
@@ -182,7 +186,7 @@ form{
     transition: 500ms;
     font-family: "Nunito";
     font-weight: 700;
-    width: 137px;
+    // width: 137px;
     height: 49px;
     padding: 6px 25px 6px 25px;
     gap: 10px;
@@ -206,7 +210,7 @@ form{
     @media(max-width:800px){
         height:auto;
         padding:6px;
-        width:100px;
+        // width:100px;
     }
 }
 input:focus,
