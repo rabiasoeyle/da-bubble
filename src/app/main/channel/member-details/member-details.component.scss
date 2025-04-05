@@ -1,2 +1,24 @@
 @import "../../../../styles.scss";
 @import "../channel.component.scss";
+.mmbr-details-img{
+    position: relative;
+    width:72px;
+    height:72px;
+    border-radius: 100%;
+}
+.mmbr-dtls-parent{
+    position: absolute;
+    width:414px;
+    height:max-content;
+    background-color: white;
+    border: 0px white;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius:30px;
+    border-bottom-right-radius:30px;
+    box-shadow: 0px 6px 10px 0px #00000033;
+    top:50px;
+    right:50px;
+    padding:40px;
+    z-index:2;
+    @include dFlex($fd:column, $g:20px, $ai:flex-start);
+}
