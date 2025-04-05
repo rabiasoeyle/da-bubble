@@ -1,2 +1,77 @@
 @import "../../../../styles.scss";
 @import "../channel.component.scss";
+h5{
+    @media(max-width:800px){
+        display: none;
+    }
+}
+.add-mmbr-parent{
+    position: absolute;
+    width:514px;
+    height:294px;
+    background-color: white;
+    border: 0px white;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius:30px;
+    border-bottom-right-radius:30px;
+    box-shadow: 0px 6px 10px 0px #00000033;
+    top:50px;
+    right:50px;
+    padding:40px;
+    @include dFlex($fd:column, $g:20px, $ai:flex-start);
+    @media(max-width:800px){
+        width: 94vW;
+        height: 94vH;
+        padding: 2vH 2vW;
+        top: -12vH;
+        bottom: 0px;
+        right: 0px;
+        left: -2vW;
+        border: none;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+        box-shadow: none;
+        z-index: 2;
+        @include dFlex($fd:column, $jc:flex-start, $g:4vH);
+    }
+}
+.add-mmbr-head{
+    @include dFlex($jc:space-between);
+    width:100%;
+    @media(max-width:800px){
+        width:80%;
+    }
+}
+.add-mmbr-chnnl-nm{
+    color: #797EF3;
+    text-align: start;
+}
+.add-mmbr-btn-parent{
+    @include dFlex($jc:flex-end);
+    width:100%;
+    @media(max-width:800px){
+        width:80%;
+    }
+}
+.add-member-btn{
+    width:40px;
+    height:40px;
+    @media(max-width:800px){
+        width:24px;
+        height:24px;
+    }
+}
+.input-name{
+    border-radius: 30px;
+    border: 1px solid #ADB0D9;
+    width: 434px;
+    height: 55px;
+    gap: 10px;
+    padding: 15px 20px;
+    @media(max-width:800px){
+        width:80%;
+        height:20px;
+        padding:4px;
+    }
+}

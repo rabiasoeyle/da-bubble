@@ -1,7 +1,7 @@
 @import '../../../styles.scss';
 @import '../main.component.scss';
 .chat-channel-name{
-@include dFlex($jc:flex-start);
+    @include dFlex($jc:flex-start);
 }
 .chat-area-child{
     height:96%;
@@ -28,14 +28,14 @@
 .header-of-channel-right{
     @include dFlex();
 }
-.add-member-btn{
-    width:40px;
-    height:40px;
-    @media(max-width:800px){
-        width:24px;
-        height:24px;
-    }
-}
+// .add-member-btn{
+//     width:40px;
+//     height:40px;
+//     @media(max-width:800px){
+//         width:24px;
+//         height:24px;
+//     }
+// }
 .members-pic{
     @include dFlex($g:0px);
 }
@@ -95,13 +95,6 @@
     }
 }
 .channel-chat{
-    // overflow-y: auto;
-    // height: 40vH;
-    // scroll-behavior: smooth;
-    // scrollbar-width: none;
-    // @include dFlex($ai:flex-start, $fd:column, $g:8px);
-    // padding-top:120px;
-    // padding-bottom:32px;
     overflow-y: scroll;
     scroll-behavior: smooth;
     scrollbar-width: none;
@@ -138,40 +131,18 @@
 .margin-5px{
     margin:5px;
 }
-.add-mmbr-parent{
-    position: absolute;
-    width:514px;
-    height:294px;
-    background-color: white;
-    border: 0px white;
-    border-top-left-radius: 30px;
-    border-bottom-left-radius:30px;
-    border-bottom-right-radius:30px;
-    box-shadow: 0px 6px 10px 0px #00000033;
-    top:50px;
-    right:50px;
-    padding:40px;
-    @include dFlex($fd:column, $g:20px, $ai:flex-start);
-}
-.add-mmbr-head{
-    @include dFlex($jc:space-between);
-}
-.add-mmbr-chnnl-nm{
-    color: #797EF3;
-    text-align: start;
-}
-.input-name{
-    border-radius: 30px;
-    border: 1px solid #ADB0D9;
-    width: 434px;
-    height: 55px;
-    gap: 10px;
-    padding: 15px 20px;
-}
-.add-mmbr-btn-parent{
-    @include dFlex($jc:flex-end);
-    width:100%;
-}
+// .input-name{
+//     border-radius: 30px;
+//     border: 1px solid #ADB0D9;
+//     width: 434px;
+//     height: 55px;
+//     gap: 10px;
+//     padding: 15px 20px;
+// }
+// .add-mmbr-btn-parent{
+//     @include dFlex($jc:flex-end);
+//     width:100%;
+// }
 .open-dtls-chnnl-parent{
     position: absolute;
     right:0;
