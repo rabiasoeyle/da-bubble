@@ -21,4 +21,13 @@
     padding:40px;
     z-index:2;
     @include dFlex($fd:column, $g:20px, $ai:flex-start);
+    @media(max-width:800px){
+        width:auto;
+        right:0px;
+        left:0px;
+    }
+}
+.mmbr-dtls-head{
+    @include dFlex($jc:space-between);
+    width:100%;
 }

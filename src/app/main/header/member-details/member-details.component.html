@@ -1,6 +1,6 @@
 @if(profileDetails && userData){
     <div class="mmbr-dtls-parent">
-        <div>
+        <div class="mmbr-dtls-head">
             <h3>Profil</h3>
             <img (click)="closeUserDetails()" src="./assets/img/close.png" alt="">
         </div>
@@ -19,23 +19,23 @@
 
 }
 @if(editUserData && userData ){
-<form #userNameForm="ngForm" class="mmbr-dtls-parent">
-    <div>
-        <h3>Profil</h3>
-        <img (click)="toggleEditProfile()" src="./assets/img/close.png" alt="">
-    </div>
-    <img class="mmbr-details-img" src="{{userData.fotolink}}" alt="" (click)="startChangeFotolink()">
-    <input #name="ngModel" 
-    [(ngModel)]="changeData.name" 
-    name="name" 
-    class="input-name"
-    type="text"
-    required
-    placeholder='neuer Name und Nachname'
-    pattern="^[A-ZÄÖÜ][a-zäöüß]+(?: [A-ZÄÖÜ][a-zäöüß]+)+$">
-    <button class="white-btn" (click)="toggleEditProfile()">Abbrechen</button>
-    <button [disabled]="userNameForm.invalid" class="blue-btn" (click)="saveNewName()">Speichern</button>
-</form> 
+    <form #userNameForm="ngForm" class="mmbr-dtls-parent">
+        <div>
+            <h3>Profil</h3>
+            <img (click)="toggleEditProfile()" src="./assets/img/close.png" alt="">
+        </div>
+        <img class="mmbr-details-img" src="{{userData.fotolink}}" alt="" (click)="startChangeFotolink()">
+        <input #name="ngModel" 
+        [(ngModel)]="changeData.name" 
+        name="name" 
+        class="input-name"
+        type="text"
+        required
+        placeholder='neuer Name und Nachname'
+        pattern="^[A-ZÄÖÜ][a-zäöüß]+(?: [A-ZÄÖÜ][a-zäöüß]+)+$">
+        <button class="white-btn" (click)="toggleEditProfile()">Abbrechen</button>
+        <button [disabled]="userNameForm.invalid" class="blue-btn" (click)="saveNewName()">Speichern</button>
+    </form> 
 }
 @if(chooseFotolink &&userData){
     <div class="mmbr-dtls-parent">
@@ -55,5 +55,5 @@
     <button [disabled]="newFotolink=='' " class="blue-btn" (click)="changeFotolink()">Weiter</button>
 </div>
 
-</div>
+    </div>
 }
