@@ -30,12 +30,15 @@ export class ChatComponent implements OnInit, OnDestroy, OnChanges{
   newMessage={
     message:"",
   }
+  editMessageData={
+    message:""
+  }
   // sendMessageForm = this.fb.nonNullable.group({
   //     message:['', Validators.required],
   //   })
-  editMessageForm= this.fb.nonNullable.group({
-      message:['', Validators.required],
-    })
+  // editMessageForm= this.fb.nonNullable.group({
+  //     message:['', Validators.required],
+  //   })
   previousChatData: any = null;
   emojisOpen:boolean = false;
   constructor(private chatService:ChatService, private authService:AuthService) {}
@@ -79,6 +82,7 @@ formatDate(timestamp: number): string {
     this.messageIdx= id;
     if(this.currentChat){
       const msg = this.currentChat.chatData.messages[id];
+      this.editMessageData.message=msg.message;
       msg.editing = true;
     }
   }
@@ -89,9 +93,8 @@ formatDate(timestamp: number): string {
     }
   }
   editMessage(id:number){
-    const rawForm = this.editMessageForm.getRawValue();
-    if(this.currentChat && rawForm.message !=""){
-      this.chatService.editPrivateMessage(this.currentChat.chatId, rawForm.message, id);
+    if(this.currentChat && this.editMessageData.message !=""){
+      this.chatService.editPrivateMessage(this.currentChat.chatId, this.editMessageData.message, id);
     }
   }
   sendPrivateMessage(){
