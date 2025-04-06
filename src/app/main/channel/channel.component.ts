@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { Channel } from '../../../modules/channel';
 import { ChatService } from '../../chat.service';
 import { AuthService } from '../../auth.service';
@@ -19,27 +19,18 @@ import { DetailsOfChannelComponent } from './details-of-channel/details-of-chann
   standalone: true,
   imports: [DetailsOfChannelComponent,MessagesComponent,ReactiveFormsModule,FormsModule, AddMembersToChannelComponent, MemberlistComponent, MemberDetailsComponent],
   templateUrl: './channel.component.html',
-  styleUrl: './channel.component.scss'
+  styleUrl: './channel.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class ChannelComponent implements OnInit, OnChanges{
   userData: UserData |null = null;
   fb = inject(FormBuilder);
-  // addChannelForm = this.fb.nonNullable.group({
-  //   channelname:['', Validators.required],
-  //   description:['', Validators.required],
-  // })
-sendMessageForm = this.fb.nonNullable.group({
-  message:['', Validators.required],
-  })
-// changeChannelNameForm = this.fb.nonNullable.group({
-//   name:['', Validators.required],
-// })
-// changeChannelDescrForm =this.fb.nonNullable.group({
-//   description:['', Validators.required],
-// })
-// editMessageForm= this.fb.nonNullable.group({
-//   message:['', Validators.required],
-//   })
+  newMessage={
+    message:"",
+  }
+  // sendMessageForm = this.fb.nonNullable.group({
+  //   message:['', Validators.required],
+  //   })
   @Input()currentChannelName:string = "kein Name";
   openDetailsOfChannel= false;
   editChannel=false;
@@ -95,9 +86,8 @@ sendMessageForm = this.fb.nonNullable.group({
     return this.currentChannel;
   }
   sendMessage(){
-    const rawForm = this.sendMessageForm.getRawValue();
-      if(this.currentChannel){
-        this.chatService.sendMessage(rawForm.message, this.currentChannel.name);
+      if(this.currentChannel&& this.newMessage.message){
+        this.chatService.sendMessage(this.newMessage.message, this.currentChannel.name);
       }
   }
   openDetailsAboutChannel(){

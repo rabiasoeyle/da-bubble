@@ -30,9 +30,9 @@ export class ChatComponent implements OnInit, OnDestroy, OnChanges{
   newMessage={
     message:"",
   }
-  sendMessageForm = this.fb.nonNullable.group({
-      message:['', Validators.required],
-    })
+  // sendMessageForm = this.fb.nonNullable.group({
+  //     message:['', Validators.required],
+  //   })
   editMessageForm= this.fb.nonNullable.group({
       message:['', Validators.required],
     })

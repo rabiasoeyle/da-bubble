@@ -25,8 +25,9 @@
             </div>
         </div>
         <app-messages [currentChannel]="currentChannel" [userData]="userData"></app-messages>
-        <form class="messages-form" [formGroup] ="sendMessageForm" (ngSubmit)="sendMessage()">
-            <textarea formControlName="message" type="text" placeholder="Deine Nachricht hier eingeben">
+        <form class="messages-form" #sendMessageForm="ngForm" (ngSubmit)="sendMessage()">
+            <textarea #message="ngModel" 
+            [(ngModel)]="newMessage.message" name="message" type="text" placeholder="Deine Nachricht hier eingeben">
             </textarea>
             <div class="emoji-mark-send-buttons">
                 <img src="./assets/img/sentiment_satisfied.png" alt="emojis">
