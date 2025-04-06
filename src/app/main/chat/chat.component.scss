@@ -1,2 +1,60 @@
 @import '../../../styles.scss';
 @import '.././channel/channel.component.scss';
+.mmbr-of-chnnl-parent{
+        position: absolute;
+        width:414px;
+        height:200px;
+        background-color: white;
+        border: 0px white;
+        border-top-left-radius: 30px;
+        border-bottom-left-radius:30px;
+        border-bottom-right-radius:30px;
+        box-shadow: 0px 6px 10px 0px #00000033;
+        top:50px;
+        right:50px;
+        padding:40px;
+        @include dFlex($fd:column, $g:20px, $ai:flex-start);
+        @media(max-width:800px){
+            width:94vW;
+            height:94vH;
+            padding:2vH 2vW;
+            top: -12vH;
+            bottom: 0px;
+            right: 0px;
+            left: -2vW;
+            border: none;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            box-shadow: none;
+            z-index: 2;
+        }
+    }
+    .mmbr-of-chnnl-list-parent{
+        overflow-y: scroll;
+        height:80%;
+        width:100%;
+        scrollbar-width: none;
+    }
+    .mmbr-of-chnnl-head{
+        @include dFlex($jc:space-between);
+        width:100%;
+    }
+    .mmbr-of-chnnl-list{
+        @include dFlex($g:16px, $jc:flex-start);
+    }
+    .mmbr-of-chnnl-pic{
+        width:40px;
+        height:40px;
+        border-radius: 30px;
+        border: 2px solid white;
+        @media(max-width:800px){
+            width:20px;
+            height:20px;
+        }
+    }
+    .mmbr-of-chnnl-pic-button{
+        @include dFlex();
+        background-color: white;
+        border:none;
+    }

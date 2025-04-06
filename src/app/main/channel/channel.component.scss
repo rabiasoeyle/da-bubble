@@ -66,6 +66,13 @@
     @include dFlex($jc:flex-start, $fd:row-reverse);
     width:100%;
 }
+.my-msg-text-area{
+    width:80%;
+    @include dFlex($ai:end, $fd:column);
+}
+.edit-backgroundcolor{
+    background-color: #ECEEFE;
+}
 .msg-name-and-time{
     @include dFlex();
 }
@@ -79,6 +86,7 @@
     border-bottom-right-radius:30px;
     background-color: #ECEEFE;
     padding:8px;
+    max-width:fit-content;
     @media(max-width:800px){
         padding:0px;
     }
@@ -90,6 +98,7 @@
     border-bottom-right-radius:30px;
     background-color: #797EF3;
     padding:8px;
+    max-width:fit-content;
     @media(max-width:800px){
         padding:0px;
     }
@@ -132,66 +141,71 @@
 .margin-5px{
     margin:5px;
 }
-// .input-name{
-//     border-radius: 30px;
-//     border: 1px solid #ADB0D9;
-//     width: 434px;
-//     height: 55px;
-//     gap: 10px;
-//     padding: 15px 20px;
-// }
-// .add-mmbr-btn-parent{
-//     @include dFlex($jc:flex-end);
-//     width:100%;
-// }
-// .open-dtls-chnnl-parent{
-//     position: absolute;
-//     right:0;
-//     left:0;
-//     top:0;
-//     bottom:0;
-//     background-color: rgba(0, 0, 0, 0.4);
-//     @include dFlex();
-// }
-// .open-dtls-chnnl-child{
-//     background-color: white;
-//     width: 872px;
-//     height: 616px;
-//     border-top-right-radius: 30px;
-//     border-bottom-right-radius: 30px;
-//     border-bottom-left-radius: 30px;
-//     padding:20px;
-//     @include dFlex($fd:column, $g:16px);
-// }
-// .open-dtls-chnnl-head{
-//     @include dFlex($jc:space-between);
-//     width:100%;
-// }
-// .open-dtls-chnnl-name-parent{
-//     border: 1px solid #ADB0D9;
-//     width: 792px;
-//     height: 114px;
-//     border-radius: 20px;
-//     border-width: 1px;
-//     padding: 20px;
-//     gap: 20px;
-// }
-// .open-dtls-chnnl-middle{
-//     border: 1px solid #ADB0D9;
-//     width: 792px;
-//     border-radius: 20px;
-//     border-width: 1px;
-//     padding: 20px;
-//     @include dFlex($ai:flex-start, $g:20px, $fd:column);
-// }
-// .open-dtls-chnnl-name{
-//     @include dFlex($jc:space-between);
-//     width:100%;
-// }
-// .open-dtls-chnnl-delete-btn-parent{
-//     @include dFlex($jc:flex-end);
-//     width:100%;
-// }
+.two-buttons-edit{
+    @include dFlex($jc:space-around);
+    width: 60%;
+}
+.emoji-two-buttons-edit{
+    @include dFlex($jc:space-between);
+    width:80%;
+    padding: 8px;
+}
+.edit-msg{
+    background-color: white;
+    border-radius: 30px;
+    box-shadow: 0px 6px 10px 0px #00000033;
+    max-width: 100% !important;
+    width: 100%;
+}
+textarea{
+    width: 90%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: none;
+    background-color: transparent;
+    font-size: 12px;
+    resize: none;
+    font-family: 'Nunito';
+}
+.blue-btn-edit{
+    font-size: 12px;
+    width: auto;
+    height: auto;
+    padding: 4px;
+    gap: 10px;
+    border-radius: 25px;
+    color:white;
+    background-color: #444DF2;
+    cursor: pointer;
+    &:hover{
+        scale:1.1;
+        background-color: #0e1269;
+        transition: 500ms;
+    }
+    &:disabled{
+        border-color: rgba(227, 213, 213, 0.321);
+        color:rgba(227, 213, 213, 0.321);
+        scale:1.0;
+        background-color: #444DF2;
+    }
+}
+.white-btn-edit{
+    font-size: 12px;
+    width: auto;
+    height: auto;
+    padding: 4px;
+    border-radius: 25px;
+    border-color: #444DF2;
+    color:#444DF2;
+    background-color: #FFFFFF;
+    cursor: pointer;
+    text-align: center;
+    &:hover{
+        transition: 500ms;
+        scale: 1.1;
+        background-color: #ECEEFE;
+    }
+}
 .black-line{
     width:100%;
     height:2px;

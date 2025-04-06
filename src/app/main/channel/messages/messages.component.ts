@@ -37,6 +37,7 @@ formatDate(timestamp: number): string {
 startEditMessage(idx:number){
   if(this.currentChannel != null){
     const msg = this.currentChannel.messages[idx];
+    this.editMessageData.message=msg.message;
     msg.editing = true;
   }
 }
@@ -44,11 +45,13 @@ closeEditMessage(idx:number){
   if(this.currentChannel!=null){
     const msg = this.currentChannel.messages[idx];
     msg.editing = false;
+    this.editMessageData.message="";
   }
 }
 editMessage(idx:number){
     if(this.currentChannel && this.editMessageData.message !=""){
       this.chatService.editMessage(this.currentChannel.name, this.editMessageData.message, idx);
+      this.editMessageData.message="";
     }
 }
 }

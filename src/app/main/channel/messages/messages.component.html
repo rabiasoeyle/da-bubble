@@ -68,7 +68,7 @@
             </div>
             }
             @else {
-                <div class="my-msg-pic-and-text">
+                <div class="my-msg-pic-and-text edit-backgroundcolor">
                     @if(item.fotolink){
                         <img  class="msg-sender-pic" src="{{item? item.fotolink: './assets/img/profile.png'}}" alt="profile">  
                     }
@@ -77,11 +77,17 @@
                             <h4 class="margin-5px">{{item? item.name:"565656"}}</h4>
                             <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
                         </div>
-                        <div class="my-msg-message">
+                        <div class="my-msg-message edit-msg">
                             <form class="edit-message-form" #editMessageForm="ngForm" (ngSubmit)="editMessage(idx)">
                                 <textarea [(ngModel)]="editMessageData.message" name="message" class="margin-5px" placeholder={{item.message}}></textarea>
-                                <button type="button" (click)="closeEditMessage(idx)">Abbrechen</button>
-                                <button type="submit" [disabled]="editMessageForm.invalid">Speichern</button>
+                                <div class="emoji-two-buttons-edit">
+                                    <img src="./assets/img/sentiment_satisfied.png" alt="smiley">
+                                    <div class="two-buttons-edit">
+                                        <button class="white-btn-edit" type="button" (click)="closeEditMessage(idx)">Abbrechen</button>
+                                        <button class="blue-btn-edit" type="submit" [disabled]="editMessageForm.invalid">Speichern</button>
+                                    </div>
+                                </div>
+                                
                             </form>
                         </div> 
                     </div>
