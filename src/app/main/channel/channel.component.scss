@@ -28,14 +28,14 @@
 .header-of-channel-right{
     @include dFlex();
 }
-// .add-member-btn{
-//     width:40px;
-//     height:40px;
-//     @media(max-width:800px){
-//         width:24px;
-//         height:24px;
-//     }
-// }
+.add-member-btn{
+    width:40px;
+    height:40px;
+    @media(max-width:800px){
+        width:24px;
+        height:24px;
+    }
+}
 .members-pic{
     @include dFlex($g:0px);
 }
