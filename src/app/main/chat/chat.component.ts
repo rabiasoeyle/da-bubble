@@ -7,11 +7,12 @@ import { ChatService } from '../../chat.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../auth.service';
 import { Member } from '../../../modules/member';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
 
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, PickerModule],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss'
 })
@@ -32,7 +33,9 @@ export class ChatComponent implements OnInit, OnDestroy, OnChanges{
       message:['', Validators.required],
     })
   previousChatData: any = null;
+  emojisOpen:boolean = false;
   constructor(private chatService:ChatService, private authService:AuthService) {}
+  
   isSameDay(timestamp1: number, timestamp2: number): boolean {
     const date1 = new Date(timestamp1);
     const date2 = new Date(timestamp2);
@@ -134,6 +137,14 @@ formatDate(timestamp: number): string {
         return members[i];
       }
     }return ;
+  }
+  showEmojis(){
+    this.emojisOpen = !this.emojisOpen;
+  }
+  addEmoji(event: any) {
+    console.log(event);
+    const rawForm = this.sendMessageForm.getRawValue();
+    rawForm.message += event.emoji.native;
   }
 
 }

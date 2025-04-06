@@ -102,9 +102,37 @@
         <form class="messages-form" [formGroup] ="sendMessageForm" (ngSubmit)="sendPrivateMessage()">
             <textarea formControlName="message" type="text" placeholder="Deine Nachricht hier eingeben">
             </textarea>
-            <button type="submit">
-                <img src="./assets/img/send.png" alt="send">
-            </button>
+            @if(emojisOpen){
+                <emoji-mart
+                (emojiSelect)="addEmoji($event)"
+                [perLine]="10"
+                [emojiSize]="22"
+                [showPreview]="false"
+                [i18n]="{
+                  categories: {
+                    recent: 'Kürzlich',
+                    smileys: 'Smileys',
+                    people: 'Menschen',
+                    animals: 'Tiere',
+                    food: 'Essen',
+                    activities: 'Aktivitäten',
+                    travel: 'Reisen',
+                    objects: 'Objekte',
+                    symbols: 'Symbole',
+                    flags: 'Flaggen'
+                  },
+                  search: 'Suchen'
+                }"
+              ></emoji-mart>
+            }
+            
+            <div class="emoji-mark-send-buttons">
+                <img (click)="showEmojis()" src="./assets/img/sentiment_satisfied.png" alt="emojis">
+                <img src="./assets/img/alternate_email.png" alt="@">
+                <button class="send-msg-btn" type="submit">
+                    <img src="./assets/img/send.png" alt="send">
+                </button>
+            </div>
         </form>   
     </div> 
 }

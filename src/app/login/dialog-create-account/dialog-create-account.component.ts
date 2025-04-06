@@ -25,12 +25,12 @@ export class DialogCreateAccountComponent {
   @Output()goBackEvent = new EventEmitter<string>
   @Output() accountCreated = new EventEmitter<void>();
 
-  form = this.fb.nonNullable.group({
-    name:['', Validators.required],
-    email:['', Validators.required],
-    password:['', Validators.required],
+  // form = this.fb.nonNullable.group({
+  //   name:['', Validators.required],
+  //   email:['', Validators.required],
+  //   password:['', Validators.required],
     
-  })
+  // })
   registerData={
     name:"",
     email:"",
