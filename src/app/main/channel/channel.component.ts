@@ -13,11 +13,12 @@ import { MemberlistComponent } from './memberlist/memberlist.component';
 import { MemberDetailsComponent } from './member-details/member-details.component';
 import { MessagesComponent } from './messages/messages.component';
 import { DetailsOfChannelComponent } from './details-of-channel/details-of-channel.component';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
 
 @Component({
   selector: 'app-channel',
   standalone: true,
-  imports: [DetailsOfChannelComponent,MessagesComponent,ReactiveFormsModule,FormsModule, AddMembersToChannelComponent, MemberlistComponent, MemberDetailsComponent],
+  imports: [PickerModule,DetailsOfChannelComponent,MessagesComponent,ReactiveFormsModule,FormsModule, AddMembersToChannelComponent, MemberlistComponent, MemberDetailsComponent],
   templateUrl: './channel.component.html',
   styleUrl: './channel.component.scss',
   encapsulation: ViewEncapsulation.None,
@@ -28,9 +29,7 @@ export class ChannelComponent implements OnInit, OnChanges{
   newMessage={
     message:"",
   }
-  // sendMessageForm = this.fb.nonNullable.group({
-  //   message:['', Validators.required],
-  //   })
+  emojisOpen:boolean=false;
   @Input()currentChannelName:string = "kein Name";
   openDetailsOfChannel= false;
   editChannel=false;
@@ -88,6 +87,7 @@ export class ChannelComponent implements OnInit, OnChanges{
   sendMessage(){
       if(this.currentChannel&& this.newMessage.message){
         this.chatService.sendMessage(this.newMessage.message, this.currentChannel.name);
+        this.newMessage.message="";
       }
   }
   openDetailsAboutChannel(){
@@ -145,5 +145,12 @@ export class ChannelComponent implements OnInit, OnChanges{
       setTimeout(()=>{
         this.channelDeleted=false;
       },4000)
+  }
+  showEmojis(){
+    this.emojisOpen = !this.emojisOpen;
+  }
+  addEmoji(event: any) {
+    this.newMessage.message += event.emoji.native;
+    console.log(this.newMessage.message)
   }
 }
