@@ -11,7 +11,7 @@ import { Auth } from '@angular/fire/auth';
 @Component({
   selector: 'app-dialog-create-account',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './dialog-create-account.component.html',
   styleUrl: './dialog-create-account.component.scss'
 })
@@ -25,12 +25,6 @@ export class DialogCreateAccountComponent {
   @Output()goBackEvent = new EventEmitter<string>
   @Output() accountCreated = new EventEmitter<void>();
 
-  // form = this.fb.nonNullable.group({
-  //   name:['', Validators.required],
-  //   email:['', Validators.required],
-  //   password:['', Validators.required],
-    
-  // })
   registerData={
     name:"",
     email:"",

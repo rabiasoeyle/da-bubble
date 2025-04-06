@@ -296,3 +296,41 @@
     background-color: white;
     text-align: end;
 }
+
+.emoji-picker {
+    position: absolute;
+    bottom:12vH;
+    left:0;
+    right:4vW;
+    width: 320px;
+    height: 400px;
+    overflow: scroll;
+    border: 1px solid #ccc;
+    @include dFlex();
+    z-index:3;
+    padding: 8px;
+    scrollbar-width: none;
+    background-color: white;
+    border-radius: 20px;
+    @media(max-width:500px){
+        width:280px;
+        height:200px;
+        left:2vW;
+    }
+
+}
+emoji-mart{
+    width:320px;
+    height:400px;
+    @media(max-width:500px){
+        width:280px;
+        height:200px;
+    }
+}
+emoji-mart .emoji-mart-search-icon{
+    background-color: white;
+    border: 0px transparent;
+}
+emoji-mart .emoji-mart-anchors, .emoji-mart-category-label, .emoji-mart-preview{
+    display: none;
+}

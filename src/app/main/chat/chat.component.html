@@ -99,33 +99,35 @@
                 }
             }
         </div>
-        <form class="messages-form" [formGroup] ="sendMessageForm" (ngSubmit)="sendPrivateMessage()">
-            <textarea formControlName="message" type="text" placeholder="Deine Nachricht hier eingeben">
-            </textarea>
-            @if(emojisOpen){
+        <div class="emoji-and-form">
+        @if(emojisOpen){
+            <div class="emoji-picker">
                 <emoji-mart
-                (emojiSelect)="addEmoji($event)"
-                [perLine]="10"
-                [emojiSize]="22"
-                [showPreview]="false"
-                [i18n]="{
-                  categories: {
-                    recent: 'Kürzlich',
-                    smileys: 'Smileys',
-                    people: 'Menschen',
-                    animals: 'Tiere',
-                    food: 'Essen',
-                    activities: 'Aktivitäten',
-                    travel: 'Reisen',
-                    objects: 'Objekte',
-                    symbols: 'Symbole',
-                    flags: 'Flaggen'
-                  },
-                  search: 'Suchen'
-                }"
+                    (emojiSelect)="addEmoji($event)"
+                    [perLine]="9"
+                    [emojiSize]="22"
+                    [i18n]="{
+                    categories: {
+                        recent: 'Kürzlich',
+                        smileys: 'Smileys',
+                        people: 'Menschen',
+                        animals: 'Tiere',
+                        food: 'Essen',
+                        activities: 'Aktivitäten',
+                        travel: 'Reisen',
+                        objects: 'Objekte',
+                        symbols: 'Symbole',
+                        flags: 'Flaggen'
+                    },
+                    search: 'Suchen'
+                    }"
               ></emoji-mart>
-            }
-            
+              </div>
+        }
+        <form class="messages-form" #sendMessageForm="ngForm" (ngSubmit)="sendPrivateMessage()">
+            <textarea #message="ngModel" 
+            [(ngModel)]="newMessage.message" name="message" type="text" placeholder="Deine Nachricht hier eingeben">
+            </textarea>
             <div class="emoji-mark-send-buttons">
                 <img (click)="showEmojis()" src="./assets/img/sentiment_satisfied.png" alt="emojis">
                 <img src="./assets/img/alternate_email.png" alt="@">
@@ -133,6 +135,7 @@
                     <img src="./assets/img/send.png" alt="send">
                 </button>
             </div>
-        </form>   
+        </form> 
+        </div>  
     </div> 
 }
