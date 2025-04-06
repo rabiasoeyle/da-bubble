@@ -269,6 +269,19 @@ textarea{
 //     background-color: white;
 //     border:none;
 // }
+.date-label-div{
+    z-index: 2;
+    position: relative;
+    top: -16px;
+    background-color: transparent;
+    left: 0;
+    right: 0;
+    @include dFlex();
+}
+.date-label{
+    background-color: white;
+    max-width: fit-content;
+}
 .mmbr-details-img{
     position: relative;
     width:72px;
