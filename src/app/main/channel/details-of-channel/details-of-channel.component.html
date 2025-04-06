@@ -8,7 +8,8 @@
           <div class="open-dtls-chnnl-name-parent">
               <div class="open-dtls-chnnl-name">
                   <h3 class="fs-18">Channel Name</h3>
-                  <h4 (click)="openEditChannel()"><span class="blue-font">Bearbeiten</span></h4>
+                  <img class="resp-edit-img" src="./assets/img/edit.png" alt="" (click)="openEditChannel()">
+                  <h4 class="button-text" (click)="openEditChannel()"><span class="blue-font">Bearbeiten</span></h4>
               </div> 
               <div class="open-dtls-chnnl-name-input">
                       #
@@ -18,17 +19,34 @@
           <div class="open-dtls-chnnl-middle">
               <div class="open-dtls-chnnl-name">
                   <h3 class="fs-18">Beschreibung</h3>
-                  <h4 (click)="openEditChannel()"><span class="blue-font">Bearbeiten</span></h4>
+                  <img class="resp-edit-img" src="./assets/img/edit.png" alt="" (click)="openEditChannel()">
+                  <h4 class="button-text" (click)="openEditChannel()"><span class="blue-font">Bearbeiten</span></h4>
               </div> 
               <h6>{{currentChannel.description}}</h6>
               <div class="black-line"></div>
               <h3 class="fs-18">Erstellt von</h3>
               <h4 class="blue-font" >{{currentChannel.created.createdFrom}}</h4>
           </div>
+          <div class="mmbr-of-chnnl-parent">
+            <div class="mmbr-of-chnnl-head">
+                <h3>Mitglieder</h3>
+            </div>
+            <div class="mmbr-of-chnnl-list-parent">
+                @for(item of currentChannel ? currentChannel.members: ["Lisa"]; track item; let idx = $index){
+                    <div (click)="openUserDetails(idx)" class="mmbr-of-chnnl-list">
+                        <img class="mmbr-of-chnnl-pic" src="{{item.fotolink}}" alt="">
+                        <h4>{{item.name}}</h4>
+                    </div>
+                }
+            </div>
+            <button (click)="addMembersToChannelDialog()" class="mmbr-of-chnnl-pic-button">
+                <img class="add-member-img" src="./assets/img/add-members.png" alt="">
+                <h4>Mitglieder hinzufügen</h4>
+            </button>
+          </div>
           <div class="open-dtls-chnnl-delete-btn-parent">
               <button class="blue-btn" (click)="deleteChannelAtUser()">Channel verlassen</button>
           </div>
-          
       </div>
     </div>  
 }
@@ -43,8 +61,10 @@
               <form class="channel-name-form" #changeChannelNameForm="ngForm" (ngSubmit)="changeChannelName()">
                 <div class="open-dtls-chnnl-name">
                   <h3 class="fs-18">Channel Name</h3>
-                  <button class="blue-btn" type="submit" [disabled]="changeChannelNameForm.invalid">
-                    <h4>Speichern</h4>
+                  
+                  <button class="no-border-blue-btn" type="submit" [disabled]="changeChannelNameForm.invalid">
+                    <h4 class="button-text">Speichern</h4>
+                    <img class="resp-edit-img" src="./assets/img/check_circle.png" alt="">
                   </button>
                 </div> 
                 <div class="open-dtls-chnnl-name-input">
@@ -57,8 +77,9 @@
                 <form class="channel-description-form" #changeChannelDescriptionForm="ngForm" (ngSubmit)="changeChannelDescription()">
                   <div class="open-dtls-chnnl-name">
                     <h3 class="fs-18">Beschreibung</h3>
-                    <button class="blue-btn" [disabled]="changeChannelDescriptionForm.invalid" type="submit">
-                      <h4>Speichern</h4>
+                    <button class="no-border-blue-btn" [disabled]="changeChannelDescriptionForm.invalid" type="submit">
+                      <h4 class="button-text">Speichern</h4>
+                      <img class="resp-edit-img" src="./assets/img/check_circle.png" alt="">
                     </button>
                   </div> 
                   <textarea required [(ngModel)]="channelData.description" #description="ngModel" name="description" placeholder="Schreibe hier die Beschreibung"></textarea>
@@ -66,6 +87,23 @@
                 <div class="black-line"></div>
                 <h3 class="fs-18">Erstellt von</h3>
                 <h4 class="blue-font" >{{currentChannel.created.createdFrom}}</h4>
+            </div>
+            <div class="mmbr-of-chnnl-parent">
+              <div class="mmbr-of-chnnl-head">
+                  <h3>Mitglieder</h3>
+              </div>
+              <div class="mmbr-of-chnnl-list-parent">
+                  @for(item of currentChannel ? currentChannel.members: ["Lisa"]; track item; let idx = $index){
+                      <div (click)="openUserDetails(idx)" class="mmbr-of-chnnl-list">
+                          <img class="mmbr-of-chnnl-pic" src="{{item.fotolink}}" alt="">
+                          <h4>{{item.name}}</h4>
+                      </div>
+                  }
+              </div>
+              <button (click)="addMembersToChannelDialog()" class="mmbr-of-chnnl-pic-button">
+                  <img src="./assets/img/add-members.png" alt="">
+                  <h4>Mitglieder hinzufügen</h4>
+              </button>
             </div>
             <div class="open-dtls-chnnl-delete-btn-parent">
                 <button class="blue-btn" (click)="deleteChannelAtUser()">Channel verlassen</button>

@@ -34,7 +34,7 @@
         </form>   
     </div> 
     @if(openDetailsOfChannel){
-        <app-details-of-channel (openChannelEvent)="openChannel($event)" (deleteChannelEvent)="deleteChannelAtUser()" (closeDetailsEvent)="openDetailsAboutChannel()" [currentChannel]="currentChannel"></app-details-of-channel>
+        <app-details-of-channel (openDetailsEvent)="openUserDetails($event)" (openAddMemberEvent)="addMembersToChannelDialog()" (openChannelEvent)="openChannel($event)" (deleteChannelEvent)="deleteChannelAtUser()" (closeDetailsEvent)="openDetailsAboutChannel()" [currentChannel]="currentChannel"></app-details-of-channel>
     }
 }   
 @if(channelDeleted){

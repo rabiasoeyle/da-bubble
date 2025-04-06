@@ -21,7 +21,6 @@ addMembersToChannelDialog(){
   this.openAddMemberEvent.emit();
 }
 openUserDetails(idx:number){
-  console.log("userDetails:", idx);
   this.openDetailsEvent.emit(idx)
 }
 }

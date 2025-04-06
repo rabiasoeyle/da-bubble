@@ -45,9 +45,12 @@
     gap: 20px;
     @media(max-width:800px){
         width:100%;
-        // height: 20px;
         padding:4px;
     }
+}
+.open-dtls-chnnl-name-input{
+    @include dFlex($jc:flex-start);
+
 }
 .open-dtls-chnnl-middle{
     border: 1px solid #ADB0D9;
@@ -74,4 +77,75 @@
     width:100%;
     height:2px;
     background-color: #ADB0D9;
+}
+.mmbr-of-chnnl-parent{
+    display: none;
+    width:414px;
+    height:200px;
+    background-color: white;
+    border: 1px solid #ADB0D9;
+    border-radius: 30px;
+    padding:40px;
+    @media(max-width:800px){
+        @include dFlex($fd:column, $g:20px, $ai:flex-start);
+        width:100%;
+        height:auto;
+        padding:4px;
+    }
+}
+.mmbr-of-chnnl-list-parent{
+    overflow-y: scroll;
+    height:80%;
+    width:100%;
+    scrollbar-width: none;
+}
+.mmbr-of-chnnl-head{
+    @include dFlex($jc:space-between);
+    width:100%;
+}
+.mmbr-of-chnnl-list{
+    @include dFlex($g:16px, $jc:flex-start);
+}
+.mmbr-of-chnnl-pic{
+    width:40px;
+    height:40px;
+    border-radius: 30px;
+    border: 2px solid white;
+    @media(max-width:800px){
+        width:20px;
+        height:20px;
+    }
+}
+.mmbr-of-chnnl-pic-button{
+    @include dFlex();
+    background-color: white;
+    border:none;
+}
+textarea {
+    width: 100%;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: none;
+    border-radius: 4px;
+    background-color: white;
+    font-size: 12px;
+    resize: none;
+    font-family: 'Nunito';
+}
+.add-member-img{
+    width:20px;
+    height:20px;
+}
+.resp-edit-img{
+    display:none;
+    @media(max-width:800px){
+        @include dFlex();
+        width:20px;
+        height:20px;
+    }
+}
+.button-text{
+    @media(max-width:800px){
+        display:none;
+    }
 }

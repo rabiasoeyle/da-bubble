@@ -185,7 +185,6 @@ form{
     transition: 500ms;
     font-family: "Nunito";
     font-weight: 700;
-    // width: 137px;
     height: 49px;
     padding: 6px 25px 6px 25px;
     gap: 10px;
@@ -210,6 +209,35 @@ form{
         height:auto;
         padding:6px;
         // width:100px;
+    }
+}
+.no-border-blue-btn{
+    transition: 500ms;
+    font-family: "Nunito";
+    font-weight: 700;
+    height: 49px;
+    padding: 6px 25px 6px 25px;
+    gap: 10px;
+    border-radius: 25px;
+    text-align: center;
+    border-color: transparent;
+    color:#444DF2;
+    background-color: white;
+    cursor: pointer;
+    &:hover{
+        transition: 500ms;
+        background-color: white;
+        color:#444DF2;
+    }
+    &:disabled{
+        background-color: white;
+        cursor: not-allowed;
+        border-color: transparent;
+        color: #686868;
+    }
+    @media(max-width:800px){
+        height:auto;
+        padding:6px;
     }
 }
 input:focus,

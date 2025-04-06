@@ -3,6 +3,7 @@ import { Channel } from '../../../../modules/channel';
 import { FormsModule } from '@angular/forms';
 import { ChatService } from '../../../chat.service';
 
+
 @Component({
   selector: 'app-details-of-channel',
   standalone: true,
@@ -20,6 +21,8 @@ export class DetailsOfChannelComponent {
   @Output() closeDetailsEvent = new EventEmitter<number>();
   @Output() deleteChannelEvent = new EventEmitter<void>();
   @Output() openChannelEvent = new EventEmitter<string>();
+  @Output() openDetailsEvent = new EventEmitter<number>();
+  @Output() openAddMemberEvent = new EventEmitter<void>();
   isNameChanged = false;
   isDescriptionChanged = false;
   deletedChannelname="";
@@ -55,5 +58,11 @@ export class DetailsOfChannelComponent {
     if(this.currentChannel){
     this.chatService.changeChannelDescription(this.currentChannel.name, this.channelData.description);
     }this.openEditChannel();
+  }
+  addMembersToChannelDialog(){
+    this.openAddMemberEvent.emit();
+  }
+  openUserDetails(idx:number){
+    this.openDetailsEvent.emit(idx)
   }
 }
