@@ -1,20 +1,24 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { UserService } from '../../user.service';
 import { UserData } from '../../../modules/user';
 import { ChatService } from '../../chat.service';
 import { Chat } from '../../../modules/chat';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
 
 @Component({
   selector: 'app-start-new-chat',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule],
+  imports: [ReactiveFormsModule, FormsModule , PickerModule],
   templateUrl: './start-new-chat.component.html',
-  styleUrl: './start-new-chat.component.scss'
+  styleUrl: './start-new-chat.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class StartNewChatComponent {
     fb = inject(FormBuilder);
+    markCorrespond:boolean=false;
+    emojisOpen:boolean=false;
     newMessage={
       message:"",
     }
@@ -137,5 +141,23 @@ export class StartNewChatComponent {
     }
     sendMessage(){
       this.openChatOrChannel(this.savedUid);
+    }
+    
+    showEmojis(){
+      this.emojisOpen = !this.emojisOpen;
+      this.markCorrespond = false;
+    }
+    addEmoji(event: any) {
+      this.newMessage.message += event.emoji.native;
+    }
+    showMarkableCorrespond(){
+      this.markCorrespond=!this.markCorrespond;
+      this.emojisOpen = false;
+    }
+    markPerson(){
+      // if(this.currentChat){
+      //   this.newMessage.message += "@" + this.currentChat.chatPartner.name;
+      //   this.markCorrespond=false;
+      // }
     }
 }

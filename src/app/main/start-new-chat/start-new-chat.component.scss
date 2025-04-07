@@ -6,6 +6,16 @@
     padding:16px;
     margin-left:8px;
 }
+textarea{
+    width: 90%;
+    padding: 8px;
+    box-sizing: border-box;
+    border: none;
+    background-color: transparent;
+    font-size: 12px;
+    resize: none;
+    font-family: 'Nunito';
+}
 .messages-form{
     @include dFlex($jc:space-around,$fd:column);
     height: 80px;
@@ -16,12 +26,6 @@
     left: 0;
     right: 0;
     bottom: 8px;
-    >textarea{
-        width:80%;
-        height:80%;
-        border:none;
-        background-color: white;
-    }
     @media(max-width:800px){
         bottom:3px;
         height:10%;
@@ -49,4 +53,85 @@
     padding:8px;
     border-radius:25px;
     background-color: white;
+}
+.emoji-mark-send-buttons{
+    @include dFlex($g:16px, $jc:space-around);
+    width:80%;
+}
+.send-msg-btn{
+    width:100%;
+    border:transparent;
+    background-color: white;
+    text-align: end;
+}
+
+.emoji-picker {
+    position: absolute;
+    bottom:10vH;
+    left:0;
+    right:4vW;
+    width: 320px;
+    height: 400px;
+    overflow: scroll;
+    border: 1px solid #ccc;
+    @include dFlex();
+    z-index:3;
+    padding: 8px;
+    scrollbar-width: none;
+    background-color: white;
+    border-radius: 20px;
+    @media(max-width:500px){
+        width:280px;
+        height:200px;
+        left:2vW;
+    }
+}
+.corresponds-mark{
+    position: absolute;
+    bottom:10vH;
+    left:0;
+    right:4vW;
+    max-width: 320px;
+    max-height: 300px;
+    overflow: scroll;
+    border: 1px solid #ccc;
+    @include dFlex($ai:flex-start, $fd:column);
+    z-index:3;
+    padding: 8px;
+    scrollbar-width: none;
+    background-color: white;
+    border-radius: 20px;
+    @media(max-width:500px){
+        max-width:280px;
+        max-height:200px;
+        left:2vW;
+    }
+}
+.correspond-name-img{
+    @include dFlex($jc:flex-start, $g:16px);
+    width:100%;
+    >img{
+        width:40px;
+        height:40px;
+        border-radius: 100%;
+        @media(max-width){
+            width:20px;
+            height:20px;
+        }
+    }
+}
+emoji-mart{
+    width:320px;
+    height:400px;
+    @media(max-width:500px){
+        width:280px;
+        height:200px;
+    }
+}
+emoji-mart .emoji-mart-search-icon{
+    background-color: white;
+    border: 0px transparent;
+}
+emoji-mart .emoji-mart-anchors, .emoji-mart-category-label, .emoji-mart-preview{
+    display: none;
 }
