@@ -3,35 +3,42 @@
             <h3>Neue Nachricht</h3>
             <div class="input-area">
                 <h4>An</h4>
-                <input [formControl]="input" class="search-input" type="text" placeholder="#Channel, @Name oder die E-Mail Adresse">
+                    <input 
+                    [(ngModel)]="adress" 
+                    name="adress" (ngModelChange)="onInputChange($event)" 
+                    class="search-input" type="text" 
+                    placeholder="{{placeholder()}}">
             </div>
         </div>
         @if(searchResultsValue.length>0 && search=="email"){
         <div class="search-results">
             @for(item of searchResultsValue; track item){
-                <h4 (click)="openChatOrChannel(item.uid)">{{item.email}}</h4>
+                <h4 (click)="saveName(item.uid)">{{item.email}}</h4>
             }
         </div> 
         }
         @if(searchResultsValue.length>0 && search=="name"){
             <div class="search-results">
                 @for(item of searchResultsValue; track item){
-                    <h4 (click)="openChatOrChannel(item.uid)">{{item.name}}</h4>
+                    <h4 (click)="saveName(item.uid)">{{item.name}}</h4>
                 }
             </div> 
         }
         @if(searchResults.length>0 && search=="channel"){
             <div class="search-results">
                 @for(item of searchResults; track item){
-                    <h4 (click)="openChatOrChannel(item)">{{item}}</h4>
+                    <h4 (click)="saveName(item)">{{item}}</h4>
                 }
             </div> 
         }
         
         <div class="channel-chat">
         </div>
-        <form class="messages-form" [formGroup] ="sendMessageForm" (ngSubmit)="sendMessage()">
-            <textarea formControlName="message" type="text" placeholder="Deine Nachricht hier eingeben">
+        <form class="messages-form" #sendMessageForm="ngForm" (ngSubmit)="sendMessage()">
+            <textarea #message="ngModel" 
+            [(ngModel)]="newMessage.message" 
+            name="message" type="text" 
+            placeholder="Deine Nachricht hier eingeben">
             </textarea>
             <button type="submit">
                 <img src="./assets/img/send.png" alt="send">
