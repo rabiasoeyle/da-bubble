@@ -27,11 +27,8 @@ export class DialogLoginComponent implements OnInit{
   constructor(){
   }
   ngOnInit(){
-    console.log("ngOninit wurde ausgeführt")
-    // this.authService.handleGoogleRedirect();
   }
   onLogin() {
-    console.log("Login gestartet:")
     this.authService.login(this.loginData.email, this.loginData.password)
       .subscribe({
         next: async () => {
@@ -42,9 +39,9 @@ export class DialogLoginComponent implements OnInit{
           if (this.errorMessage === "auth/invalid-email") {
             this.errorMessage = "Bitte geben Sie eine gültige E-Mail ein";
           } else if (this.errorMessage === "auth/missing-password") {
-            this.errorMessage = "Bitte geben Sie ein Passwort ein";
+            this.errorMessage = "Bitte geben Sie ein gültiges Passwort ein";
           } else if (this.errorMessage === "auth/invalid-password") {
-            this.errorMessage = "Leider ist das Passwort falsch";
+            this.errorMessage = "Bitte geben Sie ein gültiges Passwort ein";
           }else 
           if (this.errorMessage === "auth/invalid-credential") {
             this.errorMessage = "Leider ist das Passwort oder die E-Mail falsch";

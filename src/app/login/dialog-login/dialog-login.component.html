@@ -32,7 +32,7 @@
          @if((password.touched && password.invalid) || errorMessage === 'Bitte geben Sie ein Passwort ein' || errorMessage === 'Leider ist das Passwort falsch'){
             <label class="error-label" >
                 @if(!errorMessage){
-                    Bitte fülle das Password Feld aus
+                    Bitte füge ein gültiges Passwort ein.
                 }
                 {{ errorMessage }}
             </label>
