@@ -33,12 +33,7 @@ export class ChatComponent implements OnInit, OnDestroy, OnChanges{
   editMessageData={
     message:""
   }
-  // sendMessageForm = this.fb.nonNullable.group({
-  //     message:['', Validators.required],
-  //   })
-  // editMessageForm= this.fb.nonNullable.group({
-  //     message:['', Validators.required],
-  //   })
+  markCorrespond:boolean=false;
   previousChatData: any = null;
   emojisOpen:boolean = false;
   constructor(private chatService:ChatService, private authService:AuthService) {}
@@ -147,10 +142,20 @@ formatDate(timestamp: number): string {
   }
   showEmojis(){
     this.emojisOpen = !this.emojisOpen;
+    this.markCorrespond = false;
   }
   addEmoji(event: any) {
     this.newMessage.message += event.emoji.native;
-    console.log(this.newMessage.message)
+  }
+  showMarkableCorrespond(){
+    this.markCorrespond=!this.markCorrespond;
+    this.emojisOpen = false;
+  }
+  markPerson(){
+    if(this.currentChat){
+      this.newMessage.message += "@" + this.currentChat.chatPartner.name;
+      this.markCorrespond=false;
+    }
   }
 
 }

@@ -29,6 +29,7 @@ export class ChannelComponent implements OnInit, OnChanges{
   newMessage={
     message:"",
   }
+  markCorrespond:boolean=false;
   emojisOpen:boolean=false;
   @Input()currentChannelName:string = "kein Name";
   openDetailsOfChannel= false;
@@ -101,7 +102,6 @@ export class ChannelComponent implements OnInit, OnChanges{
     this.membersOfChannelList = !this.membersOfChannelList;
   }
   async openUserDetails(idx:number){
-    console.log("userDetails:", idx);
     this.membersOfChannelList = false;
       this.addMemberToChannel = false;
       if(this.memberDetails = true && idx==9999){
@@ -151,6 +151,15 @@ export class ChannelComponent implements OnInit, OnChanges{
   }
   addEmoji(event: any) {
     this.newMessage.message += event.emoji.native;
-    console.log(this.newMessage.message)
+  }
+  showMarkableCorrespond(){
+    this.markCorrespond=!this.markCorrespond;
+    this.emojisOpen = false;
+  }
+  markPerson(idx:number){
+    if(this.currentChannel){
+      this.newMessage.message += "@" + this.currentChannel.members[idx].name;
+      this.markCorrespond=false;
+    }
   }
 }

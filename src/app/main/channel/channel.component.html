@@ -49,13 +49,24 @@
               ></emoji-mart>
               </div>
         }
+        @if(markCorrespond){
+            <div class="corresponds-mark">
+                @for(item of currentChannel ? currentChannel.members: ["Lisa"]; track item; let idx = $index){
+                    <div (click)="markPerson(idx)" class="correspond-name-img">
+                        <img class="mmbr-of-chnnl-pic" src="{{item.fotolink}}" alt="">
+                        <!-- <img src="" alt="online"> -->
+                        <h4>{{item.name}}</h4>
+                    </div>
+                }
+            </div>
+        }
         <form class="messages-form" #sendMessageForm="ngForm" (ngSubmit)="sendMessage()">
             <textarea #message="ngModel" 
             [(ngModel)]="newMessage.message" name="message" type="text" placeholder="Deine Nachricht hier eingeben">
             </textarea>
             <div class="emoji-mark-send-buttons">
                 <img (click)="showEmojis()" src="./assets/img/sentiment_satisfied.png" alt="emojis">
-                <img src="./assets/img/alternate_email.png" alt="@">
+                <img (click)="showMarkableCorrespond()" src="./assets/img/alternate_email.png" alt="@">
                 <button class="send-msg-btn" type="submit">
                     <img src="./assets/img/send.png" alt="send">
                 </button>
