@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService} from '../../auth.service';
 import { UserData } from '../../../modules/user';
@@ -23,6 +23,7 @@ export class DialogChooseAvatarComponent {
   dummyProfile="./assets/img/profile.png";
   chosedAvatar:boolean = false;
   userData: UserData | null = null;
+  @Output()loginUser = new EventEmitter<string>();
   constructor(private authService: AuthService){
 
   }
@@ -36,10 +37,13 @@ export class DialogChooseAvatarComponent {
     this.chosedAvatar = true;
   }
   async saveNewInfos(route:string){
+    this.loginUser.emit(this.dummyProfile);
     if (this.userData) {
-      await this.authService.updateUserProfile(this.userData.uid, this.dummyProfile)
-      .then(() => {
-        this.goTo(route);});
+      // await this.authService.updateUserProfile(this.userData.uid, this.dummyProfile)
+      // .then(() => {
+      //   // this.goTo(route);
+        
+      //   });
     } else {
       console.error('User-ID fehlt, konnte Avatar nicht speichern.');
     }

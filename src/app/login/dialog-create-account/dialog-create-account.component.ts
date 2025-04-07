@@ -22,8 +22,8 @@ export class DialogCreateAccountComponent {
   authService = inject(AuthService);
   errorMessage : string |null = null;
 
-  @Output()goBackEvent = new EventEmitter<string>
-  @Output() accountCreated = new EventEmitter<void>();
+  @Output()goBackEvent = new EventEmitter<string>();
+  @Output() accountCreated = new EventEmitter<any>();
 
   registerData={
     name:"",
@@ -33,21 +33,24 @@ export class DialogCreateAccountComponent {
   }
   
   onSubmit() {
+    // this.accountCreated.emit(this.registerData);
     this.authService.register(this.registerData.email, this.registerData.name, this.registerData.password)
-      .subscribe({
-        next: async () => {
-          try {
-            this.authService.login(this.registerData.email, this.registerData.password);
-            this.accountCreated.emit();
-          } catch (err) {
-            console.error('Error saving user data to Firebase:', err);
-            this.errorMessage = 'Error saving user data';
-          }
-        },
-        error: (err) => {
-          this.errorMessage = err.code;
-        },
-      });
+      // .subscribe({
+      //   next: async () => {
+          // try {
+            // this.authService.login(this.registerData.email, this.registerData.password);
+            // console.log("Erste Station", this.registerData)
+            // this.accountCreated.emit(this.registerData);
+          // } catch (err) {
+            // console.error('Error saving user data to Firebase:', err);
+            // this.errorMessage = 'Error saving user data';
+          // }
+      //   },
+      //   error: (err) => {
+      //     this.errorMessage = err.code;
+      //   },
+      // });
+      this.accountCreated.emit(this.registerData);
   }
   
   goBackToLogin(){

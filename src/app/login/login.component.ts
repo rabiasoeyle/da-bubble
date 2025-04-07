@@ -24,11 +24,15 @@ export class LoginComponent{
   forgotPassword:boolean = false;
   chooseAvatar:boolean=false;
   userId: string | null = null;
+  registerData:any=null;
 
   constructor(private authService: AuthService) {
     this.authService.userData$.subscribe((user) => {
       this.userId = user?.uid || null;
     });
+    if(this.registerData !== null){
+      this.handleAccountCreated(this.registerData);
+    }
   }
   forgotPasswordPage(){
     this.startLogin=false;
@@ -42,8 +46,10 @@ export class LoginComponent{
     this.startLogin=false;
     this.createNewAccount=true;
   }
-  handleAccountCreated() {
+  handleAccountCreated(registerData:any) {
+    this.registerData = registerData;
     this.createNewAccount = false;
+    this.startLogin = false;
     this.chooseAvatar = true;
   }
   fromCreateBackToLogin(){
@@ -53,5 +59,11 @@ export class LoginComponent{
   fromChooseAvatar(){
     this.startLogin = true;
     this.chooseAvatar = false;
+  }
+  loginUserAfterAvatarChosen(avatar:string){
+    this.authService.login(this.registerData.email, this.registerData.password);
+    if(this.userId){
+      this.authService.updateUserProfile(this.userId, avatar)
+    }
   }
 }
