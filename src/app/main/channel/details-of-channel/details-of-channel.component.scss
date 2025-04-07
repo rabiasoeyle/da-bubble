@@ -1,15 +1,22 @@
 @import "../../../../styles.scss";
 @import "../channel.component.scss";
 .open-dtls-chnnl-parent{
-    position: absolute;
-    right:0;
-    left:0;
-    top:0;
-    bottom:0;
-    background-color: rgba(0, 0, 0, 0.4);
     @include dFlex();
+    position: absolute;
+    right: -1.5vW;
+    left: revert-layer;
+    top: revert-layer;
+    bottom: -8vH;
+    background-color: rgba(0, 0, 0, 0.4);
+    width: 100vW;
+    height: 100vH;
     @media(max-width:800px){
-        top:auto;
+        position: absolute;
+        right: -0.5vW;
+        left: -0.5vW;
+        top: -10vH;
+        bottom: -8vH;
+        background-color: transparent;
     }
 }
 .open-dtls-chnnl-child{

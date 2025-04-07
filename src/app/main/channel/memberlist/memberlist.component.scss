@@ -4,7 +4,7 @@
 .mmbr-of-chnnl-parent{
     position: absolute;
     width:414px;
-    height:200px;
+    height:300px;
     background-color: white;
     border: 0px white;
     border-top-left-radius: 30px;
@@ -14,6 +14,7 @@
     top:50px;
     right:50px;
     padding:40px;
+    z-index:2;
     @include dFlex($fd:column, $g:20px, $ai:flex-start);
     @media(max-width:800px){
         width:94vW;

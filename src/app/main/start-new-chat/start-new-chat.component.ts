@@ -91,7 +91,6 @@ export class StartNewChatComponent {
     async saveName(item: string, idx:number) {
       if (this.search === "name" || this.search === "email") {
             this.savedAdress = this.searchResultsValue[idx].name;
-            console.log(this.savedAdress+ "is"+this.savedUid)
             this.savedUid = item;
             this.adress = this.savedAdress;
             this.searchResults = [];
@@ -111,7 +110,6 @@ export class StartNewChatComponent {
               if (this.userChats[i].chatPartner.uid == uid) {
                 this.openChat.emit(i);
                 this.sendMessageEmitter.emit(this.newMessage.message)
-                console.log("Nachricht versendet");
                 this.newMessage.message ="";
               }
             }
@@ -131,7 +129,6 @@ export class StartNewChatComponent {
       }else{
         this.oChannel.emit(item);
         this.sendChannelMessageEmitter.emit(this.newMessage.message);
-        console.log(this.newMessage.message+ "an"+item)
         this.newMessage.message="";
       }
     }

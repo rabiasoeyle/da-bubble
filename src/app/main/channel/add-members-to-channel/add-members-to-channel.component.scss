@@ -18,6 +18,7 @@ h5{
     top:50px;
     right:50px;
     padding:40px;
+    z-index:2;
     @include dFlex($fd:column, $g:20px, $ai:flex-start);
     @media(max-width:800px){
         width: 94vW;
