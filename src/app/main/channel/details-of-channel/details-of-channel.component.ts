@@ -49,10 +49,10 @@ export class DetailsOfChannelComponent {
     if(this.currentChannel ){
     this.chatService.changeChannelName(this.currentChannel.name, this.channelData.name);
     this.chatService.changeChannelNameForUsers(this.currentChannel.name, this.channelData.name);}
-    setTimeout(()=>{
+    // setTimeout(()=>{
             this.openEditChannel(),
             this.openChannelEvent.emit(this.channelData.name) 
-      },200);
+      // },200);
   }
   changeChannelDescription(){
     if(this.currentChannel){

@@ -60,6 +60,7 @@ export class ChannelComponent implements OnInit, OnChanges{
     });
   }
   async openChannel(channelName: string) {
+    this.currentChannelName=channelName;
     this.chatService.getChannelLiveUpdates(channelName);
     this.chatService.currentChannel.subscribe(async (data) => {
     if (!data) {
@@ -83,7 +84,9 @@ export class ChannelComponent implements OnInit, OnChanges{
       members:membersWithUserData,
       membersAmount:data.members.length,
     }});
+    console.log("neuer Channel:", this.currentChannelName);
     return this.currentChannel;
+    
   }
   sendMessage(){
       if(this.currentChannel&& this.newMessage.message){
