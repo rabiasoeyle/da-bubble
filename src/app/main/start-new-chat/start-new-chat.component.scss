@@ -7,7 +7,7 @@
     margin-left:8px;
 }
 .messages-form{
-    @include dFlex();
+    @include dFlex($jc:space-around,$fd:column);
     height: 80px;
     border: 1px solid #ADB0D9;
     border-radius: 20px;
@@ -15,12 +15,16 @@
     position: absolute;
     left: 0;
     right: 0;
-    bottom: 16px;
+    bottom: 8px;
     >textarea{
         width:80%;
         height:80%;
         border:none;
         background-color: white;
+    }
+    @media(max-width:800px){
+        bottom:3px;
+        height:10%;
     }
 }
 .channel-chat{

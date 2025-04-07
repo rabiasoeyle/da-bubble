@@ -86,6 +86,11 @@ export class MainComponent implements OnInit{
   onAddChannel(data:{}){
     this.addChannelDialog();
   }
+  sendMessageInChannel(message:string){
+    if(this.currentChannel && message !=""){
+      this.chatService.sendMessage(message, this.currentChannelName);
+    }
+  }
   openChannel(channelName: string) {
     this.currentChatId=999;
     this.currentChannelName = channelName;
@@ -96,6 +101,11 @@ export class MainComponent implements OnInit{
       created:{createdFrom:"any",createdAt:"string",},
       members:[],
       membersAmount:1,
+    }
+  }
+  sendMessageInChat(message:string){
+    if(this.currentChat && message !=""){
+      this.chatService.sendPrivateMessage(message, this.currentChat.chatId);
     }
   }
   async openChat(idx:number){

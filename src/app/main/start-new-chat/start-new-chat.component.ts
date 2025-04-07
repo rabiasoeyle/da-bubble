@@ -25,8 +25,9 @@ export class StartNewChatComponent {
     searchResults: string[] = [];
     search: string = '';
     savedAdress:string="";
-    input = new FormControl('');
+    // input = new FormControl('');
     searchResultsValue: any[]=[]; 
+    savedUid:string = "";
     @Input() userData:UserData|null ={
         uid: "",
         name: "",
@@ -37,7 +38,9 @@ export class StartNewChatComponent {
       } 
     userChats:any=[]  
     private searchSubject = new Subject<string>();
+    @Output() sendMessageEmitter = new EventEmitter<string>();
     @Output() openChat = new EventEmitter<number>();
+    @Output() sendChannelMessageEmitter = new EventEmitter<string>();
     @Output() oChannel = new EventEmitter<string>();
     constructor(private userService: UserService, private chatService: ChatService){
     }
@@ -85,30 +88,31 @@ export class StartNewChatComponent {
         this.searchResultsValue =[];
       }
     }
-  
     async saveName(item: string) {
       if (this.search === "name" || this.search === "email") {
         await this.loadUserChats();
         for (let i = 0; i < this.userChats.length; i++) {
           if (this.userChats[i].chatPartner.uid === item) {
             this.savedAdress = this.userChats[i].chatPartner.name;
+            this.savedUid = item;
           }
         }
       } else {
         this.savedAdress = item;
+        this.savedUid=item
       }
       this.adress = '';
       this.searchResults = [];
     }
-    
     async goToPersonalMessages(uid:string){
         if(this.userData && this.userChats<=0){
-          console.log("uid: ",uid)
           const messagesWMembers = await this.chatService.createChat(this.userData?.uid, uid )
         } await this.loadUserChats();
             for (let i = 0; i < this.userChats.length; i++) {
               if (this.userChats[i].chatPartner.uid == uid) {
                 this.openChat.emit(i);
+                this.sendMessageEmitter.emit(this.newMessage.message)
+                this.newMessage.message ="";
               }
             }
     };
@@ -121,67 +125,17 @@ export class StartNewChatComponent {
           }
         }
     }
-    // onInputChange(value: string) {
-    //   this.input.valueChanges
-    //   .pipe(
-    //     debounceTime(300),
-    //     distinctUntilChanged()
-    //   )
-    //   .subscribe(value => {
-    //     if (!value || value.length < 2) {
-    //       this.searchResultsValue = [];
-    //       this.searchResults=[];
-    //       return;
-    //     }
-    //     const firstChar = value.charAt(0);
-    //     if (firstChar === "@") {
-    //       this.searchResultsValue = this.userService.searchUsers(value.substring(1)); 
-    //       for(let i=0; i<this.searchResultsValue.length; i++){
-    //         this.searchResults.push(this.searchResultsValue[i].name);
-    //         this.search="name"
-    //       }
-    //     } else if (firstChar === "#") {
-    //       this.search="channel"
-    //       if(this.userData){
-    //         this.searchResults = (this.userData.channels || [])
-    //         .filter((channel: string) => 
-    //         channel.toLowerCase().includes(value.substring(1).toLowerCase()));  
-    //       }
-    //     } else if (/[a-zA-Z]/.test(firstChar)) {
-    //       this.searchResultsValue = this.userService.searchUsersWithMail(value); 
-    //       this.searchResults=[];
-    //       for(let i=0; i<this.searchResultsValue.length; i++){
-    //         this.searchResults.push(this.searchResultsValue[i].email);
-    //         this.search="email"
-    //       }
-    //     } else {
-    //       this.searchResultsValue = []; 
-    //       this.searchResults=[] 
-    //     }
-    //   });
-    // }
-    // async saveName(item:string){
-    //   if(this.search=="name" || this.search=="email"){
-    //     await this.loadUserChats();
-    //         for (let i = 0; i < this.userChats.length; i++) {
-    //           if (this.userChats[i].chatPartner.uid == item) {
-    //             this.savedAdress=this.userChats[i].chatPartner.name;
-    //           }
-    //         }
-    //   }else{
-    //     this.savedAdress = item;
-    //   }
-    //   this.newAdress.adress ="";
-    // }
     openChatOrChannel(item:string){
       if(this.search=="name" || this.search=="email"){
         this.goToPersonalMessages(item);
       }else{
         this.oChannel.emit(item);
+        this.sendChannelMessageEmitter.emit(this.newMessage.message);
+        console.log(this.newMessage.message+ "an"+item)
+        this.newMessage.message="";
       }
     }
     sendMessage(){
-      this.openChatOrChannel(this.savedAdress);
-
+      this.openChatOrChannel(this.savedUid);
     }
 }
