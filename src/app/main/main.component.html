@@ -1,5 +1,5 @@
 <div class="hole-page">
-    <app-header (openChat)="openChat($event)" (goBackToDevspace)="startNewChat()" (oChannel)="openChannel($event)" [startNewChatBoolean]="startNewChatBoolean" [currentChannel]="currentChannel" [currentChat]="currentChat" [userChats]="userChats"></app-header>
+    <app-header (openChat)="openChat($event)" (goBackToDevspace)="dontStartNewChat()" (oChannel)="openChannel($event)" [startNewChatBoolean]="startNewChatBoolean" [currentChannel]="currentChannel" [currentChat]="currentChat" [userChats]="userChats"></app-header>
     
     <section class="main-content">
     @if(sidenavIsOpen && userData !=null && userChats !=null){
@@ -18,7 +18,7 @@
         @if(currentChat!=null){
             <app-chat [currentChatId]="currentChatId" [userChats]="userChats"></app-chat>
         }
-        @if(currentChannel==null && currentChat==null && startNewChatBoolean){
+        @if((currentChannel==null && currentChat==null && startNewChatBoolean)||(currentChannel==null && currentChat==null)){
             <app-start-new-chat (oChannel)="openChannel($event)" (sendChannelMessageEmitter)="sendMessageInChannel($event)" [userData]="userData" (sendMessageEmitter)="sendMessageInChat($event)" (openChat)="openChat($event)"></app-start-new-chat>
         }
     </div>

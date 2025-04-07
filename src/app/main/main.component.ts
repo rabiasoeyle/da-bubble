@@ -129,6 +129,11 @@ export class MainComponent implements OnInit{
   startNewChat(){
     this.currentChannel = null;
     this.currentChat = null;
+    this.startNewChatBoolean = true;
+  }
+  dontStartNewChat(){
+    this.currentChannel = null;
+    this.currentChat = null;
     this.startNewChatBoolean = false;
   }
   startNewChatResp(){

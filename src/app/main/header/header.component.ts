@@ -145,6 +145,7 @@ export class HeaderComponent implements OnInit{
   goBackToSidenav(){
     this.currentChannel=null;
     this.currentChat = null;
+    this.startNewChatBoolean=false;
     this.goBackToDevspace.emit();
   }
 }
