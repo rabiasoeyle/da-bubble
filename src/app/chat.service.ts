@@ -31,10 +31,12 @@ export class ChatService {
           const time = msg.timestamp
           const formattedDateMessage = this.formatDate(time);
           const timestampNumber = typeof msg.timestamp === "string"? parseInt(msg.timestamp) : msg.timestamp;
+          const formatHour = this.formatHour(time);
           return {
             uid: msg.uid, 
             timestamp: formattedDateMessage,
             date:msg.timestamp,
+            clock:formatHour,
             message:msg.message,
             name: userInfo? userInfo['name'] : "Unbekannt",
             fotolink: userInfo? userInfo['fotolink'] : "./assets/img/profile.png",
@@ -68,6 +70,14 @@ export class ChatService {
         hour12: false,
       });
       return formattedDate;
+    }
+    formatHour(createdAt:any){
+      const formattedHour = new Date(createdAt).toLocaleString("de-DE", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+      });
+      return formattedHour;
     }
     updateChat(chat: Chat) {
     this.currentChatSubject.next(chat); // Löst Update aus

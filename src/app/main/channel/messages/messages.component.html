@@ -28,7 +28,7 @@
             <div class="msg-text-area">
                 <div class="msg-name-and-time">
                     <h4 class="margin-5px">{{item? item.name:"565656"}}</h4>
-                    <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
+                    <h6 class="margin-5px">{{item? item.clock: "Keine Zeit"}}</h6>
                 </div>
                 <div (click)="startEditMessage(idx)" class="msg-message">
                     <h4 class="margin-5px">{{item? item.message :"Hey"}}</h4>
@@ -44,7 +44,7 @@
                     <div class="my-msg-text-area">
                         <div class="my-msg-name-and-time">
                             <h4 class="margin-5px">{{item? item.name:"565656"}}</h4>
-                            <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
+                            <h6 class="margin-5px">{{item? item.clock: "Keine Zeit"}}</h6>
                         </div>
                         <div (click)="startEditMessage(idx)" class="my-msg-message">
                             <h4 class="margin-5px">{{item? item.message :"Hey"}}</h4>
@@ -78,7 +78,7 @@
                     <div class="my-msg-text-area">
                         <div class="my-msg-name-and-time">
                             <h4 class="margin-5px">{{item? item.name:"565656"}}</h4>
-                            <h6 class="margin-5px">{{item? item.timestamp: "Keine Zeit"}}</h6>
+                            <h6 class="margin-5px">{{item? item.clock: "Keine Zeit"}}</h6>
                         </div>
                         <div class="my-msg-message edit-msg">
                             <form class="edit-message-form" #editMessageForm="ngForm" (ngSubmit)="editMessage(idx)">
