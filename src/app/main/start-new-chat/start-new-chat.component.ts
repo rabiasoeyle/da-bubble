@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, Input, Output, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { UserService } from '../../user.service';
 import { UserData } from '../../../modules/user';
@@ -22,14 +22,10 @@ export class StartNewChatComponent {
     newMessage={
       message:"",
     }
-    // newAdress={
-    //   adress:"",
-    // }
     adress: string = '';
     searchResults: string[] = [];
     search: string = '';
     savedAdress:string="";
-    // input = new FormControl('');
     searchResultsValue: any[]=[]; 
     savedUid:string = "";
     @Input() userData:UserData|null ={
@@ -92,20 +88,19 @@ export class StartNewChatComponent {
         this.searchResultsValue =[];
       }
     }
-    async saveName(item: string) {
+    async saveName(item: string, idx:number) {
       if (this.search === "name" || this.search === "email") {
-        await this.loadUserChats();
-        for (let i = 0; i < this.userChats.length; i++) {
-          if (this.userChats[i].chatPartner.uid === item) {
-            this.savedAdress = this.userChats[i].chatPartner.name;
+            this.savedAdress = this.searchResultsValue[idx].name;
+            console.log(this.savedAdress+ "is"+this.savedUid)
             this.savedUid = item;
-          }
-        }
-      } else {
+            this.adress = this.savedAdress;
+            this.searchResults = [];
+            this.searchResultsValue = [];
+        }else {
         this.savedAdress = item;
         this.savedUid=item
-      }
-      this.adress = '';
+          }
+      this.adress = this.savedAdress;
       this.searchResults = [];
     }
     async goToPersonalMessages(uid:string){
@@ -116,6 +111,7 @@ export class StartNewChatComponent {
               if (this.userChats[i].chatPartner.uid == uid) {
                 this.openChat.emit(i);
                 this.sendMessageEmitter.emit(this.newMessage.message)
+                console.log("Nachricht versendet");
                 this.newMessage.message ="";
               }
             }

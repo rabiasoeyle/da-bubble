@@ -12,22 +12,22 @@
         </div>
         @if(searchResultsValue.length>0 && search=="email"){
         <div class="search-results">
-            @for(item of searchResultsValue; track item){
-                <h4 (click)="saveName(item.uid)">{{item.email}}</h4>
+            @for(item of searchResultsValue; track item; let idx=$index){
+                <h4 (click)="saveName(item.uid,idx )">{{item.email}}</h4>
             }
         </div> 
         }
         @if(searchResultsValue.length>0 && search=="name"){
             <div class="search-results">
-                @for(item of searchResultsValue; track item){
-                    <h4 (click)="saveName(item.uid)">{{item.name}}</h4>
+                @for(item of searchResultsValue; track item; let idx=$index){
+                    <h4 (click)="saveName(item.uid, idx)">{{item.name}}</h4>
                 }
             </div> 
         }
         @if(searchResults.length>0 && search=="channel"){
             <div class="search-results">
-                @for(item of searchResults; track item){
-                    <h4 (click)="saveName(item)">{{item}}</h4>
+                @for(item of searchResults; track item; let idx=$index){
+                    <h4 (click)="saveName(item, idx)">{{item}}</h4>
                 }
             </div> 
         }
