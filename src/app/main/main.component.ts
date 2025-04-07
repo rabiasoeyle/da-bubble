@@ -32,6 +32,7 @@ export class MainComponent implements OnInit{
   sidenavIsOpen:boolean = true;
   addChannelOpen:boolean = false;
   memberDetails:boolean= false;
+  startNewChatBoolean:boolean=false;
 
   userData: UserData | null = null;
   sidenavButtonText:string="Workspace-Menü schließen";
@@ -53,7 +54,7 @@ export class MainComponent implements OnInit{
     this.loadUserChats();
   }
   isChatActive(): boolean {
-    return this.currentChannel !== null || this.currentChat !== null;
+    return this.currentChannel !== null || this.currentChat !== null || this.startNewChatBoolean;
   }
   async loadUserChats(){
     this.userChats = [];
@@ -102,6 +103,7 @@ export class MainComponent implements OnInit{
       members:[],
       membersAmount:1,
     }
+    this.startNewChatBoolean=false;
   }
   sendMessageInChat(message:string){
     if(this.currentChat && message !=""){
@@ -122,9 +124,16 @@ export class MainComponent implements OnInit{
             chatPartner:{uid:"uid",name:"name",email:"email",fotolink:"fotolink",} 
     };
     console.log("currentChat:",this.currentChat);
+    this.startNewChatBoolean=false;
   }
   startNewChat(){
     this.currentChannel = null;
     this.currentChat = null;
+    this.startNewChatBoolean = false;
+  }
+  startNewChatResp(){
+    this.currentChannel = null;
+    this.currentChat = null;
+    this.startNewChatBoolean = true;
   }
 }

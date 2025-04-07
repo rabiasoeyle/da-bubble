@@ -31,6 +31,7 @@ export class HeaderComponent implements OnInit{
   profileDetails:boolean=false;
   editUserData:boolean=false;
   @Input() userChats:Chat[] = [];
+  @Input() startNewChatBoolean:boolean = false;
   @Output() openChat = new EventEmitter<number>();
   @Output() oChannel = new EventEmitter<string>();
   @Output() goBackToDevspace = new EventEmitter<void>();
@@ -40,7 +41,7 @@ export class HeaderComponent implements OnInit{
     this.setupSearchListener();
   }
   isChatActive(): boolean {
-    return this.currentChannel !== null || this.currentChat !== null;
+    return this.currentChannel !== null || this.currentChat !== null || this.startNewChatBoolean;
   }
   setupSearchListener() {
     this.input.valueChanges

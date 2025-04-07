@@ -28,6 +28,7 @@ export class SidenavComponent {
   @Output() newChat = new EventEmitter<number>();
   @Output() newChannel = new EventEmitter<string>();
   @Output() openAddChannel = new EventEmitter<string>();
+  @Output() startNewChatRespClicked = new EventEmitter<string>();
   @Output() startNewChatClicked = new EventEmitter<string>();
   constructor(private authService: AuthService) {
     }
@@ -48,6 +49,9 @@ export class SidenavComponent {
   }
   startNewChat(){
     this.startNewChatClicked.emit();
+  }
+  startNewChatResp(){
+    this.startNewChatRespClicked.emit();
   }
 
 }

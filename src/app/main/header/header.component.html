@@ -50,7 +50,7 @@
             <button (click)="logout()">Logout</button>
         </div>
     }
-    @if(profileDetails||editUserData ){
+    @if(profileDetails||editUserData){
         <app-member-details (changedUserDataEvent)="updateUserData()" (editDataEvent)="editProfile()" (closeDetailsEvent)="detailsOfProfile()" [userData]="userData" [editUserData]="editUserData" [profileDetails]="profileDetails"></app-member-details>
     }
 </div>
