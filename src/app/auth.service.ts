@@ -42,7 +42,7 @@ export class AuthService{
           this.getData(user.uid).then((data) => {
               this.userDataSubject.next(data);
               this.router.navigateByUrl('main');
-              this.changePresenceStatus(true);
+              this.changePresenceStatus(true, user.uid);
           });
       }
   });
@@ -110,8 +110,8 @@ export class AuthService{
     });
     return from(loginPromise);
   }
-  async changePresenceStatus(status: boolean) {
-    const uid = localStorage.getItem('userId');
+  async changePresenceStatus(status: boolean, uid:string) {
+    // const uid = localStorage.getItem('userId');
     if (uid) {
       try {
         const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
@@ -125,9 +125,13 @@ export class AuthService{
     }
   }
   logout(): void {
+    const uid = localStorage.getItem('userId');
+    setTimeout(()=>{
+    if(uid){this.changePresenceStatus(false, uid)}},1000)
     localStorage.removeItem("userId");
     this.firebaseAuth.signOut();
     this.userDataSubject.next(null);
+    
   }
   async googleSignin(): Promise<void> {
     try {
