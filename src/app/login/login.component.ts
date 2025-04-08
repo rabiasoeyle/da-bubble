@@ -25,6 +25,7 @@ export class LoginComponent{
   chooseAvatar:boolean=false;
   userId: string | null = null;
   registerData:any=null;
+  errorMessage:any ="";
 
   constructor(private authService: AuthService) {
     this.authService.userData$.subscribe((user) => {
@@ -51,6 +52,7 @@ export class LoginComponent{
     this.createNewAccount = false;
     this.startLogin = false;
     this.chooseAvatar = true;
+    // console.log("chooseAvatar is:" ,this.chooseAvatar )
   }
   fromCreateBackToLogin(){
     this.createNewAccount = false;
@@ -60,10 +62,31 @@ export class LoginComponent{
     this.startLogin = true;
     this.chooseAvatar = false;
   }
-  loginUserAfterAvatarChosen(avatar:string){
-    this.authService.login(this.registerData.email, this.registerData.password);
-    if(this.userId){
-      this.authService.updateUserProfile(this.userId, avatar)
-    }
+  
+  async loginUserAfterAvatarChosen(avatar:string){
+     this.authService.register(this.registerData.email, this.registerData.name, this.registerData.password)
+      .subscribe({
+        next: async () => {
+          try {
+            this.authService.login(this.registerData.email, this.registerData.password);
+            console.log("Erste Station: Eingeloggt", this.registerData);
+            setTimeout(()=>{
+              if(this.userId){
+                console.log("user Id is:", this.userId)
+                this.authService.updateUserProfile(this.userId, avatar)
+              }},2000)
+          } catch (err) {
+            console.error('Error saving user data to Firebase:', err);
+          }
+        },
+        error: (err) => {
+          this.errorMessage = err.code;
+        },
+      });
+    // this.authService.login(this.registerData.email, this.registerData.password);
+    // if(this.userId){
+    //   console.log("user Id is:", this.userId)
+    // //  await  this.authService.updateUserProfile(this.userId, avatar)
+    // }
   }
 }

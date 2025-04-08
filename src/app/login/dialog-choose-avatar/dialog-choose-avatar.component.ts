@@ -38,15 +38,15 @@ export class DialogChooseAvatarComponent {
   }
   async saveNewInfos(route:string){
     this.loginUser.emit(this.dummyProfile);
-    if (this.userData) {
+    // if (this.userData) {
       // await this.authService.updateUserProfile(this.userData.uid, this.dummyProfile)
       // .then(() => {
       //   // this.goTo(route);
         
       //   });
-    } else {
-      console.error('User-ID fehlt, konnte Avatar nicht speichern.');
-    }
+    // } else {
+    //   console.error('User-ID fehlt, konnte Avatar nicht speichern.');
+    // }
   }
   goTo(route:string){
    this.router.navigateByUrl(route);

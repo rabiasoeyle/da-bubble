@@ -34,7 +34,7 @@ export class DialogCreateAccountComponent {
   
   onSubmit() {
     // this.accountCreated.emit(this.registerData);
-    this.authService.register(this.registerData.email, this.registerData.name, this.registerData.password)
+    // this.authService.register(this.registerData.email, this.registerData.name, this.registerData.password)
       // .subscribe({
       //   next: async () => {
           // try {
