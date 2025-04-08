@@ -55,7 +55,8 @@ export class ChatService {
             uid: uid,
             name: userInfo ? userInfo['name'] : "Unbekannt",
             fotolink: userInfo ? userInfo['fotolink'] : "./assets/img/profile.png",
-            email:userInfo ? userInfo['email'] : "default.png"
+            email:userInfo ? userInfo['email'] : "default.png",
+            presenceStatus:userInfo?userInfo['presenceStatus']:false,
           };
         })
       );
@@ -282,8 +283,6 @@ export class ChatService {
           const partnerRef = doc(this.firebaseDatabase, `users/${chatPartnerId}`);
           const partnerSnap = await getDoc(partnerRef);
           const partnerData = partnerSnap.exists() ? partnerSnap.data() : {};
-          // Online-Status abrufen
-
           chatDetails.push({
             chatId:chatId,
             chatData:chatData,
@@ -292,7 +291,7 @@ export class ChatService {
               name: partnerData['name'],                
               email: partnerData['email'],              
               fotolink: partnerData['fotolink'], 
-              presenceStatus: false, // Online-Status hinzufügen
+              presenceStatus: partnerData['presenceStatus'],
             }
           });
         }

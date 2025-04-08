@@ -49,9 +49,9 @@
                 @if(userChats){
                         @for (item of this.userChats; track item; let idx = $index) {
                         <div (click)="openChat(idx)" class="text-pctr">
-                            @if(item.chatPartner){
+                            @if(item.chatPartner.presenceStatus){
                                 <div class="online"></div>
-                            }@else if(item.chatPartner){
+                            }@else{
                                 <div class="offline"></div>
                             }
                             

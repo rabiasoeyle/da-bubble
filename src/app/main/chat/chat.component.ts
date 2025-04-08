@@ -127,6 +127,7 @@ formatDate(timestamp: number): string {
               name:chatpartner.name,
               email:chatpartner.email,
               fotolink:chatpartner.fotolink,
+              presenceStatus:chatpartner.presenceStatus,
             } 
           };
         }
