@@ -38,7 +38,7 @@
                         <app-dialog-send-email-pw (switchBackToLogin)="goBackToLoginAfterPasswordChanged()"></app-dialog-send-email-pw>
                 }
                 @if(createNewAccount){
-                        <app-dialog-create-account [registerDataOld]="registerData" (goBackEvent)="fromCreateBackToLogin()" (accountCreated)="handleAccountCreated($event)"></app-dialog-create-account>
+                        <app-dialog-create-account [registerDataOld]="registerData" [errorMessageParent]="errorMessageRegistration" (goBackEvent)="fromCreateBackToLogin()" (accountCreated)="handleAccountCreated($event)"></app-dialog-create-account>
                 }
                 @if(chooseAvatar){
                         <app-dialog-choose-avatar (goBackToRegistration)="goBackToRegistration()" (loginUser)="loginUserAfterAvatarChosen($event)"></app-dialog-choose-avatar>

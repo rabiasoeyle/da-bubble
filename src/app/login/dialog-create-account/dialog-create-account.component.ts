@@ -21,6 +21,8 @@ export class DialogCreateAccountComponent implements OnChanges {
   router = inject(Router);
   authService = inject(AuthService);
   errorMessage : string |null = null;
+  errorMessageEmail : string |null = null;
+  @Input() errorMessageParent:any=null;
   @Input() registerDataOld:any=null;
   @Output()goBackEvent = new EventEmitter<string>();
   @Output() accountCreated = new EventEmitter<any>();
@@ -29,6 +31,9 @@ export class DialogCreateAccountComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     if (changes['registerDataOld'] && changes['registerDataOld'].currentValue) {
       this.registerData=this.registerDataOld;
+    }
+    if (changes['errorMessageParent'] && changes['errorMessageParent'].currentValue) {
+      this.errorMessageEmail=this.errorMessageParent;
     }
   }
   registerData={
