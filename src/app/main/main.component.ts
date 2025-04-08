@@ -15,6 +15,7 @@ import { ChannelComponent } from './channel/channel.component';
 import { StartNewChatComponent } from "./start-new-chat/start-new-chat.component";
 import { AddChannelDialogComponent } from './add-channel-dialog/add-channel-dialog.component';
 import { NgClass, NgStyle } from '@angular/common';
+import { PresenceService } from '../presence.service';
 
 
 @Component({
@@ -33,7 +34,6 @@ export class MainComponent implements OnInit{
   addChannelOpen:boolean = false;
   memberDetails:boolean= false;
   startNewChatBoolean:boolean=false;
-
   userData: UserData | null = null;
   sidenavButtonText:string="Workspace-Menü schließen";
   currentChannel: Channel|null = null;
@@ -47,12 +47,24 @@ export class MainComponent implements OnInit{
   currentChannelName:string= "kein Channel";
   currentChatId:number=999;
   allUser:UserData[]=[];
-  constructor(private authService: AuthService, private chatService:ChatService) {
+  userStatuses: { [userId: string]: string } = {};
+  userIds: string[] = ['user1', 'user2', 'user3']; 
+  constructor(private presenceService: PresenceService,private authService: AuthService, private chatService:ChatService) {
   }
+
   ngOnInit() {
     this.loadLiveUserData();
     this.loadUserChats();
+    // this.controlePresence();  
   }
+
+  // controlePresence(){
+  //   this.userIds.forEach((userId) => {
+  //     this.presenceService.getUserStatus(userId).subscribe((status) => {
+  //       this.userStatuses[userId] = status;
+  //     });
+  //   });
+  // }
   isChatActive(): boolean {
     return this.currentChannel !== null || this.currentChat !== null || this.startNewChatBoolean;
   }

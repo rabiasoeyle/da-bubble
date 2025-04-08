@@ -65,7 +65,7 @@ export class DialogLoginComponent implements OnInit{
     this.switchToForgotPassword.emit(); // Ereignis auslösen
   }
   visitorLogin(){
-    this.authService.login("rabia1234@gmx.de", "Test1234")
+    this.authService.login("rabia1234@gmx.de", "Test1234.")
     .subscribe({
       next:async ()=>{
         this.router.navigateByUrl('main');

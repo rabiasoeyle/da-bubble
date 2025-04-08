@@ -39,6 +39,11 @@
     </div>
     <div class="user-nim">
         <h3 class="vanish-text">{{userData ? userData.name : "xy"}}</h3>
+        @if(userData?.presenceStatus){
+            <div class="online"></div>
+        }@else{
+            <div class="offline"></div>
+        }
         <img (click)="toggleMenu()" class="profile" [src]="userData ? userData.fotolink : './assets/img/profile.png'" alt="profile">
         <button class="toggle-btn" (click)="toggleMenu()">
             <img src="./assets/img/key_arrow_down.png" alt="arrow-down">

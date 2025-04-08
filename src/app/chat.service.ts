@@ -6,6 +6,7 @@ import { Chat } from '../modules/chat';
 import { Message } from '../modules/messages';
 import { Member } from '../modules/member';
 import { Channel } from '../modules/channel';
+import { PresenceService } from './presence.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class ChatService {
   currentChat$ = this.currentChatSubject.asObservable();
   allChats:any=[];
   allChannels:Channel[]=[];
-    constructor() { 
+    constructor(private presenceService: PresenceService) { 
 
     }   
     async loadMessages(messages:Message[]){
@@ -281,6 +282,8 @@ export class ChatService {
           const partnerRef = doc(this.firebaseDatabase, `users/${chatPartnerId}`);
           const partnerSnap = await getDoc(partnerRef);
           const partnerData = partnerSnap.exists() ? partnerSnap.data() : {};
+          // Online-Status abrufen
+
           chatDetails.push({
             chatId:chatId,
             chatData:chatData,
@@ -289,6 +292,7 @@ export class ChatService {
               name: partnerData['name'],                
               email: partnerData['email'],              
               fotolink: partnerData['fotolink'], 
+              presenceStatus: false, // Online-Status hinzufügen
             }
           });
         }

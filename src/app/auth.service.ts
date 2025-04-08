@@ -28,7 +28,6 @@ export class AuthService{
   };
   app = initializeApp(this.appConfig);
   auth = getAuth();
-  // signInWithRedirect(this.auth, this.provider);
   firebase = inject(FirebaseApp);
   firebaseAuth = inject(Auth);
   firebaseDatabase = inject(Firestore);
@@ -43,39 +42,15 @@ export class AuthService{
           this.getData(user.uid).then((data) => {
               this.userDataSubject.next(data);
               this.router.navigateByUrl('main');
-              console.log("neuer User eingeloggt",user)
+              this.changePresenceStatus(true);
           });
       }
   });
   if (!getApps().length) {
     initializeApp(this.appConfig);
 }
-console.log("🔥 Firebase wurde initialisiert!");
-console.log("📢 Firebase Apps:", getApps());
-console.log("🔐 Auth-Instanz:", getAuth());
   
   }
-  // register(email: string, name: string, password: string): Observable<void> {
-  //   const createAccount = () => {
-  //     return createUserWithEmailAndPassword(this.firebaseAuth, email, password)
-  //     .then(async (response) => {
-  //       const user = response.user; // Holen des aktuellen Benutzers aus der Antwort
-  //       if (user) {
-  //         await sendEmailVerification(user)
-  //           .then(() => {
-  //             alert("E-Mail-Verifikationslink wurde gesendet!");
-  //           })
-  //           .catch((error) => {
-  //             console.error("Fehler beim Senden der Verifikations-E-Mail:", error);
-  //           });
-  //         const uid: string = user.uid; // UID des Benutzers
-  //         return this.addData(uid, email, name); // Benutzerdaten speichern
-  //       } else {
-  //         throw new Error("Kein Benutzer vorhanden, E-Mail-Verifikation fehlgeschlagen.");}
-  //     });
-  //   };
-  //   return from(createAccount());
-  // }
   register(email: string, name: string, password: string): Observable<void> {
     const checkEmailAndCreateAccount = () => {
       return from(fetchSignInMethodsForEmail(this.firebaseAuth, email)).pipe(
@@ -116,7 +91,8 @@ console.log("🔐 Auth-Instanz:", getAuth());
       email: email,              
       fotolink: "./assets/img/profile.png", 
       channels:[],
-      chats:[],                          
+      chats:[], 
+      presenceStatus:false,                         
     }); 
   }
   login(email: string, password: string): Observable<void> {
@@ -125,14 +101,28 @@ console.log("🔐 Auth-Instanz:", getAuth());
       const user = userCredential.user;
       if (user) {
         const uid = user.uid;
-        localStorage.setItem("userId", uid)
+        localStorage.setItem("userId", uid);
         return this.getData(uid).then((data) => {
-          this.userDataSubject.next(data);
+          this.userDataSubject.next(data)
         });
       }
       return Promise.resolve();
     });
     return from(loginPromise);
+  }
+  async changePresenceStatus(status: boolean) {
+    const uid = localStorage.getItem('userId');
+    if (uid) {
+      try {
+        const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
+        await setDoc(userDocRef, { presenceStatus: status }, { merge: true });
+        console.log(`Presence status for user ${uid} updated to ${status}`);
+      } catch (error) {
+        console.error('Fehler beim Aktualisieren des statuses', error);
+      }
+    } else {
+      console.error('userId nicht im localStorage gefunden.');
+    }
   }
   logout(): void {
     localStorage.removeItem("userId");
@@ -144,26 +134,24 @@ console.log("🔐 Auth-Instanz:", getAuth());
         console.log("🚀 googleSignin() wurde aufgerufen!");
         const provider = new GoogleAuthProvider();
         const auth = getAuth();
-        // provider.setCustomParameters({ prompt: "select_account" });
-        // const auth = getAuth();
-signInWithPopup(auth,provider)
-  .then((result) => {
-    const credential = GoogleAuthProvider.credentialFromResult(result);
-    const token = credential?.accessToken;
-    const user = result.user;
-    const googleParam = {
-      id: user.uid,
-      cover: user.photoURL,
-      nickname: user.displayName,
-      token: token,
-    }
-    this.loginNext(user)
-    
-    console.log(googleParam)
-  })
-    } catch (error) {
-        console.error("❌ Fehler beim Google Login:", error);
-    }
+        signInWithPopup(auth,provider)
+          .then((result) => {
+            const credential = GoogleAuthProvider.credentialFromResult(result);
+            const token = credential?.accessToken;
+            const user = result.user;
+            const googleParam = {
+              id: user.uid,
+              cover: user.photoURL,
+              nickname: user.displayName,
+              token: token,
+            }
+            this.loginNext(user)
+            
+            console.log(googleParam)
+          })
+            } catch (error) {
+                console.error("❌ Fehler beim Google Login:", error);
+            }
 }
 async loginNext(user:any){
       if (user && user.email) {
@@ -178,89 +166,6 @@ async loginNext(user:any){
           const data = await this.getData(user.uid);
       }
 }
-// async handleGoogleRedirect(): Promise<void> {
-//   console.log("handleGoogleRedirect wurde aufgerufen!");
-//   try {
-//       const auth = getAuth();
-//       // Warten, falls Firebase noch nicht bereit ist
-//       await new Promise((resolve) => setTimeout(resolve, 1000));
-//       const result = await getRedirectResult(auth);
-//       console.log("getRedirectResult abgeschlossen:", result);
-//       if (result?.user) {
-//         console.log("Google-Login User gefunden:", result.user);
-//     } else {
-//         console.warn("Kein User gefunden nach Redirect!");
-//     }
-//       if (!result) return; // Falls kein Login erfolgt ist
-//       const user = result.user;
-//       localStorage.setItem("userId", result.user.uid);
-//       console.log("User-ID gespeichert:", localStorage.getItem("userId"));
-//       if (user && user.email) {
-//           console.log("Google-Login User gefunden");
-
-//           const userDocRef = doc(this.firebaseDatabase, "users", user.uid);
-//           const userDoc = await getDoc(userDocRef);
-
-//           if (!userDoc.exists()) {
-//               await this.addData(user.uid, user.email, user.displayName);
-//           }
-
-//           localStorage.setItem("userId", user.uid);
-//           const data = await this.getData(user.uid);
-//           this.userDataSubject.next(data);
-//       } else {
-//           console.error("Benutzer-E-Mail nicht gefunden.");
-//       }
-//   } catch (error) {
-//       console.error("Fehler bei der Verarbeitung des Redirects:", error);
-//   }
-// }
-// async handleGoogleRedirect(): Promise<void> {
-//   console.log("🚀 handleGoogleRedirect wurde aufgerufen!");
-
-//   try {
-//       const auth = getAuth();
-//       console.log("🔍 Warte auf Redirect-Result...");
-
-//       const result = await getRedirectResult(auth);
-//       console.log("📢 Redirect-Result erhalten:", result);
-
-//       if (!result) {
-//           console.warn("⚠️ Kein Redirect-Result! Wurde `signInWithRedirect()` vorher aufgerufen?");
-//           return;
-//       }
-
-//       const user = result.user;
-//       console.log("👤 Eingeloggter User:", user);
-
-//       if (user) {
-//           localStorage.setItem("userId", user.uid);
-//       } else {
-//           console.warn("⚠️ Kein User-Objekt gefunden!");
-//       }
-//   } catch (error) {
-//       console.error("❌ Fehler bei der Verarbeitung des Redirects:", error);
-//   }
-// }
-
-
-// async googleSignin(): Promise<void> {
-//   try {
-//     console.log("Google-Login Try")
-//     const provider = new GoogleAuthProvider(); // Google-Provider initialisieren
-//     const credential = await signInWithPopup(this.firebaseAuth, provider); // Mit Popup anmelden
-//     const user = credential.user; // Angemeldeter Benutzer
-//     if (user) {
-//       console.log("Google-Login User gefunden")
-//       this.addData(user.uid, user.email, user.displayName);
-//       return this.getData(user.uid).then((data) => {
-//         this.userDataSubject.next(data);
-//       });
-//     }
-//   } catch (error) {
-//     console.error('Fehler bei der Google-Authentifizierung:', error);
-//   }
-// }
 
   forgotPassword(email:string){
     const actionCodeSettings = {

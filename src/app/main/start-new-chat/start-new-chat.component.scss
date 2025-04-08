@@ -26,9 +26,12 @@ textarea{
     left: 0;
     right: 0;
     bottom: 8px;
+    width: auto;
+    margin:8px;
     @media(max-width:800px){
         bottom:3px;
         height:10%;
+        margin: 4px;
     }
 }
 .channel-chat{

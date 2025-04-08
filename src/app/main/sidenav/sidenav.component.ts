@@ -23,6 +23,7 @@ export class SidenavComponent {
     fotolink:"",
     channels:[],
     chats:[],
+    presenceStatus:false,
   } 
   @Input() userChats:Chat[] = [];
   @Output() newChat = new EventEmitter<number>();

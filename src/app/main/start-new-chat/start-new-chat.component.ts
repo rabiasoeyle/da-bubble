@@ -35,6 +35,7 @@ export class StartNewChatComponent {
         fotolink:"",
         channels:[],
         chats:[],
+        presenceStatus:false,
       } 
     userChats:any=[]  
     private searchSubject = new Subject<string>();

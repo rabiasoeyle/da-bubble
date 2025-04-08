@@ -29,7 +29,8 @@ export class UserService {
           email: user['email'] || '',
           fotolink: user['fotolink'] || './assets/img/profile.png',
           channels: user['channels'] || [],
-          chats: user['chats'] || []
+          chats: user['chats'] || [],
+          presenceStatus:user['presenceStatus']||[]
         });
       });
       // console.log("✅ [DEBUG] Alle User geladen:", this.allUsers);

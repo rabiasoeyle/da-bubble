@@ -75,3 +75,15 @@
         @include dFlex();
     }
 }
+.online{
+    border-radius: 30px;
+    background-color: greenyellow;
+    width:8px;
+    height:8px;
+}
+.offline{
+    border-radius: 30px;
+    background-color: rgb(194, 18, 26);
+    width:8px;
+    height:8px;
+}
