@@ -63,23 +63,56 @@ export class LoginComponent{
     this.createNewAccount=true;
   }
   
-  async loginUserAfterAvatarChosen(avatar:string){
-     this.authService.register(this.registerData.email, this.registerData.name, this.registerData.password)
+  // async loginUserAfterAvatarChosen(avatar:string){
+  //    this.authService.register(this.registerData.email, this.registerData.name, this.registerData.password)
+  //     .subscribe({
+  //       next: async () => {
+  //         try {
+  //           this.authService.login(this.registerData.email, this.registerData.password);
+  //           setTimeout(()=>{
+  //             if(this.userId){
+  //               this.authService.updateUserProfile(this.userId, avatar),
+  //               this.router.navigateByUrl('main');
+  //             }},1000)
+  //         } catch (err) {
+  //           console.error('Error saving user data to Firebase:', err);
+  //         }
+  //       },
+  //       error: (err) => {
+  //         this.errorMessage = err.code;
+  //       },
+  //     });
+  // }
+  async loginUserAfterAvatarChosen(avatar: string) {
+    this.authService.register(this.registerData.email, this.registerData.name, this.registerData.password)
       .subscribe({
         next: async () => {
           try {
-            this.authService.login(this.registerData.email, this.registerData.password);
-            setTimeout(()=>{
-              if(this.userId){
-                this.authService.updateUserProfile(this.userId, avatar),
+            await this.authService.login(this.registerData.email, this.registerData.password); // Beachte das 'await'
+            setTimeout(async () => { // Beachte das 'async'
+              if (this.userId) {
+                await this.authService.updateUserProfile(this.userId, avatar); // Beachte das 'await'
                 this.router.navigateByUrl('main');
-              }},1000)
+              }
+            }, 1000);
           } catch (err) {
             console.error('Error saving user data to Firebase:', err);
+            // Hier könntest du dem Benutzer eine Fehlermeldung anzeigen, falls die Anmeldung fehlschlägt.
           }
         },
         error: (err) => {
-          this.errorMessage = err.code;
+          if (err.message == 'Firebase: Error (auth/email-already-in-use).') {
+            this.goBackToRegistration();
+            // Spezifische Fehlerbehandlung für doppelte E-Mail
+            this.errorMessage = 'Diese E-Mail-Adresse ist bereits registriert.';
+            // Oder zeige eine Meldung im UI an.
+            alert('Diese E-Mail-Adresse ist bereits registriert.');
+          } else {
+            // Allgemeine Fehlerbehandlung
+            this.errorMessage = err.message || 'Ein Fehler ist aufgetreten.';
+            // Oder zeige eine Meldung im UI an.
+            alert('Ein Fehler ist aufgetreten: ' + (err.message || 'Unbekannter Fehler'));
+          }
         },
       });
   }

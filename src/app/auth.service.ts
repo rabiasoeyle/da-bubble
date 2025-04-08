@@ -2,8 +2,8 @@ import { inject, Injectable, OnInit} from '@angular/core';
 import { FirebaseApp } from '@angular/fire/app';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from '@angular/fire/auth';
 import { doc, Firestore, getDoc, onSnapshot, setDoc} from '@angular/fire/firestore';
-import { BehaviorSubject, from, Observable, of, switchMap } from 'rxjs';
-import { signInWithPopup, signInWithRedirect, getRedirectResult, GoogleAuthProvider,confirmPasswordReset, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, User, verifyPasswordResetCode, UserCredential, browserLocalPersistence, setPersistence } from "firebase/auth";
+import { BehaviorSubject, catchError, from, Observable, of, switchMap, throwError } from 'rxjs';
+import { signInWithPopup, signInWithRedirect, getRedirectResult, GoogleAuthProvider,confirmPasswordReset, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, User, verifyPasswordResetCode, UserCredential, browserLocalPersistence, setPersistence, fetchSignInMethodsForEmail } from "firebase/auth";
   // import { GoogleAuthProvider, signInWithPopup,signInWithRedirect, getRedirectResult } from "@angular/fire/auth";
 import { UserData } from '../modules/user';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
@@ -55,26 +55,58 @@ console.log("📢 Firebase Apps:", getApps());
 console.log("🔐 Auth-Instanz:", getAuth());
   
   }
+  // register(email: string, name: string, password: string): Observable<void> {
+  //   const createAccount = () => {
+  //     return createUserWithEmailAndPassword(this.firebaseAuth, email, password)
+  //     .then(async (response) => {
+  //       const user = response.user; // Holen des aktuellen Benutzers aus der Antwort
+  //       if (user) {
+  //         await sendEmailVerification(user)
+  //           .then(() => {
+  //             alert("E-Mail-Verifikationslink wurde gesendet!");
+  //           })
+  //           .catch((error) => {
+  //             console.error("Fehler beim Senden der Verifikations-E-Mail:", error);
+  //           });
+  //         const uid: string = user.uid; // UID des Benutzers
+  //         return this.addData(uid, email, name); // Benutzerdaten speichern
+  //       } else {
+  //         throw new Error("Kein Benutzer vorhanden, E-Mail-Verifikation fehlgeschlagen.");}
+  //     });
+  //   };
+  //   return from(createAccount());
+  // }
   register(email: string, name: string, password: string): Observable<void> {
-    const createAccount = () => {
-      return createUserWithEmailAndPassword(this.firebaseAuth, email, password)
-      .then(async (response) => {
-        const user = response.user; // Holen des aktuellen Benutzers aus der Antwort
-        if (user) {
-          await sendEmailVerification(user)
-            .then(() => {
-              alert("E-Mail-Verifikationslink wurde gesendet!");
-            })
-            .catch((error) => {
-              console.error("Fehler beim Senden der Verifikations-E-Mail:", error);
-            });
-          const uid: string = user.uid; // UID des Benutzers
-          return this.addData(uid, email, name); // Benutzerdaten speichern
-        } else {
-          throw new Error("Kein Benutzer vorhanden, E-Mail-Verifikation fehlgeschlagen.");}
-      });
+    const checkEmailAndCreateAccount = () => {
+      return from(fetchSignInMethodsForEmail(this.firebaseAuth, email)).pipe(
+        switchMap((signInMethods) => {
+          if (signInMethods && signInMethods.length > 0) {
+            return throwError(new Error('E-Mail-Adresse bereits registriert.'));
+          } else {
+            return from(createUserWithEmailAndPassword(this.firebaseAuth, email, password)).pipe(
+              switchMap(async (response) => {
+                const user = response.user;
+                if (user) {
+                  await sendEmailVerification(user);
+                  alert('E-Mail-Verifikationslink wurde gesendet!');
+                  const uid: string = user.uid;
+                  return this.addData(uid, email, name);
+                } else {
+                  throw new Error('Kein Benutzer vorhanden, E-Mail-Verifikation fehlgeschlagen.');
+                }
+              })
+            );
+          }
+        })
+      );
     };
-    return from(createAccount());
+  
+    return checkEmailAndCreateAccount().pipe(
+      catchError((error) => {
+        console.error('Fehler bei der Registrierung:', error);
+        return throwError(error); // Fehler weitergeben, damit er in der Komponente behandelt werden kann
+      })
+    );
   }
   async addData(uid: string, email:string|any, name:string|any) {
     const userDocRef = doc(this.firebaseDatabase, `users/${uid}`); // Dokument mit UID als Pfad
