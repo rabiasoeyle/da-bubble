@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, inject } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
 import { DialogLoginComponent } from '../dialog-login/dialog-login.component';
 import { AuthService } from '../../auth.service';
 import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -15,16 +15,26 @@ import { Auth } from '@angular/fire/auth';
   templateUrl: './dialog-create-account.component.html',
   styleUrl: './dialog-create-account.component.scss'
 })
-export class DialogCreateAccountComponent {
+export class DialogCreateAccountComponent implements OnChanges {
   fb = inject(FormBuilder);
   http = inject(HttpClient);
   router = inject(Router);
   authService = inject(AuthService);
   errorMessage : string |null = null;
-
+  @Input() registerDataOld:any=null;
   @Output()goBackEvent = new EventEmitter<string>();
   @Output() accountCreated = new EventEmitter<any>();
-
+  constructor(){
+  }
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['registerDataOld'] && changes['registerDataOld'].currentValue) {
+      this.registerData.name = changes['registerDataOld'].currentValue.name;
+      this.registerData.email = changes['registerDataOld'].currentValue.email;
+      this.registerData.password = changes['registerDataOld'].currentValue.password;
+      this.registerData.pPolicyAccepted = changes['registerDataOld'].currentValue.pPolicyAccepted;
+      console.log(this.registerData);
+    }
+  }
   registerData={
     name:"",
     email:"",

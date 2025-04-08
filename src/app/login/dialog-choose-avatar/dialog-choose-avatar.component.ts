@@ -24,6 +24,7 @@ export class DialogChooseAvatarComponent {
   chosedAvatar:boolean = false;
   userData: UserData | null = null;
   @Output()loginUser = new EventEmitter<string>();
+  @Output()goBackToRegistration = new EventEmitter<string>();
   constructor(private authService: AuthService){
 
   }
@@ -39,7 +40,7 @@ export class DialogChooseAvatarComponent {
   async saveNewInfos(route:string){
     this.loginUser.emit(this.dummyProfile);
   }
-  goTo(route:string){
-   this.router.navigateByUrl(route);
+  goBack(){
+    this.goBackToRegistration.emit();
   }
 }

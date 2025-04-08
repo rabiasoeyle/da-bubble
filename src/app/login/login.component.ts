@@ -58,9 +58,9 @@ export class LoginComponent{
     this.createNewAccount = false;
     this.startLogin=true;
   }
-  fromChooseAvatar(){
-    this.startLogin = true;
-    this.chooseAvatar = false;
+  goBackToRegistration(){
+    this.chooseAvatar=false;
+    this.createNewAccount=true;
   }
   
   async loginUserAfterAvatarChosen(avatar:string){
