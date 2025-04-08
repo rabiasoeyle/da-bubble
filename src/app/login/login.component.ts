@@ -69,10 +69,8 @@ export class LoginComponent{
         next: async () => {
           try {
             this.authService.login(this.registerData.email, this.registerData.password);
-            // console.log("Erste Station: Eingeloggt", this.registerData);
             setTimeout(()=>{
               if(this.userId){
-                console.log("user Id is:", this.userId)
                 this.authService.updateUserProfile(this.userId, avatar),
                 this.router.navigateByUrl('main');
               }},1000)

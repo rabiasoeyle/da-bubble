@@ -33,24 +33,7 @@ export class DialogCreateAccountComponent {
   }
   
   onSubmit() {
-    // this.accountCreated.emit(this.registerData);
-    // this.authService.register(this.registerData.email, this.registerData.name, this.registerData.password)
-      // .subscribe({
-      //   next: async () => {
-          // try {
-            // this.authService.login(this.registerData.email, this.registerData.password);
-            // console.log("Erste Station", this.registerData)
-            // this.accountCreated.emit(this.registerData);
-          // } catch (err) {
-            // console.error('Error saving user data to Firebase:', err);
-            // this.errorMessage = 'Error saving user data';
-          // }
-      //   },
-      //   error: (err) => {
-      //     this.errorMessage = err.code;
-      //   },
-      // });
-      this.accountCreated.emit(this.registerData);
+    this.accountCreated.emit(this.registerData);
   }
   
   goBackToLogin(){

@@ -54,11 +54,8 @@ export class DialogLoginComponent implements OnInit{
       });
   }
   loginWithGoogle() {
-    console.log("Google-Login gestartet")
     this.authService.googleSignin()
     .then(() => {
-      console.log("login daten gefunden")
-      // this.authService.handleGoogleRedirect();
       this.router.navigateByUrl('main');
     })
       .catch((error) => console.error('Anmeldung fehlgeschlagen:', error));
