@@ -6,7 +6,6 @@ import { Chat } from '../modules/chat';
 import { Message } from '../modules/messages';
 import { Member } from '../modules/member';
 import { Channel } from '../modules/channel';
-import { PresenceService } from './presence.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +21,7 @@ export class ChatService {
   currentChat$ = this.currentChatSubject.asObservable();
   allChats:any=[];
   allChannels:Channel[]=[];
-    constructor(private presenceService: PresenceService) { 
-
+    constructor() { 
     }   
     async loadMessages(messages:Message[]){
       const messagesWithUserData = await Promise.all(

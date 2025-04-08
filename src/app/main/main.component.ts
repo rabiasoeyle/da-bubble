@@ -15,7 +15,6 @@ import { ChannelComponent } from './channel/channel.component';
 import { StartNewChatComponent } from "./start-new-chat/start-new-chat.component";
 import { AddChannelDialogComponent } from './add-channel-dialog/add-channel-dialog.component';
 import { NgClass, NgStyle } from '@angular/common';
-import { PresenceService } from '../presence.service';
 
 
 @Component({
@@ -49,7 +48,7 @@ export class MainComponent implements OnInit{
   allUser:UserData[]=[];
   userStatuses: { [userId: string]: string } = {};
   userIds: string[] = ['user1', 'user2', 'user3']; 
-  constructor(private presenceService: PresenceService,private authService: AuthService, private chatService:ChatService) {
+  constructor(private authService: AuthService, private chatService:ChatService) {
   }
 
   ngOnInit() {
