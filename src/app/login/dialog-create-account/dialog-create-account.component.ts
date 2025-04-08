@@ -28,11 +28,7 @@ export class DialogCreateAccountComponent implements OnChanges {
   }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['registerDataOld'] && changes['registerDataOld'].currentValue) {
-      this.registerData.name = changes['registerDataOld'].currentValue.name;
-      this.registerData.email = changes['registerDataOld'].currentValue.email;
-      this.registerData.password = changes['registerDataOld'].currentValue.password;
-      this.registerData.pPolicyAccepted = changes['registerDataOld'].currentValue.pPolicyAccepted;
-      console.log(this.registerData);
+      this.registerData=this.registerDataOld;
     }
   }
   registerData={
