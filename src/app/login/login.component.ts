@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { trigger, style, animate, transition, keyframes} from '@angular/animations';
 import { DialogLoginComponent } from './dialog-login/dialog-login.component';
 import { DialogChangePasswordComponent } from './dialog-change-password/dialog-change-password.component';
 import { DialogCreateAccountComponent } from './dialog-create-account/dialog-create-account.component';
 import { DialogSendEmailPwComponent } from './dialog-send-email-pw/dialog-send-email-pw.component';
 import { DialogChooseAvatarComponent } from './dialog-choose-avatar/dialog-choose-avatar.component';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService } from '../auth.service';
 
 @Component({
@@ -18,6 +18,7 @@ import { AuthService } from '../auth.service';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent{
+  router = inject(Router);
   start:boolean=false;
   startLogin:boolean=true;
   createNewAccount:boolean = false;
@@ -52,7 +53,6 @@ export class LoginComponent{
     this.createNewAccount = false;
     this.startLogin = false;
     this.chooseAvatar = true;
-    // console.log("chooseAvatar is:" ,this.chooseAvatar )
   }
   fromCreateBackToLogin(){
     this.createNewAccount = false;
@@ -69,12 +69,13 @@ export class LoginComponent{
         next: async () => {
           try {
             this.authService.login(this.registerData.email, this.registerData.password);
-            console.log("Erste Station: Eingeloggt", this.registerData);
+            // console.log("Erste Station: Eingeloggt", this.registerData);
             setTimeout(()=>{
               if(this.userId){
                 console.log("user Id is:", this.userId)
-                this.authService.updateUserProfile(this.userId, avatar)
-              }},2000)
+                this.authService.updateUserProfile(this.userId, avatar),
+                this.router.navigateByUrl('main');
+              }},1000)
           } catch (err) {
             console.error('Error saving user data to Firebase:', err);
           }
@@ -83,10 +84,5 @@ export class LoginComponent{
           this.errorMessage = err.code;
         },
       });
-    // this.authService.login(this.registerData.email, this.registerData.password);
-    // if(this.userId){
-    //   console.log("user Id is:", this.userId)
-    // //  await  this.authService.updateUserProfile(this.userId, avatar)
-    // }
   }
 }
