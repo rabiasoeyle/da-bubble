@@ -3,7 +3,7 @@ import { AuthService} from '../../auth.service';
 import { Router } from '@angular/router';
 import { UserData } from '../../../modules/user';
 import { UserService } from '../../user.service';
-import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule} from '@angular/forms';
 import { debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import { Chat } from '../../../modules/chat';
 import { ChatService } from '../../chat.service';
@@ -36,14 +36,13 @@ export class HeaderComponent implements OnInit{
   savedUid:string="";
   @Input() userChats:Chat[] = [];
   @Input() startNewChatBoolean:boolean = false;
+  @Input()currentChat:Chat|null= null;
+  @Input()currentChannel:Channel|null =null;
   @Output() openChat = new EventEmitter<number>();
   @Output() oChannel = new EventEmitter<string>();
   @Output() goBackToDevspace = new EventEmitter<void>();
-  @Input()currentChat:Chat|null= null;
-  @Input()currentChannel:Channel|null =null;
-
+  
   constructor(private authService: AuthService, private userService: UserService,private chatService: ChatService) {
-    // this.setupSearchListener();
   }
 
   ngOnInit() {

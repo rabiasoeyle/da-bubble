@@ -66,21 +66,21 @@
         <img src="./assets/img/search.png" alt="search">
     </div>
     @if(searchResultsValue.length>0 && search=="email"){
-        <div class="search-results">
+        <div class="search-results-mobile">
             @for(item of searchResultsValue; track item; let idx=$index){
                 <h4 (click)="saveName(item.uid,idx )">{{item.email}}</h4>
             }
         </div> 
     }
     @if(searchResultsValue.length>0 && search=="name"){
-        <div class="search-results">
+        <div class="search-results-mobile">
             @for(item of searchResultsValue; track item; let idx=$index){
                 <h4 (click)="saveName(item.uid, idx)">{{item.name}}</h4>
             }
         </div> 
     }
     @if(searchResults.length>0 && search=="channel"){
-        <div class="search-results">
+        <div class="search-results-mobile">
             @for(item of searchResults; track item; let idx=$index){
                 <h4 (click)="saveName(item, idx)">{{item}}</h4>
             }

@@ -42,6 +42,25 @@
     }
    
 }
+.search-results{
+    position: absolute;
+    height: auto;
+    padding:8px;
+    border-radius:25px;
+    background-color: white;
+    z-index:2;
+}
+.search-results-mobile{
+    position: absolute;
+    height: 80vH;
+    padding:8px;
+    border-radius:25px;
+    background-color: white;
+    z-index:2;
+    bottom:0;
+    left:0;
+    right:0;
+}
 .search-fi{
     background-color: white;
     color:gray;
@@ -162,10 +181,16 @@
     background-color: greenyellow;
     width:8px;
     height:8px;
+    position: relative;
+    top: -12px;
+    right: -24px;
 }
 .offline{
     border-radius: 30px;
     background-color: rgb(194, 18, 26);
     width:8px;
     height:8px;
+    position: relative;
+    top: -12px;
+    right: -24px;
 }

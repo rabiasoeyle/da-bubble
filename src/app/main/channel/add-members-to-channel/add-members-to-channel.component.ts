@@ -32,7 +32,6 @@ export class AddMembersToChannelComponent {
     }if (this.search == "email") {
       const foundUser = this.searchResultsValue.find(user => user.email == this.userNameOrEmail);
       if (foundUser) {
-        console.log("neue usermail:", foundUser);
         this.userNameOrEmail = foundUser.name; 
       } else {return}
     }
