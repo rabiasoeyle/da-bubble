@@ -13,13 +13,17 @@ export class MemberlistComponent {
 @Output() closeDialogEvent = new EventEmitter<void>();
 @Output() openDetailsEvent = new EventEmitter<number>();
 @Output() openAddMemberEvent = new EventEmitter<void>();
+
 constructor(){}
+
 closeMembersList(){
   this.closeDialogEvent.emit()
 }
+
 addMembersToChannelDialog(){
   this.openAddMemberEvent.emit();
 }
+
 openUserDetails(idx:number){
   this.openDetailsEvent.emit(idx)
 }

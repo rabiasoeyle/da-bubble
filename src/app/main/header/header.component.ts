@@ -43,6 +43,7 @@ export class HeaderComponent implements OnInit{
   isChatActive(): boolean {
     return this.currentChannel !== null || this.currentChat !== null || this.startNewChatBoolean;
   }
+
   setupSearchListener() {
     this.input.valueChanges
       .pipe(
@@ -82,10 +83,12 @@ export class HeaderComponent implements OnInit{
         }
       });
   }
+
   selectChat(user: string) {
     this.input.setValue(user);
     this.searchResults = [];
   }
+
   async goToPersonalMessages(uid:string){
     if(this.userData && this.userChats.length<=0){
       console.log("uid: ",uid)
@@ -96,7 +99,8 @@ export class HeaderComponent implements OnInit{
             this.openChat.emit(i);
           }
         }
-  };
+  }
+
   async loadUserChats(){
     this.userChats=[];
     if(this.userData){
@@ -106,6 +110,7 @@ export class HeaderComponent implements OnInit{
       }
     }
   }
+
   openChatOrChannel(item:string){
     if(this.search=="name" || this.search=="email"){
       this.goToPersonalMessages(item);
@@ -113,35 +118,43 @@ export class HeaderComponent implements OnInit{
       this.oChannel.emit(item);
     }
   }
+
   ngOnInit(): void {
     this.userService.getUserLiveUpdates();
    this.updateUserData();
   }
+
   updateUserData(){
     this.authService.userData$.subscribe((data) => {
       this.userData = data;
       if(this.userData == null){
           this.router.navigateByUrl('');
       }
-    });
+    })
   }
+
   toggleMenu(){
     this.toggleMenuIsOpen = !this.toggleMenuIsOpen;
   }
+
   logout(){
     this.authService.logout();
   }
+
   detailsOfProfile(){
     this.profileDetails = !this.profileDetails;
   }
+
   openMyProfile(){
     this.toggleMenu();
     this.detailsOfProfile();
   }
+
   editProfile(){
     this.editUserData =!this.editUserData;
     this.detailsOfProfile();
   }
+  
   goBackToSidenav(){
     this.currentChannel=null;
     this.currentChat = null;

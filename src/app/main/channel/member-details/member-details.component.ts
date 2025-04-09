@@ -12,9 +12,11 @@ export class MemberDetailsComponent {
   @Output() closeUserDetailsEvent = new EventEmitter<number>();
   @Output() openAddMemberEvent = new EventEmitter<void>();
   @Output() goToPersonalMessagesEvent = new EventEmitter<void>();
+
   closeUserDetails(idx:number){
     this.closeUserDetailsEvent.emit(idx);
   }
+  
   goToPersonalMessages(){
     this.goToPersonalMessagesEvent.emit();
   }

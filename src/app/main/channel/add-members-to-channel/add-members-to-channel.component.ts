@@ -23,6 +23,7 @@ export class AddMembersToChannelComponent {
   @Output() closeDialogEvent = new EventEmitter<void>();
   
 constructor(private chatService:ChatService, private userService:UserService){}
+
 addMembersToChannel(){
   this.userNameOrEmail = this.addMemberData.name.trim();
   if (!this.userNameOrEmail) return; 
@@ -41,9 +42,11 @@ addMembersToChannel(){
   }
   this.closeDialog();
 }
+
 closeDialog(){
   this.closeDialogEvent.emit();
 }
+
 setupSearchListener(value: string) {
   if (!value || value.length < 2) {
     this.searchResultsValue = [];
@@ -69,6 +72,7 @@ setupSearchListener(value: string) {
     console.log("no-one:", this.searchResults);
   }
 }
+
 saveName(item: string) {
   this.selectedUser = item;
   this.addMemberData.name = item; 

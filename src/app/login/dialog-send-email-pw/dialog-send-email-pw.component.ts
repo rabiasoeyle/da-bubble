@@ -12,17 +12,17 @@ import { AuthService } from '../../auth.service';
   styleUrl: './dialog-send-email-pw.component.scss'
 })
 export class DialogSendEmailPwComponent {
-    fb = inject(FormBuilder);
-    http = inject(HttpClient);
-    router = inject(Router);
-    authService = inject(AuthService);
-    errorMessage : string |null = null;
-    emailData = {
-      email:""};
-    @Output() switchBackToLogin = new EventEmitter<void>(); 
     
-    constructor(){
-    }
+  fb = inject(FormBuilder);
+  http = inject(HttpClient);
+  router = inject(Router);
+  authService = inject(AuthService);
+  errorMessage : string |null = null;
+  emailData = {
+  email:""};
+  @Output() switchBackToLogin = new EventEmitter<void>(); 
+    
+  constructor(){}
 
   onSubmit(ngForm: NgForm){
     console.log("test",this.emailData.email)
@@ -30,6 +30,7 @@ export class DialogSendEmailPwComponent {
     this.authService.forgotPassword(this.emailData.email);
     this.goBackToLogin();
   }
+  
   goBackToLogin(){
     this.switchBackToLogin.emit();
   }

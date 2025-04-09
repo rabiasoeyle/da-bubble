@@ -32,33 +32,37 @@ export class MemberDetailsComponent {
     name:""
   }
   newFotolink:string="";
+
   constructor(private authService:AuthService, private userService:UserService){}
+
   closeUserDetails(){
     this.closeDetailsEvent.emit();
   }
-  goToPersonalMessages(){
-    // this.goToPersonalMessagesEvent.emit();
-  }
+
   toggleEditProfile(){
     this.editDataEvent.emit();
     this.editUserData =!this.editUserData;
   }
+
   saveNewName(){
     if(this.userData){
       this.userService.updateUserName(this.userData.uid, this.changeData.name)
       this.changedUserDataEvent.emit();
     }
   }
+
   startChangeFotolink(){
     this.chooseFotolink = !this.chooseFotolink;
   }
+
   changeFotolink(){
     if(this.userData){
       this.userService.updateUserProfile(this.userData.uid, this.newFotolink)
     }
   }
+
   saveNewLink(link:string){
     this.newFotolink = link;
   }
-  detailsOfProfile(){}
+
 }

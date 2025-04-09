@@ -36,43 +36,48 @@ export class ChatComponent implements OnInit, OnDestroy, OnChanges{
   markCorrespond:boolean=false;
   previousChatData: any = null;
   emojisOpen:boolean = false;
+
   constructor(private chatService:ChatService, private authService:AuthService) {}
   
   isSameDay(timestamp1: number, timestamp2: number): boolean {
     const date1 = new Date(timestamp1);
     const date2 = new Date(timestamp2);
-    
     return date1.getFullYear() === date2.getFullYear() &&
            date1.getMonth() === date2.getMonth() &&
            date1.getDate() === date2.getDate();
-}
+  }
 
-formatDate(timestamp: number): string {
-    return new Date(timestamp).toLocaleDateString("de-DE", {
-        weekday: "long",
-        day: "2-digit",
-        month: "long",
-        year: "numeric",
-    });
-}
+  formatDate(timestamp: number): string {
+      return new Date(timestamp).toLocaleDateString("de-DE", {
+          weekday: "long",
+          day: "2-digit",
+          month: "long",
+          year: "numeric",
+      });
+  }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['currentChatId']) {
       this.openChat(this.currentChatId);
       console.log("chat-c",this.currentChatId)
     }
   }
+
   ngOnInit() {
     this.loadLiveUserData();
     this.openChat(this.currentChatId);
   }
+
   ngOnDestroy() {
     if (this.chatSubscription) {
       this.chatSubscription.unsubscribe(); // Memory Leak verhindern
     }
   }
+
   openUserDetails(idx:number){
   this.newChatPartner.emit(idx)
   }
+
   startEditMessage(id:number){
     this.messageIdx= id;
     if(this.currentChat){
@@ -81,23 +86,27 @@ formatDate(timestamp: number): string {
       msg.editing = true;
     }
   }
+
   closeEditMessage(id:number){
     if(this.currentChat){
       const msg = this.currentChat.chatData.messages[id];
       msg.editing = false;
     }
   }
+
   editMessage(id:number){
     if(this.currentChat && this.editMessageData.message !=""){
       this.chatService.editPrivateMessage(this.currentChat.chatId, this.editMessageData.message, id);
     }
   }
+
   sendPrivateMessage(){
       if(this.currentChat && this.newMessage.message !=""){
         this.chatService.sendPrivateMessage(this.newMessage.message, this.currentChat.chatId);
         this.newMessage.message ="";
       }
   }
+
   loadLiveUserData(){
     this.authService.userData$.subscribe((data) => {
       this.userData = data;
@@ -106,6 +115,7 @@ formatDate(timestamp: number): string {
       }
     });
   }
+
   async openChat(idx:number){
       this.currentChat = null;
       await this.chatService.getChatLiveUpdates(this.userChats[idx].chatId);
@@ -133,25 +143,30 @@ formatDate(timestamp: number): string {
         }
       })
   }
+
   async showChatPartner(members:Member[]){
     for(let i = 0; i < members.length; i++){
       if(members[i].uid !== this.userData?.uid){
         console.log(members[i])
         return members[i];
       }
-    }return ;
+    }return
   }
+
   showEmojis(){
     this.emojisOpen = !this.emojisOpen;
     this.markCorrespond = false;
   }
+
   addEmoji(event: any) {
     this.newMessage.message += event.emoji.native;
   }
+
   showMarkableCorrespond(){
     this.markCorrespond=!this.markCorrespond;
     this.emojisOpen = false;
   }
+
   markPerson(){
     if(this.currentChat){
       this.newMessage.message += "@" + this.currentChat.chatPartner.name;

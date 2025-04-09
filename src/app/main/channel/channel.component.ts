@@ -43,22 +43,27 @@ export class ChannelComponent implements OnInit, OnChanges{
   currentChannel:Channel | null = null;
   userChats:Chat[]=[];
   @Output() openChat = new EventEmitter<number>();
+
   constructor(private chatService:ChatService, private authService:AuthService, private userService:UserService){
   }
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['currentChannelName']) {
       this.openChannel(this.currentChannelName);
     }
   }
+
   ngOnInit() {
     this.loadLiveUserData();
     this.openChannel(this.currentChannelName);
   }
+
   loadLiveUserData(){
     this.authService.userData$.subscribe((data) => {
       this.userData = data;
     });
   }
+
   async openChannel(channelName: string) {
     this.currentChannelName=channelName;
     this.chatService.getChannelLiveUpdates(channelName);
@@ -88,22 +93,27 @@ export class ChannelComponent implements OnInit, OnChanges{
     return this.currentChannel;
     
   }
+
   sendMessage(){
       if(this.currentChannel&& this.newMessage.message){
         this.chatService.sendMessage(this.newMessage.message, this.currentChannel.name);
         this.newMessage.message="";
       }
   }
+
   openDetailsAboutChannel(){
     this.openDetailsOfChannel = !this.openDetailsOfChannel;
   }
+
   addMembersToChannelDialog(){
     this.membersOfChannelList=false;
     this.addMemberToChannel =!this.addMemberToChannel;
   }
+
   openMembersList(){
     this.membersOfChannelList = !this.membersOfChannelList;
   }
+
   async openUserDetails(idx:number){
     this.membersOfChannelList = false;
       this.addMemberToChannel = false;
@@ -114,6 +124,7 @@ export class ChannelComponent implements OnInit, OnChanges{
       this.currentProfileDetail = await this.userService.getUserInfo(this.currentChannel?.members[idx].uid);
       this.memberDetails = !this.memberDetails;
   }
+
   async goToPersonalMessages(){
     if(this.userData){
       const messagesWMembers = await this.chatService.createChat(this.userData?.uid, this.currentProfileDetail.uid )
@@ -126,6 +137,7 @@ export class ChannelComponent implements OnInit, OnChanges{
     });
     this.memberDetails = false;
   }
+
   async loadUserChats(){
     this.userChats = [];
     if(this.userData){
@@ -135,9 +147,11 @@ export class ChannelComponent implements OnInit, OnChanges{
       }
     }
   }
+
   openEditChannel(){
     this.editChannel = !this.editChannel;
   }
+
   deleteChannelAtUser(){
       if(this.currentChannel){
         this.deletedChannelname = this.currentChannel.name;
@@ -149,16 +163,20 @@ export class ChannelComponent implements OnInit, OnChanges{
         this.channelDeleted=false;
       },4000)
   }
+
   showEmojis(){
     this.emojisOpen = !this.emojisOpen;
   }
+
   addEmoji(event: any) {
     this.newMessage.message += event.emoji.native;
   }
+
   showMarkableCorrespond(){
     this.markCorrespond=!this.markCorrespond;
     this.emojisOpen = false;
   }
+  
   markPerson(idx:number){
     if(this.currentChannel){
       this.newMessage.message += "@" + this.currentChannel.members[idx].name;

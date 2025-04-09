@@ -36,21 +36,27 @@ export class SidenavComponent {
   changeChannelAreaStatus(){
     this.channelsOpen = !this.channelsOpen;
   }
+
   changeMessageAreaStatus(){
     this.directMessagesOpen = !this.directMessagesOpen;
   }
+
   openChannel(item:string){
     this.newChannel.emit(item);
   }
+
   openChat(item:number){
     this.newChat.emit(item);
   }
+
   addChannelDialog(){
     this.openAddChannel.emit();
   }
+
   startNewChat(){
     this.startNewChatClicked.emit();
   }
+  
   startNewChatResp(){
     this.startNewChatRespClicked.emit();
   }

@@ -22,12 +22,19 @@ export class DialogCreateAccountComponent implements OnChanges {
   authService = inject(AuthService);
   errorMessage : string |null = null;
   errorMessageEmail : string |null = null;
+  registerData={
+    name:"",
+    email:"",
+    password:"",
+    pPolicyAccepted: false,
+  }
   @Input() errorMessageParent:any=null;
   @Input() registerDataOld:any=null;
   @Output()goBackEvent = new EventEmitter<string>();
   @Output() accountCreated = new EventEmitter<any>();
-  constructor(){
-  }
+
+  constructor(){}
+
   ngOnChanges(changes: SimpleChanges) {
     if (changes['registerDataOld'] && changes['registerDataOld'].currentValue) {
       this.registerData=this.registerDataOld;
@@ -35,12 +42,6 @@ export class DialogCreateAccountComponent implements OnChanges {
     if (changes['errorMessageParent'] && changes['errorMessageParent'].currentValue) {
       this.errorMessageEmail=this.errorMessageParent;
     }
-  }
-  registerData={
-    name:"",
-    email:"",
-    password:"",
-    pPolicyAccepted: false,
   }
   
   onSubmit() {

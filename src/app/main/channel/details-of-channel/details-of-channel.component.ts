@@ -33,9 +33,11 @@ export class DetailsOfChannelComponent {
   closeDetailsAboutChannel(){
   this.closeDetailsEvent.emit();
   }
+
   openEditChannel(){
     this.editChannel = !this.editChannel;
   }
+
   deleteChannelAtUser(){
     if(this.currentChannel){
     this.chatService.deleteChannelAtMember(this.currentChannel.name);
@@ -45,6 +47,7 @@ export class DetailsOfChannelComponent {
       this.closeDetailsEvent.emit();
       this.deleteChannelEvent.emit();
   }}
+
   changeChannelName(){
     if(this.currentChannel ){
     this.chatService.changeChannelName(this.currentChannel.name, this.channelData.name);
@@ -54,14 +57,17 @@ export class DetailsOfChannelComponent {
             this.openChannelEvent.emit(this.channelData.name) 
       // },200);
   }
+
   changeChannelDescription(){
     if(this.currentChannel){
     this.chatService.changeChannelDescription(this.currentChannel.name, this.channelData.description);
     }this.openEditChannel();
   }
+
   addMembersToChannelDialog(){
     this.openAddMemberEvent.emit();
   }
+  
   openUserDetails(idx:number){
     this.openDetailsEvent.emit(idx)
   }

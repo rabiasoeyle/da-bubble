@@ -38,32 +38,39 @@ export class LoginComponent{
       this.handleAccountCreated(this.registerData);
     }
   }
+
   forgotPasswordPage(){
     this.startLogin=false;
     this.forgotPassword= true;
   }
+
   goBackToLoginAfterPasswordChanged(){
     this.startLogin=true;
     this.forgotPassword= false;
   }
+
   goToCreateAccount(){
     this.startLogin=false;
     this.createNewAccount=true;
   }
+
   handleAccountCreated(registerData:any) {
     this.registerData = registerData;
     this.createNewAccount = false;
     this.startLogin = false;
     this.chooseAvatar = true;
   }
+
   fromCreateBackToLogin(){
     this.createNewAccount = false;
     this.startLogin=true;
   }
+
   goBackToRegistration(){
     this.chooseAvatar=false;
     this.createNewAccount=true;
   }
+  
   async loginUserAfterAvatarChosen(avatar: string) {
     this.authService.register(this.registerData.email, this.registerData.name, this.registerData.password)
       .subscribe({

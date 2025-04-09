@@ -19,9 +19,7 @@ export class StartNewChatComponent {
     fb = inject(FormBuilder);
     markCorrespond:boolean=false;
     emojisOpen:boolean=false;
-    newMessage={
-      message:"",
-    }
+    newMessage={message:"",}
     adress: string = '';
     searchResults: string[] = [];
     search: string = '';
@@ -45,9 +43,11 @@ export class StartNewChatComponent {
     @Output() oChannel = new EventEmitter<string>();
     constructor(private userService: UserService, private chatService: ChatService){
     }
+    
     placeholder(){
       return this.savedAdress !== '' ? this.savedAdress : '#Channel, @Name oder die E-Mail Adresse'
     }
+
     ngOnInit() {
       this.searchSubject.pipe(
         debounceTime(300),
@@ -66,6 +66,7 @@ export class StartNewChatComponent {
         this.searchResults = this.searchResultsValue.map(u => u.name);
         this.search = "name";
     }
+
     searchAfterChannel(value:string){
       this.search = "channel";
         if (this.userData) {
@@ -74,37 +75,25 @@ export class StartNewChatComponent {
           );
         }
     }
+
     searchAfterEmail(value:string){
       this.searchResultsValue = this.userService.searchUsersWithMail(value);
       this.searchResults = this.searchResultsValue.map(u => u.email);
       this.search = "email";
     }
+
     handleSearch(value: string) {
       if (!value || value.length < 2) {
         this.searchResults = [];
         this.searchResultsValue =[];
-        return;
-      }
+        return;}
       const firstChar = value.charAt(0);
       if (firstChar === "@") {
         this.searchAfterName(value);
-        // this.searchResultsValue = this.userService.searchUsers(value.substring(1));
-        // this.searchResults = this.searchResultsValue.map(u => u.name);
-        // this.search = "name";
-  
       } else if (firstChar === "#") {
         this.searchAfterChannel(value)
-        // this.search = "channel";
-        // if (this.userData) {
-        //   this.searchResults = (this.userData.channels || []).filter((channel: string) =>
-        //     channel.toLowerCase().includes(value.substring(1).toLowerCase())
-        //   );
-        // }
       } else if (/[a-zA-Z]/.test(firstChar)) {
         this.searchAfterEmail(value);
-        // this.searchResultsValue = this.userService.searchUsersWithMail(value);
-        // this.searchResults = this.searchResultsValue.map(u => u.email);
-        // this.search = "email";
       } else{
         this.searchResults = [];
         this.searchResultsValue =[];
@@ -125,6 +114,7 @@ export class StartNewChatComponent {
       this.adress = this.savedAdress;
       this.searchResults = [];
     }
+
     async goToPersonalMessages(uid:string){
         if(this.userData && this.userChats<=0){
           const messagesWMembers = await this.chatService.createChat(this.userData?.uid, uid )
@@ -136,7 +126,8 @@ export class StartNewChatComponent {
                 this.newMessage.message ="";
               }
             }
-    };
+    }
+
     async loadUserChats(){
         this.userChats=[];
         if(this.userData){
@@ -146,6 +137,7 @@ export class StartNewChatComponent {
           }
         }
     }
+
     openChatOrChannel(item:string){
       if(this.search=="name" || this.search=="email"){
         this.goToPersonalMessages(item);
@@ -155,6 +147,7 @@ export class StartNewChatComponent {
         this.newMessage.message="";
       }
     }
+
     sendMessage(){
       this.openChatOrChannel(this.savedUid);
     }
@@ -163,13 +156,16 @@ export class StartNewChatComponent {
       this.emojisOpen = !this.emojisOpen;
       this.markCorrespond = false;
     }
+
     addEmoji(event: any) {
       this.newMessage.message += event.emoji.native;
     }
+
     showMarkableCorrespond(){
       this.markCorrespond=!this.markCorrespond;
       this.emojisOpen = false;
     }
+
     markPerson(){
       // if(this.currentChat){
       //   this.newMessage.message += "@" + this.currentChat.chatPartner.name;

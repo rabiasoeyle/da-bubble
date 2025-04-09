@@ -15,12 +15,14 @@ export class AddChannelDialogComponent {
     description:"",
   };
   @Output() closeChannel = new EventEmitter<void>();
+
   constructor(private chatService: ChatService){}
 
   onAddChannel(){
     this.chatService.createChannel(this.createChannelData.name, this.createChannelData.description);
     this.addChannelDialog();
   }
+  
   addChannelDialog(){
     this.closeChannel.emit();
   }

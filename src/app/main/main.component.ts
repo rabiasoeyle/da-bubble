@@ -48,16 +48,18 @@ export class MainComponent implements OnInit{
   allUser:UserData[]=[];
   userStatuses: { [userId: string]: string } = {};
   userIds: string[] = ['user1', 'user2', 'user3']; 
-  constructor(private authService: AuthService, private chatService:ChatService) {
-  }
+
+  constructor(private authService: AuthService, private chatService:ChatService) {}
 
   ngOnInit() {
     this.loadLiveUserData();
     this.loadUserChats();  
   }
+
   isChatActive(): boolean {
     return this.currentChannel !== null || this.currentChat !== null || this.startNewChatBoolean;
   }
+
   async loadUserChats(){
     this.userChats = [];
     if(this.userData){
@@ -67,6 +69,7 @@ export class MainComponent implements OnInit{
       }
     }
   }
+
   loadLiveUserData(){
     this.authService.userData$.subscribe((data) => {
       this.userData = data;
@@ -75,6 +78,7 @@ export class MainComponent implements OnInit{
       }
     });
   }
+
   changeSidenavStatus(){
     this.sidenavIsOpen = !this.sidenavIsOpen;
     if(this.sidenavIsOpen){
@@ -83,17 +87,21 @@ export class MainComponent implements OnInit{
       this.sidenavButtonText="Workspace-Menü öffnen"
     }
   }
+
   addChannelDialog(){
     this.addChannelOpen = !this.addChannelOpen;
   }
+
   onAddChannel(data:{}){
     this.addChannelDialog();
   }
+
   sendMessageInChannel(message:string){
     if(this.currentChannel && message !=""){
       this.chatService.sendMessage(message, this.currentChannelName);
     }
   }
+
   openChannel(channelName: string) {
     this.currentChatId=999;
     this.currentChannelName = channelName;
@@ -107,11 +115,13 @@ export class MainComponent implements OnInit{
     }
     this.startNewChatBoolean=false;
   }
+
   sendMessageInChat(message:string){
     if(this.currentChat && message !=""){
       this.chatService.sendPrivateMessage(message, this.currentChat.chatId);
     }
   }
+
   async openChat(idx:number){
     if(!this.userChats[idx]){
       await this.loadUserChats();
@@ -128,16 +138,19 @@ export class MainComponent implements OnInit{
     console.log("currentChat:",this.currentChat);
     this.startNewChatBoolean=false;
   }
+
   startNewChat(){
     this.currentChannel = null;
     this.currentChat = null;
     this.startNewChatBoolean = true;
   }
+
   dontStartNewChat(){
     this.currentChannel = null;
     this.currentChat = null;
     this.startNewChatBoolean = false;
   }
+  
   startNewChatResp(){
     this.currentChannel = null;
     this.currentChat = null;

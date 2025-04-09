@@ -26,8 +26,10 @@ export class DialogLoginComponent implements OnInit{
   
   constructor(){
   }
+
   ngOnInit(){
   }
+
   onLogin() {
     this.authService.login(this.loginData.email, this.loginData.password)
       .subscribe({
@@ -53,6 +55,7 @@ export class DialogLoginComponent implements OnInit{
         }
       });
   }
+
   loginWithGoogle() {
     this.authService.googleSignin()
     .then(() => {
@@ -61,9 +64,11 @@ export class DialogLoginComponent implements OnInit{
       .catch((error) => console.error('Anmeldung fehlgeschlagen:', error));
       this.router.navigateByUrl('');
   }
+
   goToForgotPassword(){
     this.switchToForgotPassword.emit(); // Ereignis auslösen
   }
+
   visitorLogin(){
     this.authService.login("rabia1234@gmx.de", "Test1234.")
     .subscribe({
@@ -85,7 +90,6 @@ export class DialogLoginComponent implements OnInit{
         }
         console.error('Could not find User');
       }
-  })
-}
+  })}
 
 }

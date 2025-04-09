@@ -12,12 +12,12 @@ export class UserService {
   firebase = inject(FirebaseApp);
   firebaseAuth = inject(Auth);
   firebaseDatabase = inject(Firestore);
-  // private db: Firestore = inject(Firestore);
   allUsers:UserData[]=[];
 
   constructor(private authService:AuthService) {
     this.loadAllUsers();
   }
+
   private async loadAllUsers() {
     try {
       const usersCollection = collection(this.firebaseDatabase, 'users'); // Referenz zur Collection
@@ -34,11 +34,10 @@ export class UserService {
           presenceStatus:user['presenceStatus']||[]
         });
       });
-      // console.log("✅ [DEBUG] Alle User geladen:", this.allUsers);
     } catch (error) {
-      // console.error("❌ Fehler beim Laden der User:", error);
     }
   }
+
   searchUsers(searchTerm: string){
     if (!searchTerm.trim()) return [];
     searchTerm = searchTerm.toLowerCase(); 
@@ -46,6 +45,7 @@ export class UserService {
       .filter(user => user.name.toLowerCase().includes(searchTerm)) 
       .map(user => ({ name: user.name, uid: user.uid })); 
   }
+
   searchUsersWithMail(searchTerm: string){
     if (!searchTerm.trim()) return []; // Falls leer, nichts zurückgeben
     searchTerm = searchTerm.toLowerCase(); // Kleinbuchstaben für bessere Treffer
@@ -60,7 +60,6 @@ export class UserService {
         const userSnap = await getDoc(userRef);
         if (userSnap.exists()) {
           const userData = userSnap.data();
-          // this.authService.userCache.set(uid, userData);
           return userData;
         }
         else{
@@ -69,46 +68,42 @@ export class UserService {
       } catch (error) {
         return { name: "Fehler", profilePic: "error.png" };
       }
-    }
-    getUserLiveUpdates() {
-      const userId = localStorage.getItem("userId");
-      const userDocRef = doc(this.firebaseDatabase, `users/${userId}`);
-      return onSnapshot(userDocRef, (docSnap) => {
-        if (docSnap.exists()) {
-          const data = (docSnap.data() as UserData);
-          this.authService.userDataSubject.next(data); // Daten direkt setzen
-        } else {
-          this.authService.userDataSubject.next(null);
-        }
-      }, (error) => {
-        console.error("Firestore Live-Update Fehler:", error);
-      });
-    }
-    
-    // private async getData(uid: string): Promise<UserData | null> {
-    //   const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
-    //   const userDoc = await getDoc(userDocRef);
-    //   return userDoc.exists() ? (userDoc.data() as UserData) : null;
-    // }
-    async updateUserProfile(uid: string, fotolink: string): Promise<void> {
-      try {
-        const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
-        await setDoc(userDocRef, {fotolink }, { merge: true });
-      } catch (error) {
-        console.error('Fehler beim Aktualisieren des Profilbilds:', error);
+  }
+
+  getUserLiveUpdates() {
+    const userId = localStorage.getItem("userId");
+    const userDocRef = doc(this.firebaseDatabase, `users/${userId}`);
+    return onSnapshot(userDocRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = (docSnap.data() as UserData);
+        this.authService.userDataSubject.next(data); // Daten direkt setzen
+      } else {
+        this.authService.userDataSubject.next(null);
       }
+    }, (error) => {
+      console.error("Firestore Live-Update Fehler:", error);
+    });
     }
-    async updateUserName(uid: string, name: string): Promise<void> {
-      try {
-        const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
-        await setDoc(userDocRef, { name }, { merge: true });
-        const currentData = this.authService.userDataSubject.value;
-        if (currentData) {
-          this.authService.userDataSubject.next({ ...currentData, name });
-        }
-      } catch (error) {
-        console.error('Fehler beim Aktualisieren des Namens:', error);
+  async updateUserProfile(uid: string, fotolink: string): Promise<void> {
+    try {
+      const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
+      await setDoc(userDocRef, {fotolink }, { merge: true });
+    } catch (error) {
+      console.error('Fehler beim Aktualisieren des Profilbilds:', error);
+    }
+  }
+
+  async updateUserName(uid: string, name: string): Promise<void> {
+    try {
+      const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
+      await setDoc(userDocRef, { name }, { merge: true });
+      const currentData = this.authService.userDataSubject.value;
+      if (currentData) {
+        this.authService.userDataSubject.next({ ...currentData, name });
       }
+    } catch (error) {
+      console.error('Fehler beim Aktualisieren des Namens:', error);
     }
+  }
 
 }

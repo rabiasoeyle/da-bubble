@@ -1,21 +1,15 @@
 import { inject, Injectable, OnInit} from '@angular/core';
-import { FirebaseApp } from '@angular/fire/app';
-import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword} from '@angular/fire/auth';
-import { doc, Firestore, getDoc, getFirestore, onSnapshot, setDoc} from '@angular/fire/firestore';
-import { BehaviorSubject, catchError, from, Observable, of, switchMap, throwError } from 'rxjs';
-import { signInWithPopup, signInWithRedirect, getRedirectResult, GoogleAuthProvider,confirmPasswordReset, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, User, verifyPasswordResetCode, UserCredential, browserLocalPersistence, setPersistence, fetchSignInMethodsForEmail } from "firebase/auth";
-  // import { GoogleAuthProvider, signInWithPopup,signInWithRedirect, getRedirectResult } from "@angular/fire/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword} from '@angular/fire/auth';
+import { doc, Firestore, getDoc, setDoc} from '@angular/fire/firestore';
+import { BehaviorSubject, from, Observable, switchMap, throwError } from 'rxjs';
+import { signInWithPopup, GoogleAuthProvider,confirmPasswordReset, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, User, verifyPasswordResetCode, UserCredential, browserLocalPersistence, setPersistence, fetchSignInMethodsForEmail } from "firebase/auth";
 import { UserData } from '../modules/user';
-import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
 import { getAuth } from "firebase/auth";
 import { getApps, initializeApp } from "firebase/app";
-import { getDatabase } from '@angular/fire/database';
 
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({providedIn: 'root'})
 
 export class AuthService{
   appConfig={
@@ -28,13 +22,9 @@ export class AuthService{
   };
   app = initializeApp(this.appConfig);
   auth = getAuth();
-  // fd=getFirestore();
-  // fd= getDatabase()
-  // firebase = inject(FirebaseApp);
   firebaseDatabase = inject(Firestore);
   userDataSubject = new BehaviorSubject<UserData | null>(null); 
   public userData$ = this.userDataSubject.asObservable();
-  // private userCache = new Map<string, any>();
   private unsubscribeUserUpdates!: () => void;
   router = inject(Router);
   constructor() {
@@ -47,9 +37,9 @@ export class AuthService{
       });}});
     if (!getApps().length) {
       initializeApp(this.appConfig);
-}
-  
+    }
   }
+
   register(email: string, name: string, password: string): Observable<void> {
     const checkEmailAndCreateAccount = () => {
       return from(fetchSignInMethodsForEmail(this.auth, email)).pipe(
@@ -76,6 +66,7 @@ export class AuthService{
     //   })
     // );
   }
+
   async addData(uid: string, email:string|any, name:string|any) {
     const userDocRef = doc(this.firebaseDatabase, `users/${uid}`); // Dokument mit UID als Pfad
     await setDoc(userDocRef, {
@@ -88,6 +79,7 @@ export class AuthService{
       presenceStatus:false,                         
     }); 
   }
+
   login(email: string, password: string): Observable<void> {
     const loginPromise = signInWithEmailAndPassword(this.auth, email, password)
     .then((userCredential) => {
@@ -103,17 +95,16 @@ export class AuthService{
     });
     return from(loginPromise);
   }
+
   async changePresenceStatus(status: boolean, uid:string) {
     if (uid) {
       try {
         const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
         await setDoc(userDocRef, { presenceStatus: status }, { merge: true });
       } catch (error) {}
-    } 
-    // else {
-    //   console.error('userId nicht im localStorage gefunden.');
-    // }
+    }
   }
+
   logout(): void {
     const uid = localStorage.getItem('userId');
     setTimeout(()=>{
@@ -121,28 +112,19 @@ export class AuthService{
     localStorage.removeItem("userId");
     this.auth.signOut();
     this.userDataSubject.next(null);
-    
   }
+
   async googleSignin(): Promise<void> {
     try {
-        const provider = new GoogleAuthProvider();
-        signInWithPopup(this.auth,provider)
-          .then((result) => {
-            // const credential = GoogleAuthProvider.credentialFromResult(result);
-            // const token = credential?.accessToken;
-            // const user = result.user;
-            // const googleParam = {
-            //   id: user.uid,
-            //   cover: user.photoURL,
-            //   nickname: user.displayName,
-            //   token: token,
-            // }
-            this.loginNext(result.user)
-          })
-            } catch (error) {
-                console.error("❌ Fehler beim Google Login:", error);
-            }
+      const provider = new GoogleAuthProvider();
+      signInWithPopup(this.auth,provider)
+      .then((result) => {
+      this.loginNext(result.user)})
+    }catch (error) {
+      console.error("❌ Fehler beim Google Login:", error);
+    }
   }
+
   async loginNext(user:any){
         if (user && user.email) {
             const userDocRef = doc(this.firebaseDatabase, "users", user.uid);
@@ -166,6 +148,7 @@ export class AuthService{
       alert("Your Password reset link was send")
     })
   }
+
   // Passwort-Zurücksetzungslink validieren
   verifyResetCode(oobCode: string): Promise<void> {
     return verifyPasswordResetCode(this.auth, oobCode)
@@ -174,6 +157,7 @@ export class AuthService{
         return Promise.reject(error); // Fehler bei der Validierung
       });
   }
+
   // Neues Passwort setzen
   resetPassword(oobCode: string, newPassword: string): Promise<void> {
     return confirmPasswordReset(this.auth, oobCode, newPassword)
@@ -184,60 +168,11 @@ export class AuthService{
         return Promise.reject(error); // Fehler bei der Änderung
       });
   }
-  // async getUserInfo(uid: string) {
-  //   try {
-  //     const userRef = doc(this.firebaseDatabase, `users/${uid}`);
-  //     const userSnap = await getDoc(userRef);
-  //     if (userSnap.exists()) {
-  //       const userData = userSnap.data();
-  //       this.userCache.set(uid, userData);
-  //       return userData;
-  //     }else{
-  //        return { name: "Unbekannt", profilePic: "default.png" };
-  //     }
-  //   } catch (error) {
-  //     return { name: "Fehler", profilePic: "error.png" };
-  //   }
-  // }
-  // getUserLiveUpdates() {
-  //   const userId = localStorage.getItem("userId");
-  //   const userDocRef = doc(this.firebaseDatabase, `users/${userId}`);
-  //   return onSnapshot(userDocRef, (docSnap) => {
-  //     if (docSnap.exists()) {
-  //       const data = (docSnap.data() as UserData);
-  //       this.userDataSubject.next(data); // Daten direkt setzen
-  //     } else {
-  //       this.userDataSubject.next(null);
-  //     }
-  //   }, (error) => {
-  //     console.error("Firestore Live-Update Fehler:", error);
-  //   });
-  // }
-
+  
   private async getData(uid: string): Promise<UserData | null> {
     const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
     const userDoc = await getDoc(userDocRef);
     return userDoc.exists() ? (userDoc.data() as UserData) : null;
   }
-  // async updateUserProfile(uid: string, fotolink: string): Promise<void> {
-  //   try {
-  //     const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
-  //     await setDoc(userDocRef, {fotolink }, { merge: true });
-  //   } catch (error) {
-  //     console.error('Fehler beim Aktualisieren des Profilbilds:', error);
-  //   }
-  // }
-  // async updateUserName(uid: string, name: string): Promise<void> {
-  //   try {
-  //     const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
-  //     await setDoc(userDocRef, { name }, { merge: true });
-  //     const currentData = this.userDataSubject.value;
-  //     if (currentData) {
-  //       this.userDataSubject.next({ ...currentData, name });
-  //     }
-  //   } catch (error) {
-  //     console.error('Fehler beim Aktualisieren des Namens:', error);
-  //   }
-  // }
 
 }

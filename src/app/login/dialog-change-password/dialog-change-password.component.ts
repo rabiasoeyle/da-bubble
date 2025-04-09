@@ -15,21 +15,20 @@ import { UserData } from '../../../modules/user';
   styleUrl: './dialog-change-password.component.scss'
 })
 export class DialogChangePasswordComponent implements OnInit{
-      fb = inject(FormBuilder);
-      http = inject(HttpClient);
-      router = inject(Router);
-      authService = inject(AuthService);
-      form = this.fb.nonNullable.group({
-          password:['', Validators.required],
-          passwordCheck:['', Validators.required]
-      })
-      userData: UserData | null = null;
-      oobCode!: string;
-      isCodeValid: boolean = false;
-      private route = inject(ActivatedRoute);
-  constructor() {
+  fb = inject(FormBuilder);
+  http = inject(HttpClient);
+  router = inject(Router);
+  authService = inject(AuthService);
+  form = this.fb.nonNullable.group({
+    password:['', Validators.required],
+    passwordCheck:['', Validators.required]
+  })
+  userData: UserData | null = null;
+  oobCode!: string;
+  isCodeValid: boolean = false;
+  private route = inject(ActivatedRoute);
 
-  }
+  constructor() {}
 
   ngOnInit(): void {
     // oobCode aus den URL-Parametern lesen
@@ -66,7 +65,5 @@ export class DialogChangePasswordComponent implements OnInit{
       
     }
   }
-  goBackToLogin(){
-    
-  }
+
 }
