@@ -12,30 +12,31 @@
     </div>
     <div class="search-parent">
         <div class="search-fi">
-            <input [formControl]="input" type="search" placeholder="Devspace durchsuchen">
+            <input [(ngModel)]="adress" 
+            name="adress" (ngModelChange)="onInputChange($event)"  type="search" placeholder="{{placeholder()}}">
             <img src="./assets/img/search.png" alt="search">
         </div>
         @if(searchResultsValue.length>0 && search=="email"){
             <div class="search-results">
-                @for(item of searchResultsValue; track item){
-                    <h4 (click)="openChatOrChannel(item.uid)">{{item.email}}</h4>
+                @for(item of searchResultsValue; track item; let idx=$index){
+                    <h4 (click)="saveName(item.uid,idx )">{{item.email}}</h4>
                 }
             </div> 
-            }
-            @if(searchResultsValue.length>0 && search=="name"){
-                <div class="search-results">
-                    @for(item of searchResultsValue; track item){
-                        <h4 (click)="openChatOrChannel(item.uid)">{{item.name}}</h4>
-                    }
-                </div> 
-            }
-            @if(searchResults.length>0 && search=="channel"){
-                <div class="search-results">
-                    @for(item of searchResults; track item){
-                        <h4 (click)="openChatOrChannel(item)">{{item}}</h4>
-                    }
-                </div> 
-            }
+        }
+        @if(searchResultsValue.length>0 && search=="name"){
+            <div class="search-results">
+                @for(item of searchResultsValue; track item; let idx=$index){
+                    <h4 (click)="saveName(item.uid, idx)">{{item.name}}</h4>
+                }
+            </div> 
+        }
+        @if(searchResults.length>0 && search=="channel"){
+            <div class="search-results">
+                @for(item of searchResults; track item; let idx=$index){
+                    <h4 (click)="saveName(item, idx)">{{item}}</h4>
+                }
+            </div> 
+        }
     </div>
     <div class="user-nim">
         <h3 class="vanish-text">{{userData ? userData.name : "xy"}}</h3>
@@ -61,28 +62,28 @@
 </div>
 <div class="search-parent-mobile" [ngClass]="{'hidden': isChatActive()}">
     <div class="search-fi-mobile">
-        <input [formControl]="input" type="search" placeholder="Devspace durchsuchen">
+        <input [(ngModel)]="adress" name="adress" (ngModelChange)="onInputChange($event)"  type="search" placeholder="{{placeholder()}}">
         <img src="./assets/img/search.png" alt="search">
     </div>
     @if(searchResultsValue.length>0 && search=="email"){
         <div class="search-results">
-            @for(item of searchResultsValue; track item){
-                <h4 (click)="openChatOrChannel(item.uid)">{{item.email}}</h4>
+            @for(item of searchResultsValue; track item; let idx=$index){
+                <h4 (click)="saveName(item.uid,idx )">{{item.email}}</h4>
             }
         </div> 
-        }
-        @if(searchResultsValue.length>0 && search=="name"){
-            <div class="search-results">
-                @for(item of searchResultsValue; track item){
-                    <h4 (click)="openChatOrChannel(item.uid)">{{item.name}}</h4>
-                }
-            </div> 
-        }
-        @if(searchResults.length>0 && search=="channel"){
-            <div class="search-results">
-                @for(item of searchResults; track item){
-                    <h4 (click)="openChatOrChannel(item)">{{item}}</h4>
-                }
-            </div> 
-        }
+    }
+    @if(searchResultsValue.length>0 && search=="name"){
+        <div class="search-results">
+            @for(item of searchResultsValue; track item; let idx=$index){
+                <h4 (click)="saveName(item.uid, idx)">{{item.name}}</h4>
+            }
+        </div> 
+    }
+    @if(searchResults.length>0 && search=="channel"){
+        <div class="search-results">
+            @for(item of searchResults; track item; let idx=$index){
+                <h4 (click)="saveName(item, idx)">{{item}}</h4>
+            }
+        </div> 
+    }
 </div>

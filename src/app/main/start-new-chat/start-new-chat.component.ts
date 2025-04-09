@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, Input, Output, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormBuilder, FormsModule} from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { UserService } from '../../user.service';
 import { UserData } from '../../../modules/user';
@@ -10,7 +10,7 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
 @Component({
   selector: 'app-start-new-chat',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule , PickerModule],
+  imports: [FormsModule , PickerModule],
   templateUrl: './start-new-chat.component.html',
   styleUrl: './start-new-chat.component.scss',
   encapsulation: ViewEncapsulation.None,

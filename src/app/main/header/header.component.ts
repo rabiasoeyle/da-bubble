@@ -3,18 +3,19 @@ import { AuthService} from '../../auth.service';
 import { Router } from '@angular/router';
 import { UserData } from '../../../modules/user';
 import { UserService } from '../../user.service';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import { Chat } from '../../../modules/chat';
 import { ChatService } from '../../chat.service';
 import { MemberDetailsComponent } from './member-details/member-details.component';
 import { Channel } from '../../../modules/channel';
 import { NgClass } from '@angular/common';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [NgClass,ReactiveFormsModule, MemberDetailsComponent],
+  imports: [NgClass,FormsModule, MemberDetailsComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -29,6 +30,10 @@ export class HeaderComponent implements OnInit{
   search:string="";
   profileDetails:boolean=false;
   editUserData:boolean=false;
+  searchSubject = new Subject<string>();
+  adress: string = '';
+  savedAdress:string="";
+  savedUid:string="";
   @Input() userChats:Chat[] = [];
   @Input() startNewChatBoolean:boolean = false;
   @Output() openChat = new EventEmitter<number>();
@@ -38,51 +43,85 @@ export class HeaderComponent implements OnInit{
   @Input()currentChannel:Channel|null =null;
 
   constructor(private authService: AuthService, private userService: UserService,private chatService: ChatService) {
-    this.setupSearchListener();
+    // this.setupSearchListener();
+  }
+
+  ngOnInit() {
+    this.searchSubject.pipe(
+      debounceTime(300),
+      distinctUntilChanged()
+    ).subscribe(value => {
+      this.handleSearch(value);
+    });
+    this.userService.getUserLiveUpdates();
+    this.updateUserData();
+  }
+
+  async saveName(item: string, idx:number) {
+    if (this.search === "name" || this.search === "email") {
+          this.savedAdress = this.searchResultsValue[idx].name;
+          this.savedUid = item;
+          this.adress = this.savedAdress;
+          this.searchResults = [];
+          this.searchResultsValue = [];
+      }else {
+      this.savedAdress = item;
+      this.savedUid=item
+        }
+    this.openChatOrChannel(item);
+    this.adress = this.savedAdress;
+    this.searchResults = [];
+  }
+
+  placeholder(){
+    return this.savedAdress !== '' ? this.savedAdress : 'Devspace durchsuchen'
+  }
+
+  onInputChange(value: string) {
+    this.searchSubject.next(value);
   }
 
   isChatActive(): boolean {
     return this.currentChannel !== null || this.currentChat !== null || this.startNewChatBoolean;
   }
 
-  setupSearchListener() {
-    this.input.valueChanges
-      .pipe(
-        debounceTime(300),
-        distinctUntilChanged()
-      )
-      .subscribe(value => {
-        if (!value || value.length < 2) {
-          this.searchResultsValue = [];
-          this.searchResults=[];
-          return;
-        }
-        const firstChar = value.charAt(0);
-        if (firstChar === "@") {
-          this.searchResultsValue = this.userService.searchUsers(value.substring(1));
-          for(let i=0; i<this.searchResultsValue.length; i++){
-            this.searchResults.push(this.searchResultsValue[i].name);
-            this.search="name"
-          }
-        } else if (firstChar === "#") {
-          this.search="channel"
-          if(this.userData){
-            this.searchResults = (this.userData.channels || [])
-            .filter((channel: string) => 
-            channel.toLowerCase().includes(value.substring(1).toLowerCase()));
-          }
-        } else if (/[a-zA-Z]/.test(firstChar)) {
-          this.searchResultsValue = this.userService.searchUsersWithMail(value); 
-          this.searchResults=[];
-          for(let i=0; i<this.searchResultsValue.length; i++){
-            this.searchResults.push(this.searchResultsValue[i].email);
-            this.search="email"
-          }
-        } else {
-          this.searchResultsValue = []; 
-          this.searchResults=[] 
-        }
-      });
+  searchAfterName(value:string){
+    this.searchResultsValue = this.userService.searchUsers(value.substring(1));
+      this.searchResults = this.searchResultsValue.map(u => u.name);
+      this.search = "name";
+  }
+
+  searchAfterChannel(value:string){
+    this.search = "channel";
+      if (this.userData) {
+        this.searchResults = (this.userData.channels || []).filter((channel: string) =>
+          channel.toLowerCase().includes(value.substring(1).toLowerCase())
+        );
+      }
+  }
+
+  searchAfterEmail(value:string){
+    this.searchResultsValue = this.userService.searchUsersWithMail(value);
+    this.searchResults = this.searchResultsValue.map(u => u.email);
+    this.search = "email";
+  }
+
+  handleSearch(value: string) {
+    if (!value || value.length < 2) {
+      this.searchResults = [];
+      this.searchResultsValue =[];
+      return;}
+    const firstChar = value.charAt(0);
+    if (firstChar === "@") {
+      this.searchAfterName(value);
+    } else if (firstChar === "#") {
+      this.searchAfterChannel(value)
+    } else if (/[a-zA-Z]/.test(firstChar)) {
+      this.searchAfterEmail(value);
+    } else{
+      this.searchResults = [];
+      this.searchResultsValue =[];
+    }
   }
 
   selectChat(user: string) {
@@ -92,7 +131,6 @@ export class HeaderComponent implements OnInit{
 
   async goToPersonalMessages(uid:string){
     if(this.userData && this.userChats.length<=0){
-      console.log("uid: ",uid)
       const messagesWMembers = await this.chatService.createChat(this.userData?.uid, uid )
     } await this.loadUserChats();
         for (let i = 0; i < this.userChats.length; i++) {
@@ -118,11 +156,6 @@ export class HeaderComponent implements OnInit{
     }else{
       this.oChannel.emit(item);
     }
-  }
-
-  ngOnInit(): void {
-    this.userService.getUserLiveUpdates();
-   this.updateUserData();
   }
 
   updateUserData(){
