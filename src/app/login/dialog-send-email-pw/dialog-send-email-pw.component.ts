@@ -11,8 +11,7 @@ import { AuthService } from '../../auth.service';
   templateUrl: './dialog-send-email-pw.component.html',
   styleUrl: './dialog-send-email-pw.component.scss'
 })
-export class DialogSendEmailPwComponent {
-    
+export class DialogSendEmailPwComponent {  
   fb = inject(FormBuilder);
   http = inject(HttpClient);
   router = inject(Router);
@@ -30,7 +29,7 @@ export class DialogSendEmailPwComponent {
     this.authService.forgotPassword(this.emailData.email);
     this.goBackToLogin();
   }
-  
+
   goBackToLogin(){
     this.switchBackToLogin.emit();
   }

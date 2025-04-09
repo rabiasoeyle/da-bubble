@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UserData } from '../../../modules/user';
 import { Chat } from '../../../modules/chat';
-import { AuthService } from '../../auth.service';
 import { Channel } from '../../../modules/channel';
 
 @Component({
@@ -16,22 +15,14 @@ export class SidenavComponent {
   channelsOpen:boolean = true;
   currentChat:Chat|null = null;
   currentChannel: Channel|null = null;
-  @Input() userData:UserData ={
-    uid: "",
-    name: "",
-    email: "",
-    fotolink:"",
-    channels:[],
-    chats:[],
-    presenceStatus:false,
-  } 
+  @Input() userData:UserData|null =null
   @Input() userChats:Chat[] = [];
   @Output() newChat = new EventEmitter<number>();
   @Output() newChannel = new EventEmitter<string>();
   @Output() openAddChannel = new EventEmitter<string>();
   @Output() startNewChatRespClicked = new EventEmitter<string>();
   @Output() startNewChatClicked = new EventEmitter<string>();
-  constructor(private authService: AuthService) {
+  constructor() {
     }
   changeChannelAreaStatus(){
     this.channelsOpen = !this.channelsOpen;
@@ -56,7 +47,7 @@ export class SidenavComponent {
   startNewChat(){
     this.startNewChatClicked.emit();
   }
-  
+
   startNewChatResp(){
     this.startNewChatRespClicked.emit();
   }

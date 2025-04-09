@@ -1,7 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, Firestore, getDoc, getDocs, onSnapshot, setDoc, updateDoc } from '@angular/fire/firestore';
 import { BehaviorSubject } from 'rxjs';
-import { AuthService } from './auth.service';
 import { Chat } from '../modules/chat';
 import { Message } from '../modules/messages';
 import { Member } from '../modules/member';
@@ -13,16 +12,15 @@ import { UserService } from './user.service';
 })
 export class ChatService {
   firebaseDatabase = inject(Firestore);
-  authService = inject(AuthService);
   currentUid: string | null = null;
   currentChannel = new BehaviorSubject<any>(null);
+  allChats:any=[];
+  allChannels:Channel[]=[];
   private chatUnsubscribe: (() => void) | null = null;
   private channelUnsubscribe: (() => void) | null = null;
   private currentChatSubject = new BehaviorSubject<any | null>(null);
   currentChat$ = this.currentChatSubject.asObservable();
-  allChats:any=[];
-  allChannels:Channel[]=[];
-
+  
   constructor(private userService:UserService) { 
   } 
 
@@ -86,7 +84,7 @@ export class ChatService {
   }
 
   updateChat(chat: Chat) {
-    this.currentChatSubject.next(chat); // Löst Update aus
+    this.currentChatSubject.next(chat);
   }
 
   async createChannel(channelname:string, description:string){
@@ -111,10 +109,10 @@ export class ChatService {
     const userDocRef = doc(this.firebaseDatabase, `users/${userId}`);
     const docSnap = await getDoc(userDocRef);
     if (!docSnap.exists()) {
-      await setDoc(userDocRef, { channels: [channelname] }); // Erstes Array erstellen
+      await setDoc(userDocRef, { channels: [channelname] });
     } else {
       await updateDoc(userDocRef, {
-        channels: arrayUnion(channelname) // Neuen Channel zum Array hinzufügen
+        channels: arrayUnion(channelname)
       });
     }
   }
@@ -123,10 +121,10 @@ export class ChatService {
     const userDocRef = doc(this.firebaseDatabase, `users/${userId}`);
     const docSnap = await getDoc(userDocRef);
     if (!docSnap.exists()) {
-      await setDoc(userDocRef, { channels: [channelname] }); // Erstes Array erstellen
+      await setDoc(userDocRef, { channels: [channelname] });
     } else {
       await updateDoc(userDocRef, {
-        channels: arrayUnion(channelname) // Neuen Channel zum Array hinzufügen
+        channels: arrayUnion(channelname)
       });
     }
   }
@@ -186,10 +184,10 @@ export class ChatService {
         const userData = userDoc.data();
         if (userData['channels'] && userData['channels'].includes(oldChannelName)) {
             await updateDoc(doc(this.firebaseDatabase, `users/${userDoc.id}`), {
-                channels: arrayRemove(oldChannelName) // Entfernt den alten Namen
+                channels: arrayRemove(oldChannelName)
             });
             await updateDoc(doc(this.firebaseDatabase, `users/${userDoc.id}`), {
-                channels: arrayUnion(newChannelName) // Fügt den neuen Namen hinzu
+                channels: arrayUnion(newChannelName)
             });
         }
     });
@@ -204,7 +202,7 @@ export class ChatService {
       if(channelData){
         const updatedMessages = [...channelData['messages']];
       updatedMessages[id] = {
-          ...updatedMessages[id], // Bestehende Daten beibehalten
+          ...updatedMessages[id],
           message: newMessage
       };
       await updateDoc(channelDocRef, {messages: updatedMessages});
@@ -218,7 +216,7 @@ export class ChatService {
       if(chatData){
         const updatedMessages = [...chatData['messages']];
         updatedMessages[id] = {
-            ...updatedMessages[id], // Bestehende Daten beibehalten
+            ...updatedMessages[id],
             message: newMessage
         };
       await updateDoc(chatDocRef, {messages: updatedMessages});
@@ -246,16 +244,16 @@ export class ChatService {
     const userDocRef = doc(this.firebaseDatabase, `users/${userId}`);
       const docSnap = await getDoc(userDocRef);
       if (!docSnap.exists()) {
-        await setDoc(userDocRef, { chats:newChatRef.id }); // Erstes Array erstellen
+        await setDoc(userDocRef, { chats:newChatRef.id });
       } else {
         await updateDoc(userDocRef, {
-          chats: arrayUnion(newChatRef.id) // Neuen Channel zum Array hinzufügen
+          chats: arrayUnion(newChatRef.id)
         });
       }
       const userDocRefTwo = doc(this.firebaseDatabase, `users/${memberId}`);
       const docSnapTwo = await getDoc(userDocRef);
       if (!docSnapTwo.exists()) {
-        await setDoc(userDocRefTwo, { chats:newChatRef.id }); // Erstes Array erstellen
+        await setDoc(userDocRefTwo, { chats:newChatRef.id });
       } else {
         await updateDoc(userDocRefTwo, {chats: arrayUnion(newChatRef.id)});
       }
@@ -308,9 +306,9 @@ export class ChatService {
     this.unsubscribeFromChannel();
     return this.chatUnsubscribe = onSnapshot(chatDocRef, (docSnap) => {
       if (docSnap.exists()) {
-        this.currentChatSubject.next(docSnap.data()); // Daten direkt setzen
+        this.currentChatSubject.next(docSnap.data());
       } else {
-        this.currentChatSubject.next(null); // Falls der Channel nicht existiert
+        this.currentChatSubject.next(null);
       }
     }, (error) => {
       console.error("Firestore Live-Update Fehler:", error);
@@ -319,9 +317,9 @@ export class ChatService {
 
   unsubscribeFromChat() {
   if (this.chatUnsubscribe) {
-    this.chatUnsubscribe(); // Live-Update deaktivieren
+    this.chatUnsubscribe();
     this.chatUnsubscribe = null;
-    this.currentChatSubject.next(null); // Channel beim User entfernen
+    this.currentChatSubject.next(null);
   }
   }
 
@@ -352,9 +350,9 @@ export class ChatService {
     this.unsubscribeFromChat();
     return this.channelUnsubscribe = onSnapshot(channelDocRef, (docSnap) => {
       if (docSnap.exists()) {
-        this.currentChannel.next(docSnap.data()); // Daten direkt setzen
+        this.currentChannel.next(docSnap.data());
       } else {
-        this.currentChannel.next(null); // Falls der Channel nicht existiert
+        this.currentChannel.next(null);
       }
     }, (error) => {
       console.error("Firestore Live-Update Fehler:", error);
@@ -363,12 +361,12 @@ export class ChatService {
 
   unsubscribeFromChannel() {
     if (this.channelUnsubscribe) {
-        this.channelUnsubscribe(); // Live-Update deaktivieren
+        this.channelUnsubscribe();
         this.channelUnsubscribe = null;
-        this.currentChannel.next(null); // Channel beim User entfernen
+        this.currentChannel.next(null);
     }
   }
-  
+
   async sendMessage(message:string, channelname:string){
     const userId = localStorage.getItem("userId");
     const time = new Date();

@@ -25,6 +25,7 @@ export class DialogChooseAvatarComponent {
   userData: UserData | null = null;
   @Output()loginUser = new EventEmitter<string>();
   @Output()goBackToRegistration = new EventEmitter<string>();
+  
   constructor(private authService: AuthService){}
 
   ngOnInit(): void {
@@ -41,7 +42,7 @@ export class DialogChooseAvatarComponent {
   async saveNewInfos(route:string){
     this.loginUser.emit(this.dummyProfile);
   }
-  
+
   goBack(){
     this.goBackToRegistration.emit();
   }

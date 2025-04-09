@@ -1,4 +1,4 @@
-import { inject, Injectable, OnInit} from '@angular/core';
+import { inject, Injectable} from '@angular/core';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword} from '@angular/fire/auth';
 import { doc, Firestore, getDoc, setDoc} from '@angular/fire/firestore';
 import { BehaviorSubject, catchError, from, Observable, switchMap, throwError } from 'rxjs';
@@ -27,6 +27,7 @@ export class AuthService{
   public userData$ = this.userDataSubject.asObservable();
   private unsubscribeUserUpdates!: () => void;
   router = inject(Router);
+
   constructor() {
     onAuthStateChanged(this.auth, (user) => {
       if (user) {
@@ -57,7 +58,7 @@ export class AuthService{
                   return this.addData(uid, email, name);
                 } else {
                   throw new Error('Kein Benutzer vorhanden, E-Mail-Verifikation fehlgeschlagen.');
-    }}));}}));};
+    }}))}}))}
     return checkEmailAndCreateAccount()
     .pipe(
       catchError((error) => {

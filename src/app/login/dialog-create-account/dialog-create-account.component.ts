@@ -1,12 +1,8 @@
 import { Component, EventEmitter, Input, OnChanges, Output, SimpleChanges, inject } from '@angular/core';
-import { DialogLoginComponent } from '../dialog-login/dialog-login.component';
 import { AuthService } from '../../auth.service';
-import { FormBuilder, FormGroup, FormsModule, NgForm, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder,FormsModule} from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { FirebaseApp } from '@angular/fire/app';
-import { getApps } from 'firebase/app';
-import { Auth } from '@angular/fire/auth';
 
 @Component({
   selector: 'app-dialog-create-account',

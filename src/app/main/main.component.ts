@@ -3,18 +3,16 @@ import { AuthService } from '../auth.service';
 import { HeaderComponent } from './header/header.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { Router } from '@angular/router';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import { UserData } from '../../modules/user';
-import { Message } from '../../modules/messages';
 import { Channel } from '../../modules/channel';
-import { Member } from '../../modules/member';
 import { Chat } from '../../modules/chat';
 import { ChatComponent } from './chat/chat.component';
 import { ChatService } from '../chat.service';
 import { ChannelComponent } from './channel/channel.component';
 import { StartNewChatComponent } from "./start-new-chat/start-new-chat.component";
 import { AddChannelDialogComponent } from './add-channel-dialog/add-channel-dialog.component';
-import { NgClass, NgStyle } from '@angular/common';
+import { NgClass} from '@angular/common';
 
 
 @Component({
@@ -28,7 +26,6 @@ import { NgClass, NgStyle } from '@angular/common';
 export class MainComponent implements OnInit{
   router = inject(Router);
   fb = inject(FormBuilder);
-  // booleans
   sidenavIsOpen:boolean = true;
   addChannelOpen:boolean = false;
   memberDetails:boolean= false;
@@ -150,7 +147,7 @@ export class MainComponent implements OnInit{
     this.currentChat = null;
     this.startNewChatBoolean = false;
   }
-  
+
   startNewChatResp(){
     this.currentChannel = null;
     this.currentChat = null;

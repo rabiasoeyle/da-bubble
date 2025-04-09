@@ -1,11 +1,9 @@
-import { ChangeDetectorRef, Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { Channel } from '../../../modules/channel';
 import { ChatService } from '../../chat.service';
 import { AuthService } from '../../auth.service';
 import { UserData } from '../../../modules/user';
-import { Message } from '../../../modules/messages';
-import { Member } from '../../../modules/member';
-import { FormBuilder, FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder,FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { Chat } from '../../../modules/chat';
 import { AddMembersToChannelComponent } from './add-members-to-channel/add-members-to-channel.component';
 import { UserService } from '../../user.service';
@@ -31,7 +29,6 @@ export class ChannelComponent implements OnInit, OnChanges{
   }
   markCorrespond:boolean=false;
   emojisOpen:boolean=false;
-  @Input()currentChannelName:string = "kein Name";
   openDetailsOfChannel= false;
   editChannel=false;
   addMemberToChannel=false;
@@ -43,6 +40,7 @@ export class ChannelComponent implements OnInit, OnChanges{
   currentChannel:Channel | null = null;
   userChats:Chat[]=[];
   @Output() openChat = new EventEmitter<number>();
+  @Input() currentChannelName:string = "kein Name";
 
   constructor(private chatService:ChatService, private authService:AuthService, private userService:UserService){
   }
@@ -176,7 +174,7 @@ export class ChannelComponent implements OnInit, OnChanges{
     this.markCorrespond=!this.markCorrespond;
     this.emojisOpen = false;
   }
-  
+
   markPerson(idx:number){
     if(this.currentChannel){
       this.newMessage.message += "@" + this.currentChannel.members[idx].name;

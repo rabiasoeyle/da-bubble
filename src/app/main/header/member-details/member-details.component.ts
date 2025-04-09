@@ -22,16 +22,16 @@ export class MemberDetailsComponent {
   ];
   chooseFotolink:boolean=false;
   chosedAvatar:boolean=false;
+  changeData ={
+    name:""
+  }
+  newFotolink:string="";
   @Input() profileDetails:boolean=false;
   @Input() editUserData:boolean=false;
   @Input() userData: UserData|null=null;
   @Output() closeDetailsEvent = new EventEmitter<void>();
   @Output() editDataEvent = new EventEmitter<void>();
   @Output() changedUserDataEvent = new EventEmitter<void>();
-  changeData ={
-    name:""
-  }
-  newFotolink:string="";
 
   constructor(private authService:AuthService, private userService:UserService){}
 

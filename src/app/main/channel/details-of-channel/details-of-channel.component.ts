@@ -12,22 +12,22 @@ import { ChatService } from '../../../chat.service';
   styleUrl: './details-of-channel.component.scss'
 })
 export class DetailsOfChannelComponent {
-  @Input() currentChannel:Channel|null=null;
   editChannel:boolean = false;
   channelData={
     name:"",
     description:""
   }
+  isNameChanged = false;
+  isDescriptionChanged = false;
+  deletedChannelname="";
+  channelDeleted=true;
+  @Input() currentChannel:Channel|null=null;
   @Output() closeDetailsEvent = new EventEmitter<number>();
   @Output() deleteChannelEvent = new EventEmitter<void>();
   @Output() openChannelEvent = new EventEmitter<string>();
   @Output() openDetailsEvent = new EventEmitter<number>();
   @Output() openAddMemberEvent = new EventEmitter<void>();
-  isNameChanged = false;
-  isDescriptionChanged = false;
-  deletedChannelname="";
-  channelDeleted=true;
-
+  
   constructor(private chatService:ChatService){}
 
   closeDetailsAboutChannel(){
@@ -52,10 +52,8 @@ export class DetailsOfChannelComponent {
     if(this.currentChannel ){
     this.chatService.changeChannelName(this.currentChannel.name, this.channelData.name);
     this.chatService.changeChannelNameForUsers(this.currentChannel.name, this.channelData.name);}
-    // setTimeout(()=>{
-            this.openEditChannel(),
-            this.openChannelEvent.emit(this.channelData.name) 
-      // },200);
+    this.openEditChannel(),
+    this.openChannelEvent.emit(this.channelData.name) 
   }
 
   changeChannelDescription(){
@@ -67,7 +65,7 @@ export class DetailsOfChannelComponent {
   addMembersToChannelDialog(){
     this.openAddMemberEvent.emit();
   }
-  
+
   openUserDetails(idx:number){
     this.openDetailsEvent.emit(idx)
   }

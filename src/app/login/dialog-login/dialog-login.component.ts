@@ -3,7 +3,6 @@ import { AuthService } from '../../auth.service';
 import { FormBuilder, FormsModule,NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { onAuthStateChanged } from 'firebase/auth';
 
 @Component({
   selector: 'app-dialog-login',
@@ -18,11 +17,11 @@ export class DialogLoginComponent implements OnInit{
   router = inject(Router);
   authService = inject(AuthService);
   errorMessage : string |null = null;
-  @Output() switchToForgotPassword = new EventEmitter<void>(); // EventEmitter erstellen
   loginData = {
     email:"",
     password:"",
   };
+  @Output() switchToForgotPassword = new EventEmitter<void>();
   
   constructor(){
   }

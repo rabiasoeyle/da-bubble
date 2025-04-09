@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, Input, Output, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { UserService } from '../../user.service';
 import { UserData } from '../../../modules/user';
@@ -26,24 +26,17 @@ export class StartNewChatComponent {
     savedAdress:string="";
     searchResultsValue: any[]=[]; 
     savedUid:string = "";
-    @Input() userData:UserData|null ={
-        uid: "",
-        name: "",
-        email: "",
-        fotolink:"",
-        channels:[],
-        chats:[],
-        presenceStatus:false,
-      } 
     userChats:any=[]  
     private searchSubject = new Subject<string>();
+    @Input() userData:UserData|null =null;
     @Output() sendMessageEmitter = new EventEmitter<string>();
     @Output() openChat = new EventEmitter<number>();
     @Output() sendChannelMessageEmitter = new EventEmitter<string>();
     @Output() oChannel = new EventEmitter<string>();
+
     constructor(private userService: UserService, private chatService: ChatService){
     }
-    
+
     placeholder(){
       return this.savedAdress !== '' ? this.savedAdress : '#Channel, @Name oder die E-Mail Adresse'
     }

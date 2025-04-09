@@ -1,5 +1,5 @@
 import { initializeApp, provideFirebaseApp } from "@angular/fire/app";
-import { ApplicationConfig, importProvidersFrom, provideZoneChangeDetection } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { getAuth, provideAuth } from '@angular/fire/auth';
@@ -16,11 +16,11 @@ export const appConfig: ApplicationConfig = {
           "storageBucket":"da-bubble-85cd2.firebasestorage.app",
           "apiKey":"AIzaSyA71jwQ3pIqlVwMAWybxUTctoVCr3PvQmw",
           "authDomain":"da-bubble-85cd2.firebaseapp.com",
-          "messagingSenderId":"1053306260929"})), // Firebase-App initialisieren
-      provideAuth(() => getAuth()), // Auth-Service bereitstellen
-      provideFirestore(() => getFirestore()), // Optional: Firestore
+          "messagingSenderId":"1053306260929"})),
+      provideAuth(() => getAuth()), 
+      provideFirestore(() => getFirestore()), 
       provideDatabase(() => getDatabase()),
-      provideHttpClient(), // Falls HTTP benötigt wird
-      provideRouter(routes), // Falls Routing benötigt wird
+      provideHttpClient(),
+      provideRouter(routes),
     ],
 };

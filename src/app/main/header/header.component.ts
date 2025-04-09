@@ -4,8 +4,7 @@ import { Router } from '@angular/router';
 import { UserData } from '../../../modules/user';
 import { UserService } from '../../user.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, filter, switchMap, tap } from 'rxjs/operators';
-import { Observable, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import { Chat } from '../../../modules/chat';
 import { ChatService } from '../../chat.service';
 import { MemberDetailsComponent } from './member-details/member-details.component';
@@ -37,9 +36,11 @@ export class HeaderComponent implements OnInit{
   @Output() goBackToDevspace = new EventEmitter<void>();
   @Input()currentChat:Chat|null= null;
   @Input()currentChannel:Channel|null =null;
+
   constructor(private authService: AuthService, private userService: UserService,private chatService: ChatService) {
     this.setupSearchListener();
   }
+
   isChatActive(): boolean {
     return this.currentChannel !== null || this.currentChat !== null || this.startNewChatBoolean;
   }
@@ -154,7 +155,7 @@ export class HeaderComponent implements OnInit{
     this.editUserData =!this.editUserData;
     this.detailsOfProfile();
   }
-  
+
   goBackToSidenav(){
     this.currentChannel=null;
     this.currentChat = null;

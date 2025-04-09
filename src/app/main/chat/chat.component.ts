@@ -1,8 +1,8 @@
-import { ChangeDetectorRef, Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { Chat } from '../../../modules/chat';
 import { UserData } from '../../../modules/user';
 import { Router } from '@angular/router';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ChatService } from '../../chat.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../auth.service';
@@ -21,12 +21,7 @@ export class ChatComponent implements OnInit, OnDestroy, OnChanges{
   router = inject(Router);
   fb = inject(FormBuilder);
   messageIdx:number = 0;
-  @Input() userChats:Chat[]=[];
-  @Input() currentChat:Chat|null = null;
-  @Input() currentChatId:number = 999;
   private chatSubscription!: Subscription;
-  @Input() userData:UserData|null = null;
-  @Output() newChatPartner = new EventEmitter<number>();
   newMessage={
     message:"",
   }
@@ -36,6 +31,11 @@ export class ChatComponent implements OnInit, OnDestroy, OnChanges{
   markCorrespond:boolean=false;
   previousChatData: any = null;
   emojisOpen:boolean = false;
+  @Input() userChats:Chat[]=[];
+  @Input() currentChat:Chat|null = null;
+  @Input() currentChatId:number = 999;
+  @Input() userData:UserData|null = null;
+  @Output() newChatPartner = new EventEmitter<number>();
 
   constructor(private chatService:ChatService, private authService:AuthService) {}
   

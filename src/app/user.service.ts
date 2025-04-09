@@ -1,6 +1,4 @@
 import { inject, Injectable } from '@angular/core';
-import { FirebaseApp } from '@angular/fire/app';
-import { Auth } from '@angular/fire/auth';
 import { collection, doc, Firestore, getDoc, getDocs, onSnapshot, setDoc} from '@angular/fire/firestore';
 import { UserData } from '../modules/user';
 import { AuthService } from './auth.service';
@@ -9,8 +7,6 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class UserService {
-  firebase = inject(FirebaseApp);
-  firebaseAuth = inject(Auth);
   firebaseDatabase = inject(Firestore);
   allUsers:UserData[]=[];
 
@@ -47,10 +43,10 @@ export class UserService {
   }
 
   searchUsersWithMail(searchTerm: string){
-    if (!searchTerm.trim()) return []; // Falls leer, nichts zurückgeben
-    searchTerm = searchTerm.toLowerCase(); // Kleinbuchstaben für bessere Treffer
+    if (!searchTerm.trim()) return [];
+    searchTerm = searchTerm.toLowerCase();
     return this.allUsers
-    .filter(user => user.email.toLowerCase().includes(searchTerm)) // Filtere passende Nutzer
+    .filter(user => user.email.toLowerCase().includes(searchTerm))
     .map(user => ({ name: user.name, email: user.email, uid: user.uid })); 
   }
 
@@ -76,7 +72,7 @@ export class UserService {
     return onSnapshot(userDocRef, (docSnap) => {
       if (docSnap.exists()) {
         const data = (docSnap.data() as UserData);
-        this.authService.userDataSubject.next(data); // Daten direkt setzen
+        this.authService.userDataSubject.next(data);
       } else {
         this.authService.userDataSubject.next(null);
       }

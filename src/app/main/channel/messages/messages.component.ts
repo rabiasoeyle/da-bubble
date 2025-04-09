@@ -12,11 +12,11 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './messages.component.scss'
 })
 export class MessagesComponent {
-@Input() userData:UserData|null = null;
-@Input() currentChannel:Channel|null = null;
 editMessageData={
   message:""
 }
+@Input() userData:UserData|null = null;
+@Input() currentChannel:Channel|null = null;
 
 constructor(private chatService:ChatService){}
 
