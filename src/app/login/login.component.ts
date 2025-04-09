@@ -1,11 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject} from '@angular/core';
 import { trigger, style, animate, transition, keyframes} from '@angular/animations';
 import { DialogLoginComponent } from './dialog-login/dialog-login.component';
-import { DialogChangePasswordComponent } from './dialog-change-password/dialog-change-password.component';
 import { DialogCreateAccountComponent } from './dialog-create-account/dialog-create-account.component';
 import { DialogSendEmailPwComponent } from './dialog-send-email-pw/dialog-send-email-pw.component';
 import { DialogChooseAvatarComponent } from './dialog-choose-avatar/dialog-choose-avatar.component';
-import { Router, RouterLink, RouterOutlet } from '@angular/router';
+import { Router, RouterLink} from '@angular/router';
 import { AuthService } from '../auth.service';
 import { UserService } from '../user.service';
 
@@ -70,25 +69,23 @@ export class LoginComponent{
     this.chooseAvatar=false;
     this.createNewAccount=true;
   }
-  
+
   async loginUserAfterAvatarChosen(avatar: string) {
     this.authService.register(this.registerData.email, this.registerData.name, this.registerData.password)
       .subscribe({
         next: async () => {
           try {
-            await this.authService.login(this.registerData.email, this.registerData.password); // Beachte das 'await'
-            setTimeout(async () => { // Beachte das 'async'
+            await this.authService.login(this.registerData.email, this.registerData.password);
+            setTimeout(async () => { 
               if (this.userId) {
-                await this.userService.updateUserProfile(this.userId, avatar); // Beachte das 'await'
+                this.authService.changePresenceStatus(true,this.userId);
+                await this.userService.updateUserProfile(this.userId, avatar); 
                 this.router.navigateByUrl('main');
-              }
-            }, 1000);
-          } catch (err) {
-            console.error('Error saving user data to Firebase:', err);
-          }
+            }}, 1000);
+          } catch (err) {}
         },
         error: (err) => {
-          if (err.message == 'Firebase: Error (auth/email-already-in-use).') {
+          if (err.message == 'Firebase: Error (auth/email-already-in-use).'||'Firebase: Error (auth/network-request-failed).') {
             this.goBackToRegistration();
             this.errorMessageRegistration = 'Diese E-Mail-Adresse ist bereits registriert.';
           } else {

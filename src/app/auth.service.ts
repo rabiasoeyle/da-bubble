@@ -1,7 +1,7 @@
 import { inject, Injectable, OnInit} from '@angular/core';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword} from '@angular/fire/auth';
 import { doc, Firestore, getDoc, setDoc} from '@angular/fire/firestore';
-import { BehaviorSubject, from, Observable, switchMap, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, from, Observable, switchMap, throwError } from 'rxjs';
 import { signInWithPopup, GoogleAuthProvider,confirmPasswordReset, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, User, verifyPasswordResetCode, UserCredential, browserLocalPersistence, setPersistence, fetchSignInMethodsForEmail } from "firebase/auth";
 import { UserData } from '../modules/user';
 import { Router } from '@angular/router';
@@ -59,12 +59,12 @@ export class AuthService{
                   throw new Error('Kein Benutzer vorhanden, E-Mail-Verifikation fehlgeschlagen.');
     }}));}}));};
     return checkEmailAndCreateAccount()
-    // .pipe(
-    //   catchError((error) => {
-    //     console.error('Fehler bei der Registrierung:', error);
-    //     return throwError(error); // Fehler weitergeben, damit er in der Komponente behandelt werden kann
-    //   })
-    // );
+    .pipe(
+      catchError((error) => {
+        console.error('Fehler bei der Registrierung:', error);
+        return throwError(error); // Fehler weitergeben, damit er in der Komponente behandelt werden kann
+      })
+    );
   }
 
   async addData(uid: string, email:string|any, name:string|any) {
@@ -96,7 +96,7 @@ export class AuthService{
     return from(loginPromise);
   }
 
-  async changePresenceStatus(status: boolean, uid:string) {
+  async changePresenceStatus(status: boolean, uid:string|null) {
     if (uid) {
       try {
         const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
