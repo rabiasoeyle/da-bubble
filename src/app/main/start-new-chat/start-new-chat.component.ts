@@ -60,7 +60,25 @@ export class StartNewChatComponent {
     onInputChange(value: string) {
       this.searchSubject.next(value);
     }
-  
+
+    searchAfterName(value:string){
+      this.searchResultsValue = this.userService.searchUsers(value.substring(1));
+        this.searchResults = this.searchResultsValue.map(u => u.name);
+        this.search = "name";
+    }
+    searchAfterChannel(value:string){
+      this.search = "channel";
+        if (this.userData) {
+          this.searchResults = (this.userData.channels || []).filter((channel: string) =>
+            channel.toLowerCase().includes(value.substring(1).toLowerCase())
+          );
+        }
+    }
+    searchAfterEmail(value:string){
+      this.searchResultsValue = this.userService.searchUsersWithMail(value);
+      this.searchResults = this.searchResultsValue.map(u => u.email);
+      this.search = "email";
+    }
     handleSearch(value: string) {
       if (!value || value.length < 2) {
         this.searchResults = [];
@@ -69,26 +87,30 @@ export class StartNewChatComponent {
       }
       const firstChar = value.charAt(0);
       if (firstChar === "@") {
-        this.searchResultsValue = this.userService.searchUsers(value.substring(1));
-        this.searchResults = this.searchResultsValue.map(u => u.name);
-        this.search = "name";
+        this.searchAfterName(value);
+        // this.searchResultsValue = this.userService.searchUsers(value.substring(1));
+        // this.searchResults = this.searchResultsValue.map(u => u.name);
+        // this.search = "name";
   
       } else if (firstChar === "#") {
-        this.search = "channel";
-        if (this.userData) {
-          this.searchResults = (this.userData.channels || []).filter((channel: string) =>
-            channel.toLowerCase().includes(value.substring(1).toLowerCase())
-          );
-        }
+        this.searchAfterChannel(value)
+        // this.search = "channel";
+        // if (this.userData) {
+        //   this.searchResults = (this.userData.channels || []).filter((channel: string) =>
+        //     channel.toLowerCase().includes(value.substring(1).toLowerCase())
+        //   );
+        // }
       } else if (/[a-zA-Z]/.test(firstChar)) {
-        this.searchResultsValue = this.userService.searchUsersWithMail(value);
-        this.searchResults = this.searchResultsValue.map(u => u.email);
-        this.search = "email";
+        this.searchAfterEmail(value);
+        // this.searchResultsValue = this.userService.searchUsersWithMail(value);
+        // this.searchResults = this.searchResultsValue.map(u => u.email);
+        // this.search = "email";
       } else{
         this.searchResults = [];
         this.searchResultsValue =[];
       }
     }
+    
     async saveName(item: string, idx:number) {
       if (this.search === "name" || this.search === "email") {
             this.savedAdress = this.searchResultsValue[idx].name;

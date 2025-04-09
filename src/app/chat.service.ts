@@ -30,7 +30,6 @@ export class ChatService {
           const userInfo = await this.userService.getUserInfo(msg.uid);
           const time = msg.timestamp
           const formattedDateMessage = this.formatDate(time);
-          const timestampNumber = typeof msg.timestamp === "string"? parseInt(msg.timestamp) : msg.timestamp;
           const formatHour = this.formatHour(time);
           return {
             uid: msg.uid, 
@@ -132,50 +131,35 @@ export class ChatService {
             if (userData['name'] == userName) {
                 userId = doc.id;
                 this.addChannelToUserTwo(channelName, userId)
-            }
-        });
-        if (!userId) {
-            return;
-        }
+            }});
+            if (!userId) {return;}
         const channelDocRef = doc(this.firebaseDatabase, `channels/${channelName}`);
-        await updateDoc(channelDocRef, {
-            members: arrayUnion(userId)
-        });
-    } catch (error) {
+        await updateDoc(channelDocRef, {members: arrayUnion(userId)});
+      }catch (error) {
         console.error("Fehler beim Hinzufügen des Benutzers zum Channel:", error);
-    }
+      }
     }
     async deleteChannelAtMember(channelName:string){
       const userId = localStorage.getItem("userId");
       const channelDocRef = doc(this.firebaseDatabase, `channels/${channelName}`);
       const channelDocSnap = await getDoc(channelDocRef);
       if (channelDocSnap.exists()) {
-          await updateDoc(channelDocRef, {
-              members: arrayRemove(userId)
-          });
+          await updateDoc(channelDocRef, {members: arrayRemove(userId)});
       }
       const userDocRef = doc(this.firebaseDatabase, `users/${userId}` );
       const userSnapshot = await getDoc(userDocRef);
-      if (userSnapshot.exists()) {
-        await updateDoc(userDocRef, {
-            channels: arrayRemove(channelName)
-        });
+      if (userSnapshot.exists()) {await updateDoc(userDocRef, {channels: arrayRemove(channelName)});
       }
     }
     async changeChannelDescription(channelName:string, newDescription:string){
       const channelDocRef = doc(this.firebaseDatabase, `channels/${channelName}`);
-      await updateDoc(channelDocRef, {
-        description: newDescription
-    })
+      await updateDoc(channelDocRef, {description: newDescription})
     }
     async changeChannelName(oldChannelName: string, newChannelName: string){
       const oldChannelDocRef = doc(this.firebaseDatabase, `channels/${oldChannelName}`);
       const newChannelDocRef = doc(this.firebaseDatabase, `channels/${newChannelName}`);
       const channelSnap = await getDoc(oldChannelDocRef);
-      if (!channelSnap.exists()) {
-          console.error("Der alte Channel existiert nicht!");
-          return;
-      }
+      if (!channelSnap.exists()) {return;}
       const channelData = channelSnap.data();
       await setDoc(newChannelDocRef, channelData);
       await deleteDoc(oldChannelDocRef);
@@ -208,11 +192,8 @@ export class ChatService {
             ...updatedMessages[id], // Bestehende Daten beibehalten
             message: newMessage
         };
-        await updateDoc(channelDocRef, {
-            messages: updatedMessages
-        });
-        }
-        
+        await updateDoc(channelDocRef, {messages: updatedMessages});
+        } 
     }
     async editPrivateMessage(chatId:string, newMessage:string, id:number){
       const chatDocRef = doc(this.firebaseDatabase, `chats/${chatId}`);
@@ -224,26 +205,43 @@ export class ChatService {
               ...updatedMessages[id], // Bestehende Daten beibehalten
               message: newMessage
           };
-        await updateDoc(chatDocRef, {
-            messages: updatedMessages
-        });
-        }
-        
+        await updateDoc(chatDocRef, {messages: updatedMessages});
+        } 
     }
+    
     async createChat(userId:string, memberId:string){
       const chatsRef = collection(this.firebaseDatabase, "chats");
       const querySnapshot = await getDocs(chatsRef);
       for (const docSnap of querySnapshot.docs) {
         const chatData = docSnap.data();
         if (chatData['members'] && chatData['members'].includes(userId) && chatData['members'].includes(memberId)) {
-          return docSnap.id;
-        }
+          return docSnap.id;}
       }
       const newChatRef = await addDoc(chatsRef, {
         members: [userId, memberId],
         createdAt: new Date(),
         messages:[]
       });
+      this.saveNewChatAtBothUsers(userId,newChatRef,memberId);
+      // const userDocRef = doc(this.firebaseDatabase, `users/${userId}`);
+      //   const docSnap = await getDoc(userDocRef);
+      //   if (!docSnap.exists()) {
+      //     await setDoc(userDocRef, { chats:newChatRef.id }); // Erstes Array erstellen
+      //   } else {
+      //     await updateDoc(userDocRef, {
+      //       chats: arrayUnion(newChatRef.id) // Neuen Channel zum Array hinzufügen
+      //     });
+      //   }
+      //   const userDocRefTwo = doc(this.firebaseDatabase, `users/${memberId}`);
+      //   const docSnapTwo = await getDoc(userDocRef);
+      //   if (!docSnapTwo.exists()) {
+      //     await setDoc(userDocRefTwo, { chats:newChatRef.id }); // Erstes Array erstellen
+      //   } else {
+      //     await updateDoc(userDocRefTwo, {chats: arrayUnion(newChatRef.id)});
+      //   }
+      return newChatRef.id;
+    }
+    async saveNewChatAtBothUsers(userId:string,newChatRef:any,memberId:string){
       const userDocRef = doc(this.firebaseDatabase, `users/${userId}`);
         const docSnap = await getDoc(userDocRef);
         if (!docSnap.exists()) {
@@ -258,19 +256,46 @@ export class ChatService {
         if (!docSnapTwo.exists()) {
           await setDoc(userDocRefTwo, { chats:newChatRef.id }); // Erstes Array erstellen
         } else {
-          await updateDoc(userDocRefTwo, {
-            chats: arrayUnion(newChatRef.id) // Neuen Channel zum Array hinzufügen
-          });
+          await updateDoc(userDocRefTwo, {chats: arrayUnion(newChatRef.id)});
         }
-      return newChatRef.id;
     }
-    async getUserChats(userId: string):Promise<Chat[]>{
-      const userRef = doc(this.firebaseDatabase, `users/${userId}`);
-      const userSnap = await getDoc(userRef);
-      const userData = userSnap.data();
-      if (!userData || !userData['chats']) return [];
-      const chatIds: string[] = userData['chats'];
-      const chatDetails = [];
+    // async getUserChats(userId: string):Promise<Chat[]>{
+    //   const userRef = doc(this.firebaseDatabase, `users/${userId}`);
+    //   const userSnap = await getDoc(userRef);
+    //   const userData = userSnap.data();
+    //   if (!userData || !userData['chats']) return [];
+    //   const chatIds: string[] = userData['chats'];
+    //   const chatDetails = [];
+    //   for (const chatId of chatIds) {
+    //     const chatRef = doc(this.firebaseDatabase, `chats/${chatId}`);
+    //     const chatSnap = await getDoc(chatRef);
+    //     if (chatSnap.exists()) {
+    //       const chatData = chatSnap.data();
+    //       const chatMembers: string[] = chatData['members'];
+    //       const chatPartnerId = chatMembers.find((id) => id !== userId);
+    //       if (!chatPartnerId) continue;
+    //       const partnerRef = doc(this.firebaseDatabase, `users/${chatPartnerId}`);
+    //       const partnerSnap = await getDoc(partnerRef);
+    //       const partnerData = partnerSnap.exists() ? partnerSnap.data() : {};
+    //       chatDetails.push({
+    //         chatId:chatId,
+    //         chatData:chatData,
+    //         chatPartner: { 
+    //           uid: chatPartnerId,
+    //           name: partnerData['name'],                
+    //           email: partnerData['email'],              
+    //           fotolink: partnerData['fotolink'], 
+    //           presenceStatus: partnerData['presenceStatus'],
+    //   }});}
+    // }
+    //   return chatDetails;
+    // }
+    async getUserChats(userId: string): Promise<Chat[]> {
+      const chatIds = await this.getUserChatIds(userId);
+      return this.getChatDetails(chatIds, userId);
+    }
+    async getChatDetails(chatIds: string[], userId: string): Promise<Chat[]> {
+      const chatDetails: Chat[] = [];
       for (const chatId of chatIds) {
         const chatRef = doc(this.firebaseDatabase, `chats/${chatId}`);
         const chatSnap = await getDoc(chatRef);
@@ -283,20 +308,27 @@ export class ChatService {
           const partnerSnap = await getDoc(partnerRef);
           const partnerData = partnerSnap.exists() ? partnerSnap.data() : {};
           chatDetails.push({
-            chatId:chatId,
-            chatData:chatData,
-            chatPartner: { 
+            chatId: chatId,
+            chatData: chatData,
+            chatPartner: {
               uid: chatPartnerId,
-              name: partnerData['name'],                
-              email: partnerData['email'],              
-              fotolink: partnerData['fotolink'], 
+              name: partnerData['name'],
+              email: partnerData['email'],
+              fotolink: partnerData['fotolink'],
               presenceStatus: partnerData['presenceStatus'],
-            }
-          });
-        }
-      }
+            },});}}
       return chatDetails;
     }
+    async getUserChatIds(userId: string): Promise<string[]> {
+      const userRef = doc(this.firebaseDatabase, `users/${userId}`);
+      const userSnap = await getDoc(userRef);
+      const userData = userSnap.data();
+      if (!userData || !userData['chats']) {
+        return [];
+      }
+      return userData['chats'];
+    }
+    
     async getChatLiveUpdates(chatId: string) {
       const chatDocRef = await doc(this.firebaseDatabase, `chats/${chatId}`);
       this.unsubscribeFromChat();
