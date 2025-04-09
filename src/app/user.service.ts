@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { FirebaseApp } from '@angular/fire/app';
 import { Auth } from '@angular/fire/auth';
-import { collection, Firestore, getDocs} from '@angular/fire/firestore';
+import { collection, doc, Firestore, getDoc, getDocs, onSnapshot, setDoc} from '@angular/fire/firestore';
 import { UserData } from '../modules/user';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,7 @@ export class UserService {
   // private db: Firestore = inject(Firestore);
   allUsers:UserData[]=[];
 
-  constructor() {
+  constructor(private authService:AuthService) {
     this.loadAllUsers();
   }
   private async loadAllUsers() {
@@ -52,5 +53,62 @@ export class UserService {
     .filter(user => user.email.toLowerCase().includes(searchTerm)) // Filtere passende Nutzer
     .map(user => ({ name: user.name, email: user.email, uid: user.uid })); 
   }
+
+  async getUserInfo(uid: string) {
+      try {
+        const userRef = doc(this.firebaseDatabase, `users/${uid}`);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists()) {
+          const userData = userSnap.data();
+          // this.authService.userCache.set(uid, userData);
+          return userData;
+        }
+        else{
+           return { name: "Unbekannt", profilePic: "default.png" };
+        }
+      } catch (error) {
+        return { name: "Fehler", profilePic: "error.png" };
+      }
+    }
+    getUserLiveUpdates() {
+      const userId = localStorage.getItem("userId");
+      const userDocRef = doc(this.firebaseDatabase, `users/${userId}`);
+      return onSnapshot(userDocRef, (docSnap) => {
+        if (docSnap.exists()) {
+          const data = (docSnap.data() as UserData);
+          this.authService.userDataSubject.next(data); // Daten direkt setzen
+        } else {
+          this.authService.userDataSubject.next(null);
+        }
+      }, (error) => {
+        console.error("Firestore Live-Update Fehler:", error);
+      });
+    }
+    
+    // private async getData(uid: string): Promise<UserData | null> {
+    //   const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
+    //   const userDoc = await getDoc(userDocRef);
+    //   return userDoc.exists() ? (userDoc.data() as UserData) : null;
+    // }
+    async updateUserProfile(uid: string, fotolink: string): Promise<void> {
+      try {
+        const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
+        await setDoc(userDocRef, {fotolink }, { merge: true });
+      } catch (error) {
+        console.error('Fehler beim Aktualisieren des Profilbilds:', error);
+      }
+    }
+    async updateUserName(uid: string, name: string): Promise<void> {
+      try {
+        const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
+        await setDoc(userDocRef, { name }, { merge: true });
+        const currentData = this.authService.userDataSubject.value;
+        if (currentData) {
+          this.authService.userDataSubject.next({ ...currentData, name });
+        }
+      } catch (error) {
+        console.error('Fehler beim Aktualisieren des Namens:', error);
+      }
+    }
 
 }

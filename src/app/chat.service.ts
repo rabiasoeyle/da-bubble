@@ -6,6 +6,7 @@ import { Chat } from '../modules/chat';
 import { Message } from '../modules/messages';
 import { Member } from '../modules/member';
 import { Channel } from '../modules/channel';
+import { UserService } from './user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,12 +22,12 @@ export class ChatService {
   currentChat$ = this.currentChatSubject.asObservable();
   allChats:any=[];
   allChannels:Channel[]=[];
-    constructor() { 
+    constructor(private userService:UserService) { 
     }   
     async loadMessages(messages:Message[]){
       const messagesWithUserData = await Promise.all(
         messages.map(async (msg: Message) => {
-          const userInfo = await this.authService.getUserInfo(msg.uid);
+          const userInfo = await this.userService.getUserInfo(msg.uid);
           const time = msg.timestamp
           const formattedDateMessage = this.formatDate(time);
           const timestampNumber = typeof msg.timestamp === "string"? parseInt(msg.timestamp) : msg.timestamp;
@@ -48,7 +49,7 @@ export class ChatService {
     async loadMembers(members:string[]):Promise<Member[]>{
       const membersWithUserData = await Promise.all(
         members.map(async (uid: string) => {
-          const userInfo = await this.authService.getUserInfo(uid);
+          const userInfo = await this.userService.getUserInfo(uid);
           return {
             uid: uid,
             name: userInfo ? userInfo['name'] : "Unbekannt",
@@ -96,7 +97,7 @@ export class ChatService {
         members:[userId],
       }); 
       this.addChannelToUser(channelname);
-      this.authService.getUserLiveUpdates();
+      this.userService.getUserLiveUpdates();
     }
     async addChannelToUser(channelname:string){
       const userId = localStorage.getItem("userId");
@@ -195,7 +196,7 @@ export class ChatService {
           }
       });
       await Promise.all(updatePromises);
-      this.authService.getUserLiveUpdates();
+      this.userService.getUserLiveUpdates();
     }
     async editMessage(channelName:string, newMessage:string, id:number){
       const channelDocRef = doc(this.firebaseDatabase, `channels/${channelName}`);

@@ -114,7 +114,7 @@ export class HeaderComponent implements OnInit{
     }
   }
   ngOnInit(): void {
-    this.authService.getUserLiveUpdates();
+    this.userService.getUserLiveUpdates();
    this.updateUserData();
   }
   updateUserData(){

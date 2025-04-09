@@ -7,6 +7,7 @@ import { DialogSendEmailPwComponent } from './dialog-send-email-pw/dialog-send-e
 import { DialogChooseAvatarComponent } from './dialog-choose-avatar/dialog-choose-avatar.component';
 import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { AuthService } from '../auth.service';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +30,7 @@ export class LoginComponent{
   errorMessage:any ="";
   errorMessageRegistration:any="";
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService, private userService:UserService) {
     this.authService.userData$.subscribe((user) => {
       this.userId = user?.uid || null;
     });
@@ -71,7 +72,7 @@ export class LoginComponent{
             await this.authService.login(this.registerData.email, this.registerData.password); // Beachte das 'await'
             setTimeout(async () => { // Beachte das 'async'
               if (this.userId) {
-                await this.authService.updateUserProfile(this.userId, avatar); // Beachte das 'await'
+                await this.userService.updateUserProfile(this.userId, avatar); // Beachte das 'await'
                 this.router.navigateByUrl('main');
               }
             }, 1000);

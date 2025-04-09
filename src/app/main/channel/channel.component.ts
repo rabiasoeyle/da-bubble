@@ -70,7 +70,7 @@ export class ChannelComponent implements OnInit, OnChanges{
     const messagesWithUserData = data.messages ? await this.chatService.loadMessages(data.messages): [];
     const membersWithUserData = data.members ? await this.chatService.loadMembers(data.members): [];
     const creatorUID: string = data.created.createdFrom; // Einzelne UID aus Firebase
-    const creator = await this.authService.getUserInfo(creatorUID);
+    const creator = await this.userService.getUserInfo(creatorUID);
     const createdAt = data.created.createdAt? (data.created.createdAt.toDate() || new Date(data.created.createdAt)): null; // Timestamp umwandeln
     const formattedDate = this.chatService.formatDate(createdAt);
     this.currentChannel = {
@@ -111,7 +111,7 @@ export class ChannelComponent implements OnInit, OnChanges{
         this.memberDetails = false;
         return
       }
-      this.currentProfileDetail = await this.authService.getUserInfo(this.currentChannel?.members[idx].uid);
+      this.currentProfileDetail = await this.userService.getUserInfo(this.currentChannel?.members[idx].uid);
       this.memberDetails = !this.memberDetails;
   }
   async goToPersonalMessages(){

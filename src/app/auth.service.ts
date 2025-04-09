@@ -30,11 +30,11 @@ export class AuthService{
   auth = getAuth();
   // fd=getFirestore();
   // fd= getDatabase()
-  firebase = inject(FirebaseApp);
+  // firebase = inject(FirebaseApp);
   firebaseDatabase = inject(Firestore);
-  private userDataSubject = new BehaviorSubject<UserData | null>(null); 
+  userDataSubject = new BehaviorSubject<UserData | null>(null); 
   public userData$ = this.userDataSubject.asObservable();
-  private userCache = new Map<string, any>();
+  // private userCache = new Map<string, any>();
   private unsubscribeUserUpdates!: () => void;
   router = inject(Router);
   constructor() {
@@ -44,11 +44,9 @@ export class AuthService{
               this.userDataSubject.next(data);
               this.router.navigateByUrl('main');
               this.changePresenceStatus(true, user.uid);
-          });
-      }
-  });
-  if (!getApps().length) {
-    initializeApp(this.appConfig);
+      });}});
+    if (!getApps().length) {
+      initializeApp(this.appConfig);
 }
   
   }
@@ -69,20 +67,14 @@ export class AuthService{
                   return this.addData(uid, email, name);
                 } else {
                   throw new Error('Kein Benutzer vorhanden, E-Mail-Verifikation fehlgeschlagen.');
-                }
-              })
-            );
-          }
-        })
-      );
-    };
-  
-    return checkEmailAndCreateAccount().pipe(
-      catchError((error) => {
-        console.error('Fehler bei der Registrierung:', error);
-        return throwError(error); // Fehler weitergeben, damit er in der Komponente behandelt werden kann
-      })
-    );
+    }}));}}));};
+    return checkEmailAndCreateAccount()
+    // .pipe(
+    //   catchError((error) => {
+    //     console.error('Fehler bei der Registrierung:', error);
+    //     return throwError(error); // Fehler weitergeben, damit er in der Komponente behandelt werden kann
+    //   })
+    // );
   }
   async addData(uid: string, email:string|any, name:string|any) {
     const userDocRef = doc(this.firebaseDatabase, `users/${uid}`); // Dokument mit UID als Pfad
@@ -116,8 +108,7 @@ export class AuthService{
       try {
         const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
         await setDoc(userDocRef, { presenceStatus: status }, { merge: true });
-      } catch (error) {
-      }
+      } catch (error) {}
     } 
     // else {
     //   console.error('userId nicht im localStorage gefunden.');
@@ -137,32 +128,33 @@ export class AuthService{
         const provider = new GoogleAuthProvider();
         signInWithPopup(this.auth,provider)
           .then((result) => {
-            const credential = GoogleAuthProvider.credentialFromResult(result);
-            const token = credential?.accessToken;
-            const user = result.user;
-            const googleParam = {
-              id: user.uid,
-              cover: user.photoURL,
-              nickname: user.displayName,
-              token: token,
-            }
-            this.loginNext(user)
+            // const credential = GoogleAuthProvider.credentialFromResult(result);
+            // const token = credential?.accessToken;
+            // const user = result.user;
+            // const googleParam = {
+            //   id: user.uid,
+            //   cover: user.photoURL,
+            //   nickname: user.displayName,
+            //   token: token,
+            // }
+            this.loginNext(result.user)
           })
             } catch (error) {
                 console.error("❌ Fehler beim Google Login:", error);
             }
-}
-async loginNext(user:any){
-      if (user && user.email) {
-          const userDocRef = doc(this.firebaseDatabase, "users", user.uid);
-          const userDoc = await getDoc(userDocRef);
-          if (!userDoc.exists()) {
-              await this.addData(user.uid, user.email, user.displayName);
-          }
-          localStorage.setItem("userId", user.uid);
-          const data = await this.getData(user.uid);
-      }
-}
+  }
+  async loginNext(user:any){
+        if (user && user.email) {
+            const userDocRef = doc(this.firebaseDatabase, "users", user.uid);
+            const userDoc = await getDoc(userDocRef);
+            if (!userDoc.exists()) {
+                await this.addData(user.uid, user.email, user.displayName);
+            }
+            localStorage.setItem("userId", user.uid);
+            const data = await this.getData(user.uid);
+            this.router.navigateByUrl('main');
+        }
+  }
 
   forgotPassword(email:string){
     const actionCodeSettings = {
@@ -192,59 +184,60 @@ async loginNext(user:any){
         return Promise.reject(error); // Fehler bei der Änderung
       });
   }
-  async getUserInfo(uid: string) {
-    try {
-      const userRef = doc(this.firebaseDatabase, `users/${uid}`);
-      const userSnap = await getDoc(userRef);
-      if (userSnap.exists()) {
-        const userData = userSnap.data();
-        this.userCache.set(uid, userData);
-        return userData;
-      }else{
-         return { name: "Unbekannt", profilePic: "default.png" };
-      }
-    } catch (error) {
-      return { name: "Fehler", profilePic: "error.png" };
-    }
-  }
-  getUserLiveUpdates() {
-    const userId = localStorage.getItem("userId");
-    const userDocRef = doc(this.firebaseDatabase, `users/${userId}`);
-    return onSnapshot(userDocRef, (docSnap) => {
-      if (docSnap.exists()) {
-        const data = (docSnap.data() as UserData);
-        this.userDataSubject.next(data); // Daten direkt setzen
-      } else {
-        this.userDataSubject.next(null);
-      }
-    }, (error) => {
-      console.error("Firestore Live-Update Fehler:", error);
-    });
-  }
+  // async getUserInfo(uid: string) {
+  //   try {
+  //     const userRef = doc(this.firebaseDatabase, `users/${uid}`);
+  //     const userSnap = await getDoc(userRef);
+  //     if (userSnap.exists()) {
+  //       const userData = userSnap.data();
+  //       this.userCache.set(uid, userData);
+  //       return userData;
+  //     }else{
+  //        return { name: "Unbekannt", profilePic: "default.png" };
+  //     }
+  //   } catch (error) {
+  //     return { name: "Fehler", profilePic: "error.png" };
+  //   }
+  // }
+  // getUserLiveUpdates() {
+  //   const userId = localStorage.getItem("userId");
+  //   const userDocRef = doc(this.firebaseDatabase, `users/${userId}`);
+  //   return onSnapshot(userDocRef, (docSnap) => {
+  //     if (docSnap.exists()) {
+  //       const data = (docSnap.data() as UserData);
+  //       this.userDataSubject.next(data); // Daten direkt setzen
+  //     } else {
+  //       this.userDataSubject.next(null);
+  //     }
+  //   }, (error) => {
+  //     console.error("Firestore Live-Update Fehler:", error);
+  //   });
+  // }
+
   private async getData(uid: string): Promise<UserData | null> {
     const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
     const userDoc = await getDoc(userDocRef);
     return userDoc.exists() ? (userDoc.data() as UserData) : null;
   }
-  async updateUserProfile(uid: string, fotolink: string): Promise<void> {
-    try {
-      const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
-      await setDoc(userDocRef, {fotolink }, { merge: true });
-    } catch (error) {
-      console.error('Fehler beim Aktualisieren des Profilbilds:', error);
-    }
-  }
-  async updateUserName(uid: string, name: string): Promise<void> {
-    try {
-      const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
-      await setDoc(userDocRef, { name }, { merge: true });
-      const currentData = this.userDataSubject.value;
-      if (currentData) {
-        this.userDataSubject.next({ ...currentData, name });
-      }
-    } catch (error) {
-      console.error('Fehler beim Aktualisieren des Namens:', error);
-    }
-  }
+  // async updateUserProfile(uid: string, fotolink: string): Promise<void> {
+  //   try {
+  //     const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
+  //     await setDoc(userDocRef, {fotolink }, { merge: true });
+  //   } catch (error) {
+  //     console.error('Fehler beim Aktualisieren des Profilbilds:', error);
+  //   }
+  // }
+  // async updateUserName(uid: string, name: string): Promise<void> {
+  //   try {
+  //     const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);
+  //     await setDoc(userDocRef, { name }, { merge: true });
+  //     const currentData = this.userDataSubject.value;
+  //     if (currentData) {
+  //       this.userDataSubject.next({ ...currentData, name });
+  //     }
+  //   } catch (error) {
+  //     console.error('Fehler beim Aktualisieren des Namens:', error);
+  //   }
+  // }
 
 }

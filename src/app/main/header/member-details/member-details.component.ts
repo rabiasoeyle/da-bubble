@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UserData } from '../../../../modules/user';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../../auth.service';
+import { UserService } from '../../../user.service';
 
 @Component({
   selector: 'app-member-details',
@@ -31,7 +32,7 @@ export class MemberDetailsComponent {
     name:""
   }
   newFotolink:string="";
-  constructor(private authService:AuthService){}
+  constructor(private authService:AuthService, private userService:UserService){}
   closeUserDetails(){
     this.closeDetailsEvent.emit();
   }
@@ -44,7 +45,7 @@ export class MemberDetailsComponent {
   }
   saveNewName(){
     if(this.userData){
-      this.authService.updateUserName(this.userData.uid, this.changeData.name)
+      this.userService.updateUserName(this.userData.uid, this.changeData.name)
       this.changedUserDataEvent.emit();
     }
   }
@@ -53,7 +54,7 @@ export class MemberDetailsComponent {
   }
   changeFotolink(){
     if(this.userData){
-      this.authService.updateUserProfile(this.userData.uid, this.newFotolink)
+      this.userService.updateUserProfile(this.userData.uid, this.newFotolink)
     }
   }
   saveNewLink(link:string){
