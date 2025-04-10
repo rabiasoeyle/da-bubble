@@ -362,9 +362,6 @@ emoji-mart .emoji-mart-category{
     overflow-y: visible !important;;
     scrollbar-width: none;
 }
-emoji-mart [aria-label="Kürzlich"],[aria-label="Menschen"] {
-    min-height: 50px !important; /* Passe den Wert nach Bedarf an */
-}
 emoji-mart .emoji-mart-search-icon{
     background-color: white;
     border: 0px transparent;

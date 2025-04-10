@@ -44,41 +44,7 @@ export class ChannelComponent implements OnInit, OnChanges{
   @Input() currentChannelName:string = "kein Name";
 
   constructor(private chatService:ChatService, private authService:AuthService, private userService:UserService){
-}
-
-
-// adjustCategoryMinHeight() {
-//   const categoryElements: NodeListOf<HTMLElement> = document.querySelectorAll(
-//     '.emoji-mart-category'
-//   );
-
-//   categoryElements.forEach((category: HTMLElement) => {
-//     const ariaLabel: string | null = category.getAttribute('aria-label');
-
-//     if (ariaLabel) {
-//       switch (ariaLabel) {
-//         case 'Kürzlich':
-//           category.style.minHeight = '50px';
-//           break;
-//         case 'Menschen':
-//           category.style.minHeight = '80px';
-//           break;
-//         // Füge weitere Fälle für andere Kategorien hinzu
-//         default:
-//           category.style.minHeight = 'auto'; // Standardwert, falls kein übereinstimmendes aria-label gefunden wird.
-//           break;
-//       }
-//     }
-//   });
-// }
-
-// // Rufe die Funktion beim Laden der Seite und bei Bedarf auf
-// window.addEventListener('load', adjustCategoryMinHeight);
-
-// // Optionale Anpassung bei Fenstergrößenänderungen
-// window.addEventListener('resize', adjustCategoryMinHeight);
- 
-
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['currentChannelName']) {
