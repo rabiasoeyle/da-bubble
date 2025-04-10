@@ -89,10 +89,34 @@
                                     <h6 class="margin-5px">{{item? item.clock: "Keine Zeit"}}</h6>
                                 </div>
                                 <div class="my-msg-message edit-msg">
+                                    @if(emojisOpenInEditM){
+                                        <div class="emoji-picker-edit-m">
+                                            <emoji-mart class="emoji-mart-edit"
+                                                (emojiSelect)="addEmoji($event)"
+                                                [virtualize]="true"
+                                                [showSingleCategory]="true"
+                                                [i18n]="{
+                                                categories: {
+                                                    recent: 'Kürzlich',
+                                                    smileys: 'Smileys',
+                                                    people: 'Menschen',
+                                                    animals: 'Tiere',
+                                                    food: 'Essen',
+                                                    activities: 'Aktivitäten',
+                                                    travel: 'Reisen',
+                                                    objects: 'Objekte',
+                                                    symbols: 'Symbole',
+                                                    flags: 'Flaggen'
+                                                },
+                                                search: 'Suchen'
+                                                }"
+                                          ></emoji-mart>
+                                          </div>
+                                    }
                                     <form class="edit-message-form" #editMessageForm="ngForm" (ngSubmit)="editMessage(idx)">
                                         <textarea [(ngModel)]="editMessageData.message" name="message" class="margin-5px" placeholder={{item.message}}></textarea>
                                         <div class="emoji-two-buttons-edit">
-                                            <img src="./assets/img/sentiment_satisfied.png" alt="smiley">
+                                            <img (click)="toggleEmojisOnEditM()" src="./assets/img/sentiment_satisfied.png" alt="smiley">
                                             <div class="two-buttons-edit">
                                                 <button class="white-btn-edit" type="button" (click)="closeEditMessage(idx)">Abbrechen</button>
                                                 <button class="blue-btn-edit" type="submit" [disabled]="editMessageForm.invalid">Speichern</button>

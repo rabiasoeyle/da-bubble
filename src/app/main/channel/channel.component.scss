@@ -156,6 +156,7 @@
     box-shadow: 0px 6px 10px 0px #00000033;
     max-width: 100% !important;
     width: 100%;
+    position:relative;
 }
 textarea{
     width: 90%;
@@ -287,6 +288,32 @@ textarea{
         left:2vW;
     }
 }
+.emoji-picker-edit-m {
+    .emoji-picker-edit-m {
+        position: absolute;
+        top: 116px;
+        left: 0;
+        right: 0;
+        width: 280px;
+        height: 360px;
+        overflow: scroll;
+        border: 1px solid #ccc;
+        display: flex; /* @include dFlex() wurde durch display: flex; ersetzt */
+        z-index: 3;
+        padding: 8px;
+        scrollbar-width: none;
+        background-color: white;
+        border-radius: 20px;
+        display: grid; /* Verwende CSS Grid für ein flexibles Layout */
+        grid-template-columns: repeat(auto-fit, minmax(40px, 1fr)); /* Anpassbare Spaltenbreite */
+        gap: 4px; /* Abstand zwischen den Emojis */
+    }
+    @media(max-width:500px){
+        width:220px;
+        height:180px;
+        left:2vW;
+    }
+}
 .corresponds-mark{
     position: absolute;
     bottom:10vH;
@@ -329,10 +356,30 @@ emoji-mart{
         height:200px;
     }
 }
+emoji-mart .emoji-mart-category{
+    height: auto !important; /* Dynamische Höhe */
+    max-height: none !important;
+    overflow-y: visible !important;;
+    scrollbar-width: none;
+}
+emoji-mart [aria-label="Kürzlich"],[aria-label="Menschen"] {
+    min-height: 50px !important; /* Passe den Wert nach Bedarf an */
+}
 emoji-mart .emoji-mart-search-icon{
     background-color: white;
     border: 0px transparent;
 }
-emoji-mart .emoji-mart-anchors, .emoji-mart-category-label, .emoji-mart-preview{
+emoji-mart .emoji-mart-anchors{
+    @include dFlex($jc:flex-start, $g:4px);
+}
+emoji-mart .emoji-mart-preview,
+.emoji-mart-category-label{
     display: none;
 }
+// .emoji-mart-edit{
+//     width:320px;
+//     height:200px;
+//     overflow-y: scroll;
+//     scrollbar-width: none;
+
+// }

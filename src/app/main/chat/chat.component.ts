@@ -9,6 +9,7 @@ import { AuthService } from '../../auth.service';
 import { Member } from '../../../modules/member';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 
+
 @Component({
   selector: 'app-chat',
   standalone: true,
@@ -28,6 +29,7 @@ export class ChatComponent implements OnInit, OnDestroy, OnChanges{
   editMessageData={
     message:""
   }
+  emojisOpenInEditM:boolean=false;
   markCorrespond:boolean=false;
   previousChatData: any = null;
   emojisOpen:boolean = false;
@@ -37,7 +39,14 @@ export class ChatComponent implements OnInit, OnDestroy, OnChanges{
   @Input() userData:UserData|null = null;
   @Output() newChatPartner = new EventEmitter<number>();
 
-  constructor(private chatService:ChatService, private authService:AuthService) {}
+  constructor(private chatService:ChatService, private authService:AuthService) {
+  }
+  
+  toggleEmojisOnEditM(){
+    this.emojisOpenInEditM=!this.emojisOpenInEditM;
+    this.emojisOpen=false;
+    this.markCorrespond=false;
+  }
   
   isSameDay(timestamp1: number, timestamp2: number): boolean {
     const date1 = new Date(timestamp1);
@@ -84,6 +93,8 @@ export class ChatComponent implements OnInit, OnDestroy, OnChanges{
       const msg = this.currentChat.chatData.messages[id];
       this.editMessageData.message=msg.message;
       msg.editing = true;
+      this.emojisOpen=false;
+      this.markCorrespond=false;
     }
   }
 
@@ -91,6 +102,9 @@ export class ChatComponent implements OnInit, OnDestroy, OnChanges{
     if(this.currentChat){
       const msg = this.currentChat.chatData.messages[id];
       msg.editing = false;
+      this.emojisOpenInEditM=false;
+      this.emojisOpen=false;
+      this.markCorrespond=false;
     }
   }
 
