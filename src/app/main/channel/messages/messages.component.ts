@@ -1,24 +1,35 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { UserData } from '../../../../modules/user';
 import { Channel } from '../../../../modules/channel';
 import { ChatService } from '../../../chat.service';
 import { FormsModule } from '@angular/forms';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
 
 @Component({
   selector: 'app-messages',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, PickerModule],
   templateUrl: './messages.component.html',
-  styleUrl: './messages.component.scss'
+  styleUrl: './messages.component.scss',
+  encapsulation: ViewEncapsulation.None,
 })
 export class MessagesComponent {
 editMessageData={
   message:""
 }
+emojisOpenInEditM:boolean=false;
 @Input() userData:UserData|null = null;
 @Input() currentChannel:Channel|null = null;
 
 constructor(private chatService:ChatService){}
+
+toggleEmojisOnEditM(){
+  this.emojisOpenInEditM=!this.emojisOpenInEditM;
+}
+
+addEmojiOnEditMessage(event:any){
+  this.editMessageData.message += event.emoji.native;
+}
 
 isSameDay(timestamp1: number, timestamp2: number): boolean {
   const date1 = new Date(timestamp1);
