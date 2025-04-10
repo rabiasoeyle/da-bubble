@@ -24,8 +24,11 @@ emojisOpenForReaction:boolean=false;
 
 constructor(private chatService:ChatService){}
 
-addEmojReaction(event:any, message:any){
+addEmojReaction(event:any, idx:number){
   console.log(event.emoji.native)
+  if(this.currentChannel){
+    this.chatService.addEmojiReaction(this.currentChannel.name, event.emoji.native, idx);
+  }
 }
 
 toggleEmojisForReaction(){

@@ -35,7 +35,7 @@
                 </div> 
                 <div class="reactions" >
                     <emoji-mart class="emoji-mart-recent-reactions"
-                        (emojiSelect)="addEmojReaction($event,item.message)"
+                        (emojiSelect)="addEmojReaction($event,idx)"
                         [perLine]="4"
                         [totalFrequentLines]="1"
                         [i18n]="{
@@ -45,7 +45,7 @@
                     </emoji-mart>
                     <div class="toggle-emoji-for-reaction" (click)="toggleEmojisForReaction()">+</div>
                 </div>
-                @if(item.reactions == []){
+                @if(item.reactions !== []){
                     <div class="saved-reactions">
                     @for(reaction of item.reactions?item.reactions:[]; track reaction; let idx = $index){
                         {{reaction}}

@@ -196,6 +196,23 @@ export class ChatService {
     this.userService.getUserLiveUpdates();
   }
 
+  async addEmojiReaction(channelName:string, emoji:any, idx:number){
+    const channelDocRef = doc(this.firebaseDatabase, `channels/${channelName}`);
+    const channelSnap = await getDoc(channelDocRef);
+    const channelData = channelSnap.data();
+      if(channelData){
+        const updatedMessages = [...channelData['messages']];
+        const message = updatedMessages[idx];
+        const existingReactions = message.reactions || [];
+        const updatedReactions = [...existingReactions, emoji];
+        updatedMessages[idx] = {
+          ...message,
+          reactions: updatedReactions
+        };
+        await updateDoc(channelDocRef, { messages: updatedMessages });
+      } 
+  }
+
   async editMessage(channelName:string, newMessage:string, id:number){
     const channelDocRef = doc(this.firebaseDatabase, `channels/${channelName}`);
       const channelSnap = await getDoc(channelDocRef);
