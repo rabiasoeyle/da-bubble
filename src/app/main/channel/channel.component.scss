@@ -70,6 +70,37 @@
     width:80%;
     @include dFlex($ai:end, $fd:column);
 }
+.msg-text-area{
+    width:80%;
+    @include dFlex($ai:start, $fd:column);
+    position: relative;
+    .reactions{
+        width:120px !important;
+        height:30px !important;
+        background-color: hsla(238, 84%, 71%, 0.087);
+        display:none;
+        transition: 100ms;
+        transform: 125ms;
+        border-radius: 25px;
+    }
+    .saved-reactions{
+        width:120px;
+        height:30px;
+        background-color: hsla(238, 84%, 71%, 0.087);
+        @include dFlex($jc:start);
+        transition: 100ms;
+        transform: 125ms;
+        border-radius: 25px;
+    }
+    &:hover{
+        .saved-reactions{
+            display:none;
+        }
+        .reactions{
+            display:flex;
+        }
+    }
+}
 .edit-backgroundcolor{
     background-color: #ECEEFE;
 }
@@ -291,7 +322,7 @@ textarea{
 
 .emoji-picker-edit-m {
         position: absolute;
-        top: 116px;
+        top: -124px;
         left: 0;
         right: 0;
         width: 280px;
@@ -348,6 +379,38 @@ textarea{
         }
     }
 }
+.toggle-emoji-for-reaction{
+    @include dFlex();
+    width:auto;
+    font-size:16px;
+}
+.emoji-mart-recent-reactions .emoji-mart-anchors,
+.emoji-mart-recent-reactions .emoji-mart-category,
+.emoji-mart-recent-reactions .emoji-mart-category-label,
+.emoji-mart-recent-reactions .emoji-mart-search-icon,
+.emoji-mart-recent-reactions .emoji-mart-preview,
+.emoji-mart-recent-reactions .emoji-mart-search {
+    display: none;
+    
+}
+.emoji-mart-recent-reactions .emoji-mart,
+.emoji-mart-recent-reactions .emoji-mart-dark,
+.emoji-mart-recent-reactions emoji-category,
+.emoji-mart-recent-reactions .emoji-mart-scroll,
+.emoji-mart-recent-reactions{
+    max-width:100px !important;
+}
+.emoji-mart-recent-reactions [aria-label="Kürzlich"] button:nth-child(n + 4) {
+    display: none !important; /* Versteckt alle Emojis ab dem 5. */
+}
+.emoji-mart-recent-reactions [aria-label="Kürzlich"]{
+    max-height: 30px !important; 
+    max-width:100px;
+    display:block !important;
+    overflow: hidden; /* Verhindert, dass Emojis über die max-height hinausgehen */
+    white-space: nowrap;
+}
+
 emoji-mart{
     width:320px;
     height:400px;
@@ -356,12 +419,6 @@ emoji-mart{
         height:200px;
     }
 }
-// emoji-mart .emoji-mart-category{
-//     height: auto !important; /* Dynamische Höhe */
-//     max-height: none !important;
-//     overflow-y: visible !important;;
-//     scrollbar-width: none;
-// }
 emoji-mart .emoji-mart-search-icon{
     background-color: white;
     border: 0px transparent;
@@ -373,10 +430,4 @@ emoji-mart .emoji-mart-preview,
 .emoji-mart-category-label{
     display: none;
 }
-// .emoji-mart-edit{
-//     width:320px;
-//     height:200px;
-//     overflow-y: scroll;
-//     scrollbar-width: none;
 
-// }

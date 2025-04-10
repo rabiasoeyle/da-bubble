@@ -30,9 +30,52 @@
                     <h4 class="margin-5px">{{item? item.name:"565656"}}</h4>
                     <h6 class="margin-5px">{{item? item.clock: "Keine Zeit"}}</h6>
                 </div>
-                <div (click)="startEditMessage(idx)" class="msg-message">
+                <div class="msg-message">
                     <h4 class="margin-5px">{{item? item.message :"Hey"}}</h4>
                 </div> 
+                <div class="reactions" >
+                    <emoji-mart class="emoji-mart-recent-reactions"
+                        (emojiSelect)="addEmojReaction($event,item.message)"
+                        [perLine]="4"
+                        [totalFrequentLines]="1"
+                        [i18n]="{
+                        categories: {
+                            recent: 'Kürzlich',}
+                        }">
+                    </emoji-mart>
+                    <div class="toggle-emoji-for-reaction" (click)="toggleEmojisForReaction()">+</div>
+                </div>
+                @if(item.reactions == []){
+                    <div class="saved-reactions">
+                    @for(reaction of item.reactions?item.reactions:[]; track reaction; let idx = $index){
+                        {{reaction}}
+                    }
+                    </div>
+                }
+                <!-- @if(emojisOpenForReaction){
+                    <div class="emoji-picker-edit-m">
+                        <emoji-mart
+                            (emojiSelect)="addEmojiOnEditMessage($event)"
+                            [virtualize]="true"
+                            [showSingleCategory]="true"
+                            [i18n]="{
+                            categories: {
+                                recent: 'Kürzlich',
+                                smileys: 'Smileys',
+                                people: 'Menschen',
+                                animals: 'Tiere',
+                                food: 'Essen',
+                                activities: 'Aktivitäten',
+                                travel: 'Reisen',
+                                objects: 'Objekte',
+                                symbols: 'Symbole',
+                                flags: 'Flaggen'
+                            },
+                            search: 'Suchen'
+                            }"
+                      ></emoji-mart>
+                      </div>
+                } -->
             </div>
         </div>
             }

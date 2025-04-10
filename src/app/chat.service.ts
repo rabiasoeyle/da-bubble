@@ -40,6 +40,7 @@ export class ChatService {
           name: userInfo? userInfo['name'] : "Unbekannt",
           fotolink: userInfo? userInfo['fotolink'] : "./assets/img/profile.png",
           editing:false,
+          reactions:msg.reactions
         };
       })
     );
@@ -339,7 +340,8 @@ export class ChatService {
       messages: arrayUnion({
         uid: userId,
         message: message,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        reactions:[]
       })
     });
   }
@@ -375,7 +377,8 @@ export class ChatService {
       messages: arrayUnion({
         uid: userId,
         message: message,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        reactions:[]
       })
     });
   }

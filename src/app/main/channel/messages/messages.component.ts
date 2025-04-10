@@ -18,10 +18,19 @@ editMessageData={
   message:""
 }
 emojisOpenInEditM:boolean=false;
+emojisOpenForReaction:boolean=false;
 @Input() userData:UserData|null = null;
 @Input() currentChannel:Channel|null = null;
 
 constructor(private chatService:ChatService){}
+
+addEmojReaction(event:any, message:any){
+  console.log(event.emoji.native)
+}
+
+toggleEmojisForReaction(){
+  this.emojisOpenForReaction=!this.emojisOpenForReaction;
+}
 
 toggleEmojisOnEditM(){
   this.emojisOpenInEditM=!this.emojisOpenInEditM;
