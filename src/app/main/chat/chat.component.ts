@@ -2,7 +2,7 @@ import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, O
 import { Chat } from '../../../modules/chat';
 import { UserData } from '../../../modules/user';
 import { Router } from '@angular/router';
-import { FormBuilder, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule} from '@angular/forms';
 import { ChatService } from '../../chat.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../auth.service';
@@ -13,14 +13,14 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
 @Component({
   selector: 'app-chat',
   standalone: true,
-  imports: [ReactiveFormsModule, PickerModule, FormsModule],
+  imports: [PickerModule, FormsModule],
   templateUrl: './chat.component.html',
   styleUrl: './chat.component.scss',
   encapsulation: ViewEncapsulation.None,
 })
 export class ChatComponent implements OnInit, OnDestroy, OnChanges{
   router = inject(Router);
-  fb = inject(FormBuilder);
+  // fb = inject(FormBuilder);
   messageIdx:number = 0;
   private chatSubscription!: Subscription;
   newMessage={
@@ -40,6 +40,10 @@ export class ChatComponent implements OnInit, OnDestroy, OnChanges{
   @Output() newChatPartner = new EventEmitter<number>();
 
   constructor(private chatService:ChatService, private authService:AuthService) {
+  }
+
+  addEmojiOnEditMessage(event:any){
+    this.editMessageData.message += event.emoji.native;
   }
   
   toggleEmojisOnEditM(){

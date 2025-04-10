@@ -3,7 +3,6 @@ import { AuthService } from '../auth.service';
 import { HeaderComponent } from './header/header.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import { Router } from '@angular/router';
-import { FormBuilder, ReactiveFormsModule} from '@angular/forms';
 import { UserData } from '../../modules/user';
 import { Channel } from '../../modules/channel';
 import { Chat } from '../../modules/chat';
@@ -18,14 +17,14 @@ import { NgClass} from '@angular/common';
 @Component({
   selector: 'app-main',
   standalone: true,
-  imports: [NgClass,AddChannelDialogComponent,StartNewChatComponent,HeaderComponent, ReactiveFormsModule, SidenavComponent, ChatComponent, ChannelComponent, StartNewChatComponent],
+  imports: [NgClass,AddChannelDialogComponent,StartNewChatComponent,HeaderComponent, SidenavComponent, ChatComponent, ChannelComponent, StartNewChatComponent],
   templateUrl: './main.component.html',
   styleUrl: './main.component.scss'
 })
 
 export class MainComponent implements OnInit{
   router = inject(Router);
-  fb = inject(FormBuilder);
+  // fb = inject(FormBuilder);
   sidenavIsOpen:boolean = true;
   addChannelOpen:boolean = false;
   memberDetails:boolean= false;

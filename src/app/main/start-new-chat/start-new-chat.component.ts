@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, Input, Output, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormsModule} from '@angular/forms';
+import { FormsModule} from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { UserService } from '../../user.service';
 import { UserData } from '../../../modules/user';
@@ -16,7 +16,7 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
   encapsulation: ViewEncapsulation.None,
 })
 export class StartNewChatComponent {
-    fb = inject(FormBuilder);
+    // fb = inject(FormBuilder);
     markCorrespond:boolean=false;
     emojisOpen:boolean=false;
     newMessage={message:"",}

@@ -1,9 +1,9 @@
-import { Component, EventEmitter, inject, Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter,Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
 import { Channel } from '../../../modules/channel';
 import { ChatService } from '../../chat.service';
 import { AuthService } from '../../auth.service';
 import { UserData } from '../../../modules/user';
-import { FormBuilder,FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule} from '@angular/forms';
 import { Chat } from '../../../modules/chat';
 import { AddMembersToChannelComponent } from './add-members-to-channel/add-members-to-channel.component';
 import { UserService } from '../../user.service';
@@ -16,14 +16,14 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
 @Component({
   selector: 'app-channel',
   standalone: true,
-  imports: [PickerModule,DetailsOfChannelComponent,MessagesComponent,ReactiveFormsModule,FormsModule, AddMembersToChannelComponent, MemberlistComponent, MemberDetailsComponent],
+  imports: [PickerModule,DetailsOfChannelComponent,MessagesComponent,FormsModule, AddMembersToChannelComponent, MemberlistComponent, MemberDetailsComponent],
   templateUrl: './channel.component.html',
   styleUrl: './channel.component.scss',
   encapsulation: ViewEncapsulation.None,
 })
 export class ChannelComponent implements OnInit, OnChanges{
   userData: UserData |null = null;
-  fb = inject(FormBuilder);
+  // fb = inject(FormBuilder);
   newMessage={
     message:"",
   }

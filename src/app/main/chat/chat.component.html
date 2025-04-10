@@ -90,9 +90,9 @@
                                 </div>
                                 <div class="my-msg-message edit-msg">
                                     @if(emojisOpenInEditM){
-                                        <div class="emoji-picker-edit-m">
-                                            <emoji-mart class="emoji-mart-edit"
-                                                (emojiSelect)="addEmoji($event)"
+                                        <div class="emoji-picker-edit-m ">
+                                            <emoji-mart
+                                                (emojiSelect)="addEmojiOnEditMessage($event)"
                                                 [virtualize]="true"
                                                 [showSingleCategory]="true"
                                                 [i18n]="{

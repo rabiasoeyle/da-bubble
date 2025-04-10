@@ -288,14 +288,14 @@ textarea{
         left:2vW;
     }
 }
+
 .emoji-picker-edit-m {
-    .emoji-picker-edit-m {
         position: absolute;
         top: 116px;
         left: 0;
         right: 0;
         width: 280px;
-        height: 360px;
+        height: 120px;
         overflow: scroll;
         border: 1px solid #ccc;
         display: flex; /* @include dFlex() wurde durch display: flex; ersetzt */
@@ -307,13 +307,13 @@ textarea{
         display: grid; /* Verwende CSS Grid für ein flexibles Layout */
         grid-template-columns: repeat(auto-fit, minmax(40px, 1fr)); /* Anpassbare Spaltenbreite */
         gap: 4px; /* Abstand zwischen den Emojis */
-    }
     @media(max-width:500px){
         width:220px;
-        height:180px;
+        height:100px;
         left:2vW;
-    }
 }
+}
+
 .corresponds-mark{
     position: absolute;
     bottom:10vH;
@@ -356,12 +356,12 @@ emoji-mart{
         height:200px;
     }
 }
-emoji-mart .emoji-mart-category{
-    height: auto !important; /* Dynamische Höhe */
-    max-height: none !important;
-    overflow-y: visible !important;;
-    scrollbar-width: none;
-}
+// emoji-mart .emoji-mart-category{
+//     height: auto !important; /* Dynamische Höhe */
+//     max-height: none !important;
+//     overflow-y: visible !important;;
+//     scrollbar-width: none;
+// }
 emoji-mart .emoji-mart-search-icon{
     background-color: white;
     border: 0px transparent;
