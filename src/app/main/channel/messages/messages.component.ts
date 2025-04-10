@@ -24,10 +24,17 @@ emojisOpenForReaction:boolean=false;
 
 constructor(private chatService:ChatService){}
 
+removeReaction(reactionIdx:number, messageIdx:number){
+  if(this.currentChannel && this.userData){
+    this.chatService.removeEmojiReaction(this.currentChannel?.name, messageIdx, reactionIdx, this.userData?.uid)
+  }
+  
+}
+
 addEmojReaction(event:any, idx:number){
   console.log(event.emoji.native)
-  if(this.currentChannel){
-    this.chatService.addEmojiReaction(this.currentChannel.name, event.emoji.native, idx);
+  if(this.currentChannel && this.userData){
+    this.chatService.addEmojiReaction(this.currentChannel.name, event.emoji.native, idx, this.userData?.uid);
   }
 }
 

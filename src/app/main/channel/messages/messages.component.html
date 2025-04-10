@@ -47,8 +47,15 @@
                 </div>
                 @if(item.reactions !== []){
                     <div class="saved-reactions">
-                    @for(reaction of item.reactions?item.reactions:[]; track reaction; let idx = $index){
-                        {{reaction}}
+                    @for(reaction of item.reactions?item.reactions:[]; track reaction; let id = $index){
+                        @if(reaction.senderUid == userData.uid){
+                            <div (click)="removeReaction(id, idx)">
+                               {{reaction.reaction}}  
+                            </div>
+                        }@else {
+                            <div>{{reaction.reaction}}</div>
+                        }
+                        
                     }
                     </div>
                 }

@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { addDoc, arrayRemove, arrayUnion, collection, deleteDoc, doc, Firestore, getDoc, getDocs, onSnapshot, setDoc, updateDoc } from '@angular/fire/firestore';
 import { BehaviorSubject } from 'rxjs';
 import { Chat } from '../modules/chat';
-import { Message } from '../modules/messages';
+import { Message, Reaction } from '../modules/messages';
 import { Member } from '../modules/member';
 import { Channel } from '../modules/channel';
 import { UserService } from './user.service';
@@ -196,21 +196,52 @@ export class ChatService {
     this.userService.getUserLiveUpdates();
   }
 
-  async addEmojiReaction(channelName:string, emoji:any, idx:number){
+  async removeEmojiReaction(channelName: string, messageIdx:number, reactionIdx:number, senderUid: string) {
     const channelDocRef = doc(this.firebaseDatabase, `channels/${channelName}`);
     const channelSnap = await getDoc(channelDocRef);
     const channelData = channelSnap.data();
-      if(channelData){
-        const updatedMessages = [...channelData['messages']];
-        const message = updatedMessages[idx];
-        const existingReactions = message.reactions || [];
-        const updatedReactions = [...existingReactions, emoji];
-        updatedMessages[idx] = {
+    if (channelData) {
+      const updatedMessages = [...channelData['messages']];
+      const message = updatedMessages[messageIdx];
+      let reactions: { senderUid: string; reaction: any }[] = message.reactions || [];
+      if (
+        reactionIdx >= 0 &&
+        reactionIdx < reactions.length &&
+        reactions[reactionIdx].senderUid === senderUid
+      ) {
+        reactions.splice(reactionIdx, 1);
+        updatedMessages[messageIdx] = {
           ...message,
-          reactions: updatedReactions
+          reactions: reactions
         };
         await updateDoc(channelDocRef, { messages: updatedMessages });
-      } 
+      } else {
+        console.warn("Reaktion existiert nicht oder gehört nicht dem User.");
+      }
+    }
+  }
+
+  async addEmojiReaction(channelName: string, emoji: any, idx: number, senderUid: string) {
+    const channelDocRef = doc(this.firebaseDatabase, `channels/${channelName}`);
+    const channelSnap = await getDoc(channelDocRef);
+    const channelData = channelSnap.data();
+    if (channelData) {
+      const updatedMessages = [...channelData['messages']];
+      const message = updatedMessages[idx];
+      const reactions: Reaction[] = message.reactions || [];
+      const existingReactionIndex = reactions.findIndex(r => r.senderUid == senderUid);
+      if (existingReactionIndex !== -1) {
+        reactions[existingReactionIndex].reaction = emoji;
+      } else {
+        reactions.push({ senderUid, reaction: emoji });
+      }
+      updatedMessages[idx] = {
+        ...message,
+        reactions: reactions
+      };
+  
+      await updateDoc(channelDocRef, { messages: updatedMessages });
+    }
   }
 
   async editMessage(channelName:string, newMessage:string, id:number){

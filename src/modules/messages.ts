@@ -7,11 +7,15 @@ export interface Message {
   name?: string;
   fotolink?: string;
   editing:boolean;
-  reactions:[];
+  reactions:Reaction[];
   }
 export interface MessageFirebase {
   uid: string;
   message: string;
   timestamp: string;
   reactions:[];
+}
+export interface Reaction {
+  senderUid: string;
+  reaction: any;
 }
