@@ -4,6 +4,7 @@ import { Channel } from '../../../../modules/channel';
 import { ChatService } from '../../../chat.service';
 import { FormsModule } from '@angular/forms';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
+import { Message } from '../../../../modules/messages';
 
 @Component({
   selector: 'app-messages',
@@ -19,6 +20,7 @@ editMessageData={
 }
 emojisOpenInEditM:boolean=false;
 emojisOpenForReaction:boolean=false;
+currentMessageId:number|null=null;
 @Input() userData:UserData|null = null;
 @Input() currentChannel:Channel|null = null;
 
@@ -31,15 +33,16 @@ removeReaction(reactionIdx:number, messageIdx:number){
   
 }
 
-addEmojReaction(event:any, idx:number){
-  console.log(event.emoji.native)
+addEmojiReaction(event:any, idx:number){
   if(this.currentChannel && this.userData){
     this.chatService.addEmojiReaction(this.currentChannel.name, event.emoji.native, idx, this.userData?.uid);
+    this.toggleEmojisForReaction(idx);
   }
 }
 
-toggleEmojisForReaction(){
+toggleEmojisForReaction(idx:number){
   this.emojisOpenForReaction=!this.emojisOpenForReaction;
+  this.currentMessageId=idx;
 }
 
 toggleEmojisOnEditM(){
@@ -72,6 +75,7 @@ startEditMessage(idx:number){
     const msg = this.currentChannel.messages[idx];
     this.editMessageData.message=msg.message;
     msg.editing = true;
+    this.emojisOpenInEditM=false;
   }
 }
 
@@ -80,6 +84,7 @@ closeEditMessage(idx:number){
     const msg = this.currentChannel.messages[idx];
     msg.editing = false;
     this.editMessageData.message="";
+    this.emojisOpenInEditM=false;
   }
 }
 
@@ -87,6 +92,7 @@ editMessage(idx:number){
     if(this.currentChannel && this.editMessageData.message !=""){
       this.chatService.editMessage(this.currentChannel.name, this.editMessageData.message, idx);
       this.editMessageData.message="";
+      this.emojisOpenInEditM=false;
     }
 }
 }
