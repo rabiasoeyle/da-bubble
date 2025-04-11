@@ -220,6 +220,25 @@ export class ChatService {
       }
     }
   }
+  async removeEmojiReactionChat(chatId: string, messageIdx:number, reactionIdx:number, senderUid: string) {
+    const chatDocRef = doc(this.firebaseDatabase, `chats/${chatId}`);
+    const chatSnap = await getDoc(chatDocRef);
+    const chatData = chatSnap.data();
+    if (chatData) {
+      const updatedMessages = [...chatData['messages']];
+      const message = updatedMessages[messageIdx];
+      let reactions: { senderUid: string; reaction: any }[] = message.reactions || [];
+      if (reactionIdx >= 0 &&reactionIdx < reactions.length &&reactions[reactionIdx].senderUid === senderUid) {
+        reactions.splice(reactionIdx, 1);
+        updatedMessages[messageIdx] = {
+          ...message,
+          reactions: reactions
+        };
+        await updateDoc(chatDocRef, { messages: updatedMessages });
+      } else {
+      }
+    }
+  }
 
   async addEmojiReaction(channelName: string, emoji: any, idx: number, senderUid: string) {
     const channelDocRef = doc(this.firebaseDatabase, `channels/${channelName}`);
@@ -241,6 +260,27 @@ export class ChatService {
       };
   
       await updateDoc(channelDocRef, { messages: updatedMessages });
+    }
+  }
+  async addEmojiReactionChat(chatId: string, emoji: any, idx: number, senderUid: string) {
+    const chatDocRef = doc(this.firebaseDatabase, `chats/${chatId}`);
+    const chatSnap = await getDoc(chatDocRef);
+    const chatData = chatSnap.data();
+    if (chatData) {
+      const updatedMessages = [...chatData['messages']];
+      const message = updatedMessages[idx];
+      const reactions: Reaction[] = message.reactions || [];
+      const existingReactionIndex = reactions.findIndex(r => r.senderUid == senderUid);
+      if (existingReactionIndex !== -1) {
+        reactions[existingReactionIndex].reaction = emoji;
+      } else {
+        reactions.push({ senderUid, reaction: emoji });
+      }
+      updatedMessages[idx] = {
+        ...message,
+        reactions: reactions
+      };
+      await updateDoc(chatDocRef, { messages: updatedMessages });
     }
   }
 

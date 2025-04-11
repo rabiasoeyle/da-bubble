@@ -77,7 +77,7 @@
     .reactions{
         width:120px !important;
         height:30px !important;
-        background-color: hsla(238, 84%, 71%, 0.087);
+        background-color: transparent;
         display:none;
         transition: 100ms;
         transform: 125ms;
@@ -86,7 +86,7 @@
     .saved-reactions{
         width:120px;
         height:30px;
-        background-color: hsla(238, 84%, 71%, 0.087);
+        background-color:transparent;
         @include dFlex($jc:start);
         transition: 100ms;
         transform: 125ms;
@@ -399,6 +399,7 @@ textarea{
 .emoji-mart-recent-reactions .emoji-mart-scroll,
 .emoji-mart-recent-reactions{
     max-width:100px !important;
+    width:100px;
 }
 .emoji-mart-recent-reactions [aria-label="Kürzlich"] button:nth-child(n + 4) {
     display: none !important; /* Versteckt alle Emojis ab dem 5. */

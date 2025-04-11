@@ -30,6 +30,8 @@ export class ChatComponent implements OnInit, OnDestroy, OnChanges{
     message:""
   }
   emojisOpenInEditM:boolean=false;
+  emojisOpenForReaction:boolean=false;
+  currentMessageId:number|null=null;
   markCorrespond:boolean=false;
   previousChatData: any = null;
   emojisOpen:boolean = false;
@@ -40,6 +42,24 @@ export class ChatComponent implements OnInit, OnDestroy, OnChanges{
   @Output() newChatPartner = new EventEmitter<number>();
 
   constructor(private chatService:ChatService, private authService:AuthService) {
+  }
+
+  toggleEmojisForReaction(idx:number){
+    this.emojisOpenForReaction=!this.emojisOpenForReaction;
+    this.currentMessageId=idx;
+  }
+
+  removeReaction(reactionIdx:number, messageIdx:number){
+    if(this.currentChat && this.userData){
+      this.chatService.removeEmojiReactionChat(this.currentChat?.chatId, messageIdx, reactionIdx, this.userData?.uid)
+    } 
+  }
+  
+  addEmojiReaction(event:any, idx:number){
+    if(this.currentChat && this.userData){
+      this.chatService.addEmojiReactionChat(this.currentChat?.chatId, event.emoji.native, idx, this.userData?.uid);
+      this.toggleEmojisForReaction(idx);
+    }
   }
 
   addEmojiOnEditMessage(event:any){
