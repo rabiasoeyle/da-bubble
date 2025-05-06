@@ -16,6 +16,7 @@ export class ChatService {
   currentChannel = new BehaviorSubject<any>(null);
   allChats:any=[];
   allChannels:Channel[]=[];
+  channelIsCreatable:boolean=false;
   private chatUnsubscribe: (() => void) | null = null;
   private channelUnsubscribe: (() => void) | null = null;
   private currentChatSubject = new BehaviorSubject<any | null>(null);
@@ -90,19 +91,24 @@ export class ChatService {
 
   async createChannel(channelname:string, description:string){
     const channelDocRef = doc(this.firebaseDatabase, `channels/${channelname}`);
-    const userId = localStorage.getItem("userId");
-    await setDoc(channelDocRef, {
-      description:description,
-      messages:[
-      ],
-      created:{
-        createdFrom:userId,
-        createdAt:new Date(),
-      },
-      members:[userId],
-    }); 
-    this.addChannelToUser(channelname);
-    this.userService.getUserLiveUpdates();
+    const channelSnapControle= await getDoc(channelDocRef);
+    if (channelSnapControle.exists()) {
+      this.channelIsCreatable=false;
+    }else{
+      this.channelIsCreatable=true;
+      const userId = localStorage.getItem("userId");
+      await setDoc(channelDocRef, {
+        description:description,
+        messages:[],
+        created:{
+          createdFrom:userId,
+          createdAt:new Date(),
+        },
+        members:[userId],
+      }); 
+      this.addChannelToUser(channelname);
+      this.userService.getUserLiveUpdates();
+    }
   }
 
   async addChannelToUser(channelname:string){
@@ -171,29 +177,41 @@ export class ChatService {
     const oldChannelDocRef = doc(this.firebaseDatabase, `channels/${oldChannelName}`);
     const newChannelDocRef = doc(this.firebaseDatabase, `channels/${newChannelName}`);
     const channelSnap = await getDoc(oldChannelDocRef);
+    const channelSnapControle= await getDoc(newChannelDocRef);
     if (!channelSnap.exists()) {return;}
-    const channelData = channelSnap.data();
-    await setDoc(newChannelDocRef, channelData);
-    await deleteDoc(oldChannelDocRef);
-  
+    if (channelSnapControle.exists()) {
+      alert("Name existiert bereits")
+      }
+      else{
+        const channelData = channelSnap.data();
+        await setDoc(newChannelDocRef, channelData);
+        await deleteDoc(oldChannelDocRef);
+      }
+    
   }
 
   async changeChannelNameForUsers(oldChannelName: string, newChannelName: string) {
     const usersCollectionRef = collection(this.firebaseDatabase, "users");
     const usersSnapshot = await getDocs(usersCollectionRef);
-    const updatePromises = usersSnapshot.docs.map(async (userDoc) => {
-        const userData = userDoc.data();
-        if (userData['channels'] && userData['channels'].includes(oldChannelName)) {
-            await updateDoc(doc(this.firebaseDatabase, `users/${userDoc.id}`), {
-                channels: arrayRemove(oldChannelName)
-            });
-            await updateDoc(doc(this.firebaseDatabase, `users/${userDoc.id}`), {
-                channels: arrayUnion(newChannelName)
-            });
-        }
-    });
-    await Promise.all(updatePromises);
-    this.userService.getUserLiveUpdates();
+    const newChannelDocRef = doc(this.firebaseDatabase, `channels/${newChannelName}`);
+    const channelSnapControle= await getDoc(newChannelDocRef);
+    if (channelSnapControle.exists()) {
+      alert("Name existiert bereits")
+    }else{
+      const updatePromises = usersSnapshot.docs.map(async (userDoc) => {
+          const userData = userDoc.data();
+          if (userData['channels'] && userData['channels'].includes(oldChannelName)) {
+              await updateDoc(doc(this.firebaseDatabase, `users/${userDoc.id}`), {
+                  channels: arrayRemove(oldChannelName)
+              });
+              await updateDoc(doc(this.firebaseDatabase, `users/${userDoc.id}`), {
+                  channels: arrayUnion(newChannelName)
+              });
+          }
+      });
+      await Promise.all(updatePromises);
+      this.userService.getUserLiveUpdates();
+    }
   }
 
   async removeEmojiReaction(channelName: string, messageIdx:number, reactionIdx:number, senderUid: string) {

@@ -18,6 +18,9 @@
             placeholder="z.B. Kooperationsprojekte"
             required> 
     </div>
+    @if(!noError){
+        <h4 class="errorMessage">{{errorMessage}}</h4>
+    }
     <div class="add-chnnl-description">
         <h3 class="fs-18">Beschreibung</h3><h5>(optional)</h5>
     </div>

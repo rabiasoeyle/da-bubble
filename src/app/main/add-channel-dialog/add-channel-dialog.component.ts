@@ -14,13 +14,18 @@ export class AddChannelDialogComponent {
     name:"",
     description:"",
   };
+  noError:boolean=true;
+  errorMessage:string="Dieser Name ist bereits vorhanden! Bitte wähle einen anderen Namen "
   @Output() closeChannel = new EventEmitter<void>();
-
-  constructor(private chatService: ChatService){}
+  constructor(private chatService: ChatService){
+  }
 
   onAddChannel(){
-    this.chatService.createChannel(this.createChannelData.name, this.createChannelData.description);
-    this.addChannelDialog();
+    this.chatService.createChannel(this.createChannelData.name, this.createChannelData.description)
+    setTimeout(()=>{this.noError= this.chatService.channelIsCreatable;},1000);
+    setTimeout(()=>{
+      if(this.noError==true){this.addChannelDialog();}},1000
+    )
   }
   
   addChannelDialog(){
