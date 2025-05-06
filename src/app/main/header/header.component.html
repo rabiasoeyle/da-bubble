@@ -39,6 +39,9 @@
         }
     </div>
     <div class="user-nim">
+        @if(profileDetails||editUserData){
+            <app-member-details (changedUserDataEvent)="updateUserData()" (editDataEvent)="editProfile()" (closeDetailsEvent)="detailsOfProfile()" [userData]="userData" [editUserData]="editUserData" [profileDetails]="profileDetails"></app-member-details>
+                }
         <h3 class="vanish-text">{{userData ? userData.name : "xy"}}</h3>
         @if(userData?.presenceStatus){
             <div class="online"></div>
@@ -49,16 +52,16 @@
         <button class="toggle-btn" (click)="toggleMenu()">
             <img src="./assets/img/key_arrow_down.png" alt="arrow-down">
         </button>
+         
     </div>
     @if(toggleMenuIsOpen){
         <div class="toggle-mn">
             <button (click)="openMyProfile()"> Profil </button>
             <button (click)="logout()">Logout</button>
+           
         </div>
     }
-    @if(profileDetails||editUserData){
-        <app-member-details (changedUserDataEvent)="updateUserData()" (editDataEvent)="editProfile()" (closeDetailsEvent)="detailsOfProfile()" [userData]="userData" [editUserData]="editUserData" [profileDetails]="profileDetails"></app-member-details>
-    }
+    
 </div>
 <div class="search-parent-mobile" [ngClass]="{'hidden': isChatActive()}">
     <div class="search-fi-mobile">

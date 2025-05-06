@@ -54,7 +54,7 @@
                                     <div class="saved-reactions">
                                     @for(reaction of item.reactions?item.reactions:[]; track reaction; let id = $index){
                                         @if(reaction.senderUid == userData.uid){
-                                            <div (click)="removeReaction(id, idx)">
+                                            <div class="bg-light-blue" (click)="removeReaction(id, idx)">
                                                {{reaction.reaction}}  
                                             </div>
                                         }@else {

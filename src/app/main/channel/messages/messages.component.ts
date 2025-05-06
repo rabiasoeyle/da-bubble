@@ -36,7 +36,7 @@ removeReaction(reactionIdx:number, messageIdx:number){
 addEmojiReaction(event:any, idx:number){
   if(this.currentChannel && this.userData){
     this.chatService.addEmojiReaction(this.currentChannel.name, event.emoji.native, idx, this.userData?.uid);
-    this.toggleEmojisForReaction(idx);
+    this.emojisOpenForReaction=false;
   }
 }
 

@@ -82,6 +82,10 @@
 .user-nim{
     @include dFlex($jc:space-around);
     gap:16px;
+    position: relative;
+    @media(max-width:800px){
+        position: unset;
+    }
 }
 .toggle-btn{
     background-color: transparent;

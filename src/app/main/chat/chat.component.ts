@@ -58,7 +58,7 @@ export class ChatComponent implements OnInit, OnDestroy, OnChanges{
   addEmojiReaction(event:any, idx:number){
     if(this.currentChat && this.userData){
       this.chatService.addEmojiReactionChat(this.currentChat?.chatId, event.emoji.native, idx, this.userData?.uid);
-      this.toggleEmojisForReaction(idx);
+      this.emojisOpenForReaction=false;
     }
   }
 

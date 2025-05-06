@@ -70,36 +70,39 @@
     width:80%;
     @include dFlex($ai:end, $fd:column);
 }
+.bg-light-blue{
+    background-color: #0d1be039;
+    border-radius: 50px;
+}
 .msg-text-area{
     width:80%;
     @include dFlex($ai:start, $fd:column);
     position: relative;
-    .reactions{
-        width:120px !important;
-        height:30px !important;
-        background-color: transparent;
-        display:none;
-        transition: 100ms;
-        transform: 125ms;
-        border-radius: 25px;
-    }
-    .saved-reactions{
-        width:120px;
-        height:30px;
-        background-color:transparent;
-        @include dFlex($jc:start);
-        transition: 100ms;
-        transform: 125ms;
-        border-radius: 25px;
-    }
     &:hover{
-        .saved-reactions{
-            display:flex;
-        }
         .reactions{
             display:flex;
         }
     }
+}
+.reactions{
+    width:120px !important;
+    height:30px !important;
+    background-color: transparent;
+    display:none;
+    gap:16px;
+    justify-content: space-between;
+    transition: 100ms;
+    transform: 125ms;
+    border-radius: 25px;
+}
+.saved-reactions{
+    width:120px;
+    height:30px;
+    background-color:transparent;
+    @include dFlex($jc:start);
+    transition: 100ms;
+    transform: 125ms;
+    border-radius: 25px;
 }
 .edit-backgroundcolor{
     background-color: #ECEEFE;

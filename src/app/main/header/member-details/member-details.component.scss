@@ -49,8 +49,8 @@
     border-bottom-left-radius:30px;
     border-bottom-right-radius:30px;
     box-shadow: 0px 6px 10px 0px #00000033;
-    top:50px;
-    right:50px;
+    top:70px;
+    right:60px;
     padding:40px;
     z-index:2;
     @include dFlex($fd:column, $g:20px, $ai:flex-start);
