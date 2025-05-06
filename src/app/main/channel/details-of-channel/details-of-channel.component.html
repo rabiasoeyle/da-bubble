@@ -70,7 +70,11 @@
                 <div class="open-dtls-chnnl-name-input">
                   #
                   <input #name="ngModel" [(ngModel)]="channelData.name" name="name" class="open-dtls-chnnl-input-name" type="text" placeholder="{{currentChannel.name}}" required> 
+                
                 </div>
+                @if(!channelNameIsAvailable){
+                  <h4 class="error-message">{{errorMessage}}</h4>
+                }
               </form>
             </div>
               <div class="open-dtls-chnnl-middle">

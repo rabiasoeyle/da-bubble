@@ -12,6 +12,7 @@ import { ChatService } from '../../../chat.service';
   styleUrl: './details-of-channel.component.scss'
 })
 export class DetailsOfChannelComponent {
+  errorMessage:string="Dieser Name wird bereits für einen anderen Channel genutzt!"
   editChannel:boolean = false;
   channelData={
     name:"",
@@ -21,6 +22,7 @@ export class DetailsOfChannelComponent {
   isDescriptionChanged = false;
   deletedChannelname="";
   channelDeleted=true;
+  channelNameIsAvailable:boolean=true;
   @Input() currentChannel:Channel|null=null;
   @Output() closeDetailsEvent = new EventEmitter<number>();
   @Output() deleteChannelEvent = new EventEmitter<void>();
@@ -49,11 +51,17 @@ export class DetailsOfChannelComponent {
   }}
 
   changeChannelName(){
-    if(this.currentChannel ){
+    if(this.currentChannel){
+      this.chatService.checkIfNameAvailable(this.channelData.name)
+      //hier weitermachen 
     this.chatService.changeChannelName(this.currentChannel.name, this.channelData.name);
     this.chatService.changeChannelNameForUsers(this.currentChannel.name, this.channelData.name);}
-    this.openEditChannel(),
-    this.openChannelEvent.emit(this.channelData.name) 
+    setTimeout(()=>{this.channelNameIsAvailable=this.chatService.channelNameIsAvailable},500);
+    setTimeout(()=>{
+      if(this.channelNameIsAvailable){
+      this.openEditChannel(),
+      this.openChannelEvent.emit(this.channelData.name) }
+    },1000);
   }
 
   changeChannelDescription(){

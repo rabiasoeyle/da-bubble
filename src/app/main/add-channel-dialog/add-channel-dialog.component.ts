@@ -23,9 +23,7 @@ export class AddChannelDialogComponent {
   onAddChannel(){
     this.chatService.createChannel(this.createChannelData.name, this.createChannelData.description)
     setTimeout(()=>{this.noError= this.chatService.channelIsCreatable;},1000);
-    setTimeout(()=>{
-      if(this.noError==true){this.addChannelDialog();}},1000
-    )
+    setTimeout(()=>{if(this.noError==true){this.addChannelDialog();}},1000)
   }
   
   addChannelDialog(){
