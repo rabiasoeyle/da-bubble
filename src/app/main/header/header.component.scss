@@ -66,9 +66,16 @@
     color:gray;
     border-radius: 42px;
     height: 60px;
+    width: 400px;
+    padding: 0px 16px;
     @include dFlex($jc:space-around);
+    @media(max-width:1200px){
+        height:50px;
+        width:260px;
+    }
     @media(max-width:900px){
         height:50px;
+        width:200px;
     }
     >input{
         background-color: transparent;

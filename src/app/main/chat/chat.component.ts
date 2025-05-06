@@ -20,7 +20,6 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
 })
 export class ChatComponent implements OnInit, OnDestroy, OnChanges{
   router = inject(Router);
-  // fb = inject(FormBuilder);
   messageIdx:number = 0;
   private chatSubscription!: Subscription;
   newMessage={
