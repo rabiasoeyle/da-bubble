@@ -1,4 +1,4 @@
-import { Component, Input, ViewEncapsulation } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input, ViewChild, ViewEncapsulation } from '@angular/core';
 import { UserData } from '../../../../modules/user';
 import { Channel } from '../../../../modules/channel';
 import { ChatService } from '../../../chat.service';
@@ -14,7 +14,7 @@ import { Message } from '../../../../modules/messages';
   styleUrl: './messages.component.scss',
   encapsulation: ViewEncapsulation.None,
 })
-export class MessagesComponent {
+export class MessagesComponent implements AfterViewChecked {
 editMessageData={
   message:""
 }
@@ -23,9 +23,24 @@ emojisOpenForReaction:boolean=false;
 currentMessageId:number|null=null;
 @Input() userData:UserData|null = null;
 @Input() currentChannel:Channel|null = null;
-
+@ViewChild('scrollContainer') private scrollContainer!: ElementRef;
+scrolledDown:boolean=false;
 constructor(private chatService:ChatService){}
 
+
+  ngAfterViewChecked(): void {
+    if(this.scrolledDown){return}else{
+      this.scrollToBottom();
+      this.scrolledDown=true;
+    }
+  }
+  scrollToBottom(): void {
+    try {
+      this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
+    } catch(err) { 
+      console.warn('Scroll failed', err);
+    }
+  }
 removeReaction(reactionIdx:number, messageIdx:number){
   if(this.currentChannel && this.userData){
     this.chatService.removeEmojiReaction(this.currentChannel?.name, messageIdx, reactionIdx, this.userData?.uid)
