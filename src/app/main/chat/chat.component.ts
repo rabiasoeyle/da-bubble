@@ -117,7 +117,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy, OnCha
       console.log("chat-c",this.currentChatId)
       setTimeout(() => {
         this.messageInput?.nativeElement.focus();
-      }, 200);
+      }, 500);
     }
   }
 

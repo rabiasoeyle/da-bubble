@@ -61,7 +61,7 @@
             </div>
         }
         <form class="messages-form" #sendMessageForm="ngForm" (ngSubmit)="sendMessage()">
-            <textarea #message="ngModel" 
+            <textarea #messageInput 
             [(ngModel)]="newMessage.message" name="message" type="text" placeholder="Deine Nachricht hier eingeben">
             </textarea>
             <div class="emoji-mark-send-buttons">

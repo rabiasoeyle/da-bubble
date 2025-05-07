@@ -1,4 +1,4 @@
-import { Component, EventEmitter,Input, OnChanges, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, EventEmitter,Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Channel } from '../../../modules/channel';
 import { ChatService } from '../../chat.service';
 import { AuthService } from '../../auth.service';
@@ -42,6 +42,7 @@ export class ChannelComponent implements OnInit, OnChanges{
   categoryElements = document.querySelectorAll('.emoji-mart-category');
   @Output() openChat = new EventEmitter<number>();
   @Input() currentChannelName:string = "kein Name";
+  @ViewChild('messageInput') messageInput!: ElementRef<HTMLTextAreaElement>;
 
   constructor(private chatService:ChatService, private authService:AuthService, private userService:UserService){
   }
@@ -49,6 +50,9 @@ export class ChannelComponent implements OnInit, OnChanges{
   ngOnChanges(changes: SimpleChanges) {
     if (changes['currentChannelName']) {
       this.openChannel(this.currentChannelName);
+      setTimeout(() => {
+        this.messageInput?.nativeElement.focus();
+      }, 500);
     }
   }
 
