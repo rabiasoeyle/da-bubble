@@ -26,7 +26,8 @@ export class StartNewChatComponent {
     savedAdress:string="";
     searchResultsValue: any[]=[]; 
     savedUid:string = "";
-    userChats:any=[]  
+    userChats:any=[];
+    channelFound:boolean=false;
     private searchSubject = new Subject<string>();
     @Input() userData:UserData|null =null;
     @Output() sendMessageEmitter = new EventEmitter<string>();
@@ -163,8 +164,15 @@ export class StartNewChatComponent {
       this.emojisOpen = false;
     }
 
+    checkIfChannelFound(){
+      if(this.search=="channel"&& this.savedAdress!==""){
+        return true
+        }else{ 
+      return false} 
+    }
     markPerson(){
-      // if(this.currentChat){
+      this.chatService.getChannelLiveUpdates(this.savedAdress);
+      // if(this.search=="channel"&& savedAdress!==""){
       //   this.newMessage.message += "@" + this.currentChat.chatPartner.name;
       //   this.markCorrespond=false;
       // }
