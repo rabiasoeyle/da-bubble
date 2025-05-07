@@ -23,11 +23,9 @@ emojisOpenForReaction:boolean=false;
 currentMessageId:number|null=null;
 @Input() userData:UserData|null = null;
 @Input() currentChannel:Channel|null = null;
-@ViewChild('scrollContainer') private scrollContainer!: ElementRef;
-scrolledDown:boolean=false;
+@ViewChild('scrollContainer') scrollContainer!: ElementRef;
+@Input() scrolledDown:boolean=false;
 constructor(private chatService:ChatService){}
-
-
   ngAfterViewChecked(): void {
     if(this.scrolledDown){return}else{
       this.scrollToBottom();

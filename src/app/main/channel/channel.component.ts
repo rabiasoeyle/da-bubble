@@ -40,6 +40,7 @@ export class ChannelComponent implements OnInit, OnChanges{
   currentChannel:Channel | null = null;
   userChats:Chat[]=[];
   categoryElements = document.querySelectorAll('.emoji-mart-category');
+  scrolledDown:boolean=false;
   @Output() openChat = new EventEmitter<number>();
   @Input() currentChannelName:string = "kein Name";
   @ViewChild('messageInput') messageInput!: ElementRef<HTMLTextAreaElement>;
@@ -52,6 +53,7 @@ export class ChannelComponent implements OnInit, OnChanges{
       this.openChannel(this.currentChannelName);
       setTimeout(() => {
         this.messageInput?.nativeElement.focus();
+        this.scrolledDown=false;
       }, 500);
     }
   }
