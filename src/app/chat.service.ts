@@ -49,6 +49,16 @@ export class ChatService {
     return messagesWithUserData;
   }
 
+  async getChannelMembers(channelName:string){
+    const channelDocRef = doc(this.firebaseDatabase, `channels/${channelName}`);
+    const channelDocSnap = await getDoc(channelDocRef);
+    if (channelDocSnap.exists()) {
+      const data = channelDocSnap.data();
+      const members = data['members']; // Das ist dann ein Array
+      return this.loadMembers(members);
+    }return null
+  }
+
   async loadMembers(members:string[]):Promise<Member[]>{
     const membersWithUserData = await Promise.all(
       members.map(async (uid: string) => {

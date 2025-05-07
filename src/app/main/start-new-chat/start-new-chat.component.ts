@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, inject, Input, Output, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormsModule} from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { UserService } from '../../user.service';
@@ -16,7 +16,6 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
   encapsulation: ViewEncapsulation.None,
 })
 export class StartNewChatComponent {
-    // fb = inject(FormBuilder);
     markCorrespond:boolean=false;
     emojisOpen:boolean=false;
     newMessage={message:"",}
@@ -27,8 +26,8 @@ export class StartNewChatComponent {
     searchResultsValue: any[]=[]; 
     savedUid:string = "";
     userChats:any=[];
-    channelFound:boolean=false;
-    private searchSubject = new Subject<string>();
+    searchSubject = new Subject<string>();
+    markablePersonsFromChannel:any;
     @Input() userData:UserData|null =null;
     @Output() sendMessageEmitter = new EventEmitter<string>();
     @Output() openChat = new EventEmitter<number>();
@@ -159,7 +158,8 @@ export class StartNewChatComponent {
       this.newMessage.message += event.emoji.native;
     }
 
-    showMarkableCorrespond(){
+    async showMarkableCorrespond(){
+      this.markablePersonsFromChannel=await this.chatService.getChannelMembers(this.savedAdress);
       this.markCorrespond=!this.markCorrespond;
       this.emojisOpen = false;
     }
@@ -171,8 +171,7 @@ export class StartNewChatComponent {
       return false} 
     }
     markPerson(){
-      this.chatService.getChannelLiveUpdates(this.savedAdress);
-      // if(this.search=="channel"&& savedAdress!==""){
+      // if(this.checkIfChannelFound()){
       //   this.newMessage.message += "@" + this.currentChat.chatPartner.name;
       //   this.markCorrespond=false;
       // }
