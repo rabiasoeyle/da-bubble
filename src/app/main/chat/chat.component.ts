@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, EventEmitter, inject, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Chat } from '../../../modules/chat';
 import { UserData } from '../../../modules/user';
 import { Router } from '@angular/router';
@@ -18,7 +18,7 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
   styleUrl: './chat.component.scss',
   encapsulation: ViewEncapsulation.None,
 })
-export class ChatComponent implements OnInit, OnDestroy, OnChanges{
+export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy, OnChanges {
   router = inject(Router);
   messageIdx:number = 0;
   private chatSubscription!: Subscription;
@@ -34,14 +34,36 @@ export class ChatComponent implements OnInit, OnDestroy, OnChanges{
   markCorrespond:boolean=false;
   previousChatData: any = null;
   emojisOpen:boolean = false;
+  scrolledDown:boolean=false;
+  previousMessageCount = 0;
   @Input() userChats:Chat[]=[];
   @Input() currentChat:Chat|null = null;
   @Input() currentChatId:number = 999;
   @Input() userData:UserData|null = null;
   @Output() newChatPartner = new EventEmitter<number>();
+  @ViewChild('scrollContainer') scrollContainer!: ElementRef;
+  
 
   constructor(private chatService:ChatService, private authService:AuthService) {
   }
+  
+  
+  ngAfterViewChecked(): void {
+    const currentCount = this.currentChat?.chatData.messages.length|| 0;
+    if (currentCount > this.previousMessageCount) {
+      this.scrollToBottom();
+      this.previousMessageCount = currentCount;
+    }
+  }
+
+  scrollToBottom(): void {
+    try {
+      this.scrollContainer.nativeElement.scrollTop = this.scrollContainer.nativeElement.scrollHeight;
+    } catch(err) { 
+      console.warn('Scroll failed', err);
+    }
+  }
+  
 
   toggleEmojisForReaction(idx:number){
     this.emojisOpenForReaction=!this.emojisOpenForReaction;
