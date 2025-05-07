@@ -50,18 +50,16 @@ export class DetailsOfChannelComponent {
       this.deleteChannelEvent.emit();
   }}
 
-  changeChannelName(){
+  async changeChannelName(){
     if(this.currentChannel){
-      this.chatService.checkIfNameAvailable(this.channelData.name)
-      //hier weitermachen 
-    this.chatService.changeChannelName(this.currentChannel.name, this.channelData.name);
-    this.chatService.changeChannelNameForUsers(this.currentChannel.name, this.channelData.name);}
-    setTimeout(()=>{this.channelNameIsAvailable=this.chatService.channelNameIsAvailable},500);
-    setTimeout(()=>{
-      if(this.channelNameIsAvailable){
-      this.openEditChannel(),
-      this.openChannelEvent.emit(this.channelData.name) }
-    },1000);
+      this.channelNameIsAvailable = await this.chatService.checkIfNameAvailable(this.channelData.name)
+      if(this.chatService.channelNameIsAvailable){
+        this.chatService.changeChannelName(this.currentChannel.name, this.channelData.name);
+        this.chatService.changeChannelNameForUsers(this.currentChannel.name, this.channelData.name);
+        this.openEditChannel(),
+        this.openChannelEvent.emit(this.channelData.name)
+      }
+    }
   }
 
   changeChannelDescription(){

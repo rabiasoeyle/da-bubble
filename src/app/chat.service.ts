@@ -173,28 +173,29 @@ export class ChatService {
     const channelDocRef = doc(this.firebaseDatabase, `channels/${channelName}`);
     await updateDoc(channelDocRef, {description: newDescription})
   }
+
   async checkIfNameAvailable(newChannelName:string){
     const newChannelDocRef = doc(this.firebaseDatabase, `channels/${newChannelName}`);
     const channelSnapControle= await getDoc(newChannelDocRef);
     if (channelSnapControle.exists()) {
       this.channelNameIsAvailable=false;
-      }
+      return false;
+    }else{
+      this.channelNameIsAvailable=true;
+      return true;
+    }
   }
 
   async changeChannelName(oldChannelName: string, newChannelName: string){
     const oldChannelDocRef = doc(this.firebaseDatabase, `channels/${oldChannelName}`);
     const newChannelDocRef = doc(this.firebaseDatabase, `channels/${newChannelName}`);
     const channelSnap = await getDoc(oldChannelDocRef);
-    // const channelSnapControle= await getDoc(newChannelDocRef);
     if (!channelSnap.exists()) {return;}
-    // if (channelSnapControle.exists()) {
-    //   this.channelNameIsAvailable=false;
-    //   }
       else{
         const channelData = channelSnap.data();
         await setDoc(newChannelDocRef, channelData);
         await deleteDoc(oldChannelDocRef);
-        this.channelNameIsAvailable=true;
+        console.log("changeChannelName"+this.channelNameIsAvailable)
       }
     
   }
@@ -202,12 +203,6 @@ export class ChatService {
   async changeChannelNameForUsers(oldChannelName: string, newChannelName: string) {
     const usersCollectionRef = collection(this.firebaseDatabase, "users");
     const usersSnapshot = await getDocs(usersCollectionRef);
-    // const newChannelDocRef = doc(this.firebaseDatabase, `channels/${newChannelName}`);
-    // const channelSnapControle= await getDoc(newChannelDocRef);
-    // if (channelSnapControle.exists()) {
-    //   this.channelNameIsAvailable=false;
-    // }else{
-      this.channelNameIsAvailable=true;
       const updatePromises = usersSnapshot.docs.map(async (userDoc) => {
           const userData = userDoc.data();
           if (userData['channels'] && userData['channels'].includes(oldChannelName)) {
@@ -221,7 +216,7 @@ export class ChatService {
       });
       await Promise.all(updatePromises);
       this.userService.getUserLiveUpdates();
-  // }
+      console.log("changeChannelNameForUsers"+this.channelNameIsAvailable)
   }
 
   async removeEmojiReaction(channelName: string, messageIdx:number, reactionIdx:number, senderUid: string) {
