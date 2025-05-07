@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Input, Output, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, EventEmitter, inject, Input, Output, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormsModule} from '@angular/forms';
 import { debounceTime, distinctUntilChanged, Subject } from 'rxjs';
 import { UserService } from '../../user.service';
@@ -33,6 +33,7 @@ export class StartNewChatComponent {
     @Output() openChat = new EventEmitter<number>();
     @Output() sendChannelMessageEmitter = new EventEmitter<string>();
     @Output() oChannel = new EventEmitter<string>();
+    @ViewChild('messageInput') messageInput!: ElementRef<HTMLTextAreaElement>;
 
     constructor(private userService: UserService, private chatService: ChatService){
     }
@@ -48,6 +49,9 @@ export class StartNewChatComponent {
       ).subscribe(value => {
         this.handleSearch(value);
       });
+      setTimeout(() => {
+        this.messageInput?.nativeElement.focus();
+      }, 500);
     }
   
     onInputChange(value: string) {

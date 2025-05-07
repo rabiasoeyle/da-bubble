@@ -58,11 +58,11 @@ textarea{
     background-color: white;
 }
 .emoji-mark-send-buttons{
-    @include dFlex($g:16px, $jc:space-around);
+    @include dFlex($g:16px, $jc:space-between);
     width:80%;
 }
 .send-msg-btn{
-    width:100%;
+    width:auto;
     border:transparent;
     background-color: white;
     text-align: end;

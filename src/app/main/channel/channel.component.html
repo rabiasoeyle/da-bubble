@@ -65,8 +65,10 @@
             [(ngModel)]="newMessage.message" name="message" type="text" placeholder="Deine Nachricht hier eingeben">
             </textarea>
             <div class="emoji-mark-send-buttons">
+                <div>
                 <img (click)="showEmojis()" src="./assets/img/sentiment_satisfied.png" alt="emojis">
                 <img (click)="showMarkableCorrespond()" src="./assets/img/alternate_email.png" alt="@">
+                </div>
                 <button class="send-msg-btn" type="submit">
                     <img src="./assets/img/send.png" alt="send">
                 </button>
