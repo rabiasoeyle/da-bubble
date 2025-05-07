@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { AuthService } from '../../auth.service';
 import { FormBuilder, FormsModule,NgForm } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
   templateUrl: './dialog-login.component.html',
   styleUrl: './dialog-login.component.scss'
 })
-export class DialogLoginComponent implements OnInit{
+export class DialogLoginComponent{
   fb = inject(FormBuilder);
   http = inject(HttpClient);
   router = inject(Router);
@@ -21,12 +21,14 @@ export class DialogLoginComponent implements OnInit{
     email:"",
     password:"",
   };
+  showPassword = false;
   @Output() switchToForgotPassword = new EventEmitter<void>();
   
   constructor(){
   }
-
-  ngOnInit(){
+  
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 
   onLogin() {
