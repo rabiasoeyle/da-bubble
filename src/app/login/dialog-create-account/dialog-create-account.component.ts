@@ -24,6 +24,7 @@ export class DialogCreateAccountComponent implements OnChanges {
     password:"",
     pPolicyAccepted: false,
   }
+  showPassword:boolean=false;
   @Input() errorMessageParent:any=null;
   @Input() registerDataOld:any=null;
   @Output()goBackEvent = new EventEmitter<string>();
@@ -44,6 +45,10 @@ export class DialogCreateAccountComponent implements OnChanges {
     this.accountCreated.emit(this.registerData);
   }
   
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
+  }
+
   goBackToLogin(){
     this.goBackEvent.emit();
   }

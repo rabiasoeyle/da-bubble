@@ -60,10 +60,14 @@
         <img src="./assets/img/lock.png" alt="">
         <input #password="ngModel" 
         [(ngModel)]="registerData.password" 
+        [type]="showPassword ? 'text' : 'password'" 
         name="password" type="password" placeholder="Passwort"
         pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-        
         required>
+        <button type="button" (click)="togglePasswordVisibility()" class="toggle-password-btn">
+            <img [src]="showPassword ? './assets/img/visibility-on.png' : './assets/img/visibility-off.png'" 
+            alt="Toggle Password Visibility">
+        </button>
     </div>
     <div class="box-datasafety">
         <input name="checkbox" #checkbox = "ngModel" [(ngModel)]="registerData.pPolicyAccepted" type="checkbox" required>

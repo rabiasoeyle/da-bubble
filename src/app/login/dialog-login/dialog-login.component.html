@@ -48,9 +48,9 @@
                    required
                    pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
             <button type="button" (click)="togglePasswordVisibility()" class="toggle-password-btn">
-            <img [src]="showPassword ? './assets/img/eye-open.png' : './assets/img/eye-closed.png'" 
-                 alt="Toggle Password Visibility">
-          </button>
+                <img [src]="showPassword ? './assets/img/visibility-on.png' : './assets/img/visibility-off.png'" 
+                alt="Toggle Password Visibility">
+            </button>
         </div>
         
         @if(errorMessage === 'Leider ist das Passwort oder die E-Mail falsch'){

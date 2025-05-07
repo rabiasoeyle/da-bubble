@@ -14,3 +14,17 @@
         width:200px;
     }
 }
+.input-area {
+    position: relative;
+}
+.toggle-password-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    background-color: #c7cdf8;;
+    border: none;
+    border-radius:50px;
+    cursor: pointer;
+  }
