@@ -42,6 +42,7 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy, OnCha
   @Input() userData:UserData|null = null;
   @Output() newChatPartner = new EventEmitter<number>();
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
+  @ViewChild('messageInput') messageInput!: ElementRef<HTMLTextAreaElement>;
   
 
   constructor(private chatService:ChatService, private authService:AuthService) {
@@ -114,6 +115,9 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy, OnCha
     if (changes['currentChatId']) {
       this.openChat(this.currentChatId);
       console.log("chat-c",this.currentChatId)
+      setTimeout(() => {
+        this.messageInput?.nativeElement.focus();
+      }, 200);
     }
   }
 

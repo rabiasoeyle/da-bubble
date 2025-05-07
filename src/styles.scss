@@ -249,3 +249,6 @@ button:focus {
 .txt-center{
     text-align: center;
 }
+textarea:focus {
+    outline: 2px solid #3399ff;
+}
