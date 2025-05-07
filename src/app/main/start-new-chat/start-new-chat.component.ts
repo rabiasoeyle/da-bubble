@@ -162,6 +162,7 @@ export class StartNewChatComponent {
       this.markablePersonsFromChannel=await this.chatService.getChannelMembers(this.savedAdress);
       this.markCorrespond=!this.markCorrespond;
       this.emojisOpen = false;
+      console.log(this.markablePersonsFromChannel)
     }
 
     checkIfChannelFound(){
@@ -170,10 +171,10 @@ export class StartNewChatComponent {
         }else{ 
       return false} 
     }
-    markPerson(){
-      // if(this.checkIfChannelFound()){
-      //   this.newMessage.message += "@" + this.currentChat.chatPartner.name;
-      //   this.markCorrespond=false;
-      // }
+    markPerson(name:string){
+      if(this.checkIfChannelFound()){
+        this.newMessage.message += "@" + name;
+        this.markCorrespond=false;
+      }
     }
 }
