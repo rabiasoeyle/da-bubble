@@ -68,8 +68,8 @@
     @media(max-width:800px){
         border-radius: 100%;
         position: absolute;
-        right:16px;
-        bottom:16px;
+        right:2vW;
+        bottom:2vH;
         background-color: #444DF2;
         padding:8px;
         @include dFlex();

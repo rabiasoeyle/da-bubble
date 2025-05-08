@@ -82,6 +82,10 @@
     background: none;
     background-color: #c7cdf8;;
     border: none;
-    border-radius:50px;
+    border-radius:50%;
     cursor: pointer;
+    >img{
+        width:16px;
+        height: auto;
+    }
   }

@@ -357,7 +357,7 @@ textarea{
     max-height: 300px;
     overflow: scroll;
     border: 1px solid #ccc;
-    @include dFlex($ai:flex-start, $fd:column);
+    @include dFlex($ai:flex-start, $fd:column, $jc:unset);
     z-index:3;
     padding: 8px;
     scrollbar-width: none;

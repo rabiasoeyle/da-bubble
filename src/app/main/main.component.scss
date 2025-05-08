@@ -34,9 +34,9 @@
         padding:1vH 1vW;
     }
     @media(max-width:800px){
-        padding:1vH;
+        padding:0vH;
         flex:1;
-        height:88vH;
+        height:82vH;
     }
 }
 .chat-area{
@@ -47,7 +47,9 @@
     position: relative;
     @media(max-width:800px){
         border-radius: 0px;
-
+        height: 90vH;
+        position: absolute;
+        bottom: 0;
     }
 }
 .sidenav-area{

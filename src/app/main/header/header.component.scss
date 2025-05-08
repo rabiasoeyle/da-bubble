@@ -164,11 +164,11 @@
     background-color: white;
     @media(max-width:800px){
         @include dFlex($fd:column);
-        padding:10px;
+        padding:1vH 1vW;
     }
 }
 .search-fi-mobile{
-    height:40px;
+    height:4vH;
     background-color: white;
     color:gray;
     border-radius: 42px;
