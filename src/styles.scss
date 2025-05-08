@@ -19,7 +19,7 @@ h1{
     color: black;
     text-align: center;
     margin:0px;
-    @media(max-width:800px){
+    @media(max-width:900px){
         font-size: 30px;
     }
 }
@@ -30,7 +30,7 @@ h2{
     color: #444DF2;
     text-align: center;
     margin:0px;
-    @media(max-width:800px){
+    @media(max-width:900px){
         font-size: 26px;
     }
 }
@@ -41,7 +41,7 @@ h3{
     color: black;
     text-align: center;
     margin:0px;
-    @media(max-width:800px){
+    @media(max-width:900px){
         font-size: 20px;
     }
 }
@@ -52,7 +52,7 @@ h4{
     line-height: 24px;
     margin:0px;
     padding-bottom:8px;
-    @media(max-width:800px){
+    @media(max-width:900px){
         font-size: 18px;
         padding-bottom: 0px;
     }
@@ -67,7 +67,7 @@ h5{
     color: black;
     text-align: center;
     margin:0px;
-    @media(max-width:800px){
+    @media(max-width:900px){
         font-size: 18px;
     }
 }
@@ -78,7 +78,7 @@ h6{
     color: #686868;
     text-align: center;
     margin:0px;
-    @media(max-width:800px){
+    @media(max-width:900px){
         font-size: 12px;
     }
 }
@@ -100,7 +100,7 @@ input{
     >:active{
         border: none;
     }
-    @media(max-width:800px){
+    @media(max-width:900px){
         font-size: 14px;
     }
 }

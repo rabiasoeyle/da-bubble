@@ -40,7 +40,7 @@ textarea{
 .channel-chat{
     flex:1;
     @include dFlex($ai:flex-start, $fd:column, $g:8px);
-    height:50%;
+    // height:50%;
 }
 .input-area{
     border-radius:25px;
