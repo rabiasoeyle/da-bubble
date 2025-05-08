@@ -1,4 +1,7 @@
 @import "../../../styles.scss";
+h4{
+    padding:0px;
+}
 .header-of-channel{
     position: relative;
     @include dFlex($jc:space-between, $fd:column, $ai:flex-start, $g:16px);
@@ -53,9 +56,10 @@ textarea{
 .search-results{
     position: relative;
     height: auto;
-    padding:8px;
+    padding:16px;
     border-radius:25px;
     background-color: white;
+    margin-left:8px;
 }
 .emoji-mark-send-buttons{
     @include dFlex($g:16px, $jc:space-between);
@@ -64,7 +68,7 @@ textarea{
 .send-msg-btn{
     width:auto;
     border:transparent;
-    background-color: white;
+    background-color: transparent;
     text-align: end;
 }
 

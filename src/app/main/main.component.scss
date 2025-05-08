@@ -27,11 +27,14 @@
     }
 }
 .main-content{
-    @include dFlex($g:16px);
-    padding:32px;
+    @include dFlex($g:1vW);
+    padding:2vH 2vW;
     height: 80vH;
+    @media(max-width:1000px){
+        padding:1vH 1vW;
+    }
     @media(max-width:800px){
-        padding:1px;
+        padding:1vH;
         flex:1;
         height:88vH;
     }
