@@ -13,21 +13,27 @@
         @if(searchResultsValue.length>0 && search=="email"){
             <div class="search-results">
                 @for(item of searchResultsValue; track item; let idx=$index){
-                    <h4 (click)="saveName(item.uid,idx )">{{item.email}}</h4>
+                    <div class="d-flex">
+                        <img class="mmbr-of-chnnl-pic" src='{{item.fotolink}}' alt="">
+                        <h4 (click)="saveName(item.uid,idx )">{{item.email}}</h4>
+                    </div> 
                 }
             </div> 
         }
         @if(searchResultsValue.length>0 && search=="name"){
             <div class="search-results">
                 @for(item of searchResultsValue; track item; let idx=$index){
-                    <h4 (click)="saveName(item.uid, idx)">{{item.name}}</h4>
+                    <div class="d-flex">
+                        <img class="mmbr-of-chnnl-pic" src='{{item.fotolink}}' alt="">
+                        <h4 (click)="saveName(item.uid, idx)">{{item.name}}</h4>
+                    </div>
                 }
             </div> 
         }
         @if(searchResults.length>0 && search=="channel"){
             <div class="search-results">
                 @for(item of searchResults; track item; let idx=$index){
-                    <h4 (click)="saveName(item, idx)">{{item}}</h4>
+                    <h4 (click)="saveName(item, idx)"> # {{item}}</h4>
                 }
             </div> 
         }

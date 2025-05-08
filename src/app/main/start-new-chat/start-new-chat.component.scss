@@ -138,3 +138,16 @@ emoji-mart .emoji-mart-search-icon{
 emoji-mart .emoji-mart-anchors, .emoji-mart-category-label, .emoji-mart-preview{
     display: none;
 }
+.mmbr-of-chnnl-pic{
+    width:40px;
+    height:40px;
+    border-radius: 30px;
+    border: 2px solid white;
+    @media(max-width:800px){
+        width:20px;
+        height:20px;
+    }
+}
+.d-flex{
+    @include dFlex($jc:flex-start, $g:16px);
+}
