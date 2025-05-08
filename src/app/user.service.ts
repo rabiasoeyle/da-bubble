@@ -39,7 +39,7 @@ export class UserService {
     searchTerm = searchTerm.toLowerCase(); 
     return this.allUsers
       .filter(user => user.name.toLowerCase().includes(searchTerm)) 
-      .map(user => ({ name: user.name, uid: user.uid })); 
+      .map(user => ({ name: user.name, email: user.email, uid: user.uid, fotolink:user.fotolink })); 
   }
 
   searchUsersWithMail(searchTerm: string){
@@ -47,7 +47,7 @@ export class UserService {
     searchTerm = searchTerm.toLowerCase();
     return this.allUsers
     .filter(user => user.email.toLowerCase().includes(searchTerm))
-    .map(user => ({ name: user.name, email: user.email, uid: user.uid })); 
+    .map(user => ({ name: user.name, email: user.email, uid: user.uid, fotolink:user.fotolink })); 
   }
 
   async getUserInfo(uid: string) {

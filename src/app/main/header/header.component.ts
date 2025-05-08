@@ -36,8 +36,8 @@ export class HeaderComponent implements OnInit{
   savedUid:string="";
   @Input() userChats:Chat[] = [];
   @Input() startNewChatBoolean:boolean = false;
-  @Input()currentChat:Chat|null= null;
-  @Input()currentChannel:Channel|null =null;
+  @Input() currentChat:Chat|null= null;
+  @Input() currentChannel:Channel|null =null;
   @Output() openChat = new EventEmitter<number>();
   @Output() oChannel = new EventEmitter<string>();
   @Output() goBackToDevspace = new EventEmitter<void>();
@@ -86,8 +86,9 @@ export class HeaderComponent implements OnInit{
 
   searchAfterName(value:string){
     this.searchResultsValue = this.userService.searchUsers(value.substring(1));
-      this.searchResults = this.searchResultsValue.map(u => u.name);
-      this.search = "name";
+    // this.searchResults = this.searchResultsValue.map(u => u.name);
+    console.log(this.searchResultsValue);
+    this.search = "name"; 
   }
 
   searchAfterChannel(value:string){
@@ -101,7 +102,7 @@ export class HeaderComponent implements OnInit{
 
   searchAfterEmail(value:string){
     this.searchResultsValue = this.userService.searchUsersWithMail(value);
-    this.searchResults = this.searchResultsValue.map(u => u.email);
+    // this.searchResults = this.searchResultsValue.map(u => u.email);
     this.search = "email";
   }
 
@@ -113,6 +114,7 @@ export class HeaderComponent implements OnInit{
     const firstChar = value.charAt(0);
     if (firstChar === "@") {
       this.searchAfterName(value);
+      console.log(this.searchResultsValue);
     } else if (firstChar === "#") {
       this.searchAfterChannel(value)
     } else if (/[a-zA-Z]/.test(firstChar)) {
