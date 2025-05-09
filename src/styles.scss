@@ -22,6 +22,9 @@ h1{
     @media(max-width:900px){
         font-size: 30px;
     }
+    @media(max-height:610px){
+        font-size: 30px;
+    }
 }
 h2{
     font-family: 'Nunito';
@@ -33,6 +36,9 @@ h2{
     @media(max-width:900px){
         font-size: 26px;
     }
+    @media(max-height:610px){
+        font-size: 26px;
+    }
 }
 h3{
     font-family: 'Nunito';
@@ -42,6 +48,9 @@ h3{
     text-align: center;
     margin:0px;
     @media(max-width:900px){
+        font-size: 20px;
+    }
+    @media(max-height:610px){
         font-size: 20px;
     }
 }
@@ -59,6 +68,9 @@ h4{
     @media(max-width:500px){
         font-size: 14px;
     }
+    @media(max-height:610px){
+        font-size: 16px;
+    }
 }
 h5{
     font-family: 'Nunito';
@@ -70,6 +82,9 @@ h5{
     @media(max-width:900px){
         font-size: 18px;
     }
+    @media(max-height:610px){
+        font-size: 18px;
+    }
 }
 h6{
     font-family: 'Nunito';
@@ -79,6 +94,9 @@ h6{
     text-align: center;
     margin:0px;
     @media(max-width:900px){
+        font-size: 12px;
+    }
+    @media(max-height:610px){
         font-size: 12px;
     }
 }
@@ -103,6 +121,9 @@ input{
     @media(max-width:900px){
         font-size: 14px;
     }
+    @media(max-height:610px){
+        font-size: 14px;
+    }
 }
 .input-area{//input with img in a div
     background-color: #ECEEFE;
@@ -112,6 +133,9 @@ input{
     border: 0px 0px 1px 0px;
     width:80%;
     @media(max-width:800px){
+        padding:6px;
+    }
+    @media(max-height:610px){
         padding:6px;
     }
 }
@@ -152,6 +176,11 @@ form{
         padding:6px;
         width:100px;
     }
+    @media(max-height:610px){
+        height: auto;
+        padding: 6px;
+        width:100px;
+    }
 }
 .white-btn{
     width: 137px;
@@ -171,6 +200,11 @@ form{
     @media(max-width:800px){
         height:auto;
         padding:6px;
+        width:100px;
+    }
+    @media(max-height:610px){
+        height: auto;
+        padding: 6px;
         width:100px;
     }
 }
@@ -211,6 +245,10 @@ form{
         padding:6px;
         // width:100px;
     }
+    @media(max-height:610px){
+        height: auto;
+        padding: 6px;
+    }
 }
 .no-border-blue-btn{
     transition: 500ms;
@@ -239,6 +277,10 @@ form{
     @media(max-width:800px){
         height:auto;
         padding:6px;
+    }
+    @media(max-height:610px){
+        height: auto;
+        padding: 6px;
     }
 }
 input:focus,

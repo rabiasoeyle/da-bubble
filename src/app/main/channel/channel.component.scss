@@ -12,6 +12,10 @@
     width:70px;
     height:70px;
     border-radius: 100%;
+    @media(max-height:610px){
+        width:30px;
+        height:30px;
+    }
     @media(max-width:800px){
         width:30px;
         height:30px;
@@ -35,6 +39,10 @@
         width:24px;
         height:24px;
     }
+    @media(max-height:610px){
+        width:24px;
+        height:24px;
+    }
 }
 .members-pic{
     @include dFlex($g:0px);
@@ -46,6 +54,10 @@
     border: 2px solid white;
     margin: 6px -8px 6px 0px;
     @media(max-width:800px){
+        width:24px;
+        height:24px;
+    }
+    @media(max-height:610px){
         width:24px;
         height:24px;
     }
@@ -124,6 +136,9 @@
     @media(max-width:800px){
         padding:0px;
     }
+    @media(max-height:610px){
+        padding:0px;
+    }
 }
 .my-msg-message{
     border:0px none;
@@ -136,6 +151,9 @@
     @media(max-width:800px){
         padding:0px;
     }
+    @media(max-height:610px){
+        padding:0px;
+    }
 }
 .channel-chat{
     overflow-y: scroll;
@@ -146,6 +164,9 @@
     flex-direction: column;
     gap: 8px;
     height:80%;
+    @media(max-height:610px){
+        height:60%
+    }
     @media(max-width:800px){
        height: 84%; 
     }
@@ -169,6 +190,10 @@
     }
     @media(max-width:800px){
         bottom:3px;
+        height:10%;
+    }
+    @media(max-height:610px){
+        bottom: 3px;;
         height:10%;
     }
 }
@@ -285,6 +310,11 @@ textarea{
         right:0px;
         left:0px;
     }
+    @media(max-height:610px){
+        width:auto;
+        right: 0px;
+        left: 0px;
+    }
 }
 .mmbr-dtls-head{
     @include dFlex($jc:space-between);
@@ -321,6 +351,11 @@ textarea{
         height:200px;
         left:2vW;
     }
+    @media(max-height:610px){
+        width:280px;
+        height:200px;
+        left: 2vW;
+    }
 }
 
 .emoji-picker-edit-m {
@@ -345,7 +380,12 @@ textarea{
         width:220px;
         height:100px;
         left:2vW;
-}
+    }
+    @media(max-height:610px){
+        width:22px;
+        height:100px;
+        left:2vW;
+    }
 }
 
 .corresponds-mark{
@@ -368,6 +408,11 @@ textarea{
         max-height:200px;
         left:2vW;
     }
+    @media(max-height:610px){
+        max-width:280px;
+        max-height:200px;
+        left:2vW;
+    }
 }
 .correspond-name-img{
     @include dFlex($jc:flex-start, $g:16px);
@@ -377,6 +422,10 @@ textarea{
         height:40px;
         border-radius: 100%;
         @media(max-width){
+            width:20px;
+            height:20px;
+        }
+        @media(max-height:610px){
             width:20px;
             height:20px;
         }
@@ -419,6 +468,10 @@ emoji-mart{
     width:320px;
     height:400px;
     @media(max-width:500px){
+        width:280px;
+        height:200px;
+    }
+    @media(max-height:610px){
         width:280px;
         height:200px;
     }

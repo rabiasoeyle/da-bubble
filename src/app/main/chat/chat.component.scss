@@ -29,6 +29,21 @@
             box-shadow: none;
             z-index: 2;
         }
+        @media(max-height:610px){
+        width:94vW;
+            height:94vH;
+            padding:2vH 2vW;
+            top: -12vH;
+            bottom: 0px;
+            right: 0px;
+            left: -2vW;
+            border: none;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            box-shadow: none;
+            z-index: 2;
+    }
     }
     .mmbr-of-chnnl-list-parent{
         overflow-y: scroll;
@@ -52,6 +67,10 @@
             width:20px;
             height:20px;
         }
+        @media(max-height:610px){
+        width:20px;
+        height:20px;
+    }
     }
     .mmbr-of-chnnl-pic-button{
         @include dFlex();

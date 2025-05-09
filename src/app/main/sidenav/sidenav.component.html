@@ -12,7 +12,7 @@
         <!-- channel -->
         <div class="channel-head">
         <div class="img-and-txt-pctr">
-            <img (click)="changeChannelAreaStatus()" src="./assets/img/key_arrow_down.png" alt="">
+            <img (click)="changeChannelAreaStatus()" [src]="channelsOpen?'./assets/img/key_arrow_down.png' : './assets/img/keyboard_arrow_left.png'" alt="">
             <div class="text-pctr">
                 <img src="./assets/img/workspaces.png" alt="">
                 <h4>Channels</h4>
@@ -38,7 +38,7 @@
         </div>
         <!-- messages -->
         <div class="img-and-txt-pctr">
-            <img (click)="changeMessageAreaStatus()" src="./assets/img/key_arrow_down.png" alt="">
+            <img (click)="changeMessageAreaStatus()" [src]="directMessagesOpen?'./assets/img/key_arrow_down.png' : './assets/img/keyboard_arrow_left.png'"alt="">
             <div class="text-pctr">
                 <img src="./assets/img/account_circle.png" alt="account">
                 <h4>Direktnachrichten</h4> 
@@ -54,7 +54,6 @@
                             }@else{
                                 <div class="offline"></div>
                             }
-                            
                             <img  class="mmbr-of-chnnl-pic" [src]="item.chatPartner.fotolink" alt="profile">
                             <h4>{{item.chatPartner.name}}</h4>
                         </div>
