@@ -85,10 +85,20 @@ export class HeaderComponent implements OnInit{
   }
 
   searchAfterName(value:string){
-    this.searchResultsValue = this.userService.searchUsers(value.substring(1));
-    // this.searchResults = this.searchResultsValue.map(u => u.name);
-    console.log(this.searchResultsValue);
+    this.searchResultsValue = this.searchChats(value.substring(1));
     this.search = "name"; 
+  }
+
+  searchChats(searchTerm:string){
+    if (!searchTerm.trim()) return [];
+    searchTerm = searchTerm.toLowerCase();
+    if(this.userChats.length>0 ){
+      return this.userChats
+    .filter(chat=>
+      chat.chatPartner.email&&chat.chatPartner.email.toLowerCase() || chat.chatPartner.name && chat.chatPartner.name.toLowerCase().includes(searchTerm))
+    .map(chat=>({name:chat.chatPartner.name, email: chat.chatPartner.email, uid: chat.chatPartner.uid, fotolink:chat.chatPartner.fotolink}))
+    }
+    return []
   }
 
   searchAfterChannel(value:string){
@@ -101,8 +111,7 @@ export class HeaderComponent implements OnInit{
   }
 
   searchAfterEmail(value:string){
-    this.searchResultsValue = this.userService.searchUsersWithMail(value);
-    // this.searchResults = this.searchResultsValue.map(u => u.email);
+    this.searchResultsValue = this.searchChats(value);
     this.search = "email";
   }
 
@@ -114,7 +123,6 @@ export class HeaderComponent implements OnInit{
     const firstChar = value.charAt(0);
     if (firstChar === "@") {
       this.searchAfterName(value);
-      console.log(this.searchResultsValue);
     } else if (firstChar === "#") {
       this.searchAfterChannel(value)
     } else if (/[a-zA-Z]/.test(firstChar)) {

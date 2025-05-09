@@ -41,6 +41,7 @@ export class UserService {
       .filter(user => user.name.toLowerCase().includes(searchTerm)) 
       .map(user => ({ name: user.name, email: user.email, uid: user.uid, fotolink:user.fotolink })); 
   }
+  
 
   searchUsersWithMail(searchTerm: string){
     if (!searchTerm.trim()) return [];

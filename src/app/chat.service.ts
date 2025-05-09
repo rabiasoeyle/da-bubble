@@ -6,6 +6,7 @@ import { Message, Reaction } from '../modules/messages';
 import { Member } from '../modules/member';
 import { Channel } from '../modules/channel';
 import { UserService } from './user.service';
+import { UserData } from '../modules/user';
 
 @Injectable({
   providedIn: 'root'
