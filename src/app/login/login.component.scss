@@ -140,9 +140,14 @@ footer{
     height:30px;
     @include dFlex($jc:space-around);
     @media (max-width: 800px) {
-       bottom:2vH;
+       bottom:1vH;
        padding:12px 0px;
        height:0px;
+    }
+    @media(max-height:610px){
+        bottom:1vH;
+        padding:1vH 0vW;
+        height:0px;
     }
 }
 .link-ida{
