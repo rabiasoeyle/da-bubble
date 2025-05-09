@@ -114,6 +114,7 @@ export class MainComponent implements OnInit{
 
   sendMessageInChat(message:string){
     if(this.currentChat && message !=""){
+      console.log("messageChat"+message);
       this.chatService.sendPrivateMessage(message, this.currentChat.chatId);
     }
   }

@@ -358,6 +358,7 @@ export class ChatService {
       createdAt: new Date(),
       messages:[]
     });
+    console.log("in create Chat", newChatRef)
     this.saveNewChatAtBothUsers(userId,newChatRef,memberId);
     return newChatRef.id;
   }
@@ -457,6 +458,7 @@ export class ChatService {
     const userId = localStorage.getItem("userId");
     const time = new Date();
     const channelRef = doc(this.firebaseDatabase, `chats/${chatId}`);
+    console.log("message",message)
     await updateDoc(channelRef, {
       messages: arrayUnion({
         uid: userId,

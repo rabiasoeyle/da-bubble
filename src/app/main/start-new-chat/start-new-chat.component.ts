@@ -113,17 +113,20 @@ export class StartNewChatComponent {
     }
 
     async goToPersonalMessages(uid:string){
-        if(this.userData && this.userChats<=0){
-          const messagesWMembers = await this.chatService.createChat(this.userData?.uid, uid )
-        } await this.loadUserChats();
-            for (let i = 0; i < this.userChats.length; i++) {
-              if (this.userChats[i].chatPartner.uid == uid) {
-                this.openChat.emit(i);
-                this.sendMessageEmitter.emit(this.newMessage.message)
-                this.newMessage.message ="";
-              }
+      if(this.userData && this.userChats<=0){
+        const messagesWMembers = await this.chatService.createChat(this.userData?.uid, uid )
+      } 
+      setTimeout(async()=>{
+        await this.loadUserChats();
+          for (let i = 0; i < this.userChats.length; i++) {
+            if (this.userChats[i].chatPartner.uid == uid) {
+              this.openChat.emit(i);
+              this.sendMessageEmitter.emit(this.newMessage.message)
+              this.newMessage.message ="";
             }
-    }
+          }
+      },2000)
+  }
 
     async loadUserChats(){
         this.userChats=[];
@@ -138,10 +141,11 @@ export class StartNewChatComponent {
     openChatOrChannel(item:string){
       if(this.search=="name" || this.search=="email"){
         this.goToPersonalMessages(item);
-      }else{
+      }else if(this.search=="channel"){
         this.oChannel.emit(item);
         this.sendChannelMessageEmitter.emit(this.newMessage.message);
-        this.newMessage.message="";
+      }else{
+        this.savedAdress="Es wurde keine Person oder Channel ausgewählt"
       }
     }
 
@@ -171,6 +175,7 @@ export class StartNewChatComponent {
         }else{ 
       return false} 
     }
+
     markPerson(name:string){
       if(this.checkIfChannelFound()){
         this.newMessage.message += "@" + name;
