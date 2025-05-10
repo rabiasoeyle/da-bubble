@@ -83,20 +83,17 @@ export class HeaderComponent implements OnInit{
   isChatActive(): boolean {
     return this.currentChannel !== null || this.currentChat !== null || this.startNewChatBoolean;
   }
-
-  searchAfterName(value:string){
-    this.searchResultsValue = this.searchChats(value.substring(1));
-    this.search = "name"; 
-  }
-
   searchChats(searchTerm:string){
     if (!searchTerm.trim()) return [];
     searchTerm = searchTerm.toLowerCase();
-    if(this.userChats.length>0 ){
+    if(this.userChats.length>0 &&this.search == "name" ){
       return this.userChats
-    .filter(chat=>
-      chat.chatPartner.email&&chat.chatPartner.email.toLowerCase() || chat.chatPartner.name && chat.chatPartner.name.toLowerCase().includes(searchTerm))
-    .map(chat=>({name:chat.chatPartner.name, email: chat.chatPartner.email, uid: chat.chatPartner.uid, fotolink:chat.chatPartner.fotolink}))
+        .filter(chat=>chat.chatPartner.name && chat.chatPartner.name.toLowerCase().includes(searchTerm))
+        .map(chat=>({name:chat.chatPartner.name, email: chat.chatPartner.email, uid: chat.chatPartner.uid, fotolink:chat.chatPartner.fotolink}))
+    }else if(this.userChats.length>0 && this.search == "email" ){
+      return this.userChats
+        .filter(chat=>chat.chatPartner.email && chat.chatPartner.email.toLowerCase().includes(searchTerm))
+        .map(chat=>({name:chat.chatPartner.name, email: chat.chatPartner.email, uid: chat.chatPartner.uid, fotolink:chat.chatPartner.fotolink}))
     }
     return []
   }
@@ -108,6 +105,11 @@ export class HeaderComponent implements OnInit{
           channel.toLowerCase().includes(value.substring(1).toLowerCase())
         );
       }
+  }
+
+  searchAfterName(value:string){
+    this.searchResultsValue = this.searchChats(value.substring(1));
+    this.search = "name"; 
   }
 
   searchAfterEmail(value:string){
