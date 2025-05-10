@@ -7,6 +7,12 @@
     height:96%;
     position: relative;
     margin:2%;
+    @media(max-height:610px){
+        margin:0 1% 2% 1%
+    }
+    @media(max-width:800px){
+        margin:0 1% 2% 1%
+    }
 }
 .msg-sender-pic{
     width:70px;
@@ -165,7 +171,7 @@
     gap: 8px;
     height:80%;
     @media(max-height:610px){
-        height:60%
+        height:60% !important; 
     }
     @media(max-width:800px){
        height: 84%; 
@@ -194,7 +200,7 @@
     }
     @media(max-height:610px){
         bottom: 3px;;
-        height:10%;
+        height:14%;
     }
 }
 .margin-5px{
@@ -329,6 +335,17 @@ textarea{
     border:transparent;
     background-color: transparent;
     text-align: end;
+    >img{
+        @media(max-width:500px){
+        width:20px;
+        height:20px;
+    }
+    @media(max-height:610px){
+        width:16px;
+        height:16px;
+    }
+    }
+    
 }
 
 .emoji-picker {
@@ -487,4 +504,17 @@ emoji-mart .emoji-mart-preview,
 .emoji-mart-category-label{
     display: none;
 }
-
+.emoji-mark-img{
+    >img{
+        width:40px;
+        height:40px;
+        @media(max-width:500px){
+        width:16px;
+        height:16px;
+    }
+    @media(max-height:610px){
+        width:16px;
+        height:16px;
+    }
+    }
+}

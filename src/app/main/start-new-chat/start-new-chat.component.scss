@@ -8,6 +8,12 @@ h4{
     border-bottom:2px solid #ECEEFE;
     padding:16px;
     margin-left:8px;
+    @media(max-width:800px){
+        padding:8px 8px 8px 16px;
+    }
+    @media(max-height:610px){
+        padding:8px 8px 8px 16px;
+    }
 }
 textarea{
     width: 90%;
@@ -36,17 +42,26 @@ textarea{
         height:10%;
         margin: 4px;
     }
+    @media(max-height:610px){
+        bottom: 3px;;
+        height:14%;
+    }
 }
 .channel-chat{
     flex:1;
     @include dFlex($ai:flex-start, $fd:column, $g:8px);
-    // height:50%;
 }
 .input-area{
     border-radius:25px;
     border:1px solid black;
-    width: 80%;
+    width: 90%;
     background-color: white;
+    @media(max-width:800px){
+        padding:0 8px;
+    }
+    @media(max-height:610px){
+        padding: 0 8px;
+    }
 }
 .chat-area-child{
     height:100%;
@@ -70,6 +85,17 @@ textarea{
     border:transparent;
     background-color: transparent;
     text-align: end;
+    >img{
+        @media(max-width:500px){
+        width:20px;
+        height:20px;
+    }
+    @media(max-height:610px){
+        width:16px;
+        height:16px;
+    }
+    }
+    
 }
 
 .emoji-picker {
@@ -154,4 +180,18 @@ emoji-mart .emoji-mart-anchors, .emoji-mart-category-label, .emoji-mart-preview{
 }
 .d-flex{
     @include dFlex($jc:flex-start, $g:16px);
+}
+.emoji-mark-img{
+    >img{
+        width:40px;
+        height:40px;
+        @media(max-width:500px){
+        width:16px;
+        height:16px;
+    }
+    @media(max-height:610px){
+        width:16px;
+        height:16px;
+    }
+    }
 }
