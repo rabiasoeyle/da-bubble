@@ -438,7 +438,7 @@ textarea{
         width:40px;
         height:40px;
         border-radius: 100%;
-        @media(max-width){
+        @media(max-width:800px){
             width:20px;
             height:20px;
         }

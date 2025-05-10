@@ -62,6 +62,12 @@
     height:80%;
     overflow-y: scroll;
     scrollbar-width: none;
+    @media(max-width:800px){
+        height:100%;
+    }
+    @media(max-height:610px){
+        height:100%;
+    }
 }
 .dev-img{
     width:60px;
