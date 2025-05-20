@@ -55,10 +55,6 @@ header{
         margin:2px;
     }
     @media (max-width: 800px) {
-        // position: absolute;
-        // bottom:15vH;
-        // width:90vW;
-        // @include dFlex($fd:column);
         display: none;
     }
 
@@ -71,6 +67,11 @@ header{
         margin:2px;
     }
     @media (max-width: 800px) {
+        position: relative;
+        top:2vH;
+        @include dFlex($fd:column);
+    }
+    @media (max-height: 500px) {
         position: relative;
         top:2vH;
         @include dFlex($fd:column);
@@ -104,6 +105,22 @@ header{
             scale: 1.1;
         }
     }
+    @media (max-height: 500px) {
+        font-size: 14px;
+        width: auto;
+        height:auto;
+        padding: 6px;
+        border:solid 1px;
+        border-radius: 25px;
+        border-color: #444DF2;
+        color:#444DF2;
+        cursor: pointer;
+        text-align: center;
+        &:hover{
+            transition: 500ms;
+            scale: 1.1;
+        }
+    }
 }
 .dialog-section{
     position: relative;
@@ -112,14 +129,14 @@ header{
     @include dFlex();
     @media (max-width: 800px) {
         @include dFlex();
-      }
+    }
+    @media(max-height:500px){
+        @include dFlex();
+    }
 }
 .dialog-area{
     width: 50%;
     height: 100%;
-    // position: relative;
-    // top: 0px;
-    // left: 30%;
     border-radius: 30px;
     background-color: #FFFFFF;
     padding:32px 16px;
@@ -128,12 +145,16 @@ header{
         left:0px;
         height:fit-content;
     }
+    @media(max-height:500px){
+        width: 50% !important;;
+        left:0px;
+        height:fit-content;
+    }
 }
 footer{
     height:10vH;
     position: absolute;
     bottom:5vH;
-    // top:;
     left: 0;
     right:0;
     padding:24px;
@@ -159,4 +180,20 @@ footer{
     transition: 500ms;
     color:#444DF2;
     scale:1.1;
+}
+.resp-not-available{
+    display:none;
+    @media(max-height:500px){
+        @include dFlex();
+        background-color: rgba(0, 0, 0, 0.821);
+        position: absolute;
+        top:0;
+        bottom:0;
+        left:0; 
+        right:0;
+        width:100vW;
+        height:100vH; 
+        color:white;
+    }
+    
 }
