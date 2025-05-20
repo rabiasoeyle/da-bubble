@@ -13,7 +13,7 @@ import { UserService } from '../../../user.service';
 })
 export class AddMembersToChannelComponent {
   searchResultsValue:any[]=[];
-  searchResults:string[]=[];
+  searchResults:any[]=[];
   search="";
   selectedUser="";
   addMemberData = {name:""};
@@ -54,25 +54,36 @@ export class AddMembersToChannelComponent {
       return;
     }
     const firstChar = value.charAt(0);
-    if (firstChar === "@") {
-      this.searchResultsValue = this.userService.searchUsers(value.substring(1));
-      this.searchResults = this.searchResultsValue.map(user => user.name);
-      this.search = "name";
-      console.log("@User:", this.searchResults);
+    if (firstChar == "@") {
+      this.searchUser(value);
     } else if (/[a-zA-Z]/.test(firstChar)) {
-      this.searchResultsValue = this.userService.searchUsersWithMail(value);
-      this.searchResults = this.searchResultsValue.map(user => user.email);
-      this.search = "email";
-      console.log("email:", this.searchResults);
+      this.searchMail(value);
     } else {
-      this.searchResultsValue = [];
-      this.searchResults = [];
-      this.addMemberData.name="";
-      console.log("no-one:", this.searchResults);
+      this.searchNotAvailable();
     }
   }
 
-  saveName(item: string) {
+  searchNotAvailable(){
+    this.searchResultsValue = [];
+    this.searchResults = [];
+    this.addMemberData.name="";
+  }
+
+  searchMail(value: string){
+    this.searchResultsValue = this.userService.searchUsersWithMail(value);
+    let memberNames = this.currentChannel?.members.map(member => member.name) || [];
+    this.searchResults = this.searchResultsValue.filter(user => !memberNames.includes(user.name));
+    this.search = "email";
+  }
+
+  searchUser(value: string){
+    this.searchResultsValue = this.userService.searchUsers(value.substring(1));
+    let memberNames = this.currentChannel?.members.map(member => member.name) || [];
+    this.searchResults = this.searchResultsValue.filter(user => !memberNames.includes(user.name));
+    this.search = "name";
+  }
+
+  saveName(item: string){
     this.selectedUser = item;
     this.addMemberData.name = item; 
   }

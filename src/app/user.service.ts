@@ -81,6 +81,7 @@ export class UserService {
       console.error("Firestore Live-Update Fehler:", error);
     });
     }
+    
   async updateUserProfile(uid: string, fotolink: string): Promise<void> {
     try {
       const userDocRef = doc(this.firebaseDatabase, `users/${uid}`);

@@ -5,6 +5,9 @@ h5{
         display: none;
     }
 }
+h4{
+    padding-bottom:0px;
+}
 .add-mmbr-parent{
     position: absolute;
     width:514px;
@@ -19,15 +22,17 @@ h5{
     right:50px;
     padding:40px;
     z-index:2;
+    overflow-y: scroll;
+    scrollbar-width: none;
     @include dFlex($fd:column, $g:20px, $ai:flex-start);
     @media(max-width:800px){
         width: 94vW;
         height: 94vH;
         padding: 2vH 2vW;
-        top: -12vH;
+        top: -10vH;
         bottom: 0px;
         right: 0px;
-        left: -2vW;
+        left: -0vW;
         border: none;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
@@ -75,4 +80,25 @@ h5{
         height:20px;
         padding:4px;
     }
+}
+.profile-img{
+    width:40px;
+    height:40px;
+    border-radius: 30px;
+    border: 2px solid white;
+    @media(max-width:800px){
+        width:20px;
+        height:20px;
+    }
+    @media(max-height:610px){
+        width:20px;
+        height:20px;
+    }
+}
+.img-name{
+    @include dFlex();
+}
+.search-results{
+    @include dFlex($fd:column, $ai:flex-start);
+    width:90%;
 }
