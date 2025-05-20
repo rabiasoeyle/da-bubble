@@ -36,58 +36,8 @@
                                     <h6 class="margin-5px">{{item? item.clock: "Keine Zeit"}}</h6>
                                 </div>
                                 <div class="msg-message" >
-                                    <h4 class="margin-5px" (click)="toggleEmojisForReaction(idx)">{{item? item.message :"Hey"}}</h4>
+                                    <h4 class="margin-5px" >{{item? item.message :"Hey"}}</h4>
                                 </div>
-                                <div class="reactions" >
-                                    <emoji-mart class="emoji-mart-recent-reactions"
-                                        (emojiSelect)="addEmojiReaction($event,idx)"
-                                        [perLine]="4"
-                                        [totalFrequentLines]="1"
-                                        [i18n]="{
-                                        categories: {
-                                            recent: 'Kürzlich',}
-                                        }">
-                                    </emoji-mart>
-                                    <div class="toggle-emoji-for-reaction" (click)="toggleEmojisForReaction(idx)">+</div>
-                                </div>
-                                @if(item.reactions !== []){
-                                    <div class="saved-reactions">
-                                    @for(reaction of item.reactions?item.reactions:[]; track reaction; let id = $index){
-                                        @if(reaction.senderUid == userData.uid){
-                                            <div class="bg-light-blue" (click)="removeReaction(id, idx)">
-                                               {{reaction.reaction}}  
-                                            </div>
-                                        }@else {
-                                            <div>{{reaction.reaction}}</div>
-                                        }
-                                        
-                                    }
-                                    </div>
-                                }
-                                @if(emojisOpenForReaction && (idx == currentMessageId)){
-                                    <div class="emoji-picker-edit-m">
-                                        <emoji-mart
-                                            (emojiSelect)="addEmojiReaction($event, idx)"
-                                            [virtualize]="true"
-                                            [showSingleCategory]="true"
-                                            [i18n]="{
-                                            categories: {
-                                                recent: 'Kürzlich',
-                                                smileys: 'Smileys',
-                                                people: 'Menschen',
-                                                animals: 'Tiere',
-                                                food: 'Essen',
-                                                activities: 'Aktivitäten',
-                                                travel: 'Reisen',
-                                                objects: 'Objekte',
-                                                symbols: 'Symbole',
-                                                flags: 'Flaggen'
-                                            },
-                                            search: 'Suchen'
-                                            }"
-                                      ></emoji-mart>
-                                    </div>
-                                } 
                             </div>
                         </div>
                         }
@@ -105,19 +55,6 @@
                                 <div (click)="startEditMessage(idx)" class="my-msg-message">
                                     <h4 class="margin-5px">{{item? item.message :"Hey"}}</h4>
                                 </div> 
-                                @if(item.reactions !== []){
-                                    <div class="saved-reactions">
-                                    @for(reaction of item.reactions?item.reactions:[]; track reaction; let id = $index){
-                                        @if(reaction.senderUid == userData.uid){
-                                            <div>
-                                               {{reaction.reaction}}  
-                                            </div>
-                                        }@else {
-                                            <div>{{reaction.reaction}}</div>
-                                        }
-                                    }
-                                    </div>
-                                }
                             </div>
                         </div>
                     }
@@ -135,57 +72,8 @@
                             <h6 class="margin-5px">{{item? item.clock: "Keine Zeit"}}</h6>
                         </div>
                         <div class="msg-message" >
-                            <h4 class="margin-5px" (click)="toggleEmojisForReaction(idx)">{{item? item.message :"Hey"}}</h4>
+                            <h4 class="margin-5px">{{item? item.message :"Hey"}}</h4>
                         </div>
-                        <div class="reactions" >
-                            <emoji-mart class="emoji-mart-recent-reactions"
-                                (emojiSelect)="addEmojiReaction($event,idx)"
-                                [perLine]="4"
-                                [totalFrequentLines]="1"
-                                [i18n]="{
-                                categories: {
-                                    recent: 'Kürzlich',}
-                                }">
-                            </emoji-mart>
-                            <div class="toggle-emoji-for-reaction" (click)="toggleEmojisForReaction(idx)">+</div>
-                        </div>
-                        @if(item.reactions !== []){
-                            <div class="saved-reactions">
-                            @for(reaction of item.reactions?item.reactions:[]; track reaction; let id = $index){
-                                @if(reaction.senderUid == userData.uid){
-                                    <div (click)="removeReaction(id, idx)">
-                                       {{reaction.reaction}}  
-                                    </div>
-                                }@else {
-                                    <div>{{reaction.reaction}}</div>
-                                }
-                            }
-                            </div>
-                        }
-                        @if(emojisOpenForReaction && (idx == currentMessageId)){
-                            <div class="emoji-picker-edit-m">
-                                <emoji-mart
-                                    (emojiSelect)="addEmojiReaction($event, idx)"
-                                    [virtualize]="true"
-                                    [showSingleCategory]="true"
-                                    [i18n]="{
-                                    categories: {
-                                        recent: 'Kürzlich',
-                                        smileys: 'Smileys',
-                                        people: 'Menschen',
-                                        animals: 'Tiere',
-                                        food: 'Essen',
-                                        activities: 'Aktivitäten',
-                                        travel: 'Reisen',
-                                        objects: 'Objekte',
-                                        symbols: 'Symbole',
-                                        flags: 'Flaggen'
-                                    },
-                                    search: 'Suchen'
-                                    }"
-                              ></emoji-mart>
-                              </div>
-                        } 
                     </div>
                         </div>
                     }
@@ -236,19 +124,6 @@
                                         </div>
                                     </form>
                                 </div>
-                                @if(item.reactions !== []){
-                                    <div class="saved-reactions">
-                                    @for(reaction of item.reactions?item.reactions:[]; track reaction; let id = $index){
-                                        @if(reaction.senderUid == userData.uid){
-                                            <div>
-                                               {{reaction.reaction}}  
-                                            </div>
-                                        }@else {
-                                            <div>{{reaction.reaction}}</div>
-                                        }
-                                    }
-                                    </div>
-                                } 
                             </div>
                         </div>
                     }
