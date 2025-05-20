@@ -16,6 +16,7 @@ export class AddMembersToChannelComponent {
   searchResults:any[]=[];
   search="";
   addMemberData="";
+  selectedUser=false;
   results:any;
   user:any="";
   @Input() currentChannel:Channel|null=null;
@@ -79,5 +80,6 @@ export class AddMembersToChannelComponent {
 
   saveName(item: string){
     this.addMemberData = item; 
+    this.selectedUser=true;
   }
 }

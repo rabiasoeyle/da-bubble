@@ -32,7 +32,7 @@
             </div> 
             }
         <div class="add-mmbr-btn-parent">
-            <button type="submit" [disabled]="addMemberForm.invalid" class="gray-btn" >Hinzufügen</button>
+            <button type="submit" [disabled]="!selectedUser" class="gray-btn" >Hinzufügen</button>
         </div>
     </form>
 </div>
