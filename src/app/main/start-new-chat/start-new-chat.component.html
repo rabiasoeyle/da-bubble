@@ -83,7 +83,10 @@
             <div class="emoji-mark-send-buttons">
                 <div class="emoji-mark-img">
                 <img (click)="showEmojis()" src="./assets/img/sentiment_satisfied.png" alt="emojis">
-                <img (click)="showMarkableCorrespond()"  [src]="checkIfChannelFound() ? './assets/img/alternate_email.png' : ''" alt="">
+                @if(checkIfChannelFound()){
+                    <img (click)="showMarkableCorrespond()"  [src]="checkIfChannelFound() ? './assets/img/alternate_email.png' : ''" alt="">
+                }
+                
                 </div>
                 <button class="send-msg-btn" type="submit">
                     <img src="./assets/img/send.png" alt="send">
