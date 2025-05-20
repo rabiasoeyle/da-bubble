@@ -92,4 +92,19 @@ textarea{
       display: none;
     }
 }
+.resp-not-available{
+    display:none;
+    @media(max-height:500px){
+        @include dFlex();
+        background-color: rgba(0, 0, 0, 0.821);
+        position: absolute;
+        top:0;
+        bottom:0;
+        left:0; 
+        right:0;
+        width:100vW;
+        height:100vH; 
+        color:white;
+    }
+}
 
