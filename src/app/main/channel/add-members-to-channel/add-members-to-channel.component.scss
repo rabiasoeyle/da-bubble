@@ -24,7 +24,7 @@ h4{
     z-index:2;
     overflow-y: scroll;
     scrollbar-width: none;
-    @include dFlex($fd:column, $g:20px, $ai:flex-start);
+    // @include dFlex($fd:column, $g:20px, $ai:flex-start);
     @media(max-width:800px){
         width: 94vW;
         height: 94vH;
@@ -101,4 +101,7 @@ h4{
 .search-results{
     @include dFlex($fd:column, $ai:flex-start);
     width:90%;
+    @media(max-width:800px){
+        width:80%;
+    }
 }

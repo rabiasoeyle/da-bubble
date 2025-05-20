@@ -69,7 +69,6 @@
                 @for(item of markablePersonsFromChannel ? markablePersonsFromChannel: ["Lisa"]; track item; let idx = $index){
                     <div (click)="markPerson(item.name)" class="correspond-name-img">
                         <img class="mmbr-of-chnnl-pic" src="{{item.fotolink}}" alt="">
-                        <!-- <img src="" alt="online"> -->
                         <h4>{{item.name}}</h4>
                     </div>
                 }

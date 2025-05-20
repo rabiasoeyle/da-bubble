@@ -15,29 +15,23 @@ export class AddMembersToChannelComponent {
   searchResultsValue:any[]=[];
   searchResults:any[]=[];
   search="";
-  selectedUser="";
-  addMemberData = {name:""};
+  addMemberData="";
   results:any;
-  userNameOrEmail:string="";
+  user:any="";
   @Input() currentChannel:Channel|null=null;
   @Output() closeDialogEvent = new EventEmitter<void>();
   
   constructor(private chatService:ChatService, private userService:UserService){}
 
   addMembersToChannel(){
-    this.userNameOrEmail = this.addMemberData.name.trim();
-    if (!this.userNameOrEmail) return; 
-    if (this.userNameOrEmail.startsWith("@")) {
-      this.userNameOrEmail = this.userNameOrEmail.substring(1);
-    }if (this.search == "email") {
-      const foundUser = this.searchResultsValue.find(user => user.email == this.userNameOrEmail);
-      if (foundUser) {
-        this.userNameOrEmail = foundUser.name; 
-      } else {return}
+    this.addMemberData
+    if (!this.addMemberData.trim()) return; 
+    if (this.addMemberData.trim().startsWith("@")) {
+      this.addMemberData = this.addMemberData.substring(1);
     }
-    this.saveName(this.userNameOrEmail);
-    if(this.currentChannel ){
-      this.chatService.addMembersToChannel(this.currentChannel.name, this.userNameOrEmail);
+      this.user = this.searchResults.find(user => user.name == this.addMemberData);
+    if(this.currentChannel &&this.user!=="" ){
+      this.chatService.addMembersToChannel(this.currentChannel.name, this.user.name);
     }
     this.closeDialog();
   }
@@ -50,7 +44,7 @@ export class AddMembersToChannelComponent {
     if (!value || value.length < 2) {
       this.searchResultsValue = [];
       this.searchResults = [];
-      this.addMemberData.name="";
+      this.addMemberData="";
       return;
     }
     const firstChar = value.charAt(0);
@@ -66,7 +60,7 @@ export class AddMembersToChannelComponent {
   searchNotAvailable(){
     this.searchResultsValue = [];
     this.searchResults = [];
-    this.addMemberData.name="";
+    this.addMemberData="";
   }
 
   searchMail(value: string){
@@ -84,7 +78,6 @@ export class AddMembersToChannelComponent {
   }
 
   saveName(item: string){
-    this.selectedUser = item;
-    this.addMemberData.name = item; 
+    this.addMemberData = item; 
   }
 }

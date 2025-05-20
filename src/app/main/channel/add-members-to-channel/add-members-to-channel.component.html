@@ -7,7 +7,7 @@
     <form #addMemberForm="ngForm" (ngSubmit)="addMembersToChannel()">
         <input 
         #name="ngModel" 
-        [(ngModel)]="addMemberData.name" 
+        [(ngModel)]="addMemberData" 
         name="name"
         (ngModelChange)="setupSearchListener($event)" 
         class="input-name"
@@ -24,7 +24,7 @@
                         </div>
                     }@else if(search=="name"){
                         <div class="img-name">
-                            <img src='{{item.fotolink}}' alt="">
+                            <img class="profile-img" src='{{item.fotolink}}' alt="">
                             <h4 (click)="saveName(item.name)">{{item.name}}</h4>
                         </div>
                     }
