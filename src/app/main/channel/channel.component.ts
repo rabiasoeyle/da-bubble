@@ -94,7 +94,6 @@ export class ChannelComponent implements OnInit, OnChanges{
       members:membersWithUserData,
       membersAmount:data.members.length,
     }});
-    console.log("neuer Channel:", this.currentChannelName);
     return this.currentChannel;
     
   }

@@ -24,7 +24,6 @@ export class DialogSendEmailPwComponent {
   constructor(){}
 
   onSubmit(ngForm: NgForm){
-    console.log("test",this.emailData.email)
     localStorage.setItem("email", this.emailData.email);
     this.authService.forgotPassword(this.emailData.email);
     this.goBackToLogin();

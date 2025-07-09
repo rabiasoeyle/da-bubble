@@ -114,7 +114,6 @@ export class MainComponent implements OnInit{
 
   sendMessageInChat(message:string){
     if(this.currentChat && message !=""){
-      console.log("messageChat"+message);
       this.chatService.sendPrivateMessage(message, this.currentChat.chatId);
     }
   }
@@ -126,13 +125,11 @@ export class MainComponent implements OnInit{
     this.currentChannel = null;
     this.currentChat = null;
     this.currentChatId = idx;
-    console.log(this.userChats[this.currentChatId].chatPartner.name)
     this.currentChat={
             chatId:this.userChats[idx].chatId,
             chatData:{createdAt:"data.createdAt",members: [],messages: [],},
             chatPartner:{uid:"uid",name:"name",email:"email",fotolink:"fotolink",presenceStatus:false} 
     };
-    console.log("currentChat:",this.currentChat);
     this.startNewChatBoolean=false;
   }
 

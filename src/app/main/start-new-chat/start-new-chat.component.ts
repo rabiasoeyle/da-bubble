@@ -166,7 +166,6 @@ export class StartNewChatComponent {
       this.markablePersonsFromChannel=await this.chatService.getChannelMembers(this.savedAdress);
       this.markCorrespond=!this.markCorrespond;
       this.emojisOpen = false;
-      console.log(this.markablePersonsFromChannel)
     }
 
     checkIfChannelFound(){

@@ -114,7 +114,6 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy, OnCha
   ngOnChanges(changes: SimpleChanges) {
     if (changes['currentChatId']) {
       this.openChat(this.currentChatId);
-      console.log("chat-c",this.currentChatId)
       setTimeout(() => {
         this.messageInput?.nativeElement.focus();
         this.previousMessageCount = 0;
@@ -211,7 +210,6 @@ export class ChatComponent implements OnInit, AfterViewChecked, OnDestroy, OnCha
   async showChatPartner(members:Member[]){
     for(let i = 0; i < members.length; i++){
       if(members[i].uid !== this.userData?.uid){
-        console.log(members[i])
         return members[i];
       }
     }return

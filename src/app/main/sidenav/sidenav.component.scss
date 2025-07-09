@@ -27,6 +27,7 @@
 .text-pctr{
     @include dFlex($g:16px, $jc:start);
     width: 80%;
+    position: relative;
 }
 .img-and-txt-pctr{
     @include dFlex($g:16px, $jc:flex-start);
@@ -94,18 +95,18 @@
     background-color: greenyellow;
     width:8px;
     height:8px;
-    position: relative;
-    top: -12px;
-    right: -24px;
+    position: absolute;
+    top: 0px;
+    right: auto;
 }
 .offline{
     border-radius: 30px;
     background-color: rgb(194, 18, 26);
     width:8px;
     height:8px;
-    position: relative;
-    top: -12px;
-    right: -24px;
+    position: absolute;
+    top: 0px;
+    right:auto;
 }
 h4{
     padding-bottom:0px;
