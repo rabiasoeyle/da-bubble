@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-imprint',
@@ -9,5 +9,5 @@ import { Router, RouterLink } from '@angular/router';
   styleUrl: './imprint.component.scss'
 })
 export class ImprintComponent {
-router = inject(Router);
+  router = inject(Router);
 }

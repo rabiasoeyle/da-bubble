@@ -4,6 +4,7 @@
     height:100vH;
     padding:0px 32px 0px 32px;
     position: relative;
+    max-width: 1920px;
     @media(max-width:800px){
         padding:0px 28px 0px 28px;
         @include dFlex($fd:column, $jc:flex-start);

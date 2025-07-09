@@ -2,6 +2,7 @@
 .body-parent{
     @include dFlex($fd:column);
     padding:8vW;
+    max-width: 1920px;
 }
 .logo{
     @include dFlex($jc:flex-start);
@@ -15,6 +16,20 @@
         font-family: "Nunito";
         color:rgb(6, 6, 6);
     }  
+}
+p{
+    font-family: "Nunito";
+    font-weight: 500;
+}
+.link-ida{
+    font-family: "Nunito";
+    font-weight: 500;
+    text-decoration: none;
+    color:#444DF2;;
+    cursor: pointer;
+    &:hover{
+        color:black;
+    }
 }
 header{
     height:15vH;
@@ -30,7 +45,7 @@ footer{
     right:0;
     padding:24px;
     height:30px;
-    width:90vW;
+    width:90%;
     z-index:2;
     @include dFlex($jc:space-around);
 }
